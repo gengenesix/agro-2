@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+:root {
+  --background:            oklch(0.97 0.015 100);
+  --foreground:            oklch(0.18 0.04 145);
+  --card:                  oklch(1 0 0);
+  --card-foreground:       oklch(0.18 0.04 145);
+  --popover:               oklch(1 0 0);
+  --popover-foreground:    oklch(0.18 0.04 145);
+  --primary:               oklch(0.28 0.07 145);
+  --primary-foreground:    oklch(0.98 0 0);
+  --secondary:             oklch(0.96 0.03 100);
+  --secondary-foreground:  oklch(0.28 0.07 145);
+  --muted:                 oklch(0.94 0.02 100);
+  --muted-foreground:      oklch(0.52 0.03 145);
+  --accent:                oklch(0.88 0.22 120);
+  --accent-foreground:     oklch(0.18 0.08 145);
+  --destructive:           oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border:                oklch(0.90 0.02 100);
+  --input:                 oklch(0.90 0.02 100);
+  --ring:                  oklch(0.88 0.22 120);
+  --radius:                1rem;
+
+  --lime:                  oklch(0.88 0.22 120);
+  --lime-dark:             oklch(0.78 0.20 120);
+  --forest:                oklch(0.28 0.07 145);
+  --forest-dark:           oklch(0.20 0.06 145);
+  --cream:                 oklch(0.97 0.015 100);
+  --cream-dark:            oklch(0.93 0.025 100);
+
+  --sector-crops:          oklch(0.35 0.12 145);
+  --sector-crops-bg:       oklch(0.94 0.04 145);
+  --sector-livestock:      oklch(0.45 0.12 60);
+  --sector-livestock-bg:   oklch(0.95 0.04 60);
+  --sector-poultry:        oklch(0.62 0.18 80);
+  --sector-poultry-bg:     oklch(0.96 0.05 80);
+  --sector-fisheries:      oklch(0.48 0.16 240);
+  --sector-fisheries-bg:   oklch(0.95 0.04 240);
+  --sector-inputs:         oklch(0.42 0.16 300);
+  --sector-inputs-bg:      oklch(0.95 0.03 300);
+
+  --harvest-gold:          oklch(0.75 0.18 80);
+  --harvest-gold-bg:       oklch(0.96 0.05 80);
+  --pledge-active:         oklch(0.55 0.18 145);
+  --score-high:            oklch(0.48 0.18 145);
+  --score-mid:             oklch(0.62 0.18 80);
+  --score-low:             oklch(0.52 0.20 30);
+  --verified-blue:         oklch(0.55 0.18 250);
+  --premium-green:         oklch(0.48 0.20 145);
+}
+
+@theme inline {
+  --font-sans:    var(--font-plus-jakarta);
+  --font-display: var(--font-playfair);
+  --font-serif:   var(--font-playfair);
+  --font-mono:    var(--font-geist-mono), 'Geist Mono', 'Courier New', monospace;
+
+  --color-background:         var(--background);
+  --color-foreground:         var(--foreground);
+  --color-card:               var(--card);
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted:              var(--muted);
+  --color-muted-foreground:   var(--muted-foreground);
+  --color-accent:             var(--accent);
+  --color-border:             var(--border);
+  --color-lime:               var(--lime);
+  --color-lime-dark:          var(--lime-dark);
+  --color-forest:             var(--forest);
+  --color-forest-dark:        var(--forest-dark);
+  --color-cream:              var(--cream);
+  --color-cream-dark:         var(--cream-dark);
+  --color-harvest-gold:       var(--harvest-gold);
+  --color-harvest-gold-bg:    var(--harvest-gold-bg);
+  --color-destructive:        var(--destructive);
+  --color-sector-crops:       var(--sector-crops);
+  --color-sector-livestock:   var(--sector-livestock);
+  --color-sector-poultry:     var(--sector-poultry);
+  --color-sector-fisheries:   var(--sector-fisheries);
+  --color-sector-inputs:      var(--sector-inputs);
+  --color-verified-blue:      var(--verified-blue);
+  --color-premium-green:      var(--premium-green);
+}
+
+@layer base {
+  * { @apply border-border box-border; }
+  body { @apply bg-background text-foreground font-sans antialiased; }
+  h1, h2, h3 { @apply text-forest tracking-tight; }
+}
+
+@layer utilities {
+  .scrollbar-hide               { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .font-display                 { font-family: var(--font-playfair), Georgia, serif; }
+  .bg-forest                    { background-color: var(--forest); }
+  .bg-forest-dark               { background-color: var(--forest-dark); }
+  .bg-lime                      { background-color: var(--lime); }
+  .bg-lime-dark                 { background-color: var(--lime-dark); }
+  .bg-cream                     { background-color: var(--cream); }
+  .bg-cream-dark                { background-color: var(--cream-dark); }
+  .bg-harvest-gold              { background-color: var(--harvest-gold); }
+  .text-forest                  { color: var(--forest); }
+  .text-forest-dark             { color: var(--forest-dark); }
+  .text-lime                    { color: var(--lime); }
+  .text-lime-dark               { color: var(--lime-dark); }
+  .text-harvest-gold            { color: var(--harvest-gold); }
+  .text-verified-blue           { color: var(--verified-blue); }
+  .text-premium-green           { color: var(--premium-green); }
+  .border-harvest-gold          { border-color: var(--harvest-gold); }
+  .border-forest                { border-color: var(--forest); }
+  .pb-safe                      { padding-bottom: env(safe-area-inset-bottom, 1.25rem); }
+  .card-lift                    { @apply transition-all duration-200; }
+  .card-lift:hover              { @apply shadow-md -translate-y-0.5; }
+  .score-high                   { background-color: var(--score-high); }
+  .score-mid                    { background-color: var(--score-mid); }
+  .score-low                    { background-color: var(--score-low); }
+  .ring-lime                    { --tw-ring-color: var(--lime); }
+  .focus-forest:focus           { outline: 2px solid var(--forest); outline-offset: 2px; }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "@agroconnect/api",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev":       "tsx watch src/server.ts",
+    "build":     "tsc",
+    "start":     "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "test":      "vitest run",
+    "seed":      "tsx src/seed.ts"
+  },
+  "dependencies": {
+    "@agroconnect/database":   "workspace:*",
+    "@agroconnect/types":      "workspace:*",
+    "@agroconnect/validators": "workspace:*",
+    "@fastify/cors":           "^9.0.1",
+    "@fastify/helmet":         "^11.1.1",
+    "@fastify/multipart":      "^8.3.0",
+    "@fastify/rate-limit":     "^9.1.0",
+    "@fastify/swagger":        "^8.14.0",
+    "@fastify/swagger-ui":     "^4.0.1",
+    "@prisma/client":          "^5.14.0",
+    "@supabase/supabase-js":   "^2.44.4",
+    "axios":                   "^1.7.2",
+    "bullmq":                  "^5.12.6",
+    "fastify":                 "^5.0.0",
+    "ioredis":                 "^5.4.1",
+    "pino":                    "^9.3.1",
+    "pino-pretty":             "^11.2.1",
+    "resend":                  "^3.4.0",
+    "fastify-plugin":          "^5.0.1",
+    "zod":                     "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx":         "^4.16.2",
+    "typescript":  "^5.4.0",
+    "vitest":      "^2.0.4"
+  }
+}

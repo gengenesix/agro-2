@@ -1,0 +1,23 @@
+{
+  "name": "agroconnect",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev":        "turbo run dev",
+    "build":      "turbo run build",
+    "typecheck":  "turbo run typecheck",
+    "test":       "turbo run test",
+    "lint":       "turbo run lint",
+    "db:generate":"pnpm --filter database run generate",
+    "db:migrate": "pnpm --filter database run migrate",
+    "db:studio":  "pnpm --filter database run studio",
+    "db:seed":    "pnpm --filter api run seed",
+    "docker:up":  "docker compose up -d",
+    "docker:down":"docker compose down"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target":           "ES2022",
+    "module":           "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib":              ["ES2022"],
+    "outDir":           "./dist",
+    "rootDir":          "./src",
+    "strict":           true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns":        true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop":  true,
+    "skipLibCheck":     true,
+    "declaration":      true,
+    "declarationMap":   true,
+    "sourceMap":        true,
+    "paths": {
+      "@agroconnect/types":      ["../../packages/types/src/index.ts"],
+      "@agroconnect/validators": ["../../packages/validators/src/index.ts"],
+      "@agroconnect/database":   ["../../packages/database/generated/client"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

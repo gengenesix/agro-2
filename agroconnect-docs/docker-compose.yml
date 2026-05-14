@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: agroconnect_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: agroconnect
+      POSTGRES_PASSWORD: agroconnect_dev
+      POSTGRES_DB: agroconnect
+    ports: ["5432:5432"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agroconnect"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: agroconnect_redis
+    restart: unless-stopped
+    command: redis-server --requirepass agroconnect_redis --appendonly yes
+    ports: ["6379:6379"]
+    volumes:
+      - redis_data:/data
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: agroconnect_redis_gui
+    environment:
+      REDIS_HOSTS: "local:redis:6379:0:agroconnect_redis"
+    ports: ["8081:8081"]
+    depends_on: [redis]
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: agroconnect_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@agroconnect.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports: ["5050:80"]
+    depends_on: [postgres]
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres_data:
+  redis_data:
+  pgadmin_data:
