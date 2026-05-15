@@ -122,6 +122,8 @@ export interface ListingDetail extends ListingSummary {
   brand: string | null
   manufacturer: string | null
   harvestWindowDays: number
+  reviews?: Review[]
+  averageRating?: number
 }
 
 export interface Order {

@@ -2,5 +2,5 @@
   "framework": "nextjs",
   "buildCommand": "pnpm --filter @agroconnect/web build",
   "installCommand": "pnpm install",
-  "outputDirectory": "apps/web/.next",
+  "outputDirectory": "apps/web/.next"
 }

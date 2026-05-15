@@ -3,7 +3,8 @@ import { ListingFilters }   from '@/components/listings/listing-filters'
 import { ListingGrid }      from '@/components/listings/listing-grid'
 import { ListingGridSkeleton } from '@/components/shared/skeleton'
 import { MapViewToggle }    from '@/components/listings/map-view-toggle'
-import type { ListingSummary, ListingFilters as Filters } from '@agroconnect/types'
+import type { ListingSummary } from '@agroconnect/types'
+import type { ListingFilters as Filters } from '@agroconnect/validators'
 
 const API = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:4000/api/v1'
 

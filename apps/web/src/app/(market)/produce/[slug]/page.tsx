@@ -1,8 +1,7 @@
-import { notFound }            from 'next/navigation'
-import { Suspense }             from 'next/navigation'
-import Image                   from 'next/image'
-import Link                    from 'next/link'
-import { Suspense as RSuspense } from 'react'
+import { notFound }   from 'next/navigation'
+import { Suspense }   from 'react'
+import Image          from 'next/image'
+import Link           from 'next/link'
 import { SectorChip }           from '@/components/shared/sector-chip'
 import { BnplBadge }            from '@/components/listings/bnpl-badge'
 import { AgroScoreBar }         from '@/components/shared/agro-score-bar'
@@ -58,7 +57,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-1.5 text-xs text-muted-foreground">
           <Link href="/produce" className="hover:text-forest transition-colors">Marketplace</Link>
           <ChevronRightIcon size={12} />
-          <SectorChip sector={listing.sector} size="sm" />
+          <SectorChip sector={listing.category.sector} label={listing.category.name} size="sm" />
           <ChevronRightIcon size={12} />
           <span className="text-forest font-semibold truncate max-w-[200px]">{listing.title}</span>
         </div>
@@ -69,22 +68,22 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
           {/* Left column */}
           <div className="space-y-6">
             {/* Photo gallery */}
-            <RSuspense fallback={
+            <Suspense fallback={
               <div className="aspect-video bg-cream-dark rounded-2xl animate-pulse" />
             }>
               <PhotoGallery photos={listing.photos ?? []} title={listing.title} />
-            </RSuspense>
+            </Suspense>
 
             {/* Title block */}
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <SectorChip sector={listing.sector} />
+                <SectorChip sector={listing.category.sector} label={listing.category.name} />
                 {isPledge && (
                   <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-harvest-gold/15 text-harvest-gold border border-harvest-gold/25">
                     Harvest Pledge
                   </span>
                 )}
-                {listing.bnplEligible && <BnplBadge size="md" />}
+                {listing.bnplAvailable && <BnplBadge size="md" />}
                 {listing.farmingMethod && listing.farmingMethod !== 'conventional' && (
                   <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-lime/20 text-forest border border-lime/30 capitalize">
                     {listing.farmingMethod.replace('_', ' ')}
@@ -97,13 +96,13 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <MapPinIcon size={13} />
-                  {listing.regionName}
-                  {listing.district && `, ${listing.district}`}
+                  {listing.region?.name}
+                  {listing.district?.name && `, ${listing.district.name}`}
                 </span>
-                {listing.harvestDate && (
+                {listing.expectedHarvestDate && (
                   <span className="flex items-center gap-1">
                     <CalendarIcon size={13} />
-                    Harvest: {formatDate(listing.harvestDate)}
+                    Harvest: {formatDate(listing.expectedHarvestDate)}
                   </span>
                 )}
               </div>
@@ -119,16 +118,16 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
                   <p className="font-mono text-3xl font-bold text-forest">
                     {formatGHS(listing.pricePerUnit)}
                   </p>
-                  <p className="text-sm text-muted-foreground mt-0.5">per {listing.unit}</p>
+                  <p className="text-sm text-muted-foreground mt-0.5">per {listing.unit.abbreviation}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-muted-foreground mb-1">Available quantity</p>
                   <p className="font-mono text-xl font-bold text-forest">
-                    {formatQuantity(listing.quantityAvailable, listing.unit)}
+                    {formatQuantity(listing.quantityAvailable, listing.unit.abbreviation)}
                   </p>
-                  {listing.minimumOrder && (
+                  {listing.minOrderQuantity > 1 && (
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Min. order: {listing.minimumOrder} {listing.unit}
+                      Min. order: {listing.minOrderQuantity} {listing.unit.abbreviation}
                     </p>
                   )}
                 </div>
@@ -138,7 +137,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               <div className="grid sm:grid-cols-3 gap-3 mt-5 pt-5 border-t border-border/60">
                 {[
                   { Icon: TruckIcon,         label: 'Delivery available',         show: true },
-                  { Icon: PayAtHarvestIcon,  label: 'Pay at Harvest (BNPL)',       show: listing.bnplEligible },
+                  { Icon: PayAtHarvestIcon,  label: 'Pay at Harvest (BNPL)',       show: listing.bnplAvailable },
                   { Icon: AgroScoreIcon,     label: 'AgroScore-verified seller',   show: (listing.seller?.agroScore ?? 0) >= 50 },
                 ].filter(a => a.show).map(({ Icon, label }) => (
                   <div key={label} className="flex items-center gap-2 text-xs text-forest font-medium">
@@ -164,12 +163,12 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               <h2 className="font-bold text-forest text-sm mb-4">Listing details</h2>
               <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
                 {[
-                  { label: 'Category',       value: listing.category },
-                  { label: 'Sector',         value: listing.sector },
+                  { label: 'Category',       value: listing.category.name },
+                  { label: 'Sector',         value: listing.category.sector },
                   { label: 'Farming method', value: listing.farmingMethod?.replace('_', ' ') },
-                  { label: 'Region',         value: listing.regionName },
-                  { label: 'District',       value: listing.district },
-                  { label: 'Harvest date',   value: listing.harvestDate ? formatDate(listing.harvestDate) : null },
+                  { label: 'Region',         value: listing.region?.name },
+                  { label: 'District',       value: listing.district?.name },
+                  { label: 'Harvest date',   value: listing.expectedHarvestDate ? formatDate(listing.expectedHarvestDate) : null },
                   { label: 'Listed',         value: formatDate(listing.createdAt) },
                   { label: 'Views',          value: listing.viewsCount?.toLocaleString('en-GH') },
                 ].filter(d => d.value).map(({ label, value }) => (
@@ -183,24 +182,24 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
 
             {/* Reviews */}
             {listing.reviews && listing.reviews.length > 0 && (
-              <RSuspense fallback={null}>
-                <ReviewList reviews={listing.reviews} averageRating={listing.averageRating} />
-              </RSuspense>
+              <Suspense fallback={null}>
+                <ReviewList reviews={listing.reviews} averageRating={listing.averageRating ?? 0} />
+              </Suspense>
             )}
           </div>
 
           {/* Right column — sticky order form + seller card */}
           <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
             {/* Order / pledge form */}
-            <RSuspense fallback={<div className="h-64 bg-white rounded-2xl border border-border animate-pulse" />}>
+            <Suspense fallback={<div className="h-64 bg-white rounded-2xl border border-border animate-pulse" />}>
               <OrderForm listing={listing} />
-            </RSuspense>
+            </Suspense>
 
             {/* Seller card */}
             {listing.seller && (
-              <RSuspense fallback={null}>
+              <Suspense fallback={null}>
                 <SellerCard seller={listing.seller} />
-              </RSuspense>
+              </Suspense>
             )}
           </div>
         </div>
