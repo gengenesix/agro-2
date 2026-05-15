@@ -28,7 +28,7 @@ export function InputCard({ listing }: InputCardProps) {
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute top-2.5 left-2.5">
-          <SectorChip sector={listing.sector} size="sm" />
+          <SectorChip sector={listing.category.sector} label={listing.category.name} size="sm" />
         </div>
         {/* In stock indicator */}
         {listing.quantityAvailable > 0 && (
@@ -47,11 +47,11 @@ export function InputCard({ listing }: InputCardProps) {
 
         {/* Seller row */}
         <div className="flex items-center gap-1 text-xs text-muted-foreground mb-3">
-          {listing.sellerVerified && <VerifiedBlueIcon size={12} />}
-          <span className="truncate">{listing.sellerName}</span>
+          {listing.seller.verificationLevel !== 'unverified' && <VerifiedBlueIcon size={12} />}
+          <span className="truncate">{listing.seller.fullName}</span>
           <span className="text-border mx-0.5">·</span>
           <MapPinIcon size={11} />
-          <span className="truncate">{listing.regionName}</span>
+          <span className="truncate">{listing.region?.name}</span>
         </div>
 
         {/* Price + stock */}
@@ -59,18 +59,13 @@ export function InputCard({ listing }: InputCardProps) {
           <div>
             <p className="font-mono text-base font-bold text-forest">
               {formatGHS(listing.pricePerUnit)}
-              <span className="text-xs font-normal text-muted-foreground ml-1">/{listing.unit}</span>
+              <span className="text-xs font-normal text-muted-foreground ml-1">/{listing.unit.abbreviation}</span>
             </p>
-            {listing.minimumOrder && listing.minimumOrder > 1 && (
-              <p className="text-[10px] text-muted-foreground mt-0.5">
-                Min. order: {listing.minimumOrder} {listing.unit}
-              </p>
-            )}
           </div>
           <div className="text-right">
             <p className="text-[10px] text-muted-foreground mb-0.5">Stock</p>
             <p className="font-mono text-sm font-semibold text-forest">
-              {listing.quantityAvailable} {listing.unit}
+              {listing.quantityAvailable} {listing.unit.abbreviation}
             </p>
           </div>
         </div>

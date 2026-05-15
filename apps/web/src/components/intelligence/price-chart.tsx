@@ -1,12 +1,16 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { PricesIcon } from '@/components/shared/icons'
 import { formatGHS }  from '@/lib/format'
 import type { MarketPrice } from '@agroconnect/types'
 
+// API may return extended price objects with history for sparklines
+interface PriceItem extends MarketPrice {
+  priceHistory?: number[]
+}
+
 interface PriceChartProps {
-  prices: MarketPrice[]
+  prices: PriceItem[]
 }
 
 function TrendBadge({ pct }: { pct: number }) {
@@ -74,25 +78,27 @@ export function PriceChart({ prices }: PriceChartProps) {
 
       <div className="divide-y divide-border">
         {prices.map((item) => {
-          const pct = item.priceHistory.length >= 2
-            ? ((item.priceHistory[item.priceHistory.length - 1] - item.priceHistory[0])
-                / item.priceHistory[0]) * 100
+          const history = item.priceHistory ?? []
+          const pct = history.length >= 2
+            ? ((history[history.length - 1] - history[0]) / history[0]) * 100
             : 0
 
           return (
-            <div key={item.commodity} className="flex items-center gap-4 px-5 py-3.5 hover:bg-cream/40 transition-colors">
+            <div key={item.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-cream/40 transition-colors">
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-forest truncate">{item.commodity}</p>
-                <p className="text-[10px] text-muted-foreground mt-0.5">per {item.unit}</p>
+                <p className="text-sm font-semibold text-forest truncate">{item.category.name}</p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">per {item.unit.abbreviation}</p>
               </div>
 
-              <Sparkline history={item.priceHistory} />
+              <Sparkline history={history} />
 
               <div className="text-right min-w-[80px]">
-                <p className="font-mono text-sm font-bold text-forest">{formatGHS(item.price)}</p>
-                <div className="flex justify-end mt-0.5">
-                  <TrendBadge pct={pct} />
-                </div>
+                <p className="font-mono text-sm font-bold text-forest">{formatGHS(item.pricePerUnit)}</p>
+                {history.length >= 2 && (
+                  <div className="flex justify-end mt-0.5">
+                    <TrendBadge pct={pct} />
+                  </div>
+                )}
               </div>
             </div>
           )

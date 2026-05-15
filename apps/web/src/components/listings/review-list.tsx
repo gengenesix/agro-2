@@ -40,7 +40,7 @@ export function ReviewList({ reviews, averageRating }: ReviewListProps) {
           <div key={review.id} className="px-5 py-4">
             <div className="flex items-start justify-between gap-3 mb-2">
               <div>
-                <p className="text-sm font-semibold text-forest">{review.reviewerName}</p>
+                <p className="text-sm font-semibold text-forest">{review.reviewer.fullName}</p>
                 <div className="flex items-center gap-2 mt-0.5">
                   <Stars rating={review.rating} />
                   <span className="text-[10px] text-muted-foreground">{formatRelative(review.createdAt)}</span>

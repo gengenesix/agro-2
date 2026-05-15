@@ -16,8 +16,8 @@
     "plugins":          [{ "name": "next" }],
     "paths": {
       "@/*":                    ["./src/*"],
-      "@agroconnect/types":      ["../../packages/types/src/index.ts"],
-      "@agroconnect/validators": ["../../packages/validators/src/index.ts"]
+      "@agroconnect/types":      ["./src/lib/types.ts"],
+      "@agroconnect/validators": ["./src/lib/validators.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

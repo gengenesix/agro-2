@@ -10,8 +10,6 @@
     "lint":      "next lint"
   },
   "dependencies": {
-    "@agroconnect/types":      "workspace:*",
-    "@agroconnect/validators": "workspace:*",
     "@supabase/ssr":           "^0.3.0",
     "@supabase/supabase-js":   "^2.44.4",
     "axios":                   "^1.7.2",

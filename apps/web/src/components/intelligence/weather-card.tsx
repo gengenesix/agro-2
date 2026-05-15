@@ -58,7 +58,7 @@ export function WeatherCard({ forecast, assessment, district }: WeatherCardProps
           <h3 className="text-white font-bold text-base">{district}</h3>
           {today && (
             <p className="text-white/70 text-sm mt-0.5">
-              {Math.round(today.tempMin)}° – {Math.round(today.tempMax)}°C
+              {Math.round(today.minTempC)}° – {Math.round(today.maxTempC)}°C
               · {WMO_LABELS[today.weatherCode] ?? 'Unknown'}
             </p>
           )}
@@ -92,11 +92,11 @@ export function WeatherCard({ forecast, assessment, district }: WeatherCardProps
                 <p className="text-[10px] font-bold text-muted-foreground uppercase">{label}</p>
                 <WeatherEmoji code={day.weatherCode} />
                 <div className="text-center">
-                  <p className="font-mono text-xs font-bold text-forest">{Math.round(day.tempMax)}°</p>
-                  <p className="font-mono text-[10px] text-muted-foreground">{Math.round(day.tempMin)}°</p>
+                  <p className="font-mono text-xs font-bold text-forest">{Math.round(day.maxTempC)}°</p>
+                  <p className="font-mono text-[10px] text-muted-foreground">{Math.round(day.minTempC)}°</p>
                 </div>
-                {day.precipitationSum > 0 && (
-                  <p className="font-mono text-[10px] text-blue-500">{day.precipitationSum.toFixed(1)}mm</p>
+                {day.precipitationMm > 0 && (
+                  <p className="font-mono text-[10px] text-blue-500">{day.precipitationMm.toFixed(1)}mm</p>
                 )}
               </div>
             )

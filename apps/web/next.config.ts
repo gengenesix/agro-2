@@ -10,8 +10,6 @@ const withPWA = withPWAInit({
 })
 
 const config: NextConfig = {
-  // Transpile workspace packages that export raw TypeScript source
-  transpilePackages: ['@agroconnect/types', '@agroconnect/validators'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },

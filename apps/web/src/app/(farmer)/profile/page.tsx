@@ -55,7 +55,7 @@ export default function ProfilePage() {
   if (!user) return null
 
   const isPremium  = user.verificationLevel === 'premium'
-  const isVerified = ['verified', 'premium'].includes(user.verificationLevel ?? '')
+  const isVerified = ['field_verified', 'premium'].includes(user.verificationLevel ?? '')
   const farmer     = (user as any).farmerProfile
 
   return (

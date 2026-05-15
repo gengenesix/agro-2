@@ -21,7 +21,7 @@ function urgencyClass(days: number) {
 }
 
 export function PledgeCard({ listing }: PledgeCardProps) {
-  const days = listing.harvestDate ? daysUntil(listing.harvestDate) : null
+  const days = listing.expectedHarvestDate ? daysUntil(listing.expectedHarvestDate) : null
   const photo = listing.photos?.[0] ?? '/placeholder-farm.jpg'
 
   return (
@@ -42,10 +42,10 @@ export function PledgeCard({ listing }: PledgeCardProps) {
         />
         {/* Sector chip */}
         <div className="absolute top-2.5 left-2.5">
-          <SectorChip sector={listing.sector} size="sm" />
+          <SectorChip sector={listing.category.sector} label={listing.category.name} size="sm" />
         </div>
         {/* BNPL badge */}
-        {listing.bnplEligible && (
+        {listing.bnplAvailable && (
           <div className="absolute top-2.5 right-2.5">
             <BnplBadge size="sm" />
           </div>
@@ -68,7 +68,7 @@ export function PledgeCard({ listing }: PledgeCardProps) {
 
         <div className="flex items-center gap-1 text-xs text-muted-foreground mb-3">
           <MapPinIcon size={11} />
-          <span className="truncate">{listing.regionName}</span>
+          <span className="truncate">{listing.region?.name}</span>
         </div>
 
         <div className="flex items-end justify-between">
@@ -76,13 +76,13 @@ export function PledgeCard({ listing }: PledgeCardProps) {
             <p className="text-[10px] text-muted-foreground mb-0.5">Pledge price</p>
             <p className="font-mono text-base font-bold text-forest">
               {formatGHS(listing.pricePerUnit)}
-              <span className="text-xs font-normal text-muted-foreground ml-1">/{listing.unit}</span>
+              <span className="text-xs font-normal text-muted-foreground ml-1">/{listing.unit.abbreviation}</span>
             </p>
           </div>
           <div className="text-right">
             <p className="text-[10px] text-muted-foreground mb-0.5">Available</p>
             <p className="font-mono text-sm font-semibold text-forest">
-              {listing.quantityAvailable} {listing.unit}
+              {listing.quantityAvailable} {listing.unit.abbreviation}
             </p>
           </div>
         </div>

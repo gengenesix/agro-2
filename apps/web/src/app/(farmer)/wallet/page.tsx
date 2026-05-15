@@ -129,7 +129,7 @@ export default function WalletPage() {
 
       {showWithdraw && wallet && (
         <WithdrawModal
-          balance={wallet.availableBalance}
+          balance={wallet.balance}
           onClose={() => setShowWithdraw(false)}
           onSuccess={() => load()}
         />

@@ -106,7 +106,13 @@ export default function BuyerOrdersPage() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      {listing?.sector && <SectorChip sector={listing.sector} size="sm" />}
+                      {listing?.sector && (
+                          <SectorChip
+                            sector={listing.sector}
+                            label={listing.category?.name ?? listing.sector}
+                            size="sm"
+                          />
+                        )}
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${cfg.cls}`}>{cfg.label}</span>
                     </div>
                     <p className="font-display text-sm font-semibold text-forest truncate">

@@ -95,7 +95,13 @@ export default function OrdersPage() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      {order.listing?.sector && <SectorChip sector={order.listing.sector} size="sm" />}
+                      {order.listing?.sector && (
+                        <SectorChip
+                          sector={order.listing.sector}
+                          label={order.listing.category?.name ?? order.listing.sector}
+                          size="sm"
+                        />
+                      )}
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${cfg.cls}`}>
                         {cfg.label}
                       </span>

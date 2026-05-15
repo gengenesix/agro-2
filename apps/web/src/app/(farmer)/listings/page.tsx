@@ -87,15 +87,15 @@ export default function MyListingsPage() {
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <SectorChip sector={listing.sector} size="sm" />
+                      <SectorChip sector={listing.category.sector} label={listing.category.name} size="sm" />
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${status.cls}`}>
                         {status.label}
                       </span>
                     </div>
                     <p className="font-display text-sm font-semibold text-forest truncate">{listing.title}</p>
                     <div className="flex items-center gap-3 mt-1 flex-wrap">
-                      <span className="font-mono text-xs font-bold text-forest">{formatGHS(listing.pricePerUnit)}/{listing.unit}</span>
-                      <span className="text-xs text-muted-foreground">{listing.quantityAvailable} {listing.unit} left</span>
+                      <span className="font-mono text-xs font-bold text-forest">{formatGHS(listing.pricePerUnit)}/{listing.unit.abbreviation}</span>
+                      <span className="text-xs text-muted-foreground">{listing.quantityAvailable} {listing.unit.abbreviation} left</span>
                       <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
                         <EyeIcon size={11} />
                         {listing.viewsCount ?? 0}

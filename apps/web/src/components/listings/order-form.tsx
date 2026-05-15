@@ -19,11 +19,11 @@ export function OrderForm({ listing }: OrderFormProps) {
   const { user }   = useAuth()
   const router     = useRouter()
   const [step, setStep]         = useState<Step>('quantity')
-  const [qty, setQty]           = useState(listing.minimumOrder ?? 1)
+  const [qty, setQty]           = useState(listing.minOrderQuantity ?? 1)
   const [paymentMethod, setPM]  = useState<'mobile_money' | 'bnpl'>('mobile_money')
   const [errorMsg, setErrorMsg] = useState('')
 
-  const min    = listing.minimumOrder ?? 1
+  const min    = listing.minOrderQuantity ?? 1
   const max    = listing.quantityAvailable
   const total  = qty * listing.pricePerUnit
   const isPledge = listing.listingType === 'harvest_pledge'
@@ -90,7 +90,7 @@ export function OrderForm({ listing }: OrderFormProps) {
         {/* Quantity */}
         <div>
           <label className="text-xs font-bold text-forest uppercase tracking-wider block mb-2.5">
-            Quantity ({listing.unit})
+            Quantity ({listing.unit.abbreviation})
           </label>
           <div className="flex items-center gap-3">
             <button
@@ -122,12 +122,12 @@ export function OrderForm({ listing }: OrderFormProps) {
             </button>
           </div>
           <p className="text-[10px] text-muted-foreground mt-1.5 text-center">
-            Min {min} · Max {max} {listing.unit}
+            Min {min} · Max {max} {listing.unit.abbreviation}
           </p>
         </div>
 
         {/* Payment method */}
-        {listing.bnplEligible && (
+        {listing.bnplAvailable && (
           <div>
             <p className="text-xs font-bold text-forest uppercase tracking-wider mb-2.5">
               Payment method
@@ -161,7 +161,7 @@ export function OrderForm({ listing }: OrderFormProps) {
         {/* Total */}
         <div className="rounded-xl bg-cream p-4 space-y-1.5">
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>{qty} {listing.unit} × {formatGHS(listing.pricePerUnit)}</span>
+            <span>{qty} {listing.unit.abbreviation} × {formatGHS(listing.pricePerUnit)}</span>
             <span className="font-mono">{formatGHS(total)}</span>
           </div>
           <div className="flex justify-between text-xs text-muted-foreground">
