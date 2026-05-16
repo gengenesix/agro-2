@@ -75,13 +75,23 @@
   --color-harvest-gold:       var(--harvest-gold);
   --color-harvest-gold-bg:    var(--harvest-gold-bg);
   --color-destructive:        var(--destructive);
-  --color-sector-crops:       var(--sector-crops);
-  --color-sector-livestock:   var(--sector-livestock);
-  --color-sector-poultry:     var(--sector-poultry);
-  --color-sector-fisheries:   var(--sector-fisheries);
-  --color-sector-inputs:      var(--sector-inputs);
-  --color-verified-blue:      var(--verified-blue);
-  --color-premium-green:      var(--premium-green);
+  --color-sector-crops:           var(--sector-crops);
+  --color-sector-crops-bg:        var(--sector-crops-bg);
+  --color-sector-livestock:       var(--sector-livestock);
+  --color-sector-livestock-bg:    var(--sector-livestock-bg);
+  --color-sector-poultry:         var(--sector-poultry);
+  --color-sector-poultry-bg:      var(--sector-poultry-bg);
+  --color-sector-fisheries:       var(--sector-fisheries);
+  --color-sector-fisheries-bg:    var(--sector-fisheries-bg);
+  --color-sector-inputs:          var(--sector-inputs);
+  --color-sector-inputs-bg:       var(--sector-inputs-bg);
+  --color-pledge-active:          var(--pledge-active);
+  --color-verified-blue:          var(--verified-blue);
+  --color-premium-green:          var(--premium-green);
+  --color-score-high:             var(--score-high);
+  --color-score-mid:              var(--score-mid);
+  --color-score-low:              var(--score-low);
+  --color-bnpl-available:         var(--bnpl-available);
 }
 
 @layer base {
@@ -94,6 +104,8 @@
   .scrollbar-hide               { -ms-overflow-style: none; scrollbar-width: none; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .font-display                 { font-family: var(--font-playfair), Georgia, serif; }
+
+  /* ── Brand backgrounds ── */
   .bg-forest                    { background-color: var(--forest); }
   .bg-forest-dark               { background-color: var(--forest-dark); }
   .bg-lime                      { background-color: var(--lime); }
@@ -101,6 +113,16 @@
   .bg-cream                     { background-color: var(--cream); }
   .bg-cream-dark                { background-color: var(--cream-dark); }
   .bg-harvest-gold              { background-color: var(--harvest-gold); }
+  .bg-harvest-gold-bg           { background-color: var(--harvest-gold-bg); }
+
+  /* ── Sector backgrounds ── */
+  .bg-sector-crops-bg           { background-color: var(--sector-crops-bg); }
+  .bg-sector-livestock-bg       { background-color: var(--sector-livestock-bg); }
+  .bg-sector-poultry-bg         { background-color: var(--sector-poultry-bg); }
+  .bg-sector-fisheries-bg       { background-color: var(--sector-fisheries-bg); }
+  .bg-sector-inputs-bg          { background-color: var(--sector-inputs-bg); }
+
+  /* ── Brand text ── */
   .text-forest                  { color: var(--forest); }
   .text-forest-dark             { color: var(--forest-dark); }
   .text-lime                    { color: var(--lime); }
@@ -108,14 +130,30 @@
   .text-harvest-gold            { color: var(--harvest-gold); }
   .text-verified-blue           { color: var(--verified-blue); }
   .text-premium-green           { color: var(--premium-green); }
+
+  /* ── Sector text ── */
+  .text-sector-crops            { color: var(--sector-crops); }
+  .text-sector-livestock        { color: var(--sector-livestock); }
+  .text-sector-poultry          { color: var(--sector-poultry); }
+  .text-sector-fisheries        { color: var(--sector-fisheries); }
+  .text-sector-inputs           { color: var(--sector-inputs); }
+
+  /* ── Borders ── */
   .border-harvest-gold          { border-color: var(--harvest-gold); }
   .border-forest                { border-color: var(--forest); }
+  .border-lime                  { border-color: var(--lime); }
+
+  /* ── Safe area / misc ── */
   .pb-safe                      { padding-bottom: env(safe-area-inset-bottom, 1.25rem); }
   .card-lift                    { @apply transition-all duration-200; }
   .card-lift:hover              { @apply shadow-md -translate-y-0.5; }
+
+  /* ── AgroScore bar fill colors ── */
   .score-high                   { background-color: var(--score-high); }
   .score-mid                    { background-color: var(--score-mid); }
   .score-low                    { background-color: var(--score-low); }
+
+  /* ── Ring / focus ── */
   .ring-lime                    { --tw-ring-color: var(--lime); }
   .focus-forest:focus           { outline: 2px solid var(--forest); outline-offset: 2px; }
 }

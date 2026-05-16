@@ -2,6 +2,7 @@
 
 import Link     from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useAuth } from '@/context/auth-context'
 import {
   HomeIcon, MarketIcon, PledgeIcon, WalletIcon, ProfileIcon,
 } from './icons'
@@ -15,7 +16,10 @@ const NAV_ITEMS = [
 ] as const
 
 export function BottomNav() {
-  const pathname = usePathname()
+  const pathname    = usePathname()
+  const { user, loading } = useAuth()
+
+  if (loading || !user) return null
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md

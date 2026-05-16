@@ -37,6 +37,7 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const token =
+    request.cookies.get('agro_access_token')?.value ??
     request.cookies.get('sb-access-token')?.value ??
     request.cookies.get('supabase-auth-token')?.value
 

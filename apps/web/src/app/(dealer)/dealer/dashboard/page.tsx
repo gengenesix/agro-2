@@ -28,14 +28,14 @@ export default function DealerDashboardPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       api.get('/dealer/stats'),
       api.get('/payments/wallet'),
       api.get('/orders/mine?limit=5'),
     ]).then(([s, w, o]) => {
-      setStats(s.data.data)
-      setWallet(w.data.data)
-      setRecentOrders(o.data.data.orders ?? [])
+      if (s.status === 'fulfilled') setStats(s.value.data.data)
+      if (w.status === 'fulfilled') setWallet(w.value.data.data)
+      if (o.status === 'fulfilled') setRecentOrders(o.value.data.data.orders ?? [])
     }).finally(() => setLoading(false))
   }, [])
 
@@ -79,7 +79,12 @@ export default function DealerDashboardPage() {
 
         {/* Wallet */}
         {wallet && (
-          <WalletCard wallet={wallet} onWithdraw={() => {}} />
+          <WalletCard
+            balance={wallet.balance ?? 0}
+            pendingBalance={wallet.pendingBalance ?? 0}
+            totalEarned={wallet.totalEarned ?? 0}
+            onWithdraw={() => {}}
+          />
         )}
 
         {/* Quick actions */}

@@ -25,8 +25,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const refresh = useCallback(async () => {
     try {
       const { data } = await api.get<{ success: boolean; data: Profile }>('/auth/me')
-      setUser(data.data)
+      if (data.success && data.data) {
+        setUser(data.data)
+        localStorage.setItem('agroconnect_profile', JSON.stringify(data.data))
+      } else {
+        setUser(null)
+      }
     } catch {
+      // Session invalid — clear the HttpOnly cookie so middleware stops redirecting
+      await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
+      localStorage.removeItem('agroconnect_token')
+      localStorage.removeItem('agroconnect_profile')
       setUser(null)
     } finally {
       setLoading(false)
@@ -34,16 +43,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
-    const token = localStorage.getItem('agroconnect_token')
-    if (!token) { setLoading(false); return }
+    // Always check session on mount — the HttpOnly cookie is sent automatically.
+    // Don't gate on localStorage; the cookie may still be valid after a page reload.
     refresh()
   }, [refresh])
 
   function logout() {
     localStorage.removeItem('agroconnect_token')
+    localStorage.removeItem('agroconnect_profile')
     document.cookie = 'agro_role=; path=/; max-age=0'
     setUser(null)
-    window.location.href = '/login'
+    // Clear HttpOnly cookie via API route, then redirect
+    fetch('/api/auth/logout', { method: 'POST' }).finally(() => {
+      window.location.href = '/login'
+    })
   }
 
   return (

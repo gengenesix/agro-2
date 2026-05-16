@@ -19,14 +19,14 @@ export default function BuyerDashboardPage() {
   const [loading, setLoading]   = useState(true)
 
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       api.get('/buyer/stats'),
       api.get('/orders/mine?limit=3'),
       api.get('/pledges/mine?limit=3'),
     ]).then(([s, o, p]) => {
-      setStats(s.data.data)
-      setOrders(o.data.data.orders ?? [])
-      setPledges(p.data.data.pledges ?? [])
+      if (s.status === 'fulfilled') setStats(s.value.data.data)
+      if (o.status === 'fulfilled') setOrders(o.value.data.data.orders ?? [])
+      if (p.status === 'fulfilled') setPledges(p.value.data.data.pledges ?? [])
     }).finally(() => setLoading(false))
   }, [])
 
