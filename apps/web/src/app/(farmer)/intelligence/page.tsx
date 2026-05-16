@@ -39,15 +39,17 @@ export default function IntelligencePage() {
     const dist = (user as any)?.farmerProfile?.district ?? 'Accra'
     setDistrict(dist)
 
-    Promise.all([
+    Promise.allSettled([
       api.get('/intelligence/weather'),
       api.get('/intelligence/prices'),
       api.get('/intelligence/pest-alerts'),
     ]).then(([w, p, pe]) => {
-      setForecast(w.data.data?.forecast ?? [])
-      setAssess(w.data.data?.assessment ?? { alert: false, severity: 'good', message: '' })
-      setPrices(p.data.data?.prices ?? [])
-      setPests(pe.data.data?.alerts ?? [])
+      if (w.status === 'fulfilled') {
+        setForecast(w.value.data.data?.forecast ?? [])
+        setAssess(w.value.data.data?.assessment ?? { alert: false, severity: 'good', message: '' })
+      }
+      if (p.status  === 'fulfilled') setPrices(p.value.data.data?.prices ?? [])
+      if (pe.status === 'fulfilled') setPests(pe.value.data.data?.alerts ?? [])
     }).finally(() => setLoading(false))
   }, [user])
 

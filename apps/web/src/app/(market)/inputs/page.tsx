@@ -65,8 +65,8 @@ export default function InputsMarketPage() {
 
     api.get(`/listings?${params}`)
       .then(r => {
-        setListings(r.data.data ?? [])
-        setTotal(r.data.pagination?.total ?? 0)
+        setListings(r.data.data?.listings ?? [])
+        setTotal(r.data.data?.pagination?.total ?? 0)
       })
       .finally(() => setLoading(false))
   }, [page, search, category, bnplOnly])

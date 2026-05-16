@@ -43,12 +43,12 @@ export default function BNPLPage() {
   const [applySuccess, setApplySuccess] = useState(false)
 
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       api.get('/bnpl/eligibility'),
       api.get('/bnpl/status'),
     ]).then(([e, s]) => {
-      setEligibility(e.data.data)
-      setApplications(s.data.data.applications ?? [])
+      if (e.status === 'fulfilled') setEligibility(e.value.data.data)
+      if (s.status === 'fulfilled') setApplications(s.value.data.data?.applications ?? [])
     }).finally(() => setLoading(false))
   }, [])
 

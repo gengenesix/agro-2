@@ -57,7 +57,12 @@ export default function WalletPage() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-5">
         {wallet && (
-          <WalletCard wallet={wallet} onWithdraw={() => setShowWithdraw(true)} />
+          <WalletCard
+            balance={wallet.balance ?? 0}
+            pendingBalance={wallet.pendingBalance ?? 0}
+            totalEarned={wallet.totalEarned ?? 0}
+            onWithdraw={() => setShowWithdraw(true)}
+          />
         )}
 
         {/* Pending / escrow */}
