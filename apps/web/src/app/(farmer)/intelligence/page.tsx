@@ -8,7 +8,7 @@ import { PriceChart }          from '@/components/intelligence/price-chart'
 import { DashboardStatsSkeleton } from '@/components/shared/skeleton'
 import { PestAlertIcon, BellIcon } from '@/components/shared/icons'
 import { formatDate }          from '@/lib/format'
-import type { WeatherDay, WeatherAssessment, MarketPrice } from '@agroconnect/types'
+import type { WeatherDay, WeatherAssessment, MarketPrice } from '@/lib/types'
 
 interface PestAlert {
   id:         string

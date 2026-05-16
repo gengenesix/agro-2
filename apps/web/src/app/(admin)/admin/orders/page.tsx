@@ -8,16 +8,17 @@ import { SearchIcon, ChevronRightIcon } from '@/components/shared/icons'
 import { formatGHS, formatRelative } from '@/lib/format'
 
 interface AdminOrder {
-  id:          string
-  orderNumber: string
-  status:      string
-  orderType:   string
-  totalAmount: number
-  quantity:    number
-  createdAt:   string
-  listing:     { title: string; sector: string; unit: string } | null
-  buyer:       { fullName: string; phone: string } | null
-  seller:      { fullName: string; phone: string } | null
+  id:             string
+  orderNumber:    string
+  status:         string
+  trackingStatus: string
+  orderType:      string
+  totalAmount:    number
+  quantity:       number
+  createdAt:      string
+  listing:        { title: string; sector: string; sectorLabel?: string; unit: string } | null
+  buyer:          { fullName: string; phone: string } | null
+  seller:         { fullName: string; phone: string } | null
 }
 
 const STATUS_CONFIG: Record<string, { label: string; cls: string }> = {
@@ -124,7 +125,7 @@ export default function AdminOrdersPage() {
                       </td>
                       <td className="px-4 py-3 max-w-[200px]">
                         <div className="flex items-center gap-2">
-                          {o.listing?.sector && <SectorChip sector={o.listing.sector} size="sm" />}
+                          {o.listing?.sector && <SectorChip sector={o.listing.sector as import('@/lib/types').Sector} label={o.listing.sectorLabel} size="sm" />}
                           <p className="text-xs font-semibold text-forest truncate">{o.listing?.title ?? '—'}</p>
                         </div>
                         <p className="text-[10px] text-muted-foreground mt-0.5">{o.quantity} {o.listing?.unit ?? 'units'}</p>

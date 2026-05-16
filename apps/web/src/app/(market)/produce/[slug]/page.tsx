@@ -14,7 +14,7 @@ import {
   TruckIcon, PayAtHarvestIcon, AgroScoreIcon,
 } from '@/components/shared/icons'
 import { formatGHS, formatDate, formatQuantity } from '@/lib/format'
-import type { ListingDetail } from '@agroconnect/types'
+import type { ListingDetail } from '@/lib/types'
 
 const API = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:4000/api/v1'
 
@@ -198,7 +198,13 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
             {/* Seller card */}
             {listing.seller && (
               <Suspense fallback={null}>
-                <SellerCard seller={listing.seller} />
+                <SellerCard seller={{
+                  id: listing.seller.id,
+                  name: listing.seller.fullName,
+                  avatar: listing.seller.avatarUrl ?? undefined,
+                  verificationLevel: listing.seller.verificationLevel,
+                  agroScore: listing.seller.agroScore,
+                }} />
               </Suspense>
             )}
           </div>

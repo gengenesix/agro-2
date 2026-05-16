@@ -1,5 +1,5 @@
 import { VerifiedBlueIcon, PremiumGreenIcon, TopSellerIcon } from './icons'
-import type { VerificationLevel } from '@agroconnect/types'
+import type { VerificationLevel } from '@/lib/types'
 
 interface VerificationBadgeProps {
   level:     VerificationLevel

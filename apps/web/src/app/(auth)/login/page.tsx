@@ -12,7 +12,7 @@ import {
   ArrowLeftIcon, SendIcon, LoadingIcon,
   CropsIcon, InputsIcon, HarvestPledgeIcon, MarketIcon,
 } from '@/components/shared/icons'
-import type { Role } from '@agroconnect/types'
+import type { Role } from '@/lib/types'
 
 // ─── Schemas ─────────────────────────────────────────────────────────────────
 

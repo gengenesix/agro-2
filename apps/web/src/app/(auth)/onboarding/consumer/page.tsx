@@ -6,7 +6,7 @@ import { useForm }       from 'react-hook-form'
 import { zodResolver }   from '@hookform/resolvers/zod'
 import { z }             from 'zod'
 import { api }           from '@/lib/api'
-import { GHANA_REGIONS } from '@agroconnect/types'
+import { GHANA_REGIONS } from '@/lib/types'
 
 const schema = z.object({
   fullName: z.string().min(2, 'Enter your name'),

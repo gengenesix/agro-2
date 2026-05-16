@@ -96,7 +96,9 @@ export function FarmerBottomNav() {
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md
                       border-t border-border pb-safe lg:hidden">
         <div className="flex items-center justify-around px-1 pt-1.5 pb-1">
-          {PRIMARY.map(({ href, label, Icon, cta }) => {
+          {PRIMARY.map((item) => {
+            const { href, label, Icon } = item
+            const cta = 'cta' in item && item.cta
             if (cta) {
               return (
                 <Link

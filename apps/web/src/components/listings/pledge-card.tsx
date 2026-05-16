@@ -4,7 +4,7 @@ import { SectorChip }       from '@/components/shared/sector-chip'
 import { BnplBadge }        from './bnpl-badge'
 import { MapPinIcon, CalendarIcon } from '@/components/shared/icons'
 import { formatGHS }         from '@/lib/format'
-import type { ListingSummary } from '@agroconnect/types'
+import type { ListingSummary } from '@/lib/types'
 
 interface PledgeCardProps {
   listing: ListingSummary

@@ -318,7 +318,7 @@ export default function AnimatedLanding() {
                       draggable={false}
                     />
                     <div className="absolute top-3 left-3">
-                      <SectorChip sector={listing.sector} label={listing.category} />
+                      <SectorChip sector={listing.sector as import('@/lib/types').Sector} label={listing.category} />
                     </div>
                     {'pledge' in listing && listing.pledge && (
                       <div className="absolute top-3 right-3">

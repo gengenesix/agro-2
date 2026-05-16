@@ -6,7 +6,7 @@ import { zodResolver }         from '@hookform/resolvers/zod'
 import { z }                   from 'zod'
 import { api }                 from '@/lib/api'
 import { EmptyState }          from '@/components/shared/empty-state'
-import { GHANA_REGIONS }       from '@agroconnect/types'
+import { GHANA_REGIONS }       from '@/lib/types'
 import { BellIcon, PlusIcon, CloseIcon, PricesIcon } from '@/components/shared/icons'
 import { formatGHS } from '@/lib/format'
 

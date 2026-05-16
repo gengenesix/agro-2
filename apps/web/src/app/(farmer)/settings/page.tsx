@@ -3,7 +3,7 @@
 import { useState }        from 'react'
 import { useAuth }         from '@/context/auth-context'
 import { api }             from '@/lib/api'
-import { GHANA_REGIONS }   from '@agroconnect/types'
+import { GHANA_REGIONS }   from '@/lib/types'
 
 type Section = 'profile' | 'phone' | 'momo' | 'notifications'
 

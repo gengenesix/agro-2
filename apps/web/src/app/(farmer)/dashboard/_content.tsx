@@ -10,7 +10,7 @@ import {
   WeatherIcon, PricesIcon, ListProduceIcon,
   BuyInputsIcon, HarvestPledgeIcon, ChevronRightIcon,
 } from '@/components/shared/icons'
-import type { Wallet } from '@agroconnect/types'
+import type { Wallet } from '@/lib/types'
 
 interface DashboardData {
   wallet:          Wallet | null

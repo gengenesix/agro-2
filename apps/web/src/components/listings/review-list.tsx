@@ -1,6 +1,6 @@
 import { StarIcon } from '@/components/shared/icons'
 import { formatRelative } from '@/lib/format'
-import type { Review } from '@agroconnect/types'
+import type { Review } from '@/lib/types'
 
 interface ReviewListProps {
   reviews:       Review[]

@@ -58,8 +58,9 @@ const SECTOR_LABELS: Record<string, string> = {
   fisheries: 'Fisheries', inputs: 'Agro-inputs',
 }
 
-export default async function DealerProfilePage({ params }: { params: { id: string } }) {
-  const dealer = await fetchDealerProfile(params.id)
+export default async function DealerProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const dealer = await fetchDealerProfile(id)
   if (!dealer || !dealer.dealerProfile) notFound()
 
   const dp            = dealer.dealerProfile

@@ -7,7 +7,7 @@ import { api }           from '@/lib/api'
 import { formatGHS }     from '@/lib/format'
 import { LoadingIcon }   from '@/components/shared/icons'
 import { BnplBadge }     from './bnpl-badge'
-import type { ListingDetail } from '@agroconnect/types'
+import type { ListingDetail } from '@/lib/types'
 
 interface OrderFormProps {
   listing: ListingDetail
@@ -147,7 +147,7 @@ export function OrderForm({ listing }: OrderFormProps) {
                       : 'border-border hover:border-forest/40'}`}
                 >
                   <p className="text-xs font-bold text-forest">{opt.label}</p>
-                  {opt.badge ? (
+                  {'badge' in opt && opt.badge ? (
                     <div className="mt-1"><BnplBadge size="sm" /></div>
                   ) : (
                     <p className="text-[10px] text-muted-foreground mt-0.5">{opt.sub}</p>

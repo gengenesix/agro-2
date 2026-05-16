@@ -8,7 +8,7 @@ import { DashboardStatsSkeleton } from '@/components/shared/skeleton'
 import { EmptyState }          from '@/components/shared/empty-state'
 import { WalletIcon }          from '@/components/shared/icons'
 import { formatGHS, formatRelative } from '@/lib/format'
-import type { Wallet, WalletTransaction } from '@agroconnect/types'
+import type { Wallet, WalletTransaction } from '@/lib/types'
 
 const TX_TYPE_LABEL: Record<string, string> = {
   credit:          'Received',

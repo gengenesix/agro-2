@@ -7,11 +7,11 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@agroconnect/types":      "workspace:*",
-    "@agroconnect/validators": "workspace:*",
+    "@prisma/client":          "^5.14.0",
     "@supabase/ssr":           "^0.3.0",
     "@supabase/supabase-js":   "^2.44.4",
     "axios":                   "^1.7.2",
@@ -38,6 +38,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "postcss":         "^8.4.40",
+    "prisma":          "^5.14.0",
     "tailwindcss":     "^4.0.0",
     "typescript":      "^5.4.0"
   }

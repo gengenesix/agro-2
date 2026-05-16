@@ -1,5 +1,5 @@
 import { createHmac, randomUUID } from 'crypto'
-import type { Profile } from '@agroconnect/types'
+import type { Profile } from '@/lib/types'
 
 // ─── OTP store ────────────────────────────────────────────────────────────────
 

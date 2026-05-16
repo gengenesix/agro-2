@@ -2,7 +2,7 @@ import { ListingCard }        from './listing-card'
 import { EmptyState }         from '@/components/shared/empty-state'
 import { ListingGridSkeleton } from '@/components/shared/skeleton'
 import { MarketIcon, ChevronRightIcon } from '@/components/shared/icons'
-import type { ListingSummary } from '@agroconnect/types'
+import type { ListingSummary } from '@/lib/types'
 import Link from 'next/link'
 
 interface ListingGridProps {

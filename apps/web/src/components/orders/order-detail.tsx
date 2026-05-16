@@ -84,7 +84,7 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              {listing?.sector && <SectorChip sector={listing.sector} size="sm" />}
+              {listing?.sector && <SectorChip sector={listing.sector as import('@/lib/types').Sector} size="sm" />}
               {isPledge && (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-harvest-gold/15 text-harvest-gold">
                   Harvest Pledge

@@ -11,7 +11,7 @@ import {
   PlusIcon, ChevronRightIcon, AgroScoreIcon, MapPinIcon,
 } from '@/components/shared/icons'
 import { formatPhoneGhana } from '@/lib/format'
-import { GHANA_REGIONS }    from '@agroconnect/types'
+import { GHANA_REGIONS }    from '@/lib/types'
 
 interface FarmerProfile {
   farmName:          string | null

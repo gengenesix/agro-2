@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useState }       from 'react'
 import { FilterIcon, CloseIcon, ChevronDownIcon } from '@/components/shared/icons'
-import { GHANA_REGIONS } from '@agroconnect/types'
+import { GHANA_REGIONS } from '@/lib/types'
 
 const SECTORS = [
   { value: 'crops',     label: 'Crops'     },

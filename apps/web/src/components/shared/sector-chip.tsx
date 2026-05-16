@@ -1,10 +1,10 @@
 import { CropsIcon, LivestockIcon, PoultryIcon, FisheriesIcon, InputsIcon } from './icons'
-import type { Sector } from '@agroconnect/types'
+import type { Sector } from '@/lib/types'
 
 interface SectorChipProps {
-  sector:    Sector
-  label:     string
-  size?:     'sm' | 'md'
+  sector:     Sector
+  label?:     string
+  size?:      'sm' | 'md'
   className?: string
 }
 
@@ -24,8 +24,17 @@ const SECTOR_ICONS: Record<Sector, typeof CropsIcon> = {
   inputs:    InputsIcon,
 }
 
+const SECTOR_DEFAULTS: Record<Sector, string> = {
+  crops:     'Crops',
+  livestock: 'Livestock',
+  poultry:   'Poultry',
+  fisheries: 'Fisheries',
+  inputs:    'Inputs',
+}
+
 export function SectorChip({ sector, label, size = 'sm', className = '' }: SectorChipProps) {
-  const Icon = SECTOR_ICONS[sector]
+  const Icon        = SECTOR_ICONS[sector]
+  const displayLabel = label ?? SECTOR_DEFAULTS[sector] ?? sector
 
   return (
     <span
@@ -34,7 +43,7 @@ export function SectorChip({ sector, label, size = 'sm', className = '' }: Secto
         ${SECTOR_STYLES[sector]} ${className}`}
     >
       <Icon size={size === 'sm' ? 10 : 14} />
-      {label}
+      {displayLabel}
     </span>
   )
 }

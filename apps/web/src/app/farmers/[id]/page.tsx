@@ -151,7 +151,7 @@ export default async function PublicFarmerProfilePage({ params }: { params: Prom
                   <div>
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">Sectors</p>
                     <div className="flex gap-1 flex-wrap">
-                      {fp.sectors.map((s: string) => <SectorChip key={s} sector={s} size="sm" />)}
+                      {fp.sectors.map((s: string) => <SectorChip key={s} sector={s as import('@/lib/types').Sector} size="sm" />)}
                     </div>
                   </div>
                 )}

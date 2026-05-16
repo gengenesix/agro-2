@@ -1,0 +1,712 @@
+// packages/database/prisma/schema.prisma
+// AgroConnect — Complete Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── ENUMS ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  farmer
+  dealer
+  buyer
+  consumer
+  field_agent
+  admin
+}
+
+enum Language {
+  en
+  tw // Twi
+  ha // Hausa
+  ew // Ewe
+  ga // Ga
+}
+
+enum VerificationLevel {
+  unverified
+  self_declared
+  field_verified
+  premium
+}
+
+enum Sector {
+  crops
+  livestock
+  poultry
+  fisheries
+  inputs
+}
+
+enum FarmingMethod {
+  conventional
+  organic
+  certified_organic
+}
+
+enum ListingType {
+  available_now
+  harvest_pledge
+}
+
+enum ListingStatus {
+  draft
+  active
+  paused
+  sold_out
+  expired
+  removed
+}
+
+enum PledgeStatus {
+  open
+  partially_pledged
+  fully_pledged
+  harvested
+  delivered
+  cancelled
+}
+
+enum PledgeProgress {
+  planted
+  growing
+  ready_to_harvest
+  harvested
+  dispatched
+  delivered
+}
+
+enum OrderType {
+  direct_purchase
+  harvest_pledge
+  input_purchase
+  input_bnpl
+}
+
+enum TrackingStatus {
+  pending
+  confirmed
+  preparing
+  dispatched
+  in_transit
+  delivered
+  disputed
+  cancelled
+}
+
+enum PaymentStatus {
+  pending
+  processing
+  success
+  failed
+  refunded
+}
+
+enum PaymentMethod {
+  mtn_momo
+  vodafone_cash
+  airteltigo_money
+  card
+  bank
+  wallet
+}
+
+enum PaymentType {
+  deposit
+  balance
+  full
+  refund
+  bnpl_repayment
+}
+
+enum WalletTxType {
+  credit
+  debit
+  escrow_hold
+  escrow_release
+  withdrawal
+  bnpl_deduction
+}
+
+enum BNPLStatus {
+  pending
+  approved
+  rejected
+  disbursed
+  repaid
+  defaulted
+}
+
+enum BNPLTier {
+  starter
+  grower
+  established
+  commercial
+}
+
+enum AlertSeverity {
+  info
+  warning
+  critical
+}
+
+enum AlertType {
+  drought_warning
+  flood_warning
+  storm
+  heat_wave
+  optimal_planting
+}
+
+enum BuyerType {
+  hotel
+  restaurant
+  processor
+  retailer
+  exporter
+  individual
+}
+
+enum Zone {
+  southern
+  middle
+  northern
+}
+
+// ─── GEOGRAPHIC ───────────────────────────────────────────────────────────────
+
+model Region {
+  id      Int     @id @default(autoincrement())
+  name    String
+  capital String?
+  code    String  @unique
+  zone    Zone
+
+  districts   District[]
+  profiles    Profile[]
+  listings    Listing[]
+  prices      MarketPrice[]
+  alerts      WeatherAlert[]
+  pestReports PestReport[]
+
+  @@map("regions")
+}
+
+model District {
+  id        Int      @id @default(autoincrement())
+  regionId  Int      @map("region_id")
+  name      String
+  capital   String?
+  centerLat Decimal? @map("center_lat") @db.Decimal(10, 8)
+  centerLng Decimal? @map("center_lng") @db.Decimal(11, 8)
+
+  region      Region         @relation(fields: [regionId], references: [id])
+  profiles    Profile[]
+  listings    Listing[]
+  prices      MarketPrice[]
+  alerts      WeatherAlert[]
+  pestReports PestReport[]
+
+  @@index([regionId])
+  @@map("districts")
+}
+
+// ─── CATEGORIES ───────────────────────────────────────────────────────────────
+
+model ProductCategory {
+  id        Int     @id @default(autoincrement())
+  sector    Sector
+  parentId  Int?    @map("parent_id")
+  name      String
+  nameTwi   String? @map("name_twi")
+  nameHausa String? @map("name_hausa")
+  nameEwe   String? @map("name_ewe")
+  slug      String  @unique
+  iconUrl   String? @map("icon_url")
+  isActive  Boolean @default(true) @map("is_active")
+
+  parent      ProductCategory?  @relation("CategoryParent", fields: [parentId], references: [id])
+  children    ProductCategory[] @relation("CategoryParent")
+  listings    Listing[]
+  prices      MarketPrice[]
+  pestReports PestReport[]
+
+  @@index([sector])
+  @@index([parentId])
+  @@map("product_categories")
+}
+
+model UnitOfMeasure {
+  id                Int      @id @default(autoincrement())
+  name              String
+  abbreviation      String
+  applicableSectors String[] @default([]) @map("applicable_sectors")
+
+  listings Listing[]
+  prices   MarketPrice[]
+
+  @@map("units_of_measure")
+}
+
+// ─── PROFILES ─────────────────────────────────────────────────────────────────
+
+model Profile {
+  id                String            @id @db.Uuid
+  phone             String            @unique
+  fullName          String            @map("full_name")
+  role              Role
+  language          Language          @default(en)
+  regionId          Int?              @map("region_id")
+  districtId        Int?              @map("district_id")
+  community         String?
+  avatarUrl         String?           @map("avatar_url")
+  isActive          Boolean           @default(true) @map("is_active")
+  isBanned          Boolean           @default(false) @map("is_banned")
+  banReason         String?           @map("ban_reason")
+  agroScore         Int               @default(0) @map("agro_score")
+  verificationLevel VerificationLevel @default(unverified) @map("verification_level")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+
+  region   Region?   @relation(fields: [regionId], references: [id])
+  district District? @relation(fields: [districtId], references: [id])
+
+  farmerProfile FarmerProfile?
+  dealerProfile DealerProfile?
+  buyerProfile  BuyerProfile?
+
+  listingsAsSeller Listing[]         @relation("SellerListings")
+  ordersAsBuyer    Order[]           @relation("BuyerOrders")
+  ordersAsSeller   Order[]           @relation("SellerOrders")
+  payments         Payment[]         @relation("PayerPayments")
+  wallet           Wallet?
+  bnplApplications BNPLApplication[]
+  reviewsGiven     Review[]          @relation("ReviewerReviews")
+  reviewsReceived  Review[]          @relation("RevieweeReviews")
+  notifications    Notification[]
+  messages         Message[]         @relation("SenderMessages")
+  receivedMessages Message[]         @relation("RecipientMessages")
+  pestReports      PestReport[]
+  verifiedByAgent  FarmerProfile[]   @relation("VerifiedByAgent")
+
+  @@map("profiles")
+}
+
+model FarmerProfile {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId             String    @unique @map("user_id") @db.Uuid
+  farmName           String?   @map("farm_name")
+  farmSizeAcres      Decimal?  @map("farm_size_acres") @db.Decimal(10, 2)
+  gpsLat             Decimal?  @map("gps_lat") @db.Decimal(10, 8)
+  gpsLng             Decimal?  @map("gps_lng") @db.Decimal(11, 8)
+  sectors            String[]  @default([])
+  primaryProducts    String[]  @default([]) @map("primary_products")
+  farmingMethods     String[]  @default([]) @map("farming_methods")
+  farmPhotos         String[]  @default([]) @map("farm_photos")
+  nationalId         String?   @map("national_id")
+  mobileMoneyNumber  String?   @map("mobile_money_number")
+  mobileMoneyNetwork String?   @map("mobile_money_network")
+  bankAccountNumber  String?   @map("bank_account_number")
+  bankName           String?   @map("bank_name")
+  fieldVerifiedAt    DateTime? @map("field_verified_at")
+  fieldAgentId       String?   @map("field_agent_id") @db.Uuid
+  createdAt          DateTime  @default(now()) @map("created_at")
+
+  user       Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fieldAgent Profile? @relation("VerifiedByAgent", fields: [fieldAgentId], references: [id])
+
+  @@map("farmer_profiles")
+}
+
+model DealerProfile {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId             String   @unique @map("user_id") @db.Uuid
+  businessName       String   @map("business_name")
+  registrationNumber String?  @map("registration_number")
+  physicalAddress    String?  @map("physical_address")
+  gpsLat             Decimal? @map("gps_lat") @db.Decimal(10, 8)
+  gpsLng             Decimal? @map("gps_lng") @db.Decimal(11, 8)
+  deliveryRadiusKm   Int      @default(20) @map("delivery_radius_km")
+  sectorsServed      String[] @default([]) @map("sectors_served")
+  businessPhotos     String[] @default([]) @map("business_photos")
+  mobileMoneyNumber  String   @map("mobile_money_number")
+  mobileMoneyNetwork String?  @map("mobile_money_network")
+  isVerified         Boolean  @default(false) @map("is_verified")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  user Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("dealer_profiles")
+}
+
+model BuyerProfile {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                String    @unique @map("user_id") @db.Uuid
+  organizationName      String?   @map("organization_name")
+  buyerType             BuyerType @map("buyer_type")
+  contactPerson         String?   @map("contact_person")
+  email                 String?
+  deliveryAddress       String?   @map("delivery_address")
+  preferredCategories   String[]  @default([]) @map("preferred_categories")
+  monthlyVolumeEstimate String?   @map("monthly_volume_estimate")
+  createdAt             DateTime  @default(now()) @map("created_at")
+
+  user Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("buyer_profiles")
+}
+
+// ─── LISTINGS ─────────────────────────────────────────────────────────────────
+
+model Listing {
+  id                  String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sellerId            String         @map("seller_id") @db.Uuid
+  categoryId          Int            @map("category_id")
+  unitId              Int            @map("unit_id")
+  title               String
+  slug                String         @unique
+  description         String?        @db.Text
+  listingType         ListingType    @map("listing_type")
+  quantityAvailable   Decimal        @map("quantity_available") @db.Decimal(12, 2)
+  pricePerUnit        Decimal        @map("price_per_unit") @db.Decimal(12, 2)
+  minOrderQuantity    Decimal        @default(1) @map("min_order_quantity") @db.Decimal(12, 2)
+  allowNegotiation    Boolean        @default(true) @map("allow_negotiation")
+  regionId            Int?           @map("region_id")
+  districtId          Int?           @map("district_id")
+  community           String?
+  gpsLat              Decimal?       @map("gps_lat") @db.Decimal(10, 8)
+  gpsLng              Decimal?       @map("gps_lng") @db.Decimal(11, 8)
+  photos              String[]       @default([])
+  farmingMethod       FarmingMethod? @map("farming_method")
+  freshnessDays       Int?           @map("freshness_days")
+  deliveryOptions     String[]       @default([]) @map("delivery_options")
+  deliveryCostPerKm   Decimal?       @map("delivery_cost_per_km") @db.Decimal(8, 2)
+  expectedHarvestDate DateTime?      @map("expected_harvest_date") @db.Date
+  harvestWindowDays   Int            @default(7) @map("harvest_window_days")
+  depositPercentage   Int            @default(20) @map("deposit_percentage")
+  pledgeStatus        PledgeStatus?  @map("pledge_status")
+  status              ListingStatus  @default(draft)
+  brand               String?
+  manufacturer        String?
+  expiryDate          DateTime?      @map("expiry_date") @db.Date
+  applicableSectors   String[]       @default([]) @map("applicable_sectors")
+  bnplAvailable       Boolean        @default(false) @map("bnpl_available")
+  viewsCount          Int            @default(0) @map("views_count")
+  inquiriesCount      Int            @default(0) @map("inquiries_count")
+  expiresAt           DateTime?      @map("expires_at")
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
+
+  seller    Profile         @relation("SellerListings", fields: [sellerId], references: [id])
+  category  ProductCategory @relation(fields: [categoryId], references: [id])
+  unit      UnitOfMeasure   @relation(fields: [unitId], references: [id])
+  region    Region?         @relation(fields: [regionId], references: [id])
+  district  District?       @relation(fields: [districtId], references: [id])
+  orders    Order[]
+  inquiries Message[]
+
+  @@index([status])
+  @@index([sellerId])
+  @@index([categoryId])
+  @@index([regionId])
+  @@index([listingType])
+  @@index([bnplAvailable])
+  @@map("listings")
+}
+
+// ─── ORDERS ───────────────────────────────────────────────────────────────────
+
+model Order {
+  id                   String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderNumber          String          @unique @map("order_number")
+  buyerId              String          @map("buyer_id") @db.Uuid
+  sellerId             String          @map("seller_id") @db.Uuid
+  listingId            String          @map("listing_id") @db.Uuid
+  orderType            OrderType       @map("order_type")
+  quantity             Decimal         @db.Decimal(12, 2)
+  unitPrice            Decimal         @map("unit_price") @db.Decimal(12, 2)
+  subtotal             Decimal         @db.Decimal(12, 2)
+  deliveryCost         Decimal         @default(0) @map("delivery_cost") @db.Decimal(10, 2)
+  platformCommission   Decimal         @map("platform_commission") @db.Decimal(10, 2)
+  totalAmount          Decimal         @map("total_amount") @db.Decimal(12, 2)
+  depositAmount        Decimal?        @map("deposit_amount") @db.Decimal(12, 2)
+  balanceAmount        Decimal?        @map("balance_amount") @db.Decimal(12, 2)
+  depositPaidAt        DateTime?       @map("deposit_paid_at")
+  balancePaidAt        DateTime?       @map("balance_paid_at")
+  deliveryOption       String?         @map("delivery_option")
+  deliveryAddress      String?         @map("delivery_address") @db.Text
+  expectedDeliveryDate DateTime?       @map("expected_delivery_date") @db.Date
+  actualDeliveryDate   DateTime?       @map("actual_delivery_date") @db.Date
+  trackingStatus       TrackingStatus  @default(pending) @map("tracking_status")
+  pledgeProgress       PledgeProgress? @map("pledge_progress")
+  buyerNotes           String?         @map("buyer_notes") @db.Text
+  sellerNotes          String?         @map("seller_notes") @db.Text
+  createdAt            DateTime        @default(now()) @map("created_at")
+  confirmedAt          DateTime?       @map("confirmed_at")
+  deliveredAt          DateTime?       @map("delivered_at")
+  cancelledAt          DateTime?       @map("cancelled_at")
+  cancellationReason   String?         @map("cancellation_reason")
+
+  buyer            Profile           @relation("BuyerOrders", fields: [buyerId], references: [id])
+  seller           Profile           @relation("SellerOrders", fields: [sellerId], references: [id])
+  listing          Listing           @relation(fields: [listingId], references: [id])
+  payments         Payment[]
+  bnplApplications BNPLApplication[]
+  reviews          Review[]
+
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([trackingStatus])
+  @@map("orders")
+}
+
+// ─── PAYMENTS & WALLET ────────────────────────────────────────────────────────
+
+model Payment {
+  id                    String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId               String        @map("order_id") @db.Uuid
+  payerId               String        @map("payer_id") @db.Uuid
+  payeeId               String        @map("payee_id") @db.Uuid
+  paymentType           PaymentType   @map("payment_type")
+  amount                Decimal       @db.Decimal(12, 2)
+  currency              String        @default("GHS")
+  status                PaymentStatus @default(pending)
+  paymentMethod         PaymentMethod @map("payment_method")
+  paystackReference     String?       @unique @map("paystack_reference")
+  paystackTransactionId String?       @map("paystack_transaction_id")
+  mobileMoneyNumber     String?       @map("mobile_money_number")
+  createdAt             DateTime      @default(now()) @map("created_at")
+  completedAt           DateTime?     @map("completed_at")
+
+  order Order   @relation(fields: [orderId], references: [id])
+  payer Profile @relation("PayerPayments", fields: [payerId], references: [id])
+
+  @@index([orderId])
+  @@index([paystackReference])
+  @@index([status])
+  @@map("payments")
+}
+
+model Wallet {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String   @unique @map("user_id") @db.Uuid
+  balance        Decimal  @default(0) @db.Decimal(14, 2)
+  pendingBalance Decimal  @default(0) @map("pending_balance") @db.Decimal(14, 2)
+  totalEarned    Decimal  @default(0) @map("total_earned") @db.Decimal(14, 2)
+  totalWithdrawn Decimal  @default(0) @map("total_withdrawn") @db.Decimal(14, 2)
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  user         Profile             @relation(fields: [userId], references: [id])
+  transactions WalletTransaction[]
+
+  @@map("wallets")
+}
+
+model WalletTransaction {
+  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  walletId     String       @map("wallet_id") @db.Uuid
+  type         WalletTxType
+  amount       Decimal      @db.Decimal(12, 2)
+  balanceAfter Decimal      @map("balance_after") @db.Decimal(12, 2)
+  reference    String?
+  description  String?      @db.Text
+  orderId      String?      @map("order_id") @db.Uuid
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  wallet Wallet @relation(fields: [walletId], references: [id])
+
+  @@index([walletId])
+  @@index([createdAt(sort: Desc)])
+  @@map("wallet_transactions")
+}
+
+// ─── BNPL ─────────────────────────────────────────────────────────────────────
+
+model BNPLApplication {
+  id                     String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  farmerId               String     @map("farmer_id") @db.Uuid
+  orderId                String     @map("order_id") @db.Uuid
+  amountRequested        Decimal    @map("amount_requested") @db.Decimal(12, 2)
+  amountApproved         Decimal?   @map("amount_approved") @db.Decimal(12, 2)
+  creditTier             BNPLTier   @map("credit_tier")
+  interestRate           Decimal    @map("interest_rate") @db.Decimal(5, 2)
+  totalRepayable         Decimal?   @map("total_repayable") @db.Decimal(12, 2)
+  status                 BNPLStatus @default(pending)
+  agroScoreAtApplication Int        @map("agro_score_at_application")
+  rejectionReason        String?    @map("rejection_reason")
+  appliedAt              DateTime   @default(now()) @map("applied_at")
+  approvedAt             DateTime?  @map("approved_at")
+  disbursedAt            DateTime?  @map("disbursed_at")
+  dueDate                DateTime?  @map("due_date") @db.Date
+  repaidAt               DateTime?  @map("repaid_at")
+
+  farmer     Profile         @relation(fields: [farmerId], references: [id])
+  order      Order           @relation(fields: [orderId], references: [id])
+  repayments BNPLRepayment[]
+
+  @@index([farmerId])
+  @@index([status])
+  @@map("bnpl_applications")
+}
+
+model BNPLRepayment {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  applicationId   String   @map("application_id") @db.Uuid
+  farmerId        String   @map("farmer_id") @db.Uuid
+  amount          Decimal  @db.Decimal(12, 2)
+  repaymentMethod String   @map("repayment_method")
+  orderId         String?  @map("order_id") @db.Uuid
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  application BNPLApplication @relation(fields: [applicationId], references: [id])
+
+  @@map("bnpl_repayments")
+}
+
+// ─── INTELLIGENCE ─────────────────────────────────────────────────────────────
+
+model MarketPrice {
+  id           Int      @id @default(autoincrement())
+  categoryId   Int      @map("category_id")
+  regionId     Int?     @map("region_id")
+  districtId   Int?     @map("district_id")
+  pricePerUnit Decimal  @map("price_per_unit") @db.Decimal(10, 2)
+  unitId       Int      @map("unit_id")
+  source       String?
+  recordedAt   DateTime @map("recorded_at") @db.Date
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  category ProductCategory @relation(fields: [categoryId], references: [id])
+  region   Region?         @relation(fields: [regionId], references: [id])
+  district District?       @relation(fields: [districtId], references: [id])
+  unit     UnitOfMeasure   @relation(fields: [unitId], references: [id])
+
+  @@index([categoryId, regionId, recordedAt])
+  @@map("market_prices")
+}
+
+model WeatherAlert {
+  id           Int           @id @default(autoincrement())
+  regionId     Int?          @map("region_id")
+  districtId   Int?          @map("district_id")
+  alertType    AlertType     @map("alert_type")
+  severity     AlertSeverity
+  title        String
+  message      String        @db.Text
+  messageTwi   String?       @map("message_twi") @db.Text
+  messageHausa String?       @map("message_hausa") @db.Text
+  validFrom    DateTime      @map("valid_from")
+  validUntil   DateTime      @map("valid_until")
+  isSent       Boolean       @default(false) @map("is_sent")
+  createdAt    DateTime      @default(now()) @map("created_at")
+
+  region   Region?   @relation(fields: [regionId], references: [id])
+  district District? @relation(fields: [districtId], references: [id])
+
+  @@map("weather_alerts")
+}
+
+model PestReport {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reporterId  String   @map("reporter_id") @db.Uuid
+  categoryId  Int?     @map("category_id")
+  pestName    String   @map("pest_name")
+  description String?  @db.Text
+  severity    String // 'mild' | 'moderate' | 'severe'
+  regionId    Int?     @map("region_id")
+  districtId  Int?     @map("district_id")
+  gpsLat      Decimal? @map("gps_lat") @db.Decimal(10, 8)
+  gpsLng      Decimal? @map("gps_lng") @db.Decimal(11, 8)
+  photos      String[] @default([])
+  isVerified  Boolean  @default(false) @map("is_verified")
+  adminNote   String?  @map("admin_note")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  reporter Profile          @relation(fields: [reporterId], references: [id])
+  category ProductCategory? @relation(fields: [categoryId], references: [id])
+  region   Region?          @relation(fields: [regionId], references: [id])
+  district District?        @relation(fields: [districtId], references: [id])
+
+  @@index([regionId, createdAt])
+  @@map("pest_reports")
+}
+
+// ─── SOCIAL ───────────────────────────────────────────────────────────────────
+
+model Review {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reviewerId String   @map("reviewer_id") @db.Uuid
+  revieweeId String   @map("reviewee_id") @db.Uuid
+  orderId    String   @map("order_id") @db.Uuid
+  rating     Int
+  comment    String?  @db.Text
+  tags       String[] @default([])
+  isPublic   Boolean  @default(true) @map("is_public")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  reviewer Profile @relation("ReviewerReviews", fields: [reviewerId], references: [id])
+  reviewee Profile @relation("RevieweeReviews", fields: [revieweeId], references: [id])
+  order    Order   @relation(fields: [orderId], references: [id])
+
+  @@unique([reviewerId, orderId])
+  @@index([revieweeId])
+  @@map("reviews")
+}
+
+model Notification {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  type      String
+  title     String
+  body      String    @db.Text
+  data      Json?
+  channel   String // 'in_app' | 'sms' | 'push'
+  isRead    Boolean   @default(false) @map("is_read")
+  sentAt    DateTime? @map("sent_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+model Message {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  senderId    String   @map("sender_id") @db.Uuid
+  recipientId String   @map("recipient_id") @db.Uuid
+  listingId   String?  @map("listing_id") @db.Uuid
+  orderId     String?  @map("order_id") @db.Uuid
+  content     String   @db.Text
+  isRead      Boolean  @default(false) @map("is_read")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  sender    Profile  @relation("SenderMessages", fields: [senderId], references: [id])
+  recipient Profile  @relation("RecipientMessages", fields: [recipientId], references: [id])
+  listing   Listing? @relation(fields: [listingId], references: [id])
+
+  @@index([senderId, recipientId])
+  @@map("messages")
+}
+
+model PlatformStats {
+  id            String   @id @default("singleton")
+  totalGMV      Decimal  @default(0) @map("total_gmv") @db.Decimal(16, 2)
+  totalFarmers  Int      @default(0) @map("total_farmers")
+  totalDealers  Int      @default(0) @map("total_dealers")
+  totalBuyers   Int      @default(0) @map("total_buyers")
+  totalListings Int      @default(0) @map("total_listings")
+  activePledges Int      @default(0) @map("active_pledges")
+  bnplDisbursed Decimal  @default(0) @map("bnpl_disbursed") @db.Decimal(14, 2)
+  bnplRepaid    Decimal  @default(0) @map("bnpl_repaid") @db.Decimal(14, 2)
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("platform_stats")
+}

@@ -3,7 +3,7 @@ import { PledgeCard }         from '@/components/listings/pledge-card'
 import { ListingGridSkeleton } from '@/components/shared/skeleton'
 import { EmptyState }         from '@/components/shared/empty-state'
 import { PledgeIcon }         from '@/components/shared/icons'
-import type { ListingSummary } from '@agroconnect/types'
+import type { ListingSummary } from '@/lib/types'
 import Link                   from 'next/link'
 
 const API = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:4000/api/v1'

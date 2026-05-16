@@ -71,7 +71,7 @@ export function SellerCard({ seller }: SellerCardProps) {
           <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">AgroScore</p>
           <p className="font-mono text-sm font-bold text-forest">{seller.agroScore}/110</p>
         </div>
-        <AgroScoreBar score={seller.agroScore} animate />
+        <AgroScoreBar score={seller.agroScore} animated />
       </div>
 
       {/* Stats */}

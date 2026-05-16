@@ -7,7 +7,7 @@ import { zodResolver }         from '@hookform/resolvers/zod'
 import { z }                   from 'zod'
 import Image                   from 'next/image'
 import { api }                 from '@/lib/api'
-import { GHANA_REGIONS }       from '@agroconnect/types'
+import { GHANA_REGIONS }       from '@/lib/types'
 import { LoadingIcon, PlusIcon, CloseIcon, CalendarIcon } from '@/components/shared/icons'
 
 const schema = z.object({

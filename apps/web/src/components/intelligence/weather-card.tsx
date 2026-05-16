@@ -1,7 +1,7 @@
 'use client'
 
 import { WeatherIcon, InfoIcon } from '@/components/shared/icons'
-import type { WeatherDay, WeatherAssessment } from '@agroconnect/types'
+import type { WeatherDay, WeatherAssessment } from '@/lib/types'
 
 interface WeatherCardProps {
   forecast:   WeatherDay[]

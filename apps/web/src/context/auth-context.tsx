@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
-import type { Profile } from '@agroconnect/types'
+import type { Profile } from '@/lib/types'
 import { api } from '@/lib/api'
 
 interface AuthContextValue {

@@ -11,7 +11,7 @@ import { formatGHS, formatDate } from '@/lib/format'
 import {
   PlusIcon, ListProduceIcon, EyeIcon, ChevronRightIcon,
 } from '@/components/shared/icons'
-import type { ListingSummary } from '@agroconnect/types'
+import type { ListingSummary } from '@/lib/types'
 
 const STATUS_LABELS: Record<string, { label: string; cls: string }> = {
   active:   { label: 'Active',   cls: 'bg-lime/20 text-forest' },

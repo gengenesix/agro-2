@@ -5,7 +5,7 @@ import { VerificationBadge }  from '@/components/shared/verification-badge'
 import { PriceDisplay }       from '@/components/shared/price-display'
 import { AgroScoreIcon, MapPinIcon, EyeIcon, HarvestPledgeIcon } from '@/components/shared/icons'
 import { formatDate }         from '@/lib/format'
-import type { ListingSummary } from '@agroconnect/types'
+import type { ListingSummary } from '@/lib/types'
 
 interface ListingCardProps {
   listing: ListingSummary

@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { randomUUID } from 'crypto'
 import { checkOTP, storeSession, signToken } from '@/lib/otp-store'
 import { prisma } from '@/lib/prisma'
-import type { Profile, Role } from '@agroconnect/types'
+import type { Profile, Role } from '@/lib/types'
 
 const schema = z.object({
   phone: z.string(),

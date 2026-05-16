@@ -9,7 +9,7 @@ import { OrderCardSkeleton } from '@/components/shared/skeleton'
 import { SectorChip }    from '@/components/shared/sector-chip'
 import { OrdersIcon, ChevronRightIcon } from '@/components/shared/icons'
 import { formatGHS, formatDate, formatRelative } from '@/lib/format'
-import type { Order } from '@agroconnect/types'
+import type { Order } from '@/lib/types'
 
 const STATUS_CONFIG: Record<string, { label: string; cls: string }> = {
   pending:    { label: 'Pending',    cls: 'bg-harvest-gold/15 text-harvest-gold' },

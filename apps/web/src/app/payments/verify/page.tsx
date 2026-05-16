@@ -1,17 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { api }       from '@/lib/api'
+import { api }        from '@/lib/api'
 import { LoadingIcon } from '@/components/shared/icons'
-import Link          from 'next/link'
+import Link           from 'next/link'
 
 type State = 'loading' | 'success' | 'failed' | 'already_paid'
 
-export default function PaymentVerifyPage() {
+function PaymentVerifyContent() {
   const searchParams = useSearchParams()
   const router       = useRouter()
-  const [state, setState] = useState<State>('loading')
+  const [state, setState]   = useState<State>('loading')
   const [orderId, setOrderId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -87,5 +87,18 @@ export default function PaymentVerifyPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function PaymentVerifyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-cream flex items-center justify-center flex-col gap-4">
+        <LoadingIcon size={36} className="animate-spin text-forest" />
+        <p className="text-sm text-muted-foreground font-semibold">Verifying your payment…</p>
+      </div>
+    }>
+      <PaymentVerifyContent />
+    </Suspense>
   )
 }

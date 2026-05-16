@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthProfile } from '@/lib/api-auth'
-import type { Profile } from '@agroconnect/types'
+import type { Profile } from '@/lib/types'
 
 export async function GET(req: NextRequest) {
   const row = await getAuthProfile(req)

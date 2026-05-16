@@ -10,7 +10,7 @@ import { formatGHS, formatRelative } from '@/lib/format'
 import {
   ListProduceIcon, OrdersIcon, WalletIcon, PlusIcon, ChevronRightIcon,
 } from '@/components/shared/icons'
-import type { Wallet } from '@agroconnect/types'
+import type { Wallet } from '@/lib/types'
 
 interface Stats {
   totalListings:   number

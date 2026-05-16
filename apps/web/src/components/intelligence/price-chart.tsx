@@ -2,7 +2,7 @@
 
 import { PricesIcon } from '@/components/shared/icons'
 import { formatGHS }  from '@/lib/format'
-import type { MarketPrice } from '@agroconnect/types'
+import type { MarketPrice } from '@/lib/types'
 
 // API may return extended price objects with history for sparklines
 interface PriceItem extends MarketPrice {

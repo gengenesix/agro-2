@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { SectorChip }  from '@/components/shared/sector-chip'
 import { MapPinIcon, VerifiedBlueIcon } from '@/components/shared/icons'
 import { formatGHS }   from '@/lib/format'
-import type { ListingSummary } from '@agroconnect/types'
+import type { ListingSummary } from '@/lib/types'
 
 interface InputCardProps {
   listing: ListingSummary

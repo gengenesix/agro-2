@@ -67,7 +67,7 @@ export default function DealerListingsPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <SectorChip sector={l.sector} size="sm" />
+                    <SectorChip sector={l.sector as import('@/lib/types').Sector} size="sm" />
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full capitalize
                       ${l.status === 'active' ? 'bg-lime/20 text-forest' : 'bg-cream-dark text-muted-foreground'}`}>
                       {l.status}

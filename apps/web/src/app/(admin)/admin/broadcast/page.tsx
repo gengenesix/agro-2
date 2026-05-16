@@ -3,7 +3,7 @@
 import { useState }    from 'react'
 import { api }         from '@/lib/api'
 import { LoadingIcon, BellIcon } from '@/components/shared/icons'
-import { GHANA_REGIONS } from '@agroconnect/types'
+import { GHANA_REGIONS } from '@/lib/types'
 
 type Channel = 'sms' | 'in_app' | 'both'
 type Target  = 'all' | 'farmers' | 'dealers' | 'buyers' | 'region'

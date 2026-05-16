@@ -178,7 +178,7 @@ export function ListingMap({ listings, height = '480px' }: ListingMapProps) {
             <div className="flex items-start gap-3 pr-6">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <SectorChip sector={selected.sector} size="sm" />
+                  <SectorChip sector={selected.sector as import('@/lib/types').Sector} size="sm" />
                 </div>
                 <p className="font-display text-sm font-semibold text-forest leading-tight line-clamp-2">
                   {selected.title}

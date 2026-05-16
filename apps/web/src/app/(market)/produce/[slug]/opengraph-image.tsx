@@ -24,8 +24,9 @@ async function getListing(slug: string) {
   }
 }
 
-export default async function Image({ params }: { params: { slug: string } }) {
-  const listing = await getListing(params.slug)
+export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const listing = await getListing(slug)
 
   if (!listing) {
     // Fallback OG image
