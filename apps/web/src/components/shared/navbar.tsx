@@ -52,8 +52,20 @@ export function BottomNav() {
   )
 }
 
+const ROLE_HOME: Record<string, string> = {
+  farmer:      '/dashboard',
+  dealer:      '/dealer/dashboard',
+  buyer:       '/buyer/dashboard',
+  consumer:    '/consumer',
+  field_agent: '/field-agent/dashboard',
+  admin:       '/admin/dashboard',
+}
+
 export function TopNav() {
-  const pathname = usePathname()
+  const pathname      = usePathname()
+  const { user, loading, logout } = useAuth()
+
+  const dashboardHref = user ? (ROLE_HOME[user.role] ?? '/dashboard') : '/dashboard'
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-border">
@@ -95,22 +107,43 @@ export function TopNav() {
           })}
         </nav>
 
-        {/* Auth buttons */}
+        {/* Auth area */}
         <div className="flex items-center gap-2">
-          <Link
-            href="/login"
-            className="hidden sm:block px-4 py-2 text-sm font-semibold text-forest
-                       hover:bg-cream rounded-xl transition-colors"
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/login"
-            className="px-4 py-2 bg-forest text-white text-sm font-bold rounded-xl
-                       hover:bg-forest-dark transition-colors"
-          >
-            Get Started
-          </Link>
+          {!loading && user ? (
+            <>
+              <Link
+                href={dashboardHref}
+                className="hidden sm:block px-4 py-2 text-sm font-semibold text-forest
+                           hover:bg-cream rounded-xl transition-colors truncate max-w-[140px]"
+              >
+                {user.fullName || user.phone?.replace('+233', '0') || 'Dashboard'}
+              </Link>
+              <button
+                onClick={logout}
+                className="px-4 py-2 text-sm font-semibold text-muted-foreground
+                           hover:bg-cream hover:text-forest rounded-xl transition-colors"
+              >
+                Sign out
+              </button>
+            </>
+          ) : !loading ? (
+            <>
+              <Link
+                href="/login"
+                className="hidden sm:block px-4 py-2 text-sm font-semibold text-forest
+                           hover:bg-cream rounded-xl transition-colors"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/login"
+                className="px-4 py-2 bg-forest text-white text-sm font-bold rounded-xl
+                           hover:bg-forest-dark transition-colors"
+              >
+                Get Started
+              </Link>
+            </>
+          ) : null}
         </div>
       </div>
     </header>

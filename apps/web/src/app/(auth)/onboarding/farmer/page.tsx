@@ -11,6 +11,7 @@ import { LoadingIcon, MapPinIcon } from '@/components/shared/icons'
 import { GHANA_REGIONS } from '@agroconnect/types'
 
 const schema = z.object({
+  fullName:         z.string().min(2, 'Your full name is required'),
   farmName:         z.string().min(2, 'Farm name is required'),
   farmSizeHectares: z.coerce.number().min(0.1, 'Enter a valid size'),
   regionId:         z.coerce.number().min(1, 'Select your region'),
@@ -75,6 +76,15 @@ export default function FarmerOnboardingPage() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl border border-border p-6 space-y-5">
+          {/* Full name */}
+          <Field label="Your full name" error={errors.fullName?.message}>
+            <input
+              {...register('fullName')}
+              placeholder="e.g. Kwame Asante Boateng"
+              className={inputCls(!!errors.fullName)}
+            />
+          </Field>
+
           {/* Farm name */}
           <Field label="Farm name" error={errors.farmName?.message}>
             <input

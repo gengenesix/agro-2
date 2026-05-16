@@ -41,8 +41,9 @@ export default function OrdersPage() {
   }, [])
 
   const filtered = orders.filter(o => {
-    if (tab === 'active')    return ['pending', 'confirmed', 'dispatched'].includes(o.trackingStatus)
-    if (tab === 'completed') return ['completed', 'delivered', 'cancelled'].includes(o.trackingStatus)
+    const status = (o as any).trackingStatus ?? ''
+    if (tab === 'active')    return ['pending', 'confirmed', 'dispatched'].includes(status)
+    if (tab === 'completed') return ['completed', 'delivered', 'cancelled'].includes(status)
     return true
   })
 
@@ -77,15 +78,15 @@ export default function OrdersPage() {
           />
         ) : (
           filtered.map(order => {
-            const cfg = STATUS_CONFIG[order.trackingStatus] ?? STATUS_CONFIG.pending
+            const cfg = STATUS_CONFIG[(order as any).trackingStatus] ?? STATUS_CONFIG.pending
             return (
               <Link key={order.id} href={`/orders/${order.id}`}
                 className="block bg-white rounded-2xl border border-border p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-4">
                   {/* Listing thumbnail */}
                   <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-cream-dark flex-shrink-0">
-                    {order.listing?.photos?.[0] ? (
-                      <Image src={order.listing.photos[0]} alt="" fill sizes="64px" className="object-cover" />
+                    {(order as any).listing?.photos?.[0] ? (
+                      <Image src={(order as any).listing.photos[0]} alt="" fill sizes="64px" className="object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <OrdersIcon size={20} className="text-muted-foreground" />
@@ -95,10 +96,10 @@ export default function OrdersPage() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      {order.listing?.sector && (
+                      {(order as any).listing?.sector && (
                         <SectorChip
-                          sector={order.listing.sector}
-                          label={order.listing.category?.name ?? order.listing.sector}
+                          sector={(order as any).listing.sector}
+                          label={(order as any).listing.category?.name ?? (order as any).listing.sectorLabel ?? (order as any).listing.sector}
                           size="sm"
                         />
                       )}
@@ -107,12 +108,12 @@ export default function OrdersPage() {
                       </span>
                     </div>
                     <p className="font-display text-sm font-semibold text-forest truncate">
-                      {order.listing?.title ?? 'Order'}
+                      {(order as any).listing?.title ?? 'Order'}
                     </p>
                     <div className="flex items-center gap-3 mt-1">
                       <span className="font-mono text-xs font-bold text-forest">{formatGHS(order.totalAmount)}</span>
                       <span className="text-xs text-muted-foreground">
-                        {order.quantity} {order.listing?.unit ?? 'units'}
+                        {order.quantity} {(order as any).listing?.unit ?? 'units'}
                       </span>
                       <span className="text-xs text-muted-foreground ml-auto">{formatRelative(order.createdAt)}</span>
                     </div>

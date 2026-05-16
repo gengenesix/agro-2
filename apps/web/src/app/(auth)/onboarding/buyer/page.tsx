@@ -10,6 +10,7 @@ import { LoadingIcon } from '@/components/shared/icons'
 import { GHANA_REGIONS } from '@agroconnect/types'
 
 const schema = z.object({
+  fullName:         z.string().min(2, 'Your full name is required'),
   organizationName: z.string().min(2, 'Organization name required'),
   buyerType: z.enum(['hotel', 'restaurant', 'processor', 'retailer', 'exporter', 'individual']),
   regionId:  z.coerce.number().min(1, 'Select region'),
@@ -33,6 +34,9 @@ export default function BuyerOnboardingPage() {
     useForm<FormData>({ resolver: zodResolver(schema) })
 
   async function onSubmit(data: FormData) {
+    if (data.fullName) {
+      await api.put('/users/me', { fullName: data.fullName })
+    }
     await api.put('/users/me/buyer-profile', data)
     await refresh()
     router.push('/buyer/dashboard')
@@ -49,7 +53,12 @@ export default function BuyerOnboardingPage() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl border border-border p-6 space-y-5">
-          <Field label="Organization / full name" error={errors.organizationName?.message}>
+          <Field label="Your full name" error={errors.fullName?.message}>
+            <input {...register('fullName')} placeholder="e.g. Abena Owusu"
+              className={inputCls(!!errors.fullName)} autoFocus />
+          </Field>
+
+          <Field label="Organization / business name" error={errors.organizationName?.message}>
             <input {...register('organizationName')} placeholder="e.g. Fresh Foods Ltd"
               className={inputCls(!!errors.organizationName)} />
           </Field>

@@ -3,7 +3,7 @@
 import { useEffect }         from 'react'
 import { useRouter }         from 'next/navigation'
 import { useAuth }           from '@/context/auth-context'
-import FarmerDashboard       from '@/app/(farmer)/dashboard/_content'
+import FarmerDashboard       from './_content'
 
 const ROLE_HOME: Record<string, string> = {
   dealer:      '/dealer/dashboard',

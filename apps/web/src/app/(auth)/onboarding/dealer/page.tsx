@@ -11,6 +11,7 @@ import { LoadingIcon } from '@/components/shared/icons'
 import { GHANA_REGIONS } from '@agroconnect/types'
 
 const schema = z.object({
+  fullName:       z.string().min(2, 'Your full name is required'),
   businessName:   z.string().min(2, 'Business name required'),
   regionId:       z.coerce.number().min(1, 'Select region'),
   district:       z.string().min(2, 'Enter district'),
@@ -41,6 +42,9 @@ export default function DealerOnboardingPage() {
   }
 
   async function onSubmit(data: FormData) {
+    if (data.fullName) {
+      await api.put('/users/me', { fullName: data.fullName })
+    }
     await api.put('/users/me/dealer-profile', data)
     await refresh()
     router.push('/dealer/dashboard')
@@ -57,6 +61,11 @@ export default function DealerOnboardingPage() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl border border-border p-6 space-y-5">
+          <Field label="Your full name" error={errors.fullName?.message}>
+            <input {...register('fullName')} placeholder="e.g. Kwame Asante Boateng"
+              className={inputCls(!!errors.fullName)} autoFocus />
+          </Field>
+
           <Field label="Business name" error={errors.businessName?.message}>
             <input {...register('businessName')} placeholder="e.g. Agro Solutions Ltd"
               className={inputCls(!!errors.businessName)} />

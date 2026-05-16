@@ -18,10 +18,11 @@ const PROTECTED_PREFIXES = [
   '/consumer',
   '/field-agent',
   '/pledges',
+  '/my-pledges',
 ]
 
 // Routes only accessible when NOT logged in
-const GUEST_ONLY_PREFIXES = ['/login', '/onboarding']
+const GUEST_ONLY_PREFIXES = ['/login']
 
 // Role → home path mapping (used for post-login redirect)
 const ROLE_HOME: Record<string, string> = {

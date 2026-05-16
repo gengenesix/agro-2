@@ -1,9 +1,12 @@
-import Link from 'next/link'
+'use client'
+
+import Link          from 'next/link'
+import { usePathname } from 'next/navigation'
 import {
   HomeIcon, ListProduceIcon, OrdersIcon, WalletIcon, ProfileIcon,
   WeatherIcon, BuyInputsIcon, HarvestPledgeIcon, SettingsIcon,
 } from '@/components/shared/icons'
-import { BottomNav } from '@/components/shared/navbar'
+import { FarmerBottomNav } from '@/components/shared/farmer-bottom-nav'
 
 const SIDEBAR_ITEMS = [
   { href: '/dashboard',   label: 'Dashboard',    Icon: HomeIcon          },
@@ -11,12 +14,14 @@ const SIDEBAR_ITEMS = [
   { href: '/orders',      label: 'Orders',       Icon: OrdersIcon        },
   { href: '/wallet',      label: 'Wallet',       Icon: WalletIcon        },
   { href: '/bnpl',        label: 'BNPL Credit',  Icon: BuyInputsIcon     },
-  { href: '/pledges',     label: 'Pledges',      Icon: HarvestPledgeIcon },
+  { href: '/my-pledges',  label: 'My Pledges',   Icon: HarvestPledgeIcon },
   { href: '/intelligence',label: 'Intelligence', Icon: WeatherIcon       },
   { href: '/profile',     label: 'Profile',      Icon: ProfileIcon       },
 ] as const
 
 export default function FarmerLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+
   return (
     <div className="flex min-h-screen bg-cream">
       {/* Desktop Sidebar */}
@@ -39,26 +44,26 @@ export default function FarmerLayout({ children }: { children: React.ReactNode }
 
         {/* Nav items */}
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-          {SIDEBAR_ITEMS.map(({ href, label, Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold
-                         text-muted-foreground hover:text-forest hover:bg-cream transition-colors"
-            >
-              <Icon size={18} />
-              {label}
-            </Link>
-          ))}
+          {SIDEBAR_ITEMS.map(({ href, label, Icon }) => {
+            const active = pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
+            return (
+              <Link key={href} href={href}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors
+                  ${active
+                    ? 'bg-forest text-white'
+                    : 'text-muted-foreground hover:text-forest hover:bg-cream'}`}>
+                <Icon size={18} />
+                {label}
+              </Link>
+            )
+          })}
         </nav>
 
         {/* Settings */}
         <div className="p-3 border-t border-border">
-          <Link
-            href="/profile"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold
-                       text-muted-foreground hover:text-forest hover:bg-cream transition-colors"
-          >
+          <Link href="/settings"
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors
+              ${pathname === '/settings' ? 'bg-forest text-white' : 'text-muted-foreground hover:text-forest hover:bg-cream'}`}>
             <SettingsIcon size={18} />
             Settings
           </Link>
@@ -71,7 +76,7 @@ export default function FarmerLayout({ children }: { children: React.ReactNode }
       </div>
 
       {/* Mobile bottom nav */}
-      <BottomNav />
+      <FarmerBottomNav />
     </div>
   )
 }

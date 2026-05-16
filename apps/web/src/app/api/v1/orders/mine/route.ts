@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: 'desc' },
       skip:    (page - 1) * limit,
       take:    limit,
-      include: { listing: { select: { title: true, category: { select: { sector: true } } } } },
+      include: { listing: { select: { title: true, photos: true, category: { select: { name: true, sector: true } }, unit: { select: { abbreviation: true } } } } },
     }),
   ])
 
@@ -39,7 +39,13 @@ export async function GET(req: NextRequest) {
         trackingStatus: o.trackingStatus,
         pledgeProgress: o.pledgeProgress,
         createdAt:      o.createdAt.toISOString(),
-        listing:        o.listing ? { title: o.listing.title, sector: o.listing.category.sector } : null,
+        listing:        o.listing ? {
+          title:       o.listing.title,
+          photos:      o.listing.photos,
+          sector:      o.listing.category.sector,
+          sectorLabel: o.listing.category.name,
+          unit:        o.listing.unit.abbreviation,
+        } : null,
       })),
       pagination: { page, limit, total, pages: Math.ceil(total / limit) },
     },

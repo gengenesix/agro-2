@@ -88,6 +88,14 @@ const ROLE_HOME: Record<string, string> = {
   admin:       '/admin/dashboard',
 }
 
+const ROLE_ONBOARDING: Record<string, string> = {
+  farmer:      '/onboarding/farmer',
+  dealer:      '/onboarding/dealer',
+  buyer:       '/onboarding/buyer',
+  consumer:    '/onboarding/consumer',
+  field_agent: '/onboarding/field-agent',
+}
+
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 
 function Logo() {
@@ -178,10 +186,16 @@ export default function LoginPage() {
       localStorage.setItem('agroconnect_profile',  JSON.stringify(profile))
       document.cookie = `agro_role=${String(profile.role ?? 'farmer')}; path=/; max-age=31536000; SameSite=Lax`
 
-      toast.success('Welcome to AgroConnect.')
+      const role = String(profile.role ?? 'farmer')
 
-      const next = new URLSearchParams(window.location.search).get('next')
-      router.push(next ?? ROLE_HOME[String(profile.role ?? 'farmer')] ?? '/dashboard')
+      if (isNewUser) {
+        toast.success('Welcome to AgroConnect! Let\'s set up your profile.')
+        router.push(ROLE_ONBOARDING[role] ?? '/dashboard')
+      } else {
+        toast.success('Welcome back.')
+        const next = new URLSearchParams(window.location.search).get('next')
+        router.push(next ?? ROLE_HOME[role] ?? '/dashboard')
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Invalid OTP. Try again.')
     } finally {

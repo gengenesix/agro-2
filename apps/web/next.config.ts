@@ -16,6 +16,9 @@ const config: NextConfig = {
       { protocol: 'https', hostname: '**.supabase.co' },
       { protocol: 'https', hostname: 'unpkg.com' },
     ],
+    localPatterns: [
+      { pathname: '/uploads/**' },
+    ],
   },
   experimental: {
     optimizePackageImports: ['framer-motion', 'recharts'],

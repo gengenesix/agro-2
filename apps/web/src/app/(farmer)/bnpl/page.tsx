@@ -104,7 +104,7 @@ export default function BNPLPage() {
                   <p className="text-xs text-muted-foreground">AgroScore</p>
                   <p className="font-mono text-sm font-bold text-forest">{eligibility.score}/110</p>
                 </div>
-                <AgroScoreBar score={eligibility.score} animate />
+                <AgroScoreBar score={eligibility.score} animated />
               </div>
 
               {eligibility.eligible && eligibility.tier ? (
