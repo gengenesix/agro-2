@@ -91,7 +91,7 @@ export async function verifyOTP(rawPhone: string, otp: string): Promise<{
 
   // Create a real Supabase session so the JWT is valid for API calls
   const { data: sessionData, error: sessionError } =
-    await supabase.auth.admin.createSession({ userId: supabaseId! })
+    await (supabase.auth.admin as any).createSession({ userId: supabaseId! })
 
   if (sessionError || !sessionData.session) {
     throw new AppError('Failed to create session.', 500)

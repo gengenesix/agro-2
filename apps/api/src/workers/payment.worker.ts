@@ -27,9 +27,9 @@ export function startPaymentWorker() {
           })
         }
 
-        if (payment.userId) {
+        if (payment.payeeId) {
           await tx.wallet.update({
-            where: { userId: payment.userId },
+            where: { userId: payment.payeeId },
             data:  { pendingBalance: { increment: payment.amount } },
           })
         }

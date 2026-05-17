@@ -41,7 +41,7 @@ export default async function ordersRoutes(app: FastifyInstance) {
     const commission  = subtotal * (
       listing.listingType === 'harvest_pledge'
         ? COMMISSION_RATES.harvest_pledge
-        : listing.category ? COMMISSION_RATES.direct_purchase : COMMISSION_RATES.input_purchase
+        : COMMISSION_RATES.direct_purchase
     )
     const totalAmount  = subtotal + commission
     const depositAmount = listing.listingType === 'harvest_pledge'
@@ -102,7 +102,7 @@ export default async function ordersRoutes(app: FastifyInstance) {
         skip, take: limit,
         orderBy: { createdAt: 'desc' },
         include: {
-          listing: { select: { title: true, slug: true, photos: true, sector: true, unit: true } },
+          listing: { select: { title: true, slug: true, photos: true, applicableSectors: true, unit: true } },
           buyer:   { select: { fullName: true, avatarUrl: true } },
           seller:  { select: { fullName: true, avatarUrl: true } },
         },

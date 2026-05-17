@@ -19,18 +19,18 @@ export default async function buyerRoutes(app: FastifyInstance) {
         where: {
           buyerId,
           listing: { listingType: 'harvest_pledge' },
-          status:  { in: ['confirmed', 'dispatched'] },
+          trackingStatus:  { in: ['confirmed', 'dispatched'] },
         },
       }),
       prisma.order.aggregate({
         _sum:  { totalAmount: true },
-        where: { buyerId, status: { in: ['completed', 'delivered'] } },
+        where: { buyerId, trackingStatus: { in: ['delivered'] } },
       }),
       prisma.priceAlert.count({ where: { userId: buyerId } }).catch(() => 0),
     ])
 
     const activeOrders = await prisma.order.count({
-      where: { buyerId, status: { in: ['pending', 'confirmed', 'dispatched'] } },
+      where: { buyerId, trackingStatus: { in: ['pending', 'confirmed', 'dispatched'] } },
     })
 
     return {
@@ -39,7 +39,7 @@ export default async function buyerRoutes(app: FastifyInstance) {
         totalOrders,
         activePledges,
         activeOrders,
-        totalSpent:   Number(spentResult._sum.totalAmount ?? 0),
+        totalSpent:   Number(spentResult._sum?.totalAmount ?? 0),
         savedSearches,
       },
     }

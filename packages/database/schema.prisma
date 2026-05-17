@@ -195,6 +195,7 @@ model Region {
   prices     MarketPrice[]
   alerts     WeatherAlert[]
   pestReports PestReport[]
+  priceAlerts PriceAlert[]
 
   @@map("regions")
 }
@@ -295,6 +296,7 @@ model Profile {
   receivedMessages Message[]       @relation("RecipientMessages")
   pestReports      PestReport[]
   verifiedByAgent  FarmerProfile[] @relation("VerifiedByAgent")
+  priceAlerts      PriceAlert[]
 
   @@map("profiles")
 }
@@ -709,4 +711,22 @@ model PlatformStats {
   updatedAt        DateTime @updatedAt @map("updated_at")
 
   @@map("platform_stats")
+}
+
+model PriceAlert {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  crop        String
+  regionId    Int?      @map("region_id")
+  condition   String
+  targetPrice Decimal   @map("target_price") @db.Decimal(10, 2)
+  active      Boolean   @default(true)
+  triggeredAt DateTime? @map("triggered_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  user   Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  region Region? @relation(fields: [regionId], references: [id])
+
+  @@index([userId, active])
+  @@map("price_alerts")
 }

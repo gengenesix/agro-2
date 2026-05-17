@@ -170,7 +170,7 @@ export default async function usersRoutes(app: FastifyInstance) {
       orderBy: { createdAt: 'desc' },
       take:    limit,
       select: {
-        id: true, slug: true, title: true, sector: true,
+        id: true, slug: true, title: true, applicableSectors: true,
         pricePerUnit: true, quantityAvailable: true,
         photos: true, listingType: true, bnplAvailable: true,
         unit:     { select: { abbreviation: true } },
@@ -199,7 +199,7 @@ export default async function usersRoutes(app: FastifyInstance) {
     const allowedRoles = ['farmer', 'dealer', 'buyer', 'consumer', 'field_agent']
     if (!allowedRoles.includes(role)) throw new AppError('Invalid role', 400, 'INVALID_ROLE')
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       await tx.profile.update({
         where: { id: req.user!.id },
         data: {

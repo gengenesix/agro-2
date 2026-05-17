@@ -41,7 +41,7 @@ export default fp(async function authenticate(app: FastifyInstance) {
       }
 
       await cache.setJSON(cacheKey, profile, 60)
-      request.user = profile as NonNullable<typeof request.user>
+      request.user = profile as unknown as NonNullable<typeof request.user>
     } catch (err) {
       logger.debug({ err }, 'Auth token validation failed')
     }

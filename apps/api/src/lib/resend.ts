@@ -1,6 +1,6 @@
 import { Resend } from 'resend'
-import { env }    from '@/config/env'
-import { logger } from '@/config/logger'
+import { env }    from '../config/env.js'
+import { logger } from '../config/logger.js'
 
 const resend = new Resend(env.RESEND_API_KEY)
 
@@ -23,6 +23,7 @@ export async function sendEmail(opts: {
     return data
   } catch (err) {
     logger.error({ err }, 'Failed to send email')
+    return undefined
   }
 }
 

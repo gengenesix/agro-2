@@ -208,7 +208,7 @@ export default async function adminRoutes(app: FastifyInstance) {
     })
 
     if (channels.includes('sms')) {
-      const phones = users.map(u => u.phone)
+      const phones = users.map((u: { id: string; phone: string }) => u.phone)
       const chunks = chunkArray(phones, 100)
       for (const chunk of chunks) {
         await sendBulkSMS({ recipients: chunk, message })
@@ -217,7 +217,7 @@ export default async function adminRoutes(app: FastifyInstance) {
 
     if (channels.includes('push')) {
       await prisma.notification.createMany({
-        data: users.map(u => ({
+        data: users.map((u: { id: string; phone: string }) => ({
           userId:  u.id,
           type:    'system',
           title:   'AgroConnect',
@@ -255,7 +255,7 @@ export default async function adminRoutes(app: FastifyInstance) {
         where, skip, take: limit,
         orderBy: { createdAt: 'desc' },
         include: {
-          listing: { select: { title: true, sector: true, unit: true } },
+          listing: { select: { title: true, applicableSectors: true, unit: true } },
           buyer:   { select: { fullName: true, phone: true } },
           seller:  { select: { fullName: true, phone: true } },
         },

@@ -5,8 +5,7 @@
     "moduleResolution": "NodeNext",
     "lib":              ["ES2022"],
     "outDir":           "./dist",
-    "baseUrl":          ".",
-    "composite":        true,
+    "rootDir":          "./src",
     "strict":           true,
     "noUncheckedIndexedAccess": true,
     "noImplicitReturns":        true,
@@ -17,10 +16,7 @@
     "declarationMap":   true,
     "sourceMap":        true,
     "paths": {
-      "@agroconnect/types":      ["../../packages/types/src/index.ts"],
-      "@agroconnect/validators": ["../../packages/validators/src/index.ts"],
-      "@agroconnect/database":   ["../../packages/database/generated/client"],
-      "@/*":                     ["./src/*"]
+      "@agroconnect/database": ["../../packages/database/generated/client/index.d.ts"]
     }
   },
   "include": ["src/**/*"],

@@ -16,20 +16,20 @@ export default async function dealerRoutes(app: FastifyInstance) {
       prisma.listing.count({ where: { sellerId: dealerId, status: 'active' } }),
       prisma.order.findMany({
         where:  { sellerId: dealerId },
-        select: { totalAmount: true, status: true, createdAt: true },
+        select: { totalAmount: true, trackingStatus: true, createdAt: true },
       }),
       prisma.order.count({
         where: {
           sellerId:  dealerId,
-          status:    { in: ['pending', 'confirmed', 'dispatched'] },
+          trackingStatus: { in: ['pending', 'confirmed', 'dispatched'] },
           createdAt: { gte: new Date(new Date().setDate(1)) },
         },
       }),
     ])
 
-    const pendingOrders  = orders.filter((o: (typeof orders)[number]) => ['pending', 'confirmed', 'dispatched'].includes(o.status)).length
+    const pendingOrders  = orders.filter((o: (typeof orders)[number]) => ['pending', 'confirmed', 'dispatched'].includes(o.trackingStatus)).length
     const totalRevenue   = orders
-      .filter((o: (typeof orders)[number]) => ['completed', 'delivered'].includes(o.status))
+      .filter((o: (typeof orders)[number]) => ['completed', 'delivered'].includes(o.trackingStatus))
       .reduce((s: number, o: (typeof orders)[number]) => s + Number(o.totalAmount), 0)
 
     return {
