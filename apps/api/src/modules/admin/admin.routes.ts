@@ -145,7 +145,7 @@ export default async function adminRoutes(app: FastifyInstance) {
 
     const totalRepayable = amountApproved * (1 + Number(application.interestRate))
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       await tx.bNPLApplication.update({
         where: { id },
         data:  {
@@ -291,7 +291,7 @@ export default async function adminRoutes(app: FastifyInstance) {
     const totalAmount = Number(order.totalAmount)
     const deposit     = Number(order.depositAmount ?? order.totalAmount)
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       await tx.order.update({
         where: { id },
         data:  { trackingStatus: 'cancelled', cancellationReason: `Admin: ${resolution}. ${notes ?? ''}` },

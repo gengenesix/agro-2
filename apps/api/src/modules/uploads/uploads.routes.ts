@@ -38,7 +38,7 @@ export default async function uploadsRoutes(app: FastifyInstance) {
       throw new BusinessError('Only JPEG, PNG, and WebP images are accepted.')
     }
 
-    const ext  = detectedMime.split('/')[1].replace('jpeg', 'jpg')
+    const ext  = (detectedMime.split('/')[1] ?? 'jpg').replace('jpeg', 'jpg')
     const path = `listings/${req.user.id}/${Date.now()}.${ext}`
 
     const { error } = await supabase.storage

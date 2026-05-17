@@ -48,7 +48,7 @@ export default async function ordersRoutes(app: FastifyInstance) {
       ? totalAmount * (listing.depositPercentage / 100)
       : null
 
-    const order = await prisma.$transaction(async (tx) => {
+    const order = await prisma.$transaction(async (tx: any) => {
       const created = await tx.order.create({
         data: {
           orderNumber:        generateOrderNumber(),
@@ -156,7 +156,7 @@ export default async function ordersRoutes(app: FastifyInstance) {
 
     const sellerEarnings = Number(order.totalAmount) - Number(order.platformCommission)
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       await tx.order.update({
         where: { id },
         data:  { trackingStatus: 'delivered', deliveredAt: new Date() },

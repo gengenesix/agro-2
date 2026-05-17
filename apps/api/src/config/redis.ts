@@ -8,7 +8,7 @@ export const redis = new Redis(env.REDIS_URL, {
   lazyConnect:          true,
 })
 
-redis.on('error',   (err) => logger.error({ err }, 'Redis error'))
+redis.on('error',   (err: Error) => logger.error({ err }, 'Redis error'))
 redis.on('connect', ()    => logger.info('Redis connected'))
 
 export async function connectRedis(): Promise<void> {

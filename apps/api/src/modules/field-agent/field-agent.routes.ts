@@ -140,7 +140,7 @@ export default async function fieldAgentRoutes(app: FastifyInstance) {
     const { v4: uuidv4 } = await import('crypto').then(m => ({ v4: () => m.randomUUID() }))
     const farmerId = uuidv4()
 
-    const profile = await prisma.$transaction(async (tx) => {
+    const profile = await prisma.$transaction(async (tx: any) => {
       const p = await tx.profile.create({
         data: {
           id:                farmerId,
@@ -207,7 +207,7 @@ export default async function fieldAgentRoutes(app: FastifyInstance) {
       throw new AppError('Farm is already verified', 409, 'ALREADY_VERIFIED')
     }
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       await tx.farmerProfile.update({
         where: { userId: farmerId },
         data:  {

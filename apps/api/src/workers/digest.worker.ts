@@ -7,7 +7,7 @@ import { logger }     from '../config/logger.js'
 function buildDigestHtml(buyerName: string, listings: {
   title: string; pricePerUnit: number; unit: string; region: string; slug: string
 }[]): string {
-  const rows = listings.map(l => `
+  const rows = listings.map((l: (typeof listings)[number]) => `
     <tr>
       <td style="padding:12px 0;border-bottom:1px solid #e8e0d0;">
         <strong style="font-family:Georgia,serif;color:#1a3a24;">${l.title}</strong><br/>

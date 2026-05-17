@@ -92,7 +92,7 @@ export default async function paymentsRoutes(app: FastifyInstance) {
         bank:         'bank',
       }
 
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async (tx: any) => {
         await tx.payment.update({
           where: { paystackReference: reference },
           data: {
@@ -171,7 +171,7 @@ export default async function paymentsRoutes(app: FastifyInstance) {
     if (Number(wallet.balance) < amount) throw new BusinessError('Insufficient wallet balance.')
     if (amount < 1) throw new BusinessError('Minimum withdrawal is GHS 1.00.')
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       await tx.wallet.update({
         where: { userId: req.user!.id },
         data: {

@@ -14,7 +14,7 @@ export function startPaymentWorker() {
     if (!payment || payment.status !== 'pending') return
 
     if (result.status === 'success') {
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async (tx: any) => {
         await tx.payment.update({
           where: { id: paymentId },
           data:  { status: 'completed', paidAt: new Date() },

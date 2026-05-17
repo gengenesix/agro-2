@@ -110,7 +110,7 @@ export default async function bnplRoutes(app: FastifyInstance) {
     const outstanding  = Number(application.totalRepayable ?? application.amountRequested) - repaidSoFar
     const actualAmount = Math.min(amount, outstanding)
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       await tx.bNPLRepayment.create({
         data: { applicationId, farmerId: req.user!.id, amount: actualAmount, repaymentMethod: 'wallet' },
       })

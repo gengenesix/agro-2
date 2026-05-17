@@ -15,14 +15,14 @@ export default async function listingsRoutes(app: FastifyInstance) {
 
   // Harvest pledges only
   app.get('/pledges', async (req) => {
-    const filters = listingFiltersSchema.parse({ ...req.query, listingType: 'harvest_pledge' })
+    const filters = listingFiltersSchema.parse({ ...(req.query as Record<string, unknown>), listingType: 'harvest_pledge' })
     const result  = await searchListings(filters)
     return { success: true, ...result }
   })
 
   // Inputs only
   app.get('/inputs', async (req) => {
-    const filters = listingFiltersSchema.parse({ ...req.query, sector: 'inputs' })
+    const filters = listingFiltersSchema.parse({ ...(req.query as Record<string, unknown>), sector: 'inputs' })
     const result  = await searchListings(filters)
     return { success: true, ...result }
   })

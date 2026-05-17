@@ -119,7 +119,7 @@ export async function createListing(sellerId: string, data: Record<string, unkno
     data: {
       sellerId,
       slug,
-      ...(data as never),
+      ...(data as any),
     },
   })
 

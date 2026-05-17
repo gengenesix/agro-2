@@ -27,10 +27,10 @@ export default async function dealerRoutes(app: FastifyInstance) {
       }),
     ])
 
-    const pendingOrders  = orders.filter(o => ['pending', 'confirmed', 'dispatched'].includes(o.status)).length
+    const pendingOrders  = orders.filter((o: (typeof orders)[number]) => ['pending', 'confirmed', 'dispatched'].includes(o.status)).length
     const totalRevenue   = orders
-      .filter(o => ['completed', 'delivered'].includes(o.status))
-      .reduce((s, o) => s + Number(o.totalAmount), 0)
+      .filter((o: (typeof orders)[number]) => ['completed', 'delivered'].includes(o.status))
+      .reduce((s: number, o: (typeof orders)[number]) => s + Number(o.totalAmount), 0)
 
     return {
       success: true,
@@ -47,8 +47,8 @@ export default async function dealerRoutes(app: FastifyInstance) {
       orderBy: { createdAt: 'asc' },
     })
 
-    const completed  = allOrders.filter(o => ['completed', 'delivered'].includes(o.trackingStatus))
-    const totalRevenue   = completed.reduce((s, o) => s + Number(o.totalAmount), 0)
+    const completed  = allOrders.filter((o: (typeof allOrders)[number]) => ['completed', 'delivered'].includes(o.trackingStatus))
+    const totalRevenue   = completed.reduce((s: number, o: (typeof allOrders)[number]) => s + Number(o.totalAmount), 0)
     const avgOrderValue  = completed.length ? totalRevenue / completed.length : 0
     const completionRate = allOrders.length ? completed.length / allOrders.length : 0
 

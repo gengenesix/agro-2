@@ -44,7 +44,7 @@ export default async function reviewsRoutes(app: FastifyInstance) {
     ])
 
     const avgRating = reviews.length > 0
-      ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
+      ? reviews.reduce((s: number, r: { rating: number }) => s + r.rating, 0) / reviews.length
       : 0
 
     return { success: true, data: reviews, avgRating, pagination: { page, limit, total, pages: Math.ceil(total / limit) } }

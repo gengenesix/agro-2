@@ -98,7 +98,7 @@ export default async function intelligenceRoutes(app: FastifyInstance) {
     return {
       success: true,
       data:    {
-        alerts: alerts.map(a => ({
+        alerts: alerts.map((a: (typeof alerts)[number]) => ({
           ...a,
           region: a.region?.name ?? null,
         })),

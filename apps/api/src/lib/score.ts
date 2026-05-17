@@ -49,7 +49,7 @@ export async function recalculateAgroScore(farmerId: string): Promise<number> {
   // Repayment history — max 20
   const totalBNPL = farmer.bnplApplications.length
   if (totalBNPL > 0) {
-    const repaid = farmer.bnplApplications.filter(a => a.status === 'repaid').length
+    const repaid = farmer.bnplApplications.filter((a: { status: string }) => a.status === 'repaid').length
     score += Math.round((repaid / totalBNPL) * 20)
   } else {
     score += 10
@@ -64,7 +64,7 @@ export async function recalculateAgroScore(farmerId: string): Promise<number> {
   // Community rating — max 10
   const reviews = farmer.reviewsReceived
   if (reviews.length > 0) {
-    const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
+    const avg = reviews.reduce((s: number, r: { rating: number }) => s + r.rating, 0) / reviews.length
     score += Math.round((avg / 5) * 10)
   }
 

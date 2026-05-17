@@ -4,7 +4,7 @@ import { supabase } from '../../config/supabase.js'
 import { cache }    from '../../lib/cache.js'
 import { recalculateAgroScore, getScoreBreakdownTips } from '../../lib/score.js'
 import { AuthError, ForbiddenError, NotFoundError, AppError } from '../../lib/errors.js'
-import type { Role } from '@prisma/client'
+import type { Role } from '@agroconnect/types'
 import { updateProfileSchema, farmerProfileSchema, dealerProfileSchema, buyerProfileSchema } from '@agroconnect/validators'
 
 export default async function usersRoutes(app: FastifyInstance) {
