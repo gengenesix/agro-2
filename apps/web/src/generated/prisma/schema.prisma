@@ -1,9 +1,8 @@
-// packages/database/prisma/schema.prisma
 // AgroConnect — Complete Database Schema
 
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
