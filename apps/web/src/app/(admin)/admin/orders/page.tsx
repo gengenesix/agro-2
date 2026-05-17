@@ -116,7 +116,7 @@ export default function AdminOrdersPage() {
                     </tr>
                   ))
                 ) : orders.map(o => {
-                  const cfg = STATUS_CONFIG[o.trackingStatus] ?? STATUS_CONFIG.pending
+                  const cfg = STATUS_CONFIG[o.status] ?? STATUS_CONFIG.pending
                   return (
                     <tr key={o.id} className="hover:bg-cream/40 transition-colors">
                       <td className="px-4 py-3">
@@ -125,7 +125,13 @@ export default function AdminOrdersPage() {
                       </td>
                       <td className="px-4 py-3 max-w-[200px]">
                         <div className="flex items-center gap-2">
-                          {o.listing?.sector && <SectorChip sector={o.listing.sector as import('@/lib/types').Sector} label={o.listing.sectorLabel} size="sm" />}
+                          {o.listing?.sector && (
+                            <SectorChip
+                              sector={o.listing.sector as any}
+                              label={o.listing.sector}
+                              size="sm"
+                            />
+                          )}
                           <p className="text-xs font-semibold text-forest truncate">{o.listing?.title ?? '—'}</p>
                         </div>
                         <p className="text-[10px] text-muted-foreground mt-0.5">{o.quantity} {o.listing?.unit ?? 'units'}</p>
@@ -143,7 +149,7 @@ export default function AdminOrdersPage() {
                       </td>
                       <td className="px-4 py-3">
                         <select
-                          value={o.trackingStatus}
+                          value={o.status}
                           onChange={e => updateOrderStatus(o.id, e.target.value)}
                           className={`text-[10px] font-bold px-2 py-1 rounded-lg border-0 cursor-pointer focus:outline-none ${cfg.cls}`}>
                           {Object.entries(STATUS_CONFIG).map(([k, v]) => (

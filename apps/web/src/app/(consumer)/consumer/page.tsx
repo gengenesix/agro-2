@@ -153,7 +153,7 @@ export default function ConsumerHomePage() {
                     </div>
                   )}
                   <div className="absolute top-2 left-2">
-                    <SectorChip sector={listing.sector as import('@/lib/types').Sector} size="sm" />
+                    <SectorChip sector={listing.sector as any} label={listing.sector} size="sm" />
                   </div>
                 </div>
                 <div className="p-2.5">

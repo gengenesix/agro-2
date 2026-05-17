@@ -85,7 +85,9 @@ export function DisputesQueue({ disputes, loading, onRefresh }: DisputesQueuePro
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
-                {d.listing?.sector && <SectorChip sector={d.listing.sector as import('@/lib/types').Sector} size="sm" />}
+                {d.listing?.sector && (
+                  <SectorChip sector={d.listing.sector as any} label={d.listing.sector} size="sm" />
+                )}
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600">
                   Disputed
                 </span>

@@ -159,7 +159,7 @@ export default function InputsMarketPage() {
                     </div>
                   )}
                   <div className="absolute top-2 left-2">
-                    <SectorChip sector="inputs" size="sm" />
+                    <SectorChip sector="inputs" label="Inputs" size="sm" />
                   </div>
                 </div>
 

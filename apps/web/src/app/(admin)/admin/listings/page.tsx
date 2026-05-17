@@ -101,7 +101,7 @@ export default function AdminListingsPage() {
                       <p className="font-display text-sm font-semibold text-forest truncate">{l.title}</p>
                       <p className="text-[10px] text-muted-foreground">{formatRelative(l.createdAt)}</p>
                     </td>
-                    <td className="px-4 py-3"><SectorChip sector={l.sector as any} size="sm" /></td>
+                    <td className="px-4 py-3"><SectorChip sector={l.sector as any} label={l.sector} size="sm" /></td>
                     <td className="px-4 py-3 font-mono text-sm font-bold text-forest">
                       {formatGHS(l.pricePerUnit)}/{l.unit}
                     </td>

@@ -99,7 +99,13 @@ export default function BuyerDashboardPage() {
                   className="flex items-center gap-4 px-5 py-3.5 hover:bg-cream/40 transition-colors">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      {p.listing?.sector && <SectorChip sector={p.listing.sector as import('@/lib/types').Sector} size="sm" />}
+                      {p.listing?.sector && (
+                        <SectorChip
+                          sector={p.listing.sector}
+                          label={p.listing.category?.name ?? p.listing.sector}
+                          size="sm"
+                        />
+                      )}
                     </div>
                     <p className="text-sm font-semibold text-forest truncate">{p.listing?.title ?? 'Pledge'}</p>
                     <p className="text-xs text-muted-foreground">{formatRelative(p.createdAt)}</p>
