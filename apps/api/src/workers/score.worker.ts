@@ -1,4 +1,4 @@
-import { Worker, Queue } from 'bullmq'
+import { Worker } from 'bullmq'
 import { redis }  from '../config/redis.js'
 import { prisma } from '../config/database.js'
 import { recalculateAgroScore, getBNPLTier } from '../lib/score.js'
@@ -19,7 +19,7 @@ export function startScoreWorker() {
 
       for (let i = 0; i < farmers.length; i += 100) {
         const batch = farmers.slice(i, i + 100)
-        await Promise.all(batch.map(async (farmer) => {
+        await Promise.all(batch.map(async (farmer: { id: string; phone: string; agroScore: number }) => {
           try {
             const prevTier    = getBNPLTier(farmer.agroScore)
             const newScore    = await recalculateAgroScore(farmer.id)

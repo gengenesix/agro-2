@@ -49,7 +49,7 @@ export function startWeatherWorker() {
               })
 
               if (farmers.length > 0) {
-                const phones = farmers.map(f => f.phone)
+                const phones = farmers.map((f: typeof farmers[number]) => f.phone)
                 await sendBulkSMS({
                   recipients: phones,
                   message:    `AgroConnect Weather Alert - ${district.name}: ${assessment.message}`,
