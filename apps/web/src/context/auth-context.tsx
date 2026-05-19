@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import axios from 'axios'
 import type { Profile } from '@/lib/types'
 import { api } from '@/lib/api'
 
@@ -31,11 +32,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setUser(null)
       }
-    } catch {
-      // Session invalid — clear the HttpOnly cookie so middleware stops redirecting
-      await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
-      localStorage.removeItem('agroconnect_token')
-      localStorage.removeItem('agroconnect_profile')
+    } catch (err: unknown) {
+      // Only treat an explicit HTTP 401 as "session expired" — network errors
+      // (ECONNREFUSED, timeout, offline) must NOT trigger logout, as the cookie
+      // is still valid and we'd wipe it unnecessarily.
+      const status = axios.isAxiosError(err) ? err.response?.status : undefined
+      if (status === 401) {
+        await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
+        localStorage.removeItem('agroconnect_token')
+        localStorage.removeItem('agroconnect_profile')
+      }
       setUser(null)
     } finally {
       setLoading(false)
