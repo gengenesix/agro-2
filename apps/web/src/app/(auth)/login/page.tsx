@@ -1,100 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { toast } from 'sonner'
-import { normalizePhone } from '@/lib/format'
-import {
-  ArrowLeftIcon, SendIcon, LoadingIcon,
-  CropsIcon, InputsIcon, HarvestPledgeIcon, MarketIcon,
-} from '@/components/shared/icons'
-import type { Role } from '@/lib/types'
-
-// ─── Schemas ─────────────────────────────────────────────────────────────────
-
-const phoneSchema = z.object({
-  phone: z.string().regex(/^(\+233|0)[0-9]{9}$/, 'Enter a valid Ghana phone number'),
-})
-
-const otpSchema = z.object({
-  otp: z.string().length(6, 'OTP must be 6 digits').regex(/^\d+$/, 'Digits only'),
-})
-
-type PhoneInput = z.infer<typeof phoneSchema>
-type OTPInput   = z.infer<typeof otpSchema>
-
-// ─── Role definitions ─────────────────────────────────────────────────────────
-
-const ROLES: {
-  id:    Role
-  label: string
-  desc:  string
-  Icon:  React.ComponentType<{ size?: number; className?: string }>
-  color: string
-  bg:    string
-}[] = [
-  {
-    id:    'farmer',
-    label: 'Farmer',
-    desc:  'Sell produce, pledge harvests, access BNPL credit',
-    Icon:  CropsIcon,
-    color: 'text-sector-crops',
-    bg:    'bg-sector-crops-bg',
-  },
-  {
-    id:    'dealer',
-    label: 'Agro-Input Dealer',
-    desc:  'List seeds, fertilizers and farm equipment',
-    Icon:  InputsIcon,
-    color: 'text-sector-inputs',
-    bg:    'bg-sector-inputs-bg',
-  },
-  {
-    id:    'buyer',
-    label: 'Buyer / Processor',
-    desc:  'Source produce and reserve future harvests in bulk',
-    Icon:  HarvestPledgeIcon,
-    color: 'text-harvest-gold',
-    bg:    'bg-harvest-gold-bg',
-  },
-  {
-    id:    'consumer',
-    label: 'Consumer',
-    desc:  'Order fresh farm produce directly from verified farms',
-    Icon:  MarketIcon,
-    color: 'text-sector-fisheries',
-    bg:    'bg-sector-fisheries-bg',
-  },
-]
-
-const ROLE_LABELS: Record<string, string> = {
-  farmer:      'Farmer',
-  dealer:      'Agro-Input Dealer',
-  buyer:       'Business Buyer',
-  consumer:    'Consumer',
-  field_agent: 'Field Agent',
-}
-
-const ROLE_HOME: Record<string, string> = {
-  farmer:      '/dashboard',
-  dealer:      '/dealer/dashboard',
-  buyer:       '/buyer/dashboard',
-  consumer:    '/consumer',
-  field_agent: '/field-agent/dashboard',
-  admin:       '/admin/dashboard',
-}
-
-const ROLE_ONBOARDING: Record<string, string> = {
-  farmer:      '/onboarding/farmer',
-  dealer:      '/onboarding/dealer',
-  buyer:       '/onboarding/buyer',
-  consumer:    '/onboarding/consumer',
-  field_agent: '/onboarding/field-agent',
-}
+import { Suspense } from 'react'
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 
@@ -116,283 +24,95 @@ function Logo() {
   )
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Google Icon ─────────────────────────────────────────────────────────────
 
-export default function LoginPage() {
-  const [step,   setStep]   = useState<'role' | 'phone' | 'otp'>('role')
-  const [role,   setRole]   = useState<Role | null>(null)
-  const [phone,  setPhone]  = useState('')
-  const [loading, setLoading] = useState(false)
-  const router               = useRouter()
+function GoogleIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09Z" fill="#4285F4" />
+      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23Z" fill="#34A853" />
+      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84Z" fill="#FBBC05" />
+      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53Z" fill="#EA4335" />
+    </svg>
+  )
+}
 
-  const phoneForm = useForm<PhoneInput>({ resolver: zodResolver(phoneSchema) })
-  const otpForm   = useForm<OTPInput>({ resolver: zodResolver(otpSchema) })
+// ─── Inner component (uses useSearchParams — must be wrapped in Suspense) ─────
 
-  // ── Step 1 → 2 ────────────────────────────────────────────────────────────
-  function selectRole(r: Role) {
-    setRole(r)
-    setStep('phone')
-  }
+function LoginContent() {
+  const searchParams = useSearchParams()
+  const error        = searchParams.get('error')
+  const next         = searchParams.get('next') ?? ''
 
-  // ── Step 2: request OTP ───────────────────────────────────────────────────
-  async function onPhoneSubmit({ phone: p }: PhoneInput) {
-    setLoading(true)
-    try {
-      const formatted = normalizePhone(p)
-      const res = await fetch('/api/auth/request-otp', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ phone: formatted, role }),
-      })
-      const data = await res.json() as { success: boolean; devOtp?: string; error?: string }
-
-      if (!data.success) throw new Error(data.error ?? 'Failed to send OTP')
-
-      setPhone(formatted)
-      setStep('otp')
-
-      if (data.devOtp) {
-        toast.info(`Dev OTP: ${data.devOtp}`, { duration: 30_000, description: 'Only visible in development mode' })
-      } else {
-        toast.success('OTP sent to your phone.')
-      }
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to send OTP. Try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // ── Step 3: verify OTP ────────────────────────────────────────────────────
-  async function onOTPSubmit({ otp }: OTPInput) {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/auth/verify-otp', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ phone, otp }),
-      })
-      const data = await res.json() as {
-        success: boolean
-        error?:  string
-        data?: { access_token: string; profile: Record<string, unknown>; isNewUser: boolean }
-      }
-
-      if (!data.success || !data.data) throw new Error(data.error ?? 'Invalid OTP')
-
-      const { access_token, profile, isNewUser } = data.data
-
-      localStorage.setItem('agroconnect_token',   access_token)
-      localStorage.setItem('agroconnect_profile',  JSON.stringify(profile))
-      document.cookie = `agro_role=${String(profile.role ?? 'farmer')}; path=/; max-age=31536000; SameSite=Lax`
-
-      const role = String(profile.role ?? 'farmer')
-
-      if (isNewUser) {
-        toast.success('Welcome to AgroConnect! Let\'s set up your profile.')
-        router.push(ROLE_ONBOARDING[role] ?? '/dashboard')
-      } else {
-        toast.success('Welcome back.')
-        const next = new URLSearchParams(window.location.search).get('next')
-        router.push(next ?? ROLE_HOME[role] ?? '/dashboard')
-      }
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Invalid OTP. Try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // ─── Render ────────────────────────────────────────────────────────────────
+  const googleHref = `/api/auth/google${next ? `?next=${encodeURIComponent(next)}` : ''}`
 
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center px-5 py-12">
-      <div className="w-full max-w-[480px]">
+      <div className="w-full max-w-[420px]">
         <Logo />
 
-        {/* ── Step 1: Role selection ─────────────────────────────────────── */}
-        {step === 'role' && (
-          <div>
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground
-                         hover:text-forest transition-colors mb-6"
-            >
-              <ArrowLeftIcon size={15} />
-              Back to AgroConnect
-            </Link>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground
+                     hover:text-forest transition-colors mb-6"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15,18 9,12 15,6"/></svg>
+          Back to AgroConnect
+        </Link>
 
-            <div className="mb-7">
-              <h1 className="text-2xl font-extrabold text-forest mb-1">Join AgroConnect</h1>
-              <p className="text-sm text-muted-foreground">
-                Choose how you will use the platform to get started.
-              </p>
-            </div>
+        <div className="mb-8">
+          <h1 className="text-2xl font-extrabold text-forest mb-2">Sign in</h1>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Use your Google account to sign in or create an AgroConnect account. You will choose your role in the next step.
+          </p>
+        </div>
 
-            <div className="grid grid-cols-1 gap-3">
-              {ROLES.map((r) => (
-                <button
-                  key={r.id}
-                  type="button"
-                  onClick={() => selectRole(r.id)}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-white border-2 border-border
-                             hover:border-forest hover:shadow-sm transition-all duration-150
-                             text-left group active:scale-[0.99]"
-                >
-                  <div className={`p-2.5 rounded-xl ${r.bg} ${r.color} shrink-0 group-hover:scale-105 transition-transform`}>
-                    <r.Icon size={22} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-bold text-forest text-sm">{r.label}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{r.desc}</p>
-                  </div>
-                  <ArrowLeftIcon size={14} className="ml-auto rotate-180 text-muted-foreground/40 shrink-0" />
-                </button>
-              ))}
-            </div>
+        {error && (
+          <div className="mb-5 px-4 py-3 rounded-xl bg-destructive/10 border border-destructive/20">
+            <p className="text-sm text-destructive font-medium">
+              {error === 'missing_code'
+                ? 'Sign-in was cancelled. Please try again.'
+                : error === 'session_error'
+                ? 'Could not establish a session. Please try again.'
+                : `Sign-in error: ${error}`}
+            </p>
           </div>
         )}
 
-        {/* ── Step 2: Phone number ───────────────────────────────────────── */}
-        {step === 'phone' && (
-          <form onSubmit={phoneForm.handleSubmit(onPhoneSubmit)} className="space-y-5">
-            <div>
-              <button
-                type="button"
-                onClick={() => setStep('role')}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground
-                           hover:text-forest transition-colors mb-6"
-              >
-                <ArrowLeftIcon size={15} />
-                Back
-              </button>
+        <a
+          href={googleHref}
+          className="w-full flex items-center justify-center gap-3 py-4 px-5
+                     bg-white border-2 border-border rounded-2xl
+                     text-forest font-bold text-sm
+                     hover:border-forest hover:shadow-sm
+                     active:scale-[0.98] transition-all duration-150"
+        >
+          <GoogleIcon />
+          Continue with Google
+        </a>
 
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Signing in as
-                </span>
-                <span className="text-xs font-bold text-forest bg-lime/20 px-2.5 py-1 rounded-full">
-                  {role ? ROLE_LABELS[role] : ''}
-                </span>
-              </div>
-
-              <h1 className="text-2xl font-extrabold text-forest mb-1">Enter your number</h1>
-              <p className="text-sm text-muted-foreground">
-                We will send a one-time code to verify your phone.
-              </p>
-            </div>
-
-            <div>
-              <label className="text-sm font-semibold text-forest block mb-2">
-                Phone Number
-              </label>
-              <div className="flex gap-2">
-                <span className="flex items-center px-3.5 bg-cream-dark border border-border
-                                 rounded-xl text-sm font-bold text-forest select-none">
-                  +233
-                </span>
-                <input
-                  {...phoneForm.register('phone')}
-                  type="tel"
-                  inputMode="numeric"
-                  placeholder="024 000 0000"
-                  autoFocus
-                  className="flex-1 px-4 py-3.5 border-2 border-border rounded-xl text-sm font-medium
-                             focus:border-forest focus:outline-none text-forest bg-white
-                             transition-colors placeholder:text-muted-foreground/50"
-                />
-              </div>
-              {phoneForm.formState.errors.phone && (
-                <p className="text-destructive text-xs mt-1.5">
-                  {phoneForm.formState.errors.phone.message}
-                </p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-4 bg-forest text-white font-bold text-sm rounded-2xl
-                         transition-all duration-150 active:scale-[0.98] disabled:opacity-50
-                         flex items-center justify-center gap-2 shadow-sm"
-            >
-              {loading ? (
-                <LoadingIcon size={18} className="text-white" />
-              ) : (
-                <>
-                  Get OTP via SMS
-                  <SendIcon size={16} />
-                </>
-              )}
-            </button>
-
-            <p className="text-center text-xs text-muted-foreground">
-              An SMS will be sent to your number. Standard rates apply.
-            </p>
-          </form>
-        )}
-
-        {/* ── Step 3: OTP entry ─────────────────────────────────────────── */}
-        {step === 'otp' && (
-          <form onSubmit={otpForm.handleSubmit(onOTPSubmit)} className="space-y-5">
-            <div>
-              <button
-                type="button"
-                onClick={() => { setStep('phone'); otpForm.reset() }}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground
-                           hover:text-forest transition-colors mb-6"
-              >
-                <ArrowLeftIcon size={15} />
-                Back
-              </button>
-              <h1 className="text-2xl font-extrabold text-forest mb-1">Enter OTP</h1>
-              <p className="text-sm text-muted-foreground">
-                6-digit code sent to{' '}
-                <strong className="text-forest font-semibold">
-                  {phone.replace('+233', '0').replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3')}
-                </strong>
-              </p>
-            </div>
-
-            <div>
-              <input
-                {...otpForm.register('otp')}
-                type="text"
-                inputMode="numeric"
-                maxLength={6}
-                placeholder="000000"
-                autoFocus
-                className="w-full px-4 py-5 border-2 border-border rounded-2xl text-center
-                           text-3xl font-mono font-bold text-forest tracking-[0.6em]
-                           focus:border-forest focus:outline-none bg-white transition-colors"
-              />
-              {otpForm.formState.errors.otp && (
-                <p className="text-destructive text-xs mt-1.5 text-center">
-                  {otpForm.formState.errors.otp.message}
-                </p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-4 bg-forest text-white font-bold text-sm rounded-2xl
-                         transition-all duration-150 active:scale-[0.98] disabled:opacity-50
-                         flex items-center justify-center gap-2"
-            >
-              {loading ? <LoadingIcon size={18} className="text-white" /> : 'Verify & Continue'}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => { setStep('phone'); otpForm.reset() }}
-              className="w-full text-sm text-muted-foreground hover:text-forest text-center transition-colors"
-            >
-              Did not receive code? Change number
-            </button>
-          </form>
-        )}
+        <p className="mt-6 text-center text-xs text-muted-foreground leading-relaxed">
+          By signing in, you agree to the{' '}
+          <Link href="/terms" className="underline underline-offset-2 hover:text-forest">
+            Terms of Service
+          </Link>{' '}
+          and{' '}
+          <Link href="/privacy" className="underline underline-offset-2 hover:text-forest">
+            Privacy Policy
+          </Link>
+          .
+        </p>
       </div>
     </div>
+  )
+}
+
+// ─── Page export ──────────────────────────────────────────────────────────────
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginContent />
+    </Suspense>
   )
 }
