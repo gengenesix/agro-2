@@ -53,5 +53,5 @@ async function handleUpdate(req: NextRequest) {
   return NextResponse.json({ success: true, data: updated })
 }
 
-export const PUT   = handleUpdate
-export const PATCH = handleUpdate
+export async function PUT(req: NextRequest)   { return handleUpdate(req) }
+export async function PATCH(req: NextRequest) { return handleUpdate(req) }
