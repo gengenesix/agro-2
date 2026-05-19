@@ -56,6 +56,8 @@ export default function ProfilePage() {
   const [savingFarm, setSavingFarm] = useState(false)
   const [success, setSuccess]       = useState(false)
   const [farmSuccess, setFarmSuccess] = useState(false)
+  const [saveError, setSaveError]     = useState('')
+  const [farmSaveError, setFarmSaveError] = useState('')
 
   // Basic profile
   const [name, setName]         = useState('')
@@ -151,16 +153,20 @@ export default function ProfilePage() {
 
   async function saveProfile() {
     setSaving(true)
+    setSaveError('')
     try {
-      await api.put('/users/me', {
-        fullName:  name,
+      const body: Record<string, unknown> = {
         avatarUrl: avatarUrl || null,
         regionId:  regionId || null,
         community: district || null,
-      })
+      }
+      if (name.trim().length >= 2) body.fullName = name.trim()
+      await api.put('/users/me', body)
       await refresh()
       setSuccess(true)
       setTimeout(() => setSuccess(false), 3000)
+    } catch {
+      setSaveError('Failed to save profile. Please try again.')
     } finally {
       setSaving(false)
     }
@@ -168,6 +174,7 @@ export default function ProfilePage() {
 
   async function saveFarmProfile() {
     setSavingFarm(true)
+    setFarmSaveError('')
     try {
       await api.put('/users/me/farmer-profile', {
         farmName:          farmName || null,
@@ -177,14 +184,13 @@ export default function ProfilePage() {
         gpsLng:            gps?.lng ?? null,
         mobileMoneyNumber: mobileMoneyNumber || null,
         nationalId:        nationalId || null,
+        ...(farmPhotos.length > 0 && { farmPhotos }),
       })
-      // Update farm photos separately via the PUT route
-      if (farmPhotos.length > 0) {
-        await api.put('/users/me/farmer-profile', { farmPhotos })
-      }
       await refresh()
       setFarmSuccess(true)
       setTimeout(() => setFarmSuccess(false), 3000)
+    } catch {
+      setFarmSaveError('Failed to save farm profile. Please try again.')
     } finally {
       setSavingFarm(false)
     }
@@ -319,6 +325,11 @@ export default function ProfilePage() {
           {success && (
             <p className="text-xs text-forest bg-lime/20 px-3 py-2 rounded-xl mt-3">
               Profile saved.
+            </p>
+          )}
+          {saveError && (
+            <p className="text-xs text-red-500 bg-red-50 px-3 py-2 rounded-xl mt-3">
+              {saveError}
             </p>
           )}
 
@@ -476,6 +487,11 @@ export default function ProfilePage() {
           {farmSuccess && (
             <p className="text-xs text-forest bg-lime/20 px-3 py-2 rounded-xl mt-3">
               Farm profile saved.
+            </p>
+          )}
+          {farmSaveError && (
+            <p className="text-xs text-red-500 bg-red-50 px-3 py-2 rounded-xl mt-3">
+              {farmSaveError}
             </p>
           )}
 

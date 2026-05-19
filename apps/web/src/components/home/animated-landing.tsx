@@ -10,6 +10,16 @@ import {
 } from '@/components/shared/icons'
 import { SectorChip }  from '@/components/shared/sector-chip'
 import { PriceDisplay } from '@/components/shared/price-display'
+import { useAuth } from '@/context/auth-context'
+
+const ROLE_HOME: Record<string, string> = {
+  farmer:      '/dashboard',
+  dealer:      '/dealer/dashboard',
+  buyer:       '/buyer/dashboard',
+  consumer:    '/consumer',
+  field_agent: '/field-agent/dashboard',
+  admin:       '/admin/dashboard',
+}
 
 // ─── Motion variants ──────────────────────────────────────────────────────────
 
@@ -113,6 +123,9 @@ const sectorClass: Record<string, string> = {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AnimatedLanding() {
+  const { user } = useAuth()
+  const dashboardPath = ROLE_HOME[user?.role ?? ''] ?? '/dashboard'
+
   return (
     <main>
       {/* ── Hero ────────────────────────────────────────────────────────── */}
@@ -161,26 +174,46 @@ export default function AnimatedLanding() {
               and get real-time weather and market intelligence.
             </motion.p>
 
-            <motion.div variants={fadeUp} className="flex gap-2 max-w-lg">
-              <div className="flex-1 relative">
-                <SearchIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Search tomatoes, fertilizer, tilapia..."
-                  className="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-forest text-sm
-                             font-medium placeholder:text-muted-foreground/60 focus:outline-none
-                             focus:ring-2 ring-lime"
-                />
-              </div>
-              <Link
-                href="/produce"
-                className="flex items-center gap-1.5 px-6 py-4 bg-lime text-forest font-bold text-sm
-                           rounded-xl hover:bg-lime-dark transition-colors whitespace-nowrap"
-              >
-                Browse
-                <ChevronRightIcon size={16} />
-              </Link>
-            </motion.div>
+            {user ? (
+              <motion.div variants={fadeUp} className="flex gap-3">
+                <Link
+                  href={dashboardPath}
+                  className="flex items-center gap-2 px-8 py-4 bg-lime text-forest font-bold text-sm
+                             rounded-xl hover:bg-lime-dark transition-colors"
+                >
+                  Go to Dashboard
+                  <ChevronRightIcon size={16} />
+                </Link>
+                <Link
+                  href="/produce"
+                  className="flex items-center gap-2 px-6 py-4 bg-white/10 text-white font-bold text-sm
+                             rounded-xl hover:bg-white/20 transition-colors"
+                >
+                  Browse Marketplace
+                </Link>
+              </motion.div>
+            ) : (
+              <motion.div variants={fadeUp} className="flex gap-2 max-w-lg">
+                <div className="flex-1 relative">
+                  <SearchIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="Search tomatoes, fertilizer, tilapia..."
+                    className="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-forest text-sm
+                               font-medium placeholder:text-muted-foreground/60 focus:outline-none
+                               focus:ring-2 ring-lime"
+                  />
+                </div>
+                <Link
+                  href="/produce"
+                  className="flex items-center gap-1.5 px-6 py-4 bg-lime text-forest font-bold text-sm
+                             rounded-xl hover:bg-lime-dark transition-colors whitespace-nowrap"
+                >
+                  Browse
+                  <ChevronRightIcon size={16} />
+                </Link>
+              </motion.div>
+            )}
           </motion.div>
 
           <motion.div
@@ -384,13 +417,24 @@ export default function AnimatedLanding() {
             Access credit, sell faster, buy smarter.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/login"
-              className="px-8 py-4 bg-lime text-forest font-bold text-sm rounded-2xl
-                         hover:bg-lime-dark transition-colors"
-            >
-              Get Started Free
-            </Link>
+            {user ? (
+              <Link
+                href={dashboardPath}
+                className="flex items-center justify-center gap-2 px-8 py-4 bg-lime text-forest
+                           font-bold text-sm rounded-2xl hover:bg-lime-dark transition-colors"
+              >
+                Go to Dashboard
+                <ChevronRightIcon size={16} />
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="px-8 py-4 bg-lime text-forest font-bold text-sm rounded-2xl
+                           hover:bg-lime-dark transition-colors"
+              >
+                Get Started Free
+              </Link>
+            )}
             <Link
               href="/produce"
               className="px-8 py-4 bg-white/10 text-white font-bold text-sm rounded-2xl

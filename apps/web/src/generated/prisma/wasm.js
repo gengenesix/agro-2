@@ -196,6 +196,12 @@ exports.Prisma.FarmerProfileScalarFieldEnum = {
   bankName: 'bankName',
   fieldVerifiedAt: 'fieldVerifiedAt',
   fieldAgentId: 'fieldAgentId',
+  kycFrontPhotoUrl: 'kycFrontPhotoUrl',
+  kycBackPhotoUrl: 'kycBackPhotoUrl',
+  kycSelfieUrl: 'kycSelfieUrl',
+  kycStatus: 'kycStatus',
+  kycSubmittedAt: 'kycSubmittedAt',
+  kycRejectedReason: 'kycRejectedReason',
   createdAt: 'createdAt'
 };
 

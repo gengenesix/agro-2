@@ -9385,6 +9385,12 @@ export namespace Prisma {
     bankName: string | null
     fieldVerifiedAt: Date | null
     fieldAgentId: string | null
+    kycFrontPhotoUrl: string | null
+    kycBackPhotoUrl: string | null
+    kycSelfieUrl: string | null
+    kycStatus: string | null
+    kycSubmittedAt: Date | null
+    kycRejectedReason: string | null
     createdAt: Date | null
   }
 
@@ -9402,6 +9408,12 @@ export namespace Prisma {
     bankName: string | null
     fieldVerifiedAt: Date | null
     fieldAgentId: string | null
+    kycFrontPhotoUrl: string | null
+    kycBackPhotoUrl: string | null
+    kycSelfieUrl: string | null
+    kycStatus: string | null
+    kycSubmittedAt: Date | null
+    kycRejectedReason: string | null
     createdAt: Date | null
   }
 
@@ -9423,6 +9435,12 @@ export namespace Prisma {
     bankName: number
     fieldVerifiedAt: number
     fieldAgentId: number
+    kycFrontPhotoUrl: number
+    kycBackPhotoUrl: number
+    kycSelfieUrl: number
+    kycStatus: number
+    kycSubmittedAt: number
+    kycRejectedReason: number
     createdAt: number
     _all: number
   }
@@ -9454,6 +9472,12 @@ export namespace Prisma {
     bankName?: true
     fieldVerifiedAt?: true
     fieldAgentId?: true
+    kycFrontPhotoUrl?: true
+    kycBackPhotoUrl?: true
+    kycSelfieUrl?: true
+    kycStatus?: true
+    kycSubmittedAt?: true
+    kycRejectedReason?: true
     createdAt?: true
   }
 
@@ -9471,6 +9495,12 @@ export namespace Prisma {
     bankName?: true
     fieldVerifiedAt?: true
     fieldAgentId?: true
+    kycFrontPhotoUrl?: true
+    kycBackPhotoUrl?: true
+    kycSelfieUrl?: true
+    kycStatus?: true
+    kycSubmittedAt?: true
+    kycRejectedReason?: true
     createdAt?: true
   }
 
@@ -9492,6 +9522,12 @@ export namespace Prisma {
     bankName?: true
     fieldVerifiedAt?: true
     fieldAgentId?: true
+    kycFrontPhotoUrl?: true
+    kycBackPhotoUrl?: true
+    kycSelfieUrl?: true
+    kycStatus?: true
+    kycSubmittedAt?: true
+    kycRejectedReason?: true
     createdAt?: true
     _all?: true
   }
@@ -9600,6 +9636,12 @@ export namespace Prisma {
     bankName: string | null
     fieldVerifiedAt: Date | null
     fieldAgentId: string | null
+    kycFrontPhotoUrl: string | null
+    kycBackPhotoUrl: string | null
+    kycSelfieUrl: string | null
+    kycStatus: string
+    kycSubmittedAt: Date | null
+    kycRejectedReason: string | null
     createdAt: Date
     _count: FarmerProfileCountAggregateOutputType | null
     _avg: FarmerProfileAvgAggregateOutputType | null
@@ -9640,6 +9682,12 @@ export namespace Prisma {
     bankName?: boolean
     fieldVerifiedAt?: boolean
     fieldAgentId?: boolean
+    kycFrontPhotoUrl?: boolean
+    kycBackPhotoUrl?: boolean
+    kycSelfieUrl?: boolean
+    kycStatus?: boolean
+    kycSubmittedAt?: boolean
+    kycRejectedReason?: boolean
     createdAt?: boolean
     user?: boolean | ProfileDefaultArgs<ExtArgs>
     fieldAgent?: boolean | FarmerProfile$fieldAgentArgs<ExtArgs>
@@ -9663,6 +9711,12 @@ export namespace Prisma {
     bankName?: boolean
     fieldVerifiedAt?: boolean
     fieldAgentId?: boolean
+    kycFrontPhotoUrl?: boolean
+    kycBackPhotoUrl?: boolean
+    kycSelfieUrl?: boolean
+    kycStatus?: boolean
+    kycSubmittedAt?: boolean
+    kycRejectedReason?: boolean
     createdAt?: boolean
     user?: boolean | ProfileDefaultArgs<ExtArgs>
     fieldAgent?: boolean | FarmerProfile$fieldAgentArgs<ExtArgs>
@@ -9686,6 +9740,12 @@ export namespace Prisma {
     bankName?: boolean
     fieldVerifiedAt?: boolean
     fieldAgentId?: boolean
+    kycFrontPhotoUrl?: boolean
+    kycBackPhotoUrl?: boolean
+    kycSelfieUrl?: boolean
+    kycStatus?: boolean
+    kycSubmittedAt?: boolean
+    kycRejectedReason?: boolean
     createdAt?: boolean
   }
 
@@ -9722,6 +9782,12 @@ export namespace Prisma {
       bankName: string | null
       fieldVerifiedAt: Date | null
       fieldAgentId: string | null
+      kycFrontPhotoUrl: string | null
+      kycBackPhotoUrl: string | null
+      kycSelfieUrl: string | null
+      kycStatus: string
+      kycSubmittedAt: Date | null
+      kycRejectedReason: string | null
       createdAt: Date
     }, ExtArgs["result"]["farmerProfile"]>
     composites: {}
@@ -10135,6 +10201,12 @@ export namespace Prisma {
     readonly bankName: FieldRef<"FarmerProfile", 'String'>
     readonly fieldVerifiedAt: FieldRef<"FarmerProfile", 'DateTime'>
     readonly fieldAgentId: FieldRef<"FarmerProfile", 'String'>
+    readonly kycFrontPhotoUrl: FieldRef<"FarmerProfile", 'String'>
+    readonly kycBackPhotoUrl: FieldRef<"FarmerProfile", 'String'>
+    readonly kycSelfieUrl: FieldRef<"FarmerProfile", 'String'>
+    readonly kycStatus: FieldRef<"FarmerProfile", 'String'>
+    readonly kycSubmittedAt: FieldRef<"FarmerProfile", 'DateTime'>
+    readonly kycRejectedReason: FieldRef<"FarmerProfile", 'String'>
     readonly createdAt: FieldRef<"FarmerProfile", 'DateTime'>
   }
     
@@ -28133,6 +28205,12 @@ export namespace Prisma {
     bankName: 'bankName',
     fieldVerifiedAt: 'fieldVerifiedAt',
     fieldAgentId: 'fieldAgentId',
+    kycFrontPhotoUrl: 'kycFrontPhotoUrl',
+    kycBackPhotoUrl: 'kycBackPhotoUrl',
+    kycSelfieUrl: 'kycSelfieUrl',
+    kycStatus: 'kycStatus',
+    kycSubmittedAt: 'kycSubmittedAt',
+    kycRejectedReason: 'kycRejectedReason',
     createdAt: 'createdAt'
   };
 
@@ -29360,6 +29438,12 @@ export namespace Prisma {
     bankName?: StringNullableFilter<"FarmerProfile"> | string | null
     fieldVerifiedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
     fieldAgentId?: UuidNullableFilter<"FarmerProfile"> | string | null
+    kycFrontPhotoUrl?: StringNullableFilter<"FarmerProfile"> | string | null
+    kycBackPhotoUrl?: StringNullableFilter<"FarmerProfile"> | string | null
+    kycSelfieUrl?: StringNullableFilter<"FarmerProfile"> | string | null
+    kycStatus?: StringFilter<"FarmerProfile"> | string
+    kycSubmittedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
+    kycRejectedReason?: StringNullableFilter<"FarmerProfile"> | string | null
     createdAt?: DateTimeFilter<"FarmerProfile"> | Date | string
     user?: XOR<ProfileRelationFilter, ProfileWhereInput>
     fieldAgent?: XOR<ProfileNullableRelationFilter, ProfileWhereInput> | null
@@ -29383,6 +29467,12 @@ export namespace Prisma {
     bankName?: SortOrderInput | SortOrder
     fieldVerifiedAt?: SortOrderInput | SortOrder
     fieldAgentId?: SortOrderInput | SortOrder
+    kycFrontPhotoUrl?: SortOrderInput | SortOrder
+    kycBackPhotoUrl?: SortOrderInput | SortOrder
+    kycSelfieUrl?: SortOrderInput | SortOrder
+    kycStatus?: SortOrder
+    kycSubmittedAt?: SortOrderInput | SortOrder
+    kycRejectedReason?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     user?: ProfileOrderByWithRelationInput
     fieldAgent?: ProfileOrderByWithRelationInput
@@ -29409,6 +29499,12 @@ export namespace Prisma {
     bankName?: StringNullableFilter<"FarmerProfile"> | string | null
     fieldVerifiedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
     fieldAgentId?: UuidNullableFilter<"FarmerProfile"> | string | null
+    kycFrontPhotoUrl?: StringNullableFilter<"FarmerProfile"> | string | null
+    kycBackPhotoUrl?: StringNullableFilter<"FarmerProfile"> | string | null
+    kycSelfieUrl?: StringNullableFilter<"FarmerProfile"> | string | null
+    kycStatus?: StringFilter<"FarmerProfile"> | string
+    kycSubmittedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
+    kycRejectedReason?: StringNullableFilter<"FarmerProfile"> | string | null
     createdAt?: DateTimeFilter<"FarmerProfile"> | Date | string
     user?: XOR<ProfileRelationFilter, ProfileWhereInput>
     fieldAgent?: XOR<ProfileNullableRelationFilter, ProfileWhereInput> | null
@@ -29432,6 +29528,12 @@ export namespace Prisma {
     bankName?: SortOrderInput | SortOrder
     fieldVerifiedAt?: SortOrderInput | SortOrder
     fieldAgentId?: SortOrderInput | SortOrder
+    kycFrontPhotoUrl?: SortOrderInput | SortOrder
+    kycBackPhotoUrl?: SortOrderInput | SortOrder
+    kycSelfieUrl?: SortOrderInput | SortOrder
+    kycStatus?: SortOrder
+    kycSubmittedAt?: SortOrderInput | SortOrder
+    kycRejectedReason?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: FarmerProfileCountOrderByAggregateInput
     _avg?: FarmerProfileAvgOrderByAggregateInput
@@ -29461,6 +29563,12 @@ export namespace Prisma {
     bankName?: StringNullableWithAggregatesFilter<"FarmerProfile"> | string | null
     fieldVerifiedAt?: DateTimeNullableWithAggregatesFilter<"FarmerProfile"> | Date | string | null
     fieldAgentId?: UuidNullableWithAggregatesFilter<"FarmerProfile"> | string | null
+    kycFrontPhotoUrl?: StringNullableWithAggregatesFilter<"FarmerProfile"> | string | null
+    kycBackPhotoUrl?: StringNullableWithAggregatesFilter<"FarmerProfile"> | string | null
+    kycSelfieUrl?: StringNullableWithAggregatesFilter<"FarmerProfile"> | string | null
+    kycStatus?: StringWithAggregatesFilter<"FarmerProfile"> | string
+    kycSubmittedAt?: DateTimeNullableWithAggregatesFilter<"FarmerProfile"> | Date | string | null
+    kycRejectedReason?: StringNullableWithAggregatesFilter<"FarmerProfile"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"FarmerProfile"> | Date | string
   }
 
@@ -31650,6 +31758,12 @@ export namespace Prisma {
     bankAccountNumber?: string | null
     bankName?: string | null
     fieldVerifiedAt?: Date | string | null
+    kycFrontPhotoUrl?: string | null
+    kycBackPhotoUrl?: string | null
+    kycSelfieUrl?: string | null
+    kycStatus?: string
+    kycSubmittedAt?: Date | string | null
+    kycRejectedReason?: string | null
     createdAt?: Date | string
     user: ProfileCreateNestedOneWithoutFarmerProfileInput
     fieldAgent?: ProfileCreateNestedOneWithoutVerifiedByAgentInput
@@ -31673,6 +31787,12 @@ export namespace Prisma {
     bankName?: string | null
     fieldVerifiedAt?: Date | string | null
     fieldAgentId?: string | null
+    kycFrontPhotoUrl?: string | null
+    kycBackPhotoUrl?: string | null
+    kycSelfieUrl?: string | null
+    kycStatus?: string
+    kycSubmittedAt?: Date | string | null
+    kycRejectedReason?: string | null
     createdAt?: Date | string
   }
 
@@ -31692,6 +31812,12 @@ export namespace Prisma {
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycSelfieUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: StringFieldUpdateOperationsInput | string
+    kycSubmittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycRejectedReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: ProfileUpdateOneRequiredWithoutFarmerProfileNestedInput
     fieldAgent?: ProfileUpdateOneWithoutVerifiedByAgentNestedInput
@@ -31715,6 +31841,12 @@ export namespace Prisma {
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldAgentId?: NullableStringFieldUpdateOperationsInput | string | null
+    kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycSelfieUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: StringFieldUpdateOperationsInput | string
+    kycSubmittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycRejectedReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31736,6 +31868,12 @@ export namespace Prisma {
     bankName?: string | null
     fieldVerifiedAt?: Date | string | null
     fieldAgentId?: string | null
+    kycFrontPhotoUrl?: string | null
+    kycBackPhotoUrl?: string | null
+    kycSelfieUrl?: string | null
+    kycStatus?: string
+    kycSubmittedAt?: Date | string | null
+    kycRejectedReason?: string | null
     createdAt?: Date | string
   }
 
@@ -31755,6 +31893,12 @@ export namespace Prisma {
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycSelfieUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: StringFieldUpdateOperationsInput | string
+    kycSubmittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycRejectedReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31776,6 +31920,12 @@ export namespace Prisma {
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldAgentId?: NullableStringFieldUpdateOperationsInput | string | null
+    kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycSelfieUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: StringFieldUpdateOperationsInput | string
+    kycSubmittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycRejectedReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -34374,6 +34524,12 @@ export namespace Prisma {
     bankName?: SortOrder
     fieldVerifiedAt?: SortOrder
     fieldAgentId?: SortOrder
+    kycFrontPhotoUrl?: SortOrder
+    kycBackPhotoUrl?: SortOrder
+    kycSelfieUrl?: SortOrder
+    kycStatus?: SortOrder
+    kycSubmittedAt?: SortOrder
+    kycRejectedReason?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -34397,6 +34553,12 @@ export namespace Prisma {
     bankName?: SortOrder
     fieldVerifiedAt?: SortOrder
     fieldAgentId?: SortOrder
+    kycFrontPhotoUrl?: SortOrder
+    kycBackPhotoUrl?: SortOrder
+    kycSelfieUrl?: SortOrder
+    kycStatus?: SortOrder
+    kycSubmittedAt?: SortOrder
+    kycRejectedReason?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -34414,6 +34576,12 @@ export namespace Prisma {
     bankName?: SortOrder
     fieldVerifiedAt?: SortOrder
     fieldAgentId?: SortOrder
+    kycFrontPhotoUrl?: SortOrder
+    kycBackPhotoUrl?: SortOrder
+    kycSelfieUrl?: SortOrder
+    kycStatus?: SortOrder
+    kycSubmittedAt?: SortOrder
+    kycRejectedReason?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -40566,6 +40734,12 @@ export namespace Prisma {
     bankAccountNumber?: string | null
     bankName?: string | null
     fieldVerifiedAt?: Date | string | null
+    kycFrontPhotoUrl?: string | null
+    kycBackPhotoUrl?: string | null
+    kycSelfieUrl?: string | null
+    kycStatus?: string
+    kycSubmittedAt?: Date | string | null
+    kycRejectedReason?: string | null
     createdAt?: Date | string
     fieldAgent?: ProfileCreateNestedOneWithoutVerifiedByAgentInput
   }
@@ -40587,6 +40761,12 @@ export namespace Prisma {
     bankName?: string | null
     fieldVerifiedAt?: Date | string | null
     fieldAgentId?: string | null
+    kycFrontPhotoUrl?: string | null
+    kycBackPhotoUrl?: string | null
+    kycSelfieUrl?: string | null
+    kycStatus?: string
+    kycSubmittedAt?: Date | string | null
+    kycRejectedReason?: string | null
     createdAt?: Date | string
   }
 
@@ -41240,6 +41420,12 @@ export namespace Prisma {
     bankAccountNumber?: string | null
     bankName?: string | null
     fieldVerifiedAt?: Date | string | null
+    kycFrontPhotoUrl?: string | null
+    kycBackPhotoUrl?: string | null
+    kycSelfieUrl?: string | null
+    kycStatus?: string
+    kycSubmittedAt?: Date | string | null
+    kycRejectedReason?: string | null
     createdAt?: Date | string
     user: ProfileCreateNestedOneWithoutFarmerProfileInput
   }
@@ -41261,6 +41447,12 @@ export namespace Prisma {
     bankAccountNumber?: string | null
     bankName?: string | null
     fieldVerifiedAt?: Date | string | null
+    kycFrontPhotoUrl?: string | null
+    kycBackPhotoUrl?: string | null
+    kycSelfieUrl?: string | null
+    kycStatus?: string
+    kycSubmittedAt?: Date | string | null
+    kycRejectedReason?: string | null
     createdAt?: Date | string
   }
 
@@ -41373,6 +41565,12 @@ export namespace Prisma {
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycSelfieUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: StringFieldUpdateOperationsInput | string
+    kycSubmittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycRejectedReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fieldAgent?: ProfileUpdateOneWithoutVerifiedByAgentNestedInput
   }
@@ -41394,6 +41592,12 @@ export namespace Prisma {
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldAgentId?: NullableStringFieldUpdateOperationsInput | string | null
+    kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycSelfieUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: StringFieldUpdateOperationsInput | string
+    kycSubmittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycRejectedReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -41841,6 +42045,12 @@ export namespace Prisma {
     bankName?: StringNullableFilter<"FarmerProfile"> | string | null
     fieldVerifiedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
     fieldAgentId?: UuidNullableFilter<"FarmerProfile"> | string | null
+    kycFrontPhotoUrl?: StringNullableFilter<"FarmerProfile"> | string | null
+    kycBackPhotoUrl?: StringNullableFilter<"FarmerProfile"> | string | null
+    kycSelfieUrl?: StringNullableFilter<"FarmerProfile"> | string | null
+    kycStatus?: StringFilter<"FarmerProfile"> | string
+    kycSubmittedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
+    kycRejectedReason?: StringNullableFilter<"FarmerProfile"> | string | null
     createdAt?: DateTimeFilter<"FarmerProfile"> | Date | string
   }
 
@@ -48172,6 +48382,12 @@ export namespace Prisma {
     bankAccountNumber?: string | null
     bankName?: string | null
     fieldVerifiedAt?: Date | string | null
+    kycFrontPhotoUrl?: string | null
+    kycBackPhotoUrl?: string | null
+    kycSelfieUrl?: string | null
+    kycStatus?: string
+    kycSubmittedAt?: Date | string | null
+    kycRejectedReason?: string | null
     createdAt?: Date | string
   }
 
@@ -48824,6 +49040,12 @@ export namespace Prisma {
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycSelfieUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: StringFieldUpdateOperationsInput | string
+    kycSubmittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycRejectedReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: ProfileUpdateOneRequiredWithoutFarmerProfileNestedInput
   }
@@ -48845,6 +49067,12 @@ export namespace Prisma {
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycSelfieUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: StringFieldUpdateOperationsInput | string
+    kycSubmittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycRejectedReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -48865,6 +49093,12 @@ export namespace Prisma {
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycSelfieUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: StringFieldUpdateOperationsInput | string
+    kycSubmittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    kycRejectedReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
