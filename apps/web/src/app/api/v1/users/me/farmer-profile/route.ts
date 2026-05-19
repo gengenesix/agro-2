@@ -13,18 +13,25 @@ export async function GET(req: NextRequest) {
 }
 
 const schema = z.object({
-  fullName:          z.string().min(2).max(100).optional(),
-  farmName:          z.string().min(2).max(120).optional().nullable(),
-  farmSizeHectares:  z.coerce.number().min(0).optional().nullable(),
-  regionId:          z.coerce.number().optional().nullable(),
-  district:          z.string().optional().nullable(),
-  sectors:           z.array(z.string()).optional(),
-  mobileMoneyNumber: z.string().optional().nullable(),
-  mobileMoneyNetwork:z.string().optional().nullable(),
-  gpsLat:            z.coerce.number().optional().nullable(),
-  gpsLng:            z.coerce.number().optional().nullable(),
-  farmPhotos:        z.array(z.string()).optional(),
-  nationalId:        z.string().optional().nullable(),
+  fullName:           z.string().min(2).max(100).optional(),
+  farmName:           z.string().min(2).max(120).optional().nullable(),
+  farmSizeHectares:   z.coerce.number().min(0).optional().nullable(),
+  regionId:           z.coerce.number().optional().nullable(),
+  district:           z.string().optional().nullable(),
+  sectors:            z.array(z.string()).optional(),
+  mobileMoneyNumber:  z.string().optional().nullable(),
+  mobileMoneyNetwork: z.string().optional().nullable(),
+  gpsLat:             z.coerce.number().optional().nullable(),
+  gpsLng:             z.coerce.number().optional().nullable(),
+  farmPhotos:         z.array(z.string()).optional(),
+  nationalId:         z.string().optional().nullable(),
+  // KYC fields
+  kycFrontPhotoUrl:   z.string().optional().nullable(),
+  kycBackPhotoUrl:    z.string().optional().nullable(),
+  kycSelfieUrl:       z.string().optional().nullable(),
+  kycStatus:          z.enum(['not_submitted', 'pending', 'approved', 'rejected']).optional(),
+  kycSubmittedAt:     z.string().optional().nullable(),
+  kycRejectedReason:  z.string().optional().nullable(),
 })
 
 export async function PUT(req: NextRequest) {
@@ -44,9 +51,11 @@ export async function PUT(req: NextRequest) {
     )
   }
 
-  const { fullName, farmName, farmSizeHectares, regionId, district, sectors,
-          mobileMoneyNumber, mobileMoneyNetwork, gpsLat, gpsLng,
-          farmPhotos, nationalId } = parsed.data
+  const {
+    fullName, farmName, farmSizeHectares, regionId, district, sectors,
+    mobileMoneyNumber, mobileMoneyNetwork, gpsLat, gpsLng, farmPhotos, nationalId,
+    kycFrontPhotoUrl, kycBackPhotoUrl, kycSelfieUrl, kycStatus, kycSubmittedAt, kycRejectedReason,
+  } = parsed.data
 
   // Update main profile if name provided
   if (fullName) {
@@ -58,15 +67,21 @@ export async function PUT(req: NextRequest) {
 
   // Upsert farmer profile
   const farmerData = {
-    ...(farmName          !== undefined && { farmName }),
-    ...(farmSizeHectares  !== undefined && { farmSizeAcres: farmSizeHectares ? farmSizeHectares * 2.47105 : null }),
-    ...(gpsLat            !== undefined && { gpsLat }),
-    ...(gpsLng            !== undefined && { gpsLng }),
-    ...(sectors           !== undefined && { sectors }),
-    ...(mobileMoneyNumber !== undefined && { mobileMoneyNumber }),
-    ...(mobileMoneyNetwork!== undefined && { mobileMoneyNetwork }),
-    ...(farmPhotos        !== undefined && { farmPhotos }),
-    ...(nationalId        !== undefined && { nationalId }),
+    ...(farmName            !== undefined && { farmName }),
+    ...(farmSizeHectares    !== undefined && { farmSizeAcres: farmSizeHectares ? farmSizeHectares * 2.47105 : null }),
+    ...(gpsLat              !== undefined && { gpsLat }),
+    ...(gpsLng              !== undefined && { gpsLng }),
+    ...(sectors             !== undefined && { sectors }),
+    ...(mobileMoneyNumber   !== undefined && { mobileMoneyNumber }),
+    ...(mobileMoneyNetwork  !== undefined && { mobileMoneyNetwork }),
+    ...(farmPhotos          !== undefined && { farmPhotos }),
+    ...(nationalId          !== undefined && { nationalId }),
+    ...(kycFrontPhotoUrl    !== undefined && { kycFrontPhotoUrl }),
+    ...(kycBackPhotoUrl     !== undefined && { kycBackPhotoUrl }),
+    ...(kycSelfieUrl        !== undefined && { kycSelfieUrl }),
+    ...(kycStatus           !== undefined && { kycStatus }),
+    ...(kycSubmittedAt      !== undefined && { kycSubmittedAt: kycSubmittedAt ? new Date(kycSubmittedAt) : null }),
+    ...(kycRejectedReason   !== undefined && { kycRejectedReason }),
   }
 
   await prisma.farmerProfile.upsert({

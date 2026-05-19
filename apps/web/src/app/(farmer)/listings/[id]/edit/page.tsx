@@ -3,11 +3,11 @@ import Link                  from 'next/link'
 import { ArrowLeftIcon }     from '@/components/shared/icons'
 import { notFound }          from 'next/navigation'
 
-const API = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:4000/api/v1'
+const BASE = process.env['NEXT_PUBLIC_APP_URL'] ?? 'http://localhost:3000'
 
 async function fetchListing(id: string) {
   try {
-    const res = await fetch(`${API}/listings/${id}`, { cache: 'no-store' })
+    const res = await fetch(`${BASE}/api/v1/listings/${id}`, { cache: 'no-store' })
     if (!res.ok) return null
     const json = await res.json()
     return json.data
@@ -33,6 +33,7 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6">
         <CreateListingForm
           listingId={id}
+          initialPhotos={listing.photos ?? []}
           initialData={{
             title:             listing.title,
             description:       listing.description,

@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 
 const updateSchema = z.object({
   fullName:  z.string().min(2).max(100).optional(),
-  avatarUrl: z.string().url().optional().nullable(),
+  avatarUrl: z.string().min(1).optional().nullable(),
   regionId:  z.coerce.number().optional().nullable(),
   community: z.string().optional().nullable(),
   language:  z.enum(['en', 'tw', 'ha', 'ew', 'ga']).optional(),

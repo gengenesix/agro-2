@@ -40,14 +40,15 @@ const CATEGORIES_BY_SECTOR: Record<string, string[]> = {
 }
 
 interface CreateListingFormProps {
-  initialData?: Partial<FormData>
-  listingId?:   string
+  initialData?:  Partial<FormData>
+  initialPhotos?: string[]
+  listingId?:    string
 }
 
-export function CreateListingForm({ initialData, listingId }: CreateListingFormProps) {
+export function CreateListingForm({ initialData, initialPhotos, listingId }: CreateListingFormProps) {
   const router              = useRouter()
   const fileRef             = useRef<HTMLInputElement>(null)
-  const [photos, setPhotos] = useState<string[]>([])
+  const [photos, setPhotos] = useState<string[]>(initialPhotos ?? [])
   const [uploading, setUploading] = useState(false)
   const [error, setError]   = useState('')
 

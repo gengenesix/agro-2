@@ -1,38 +1,76 @@
 'use client'
 
-import { useState }        from 'react'
-import { useAuth }         from '@/context/auth-context'
-import { api }             from '@/lib/api'
-import { GHANA_REGIONS }   from '@/lib/types'
+import { useState, useEffect } from 'react'
+import { useAuth }  from '@/context/auth-context'
+import { api }      from '@/lib/api'
+import { GHANA_REGIONS } from '@/lib/types'
 
-type Section = 'profile' | 'phone' | 'momo' | 'notifications'
+type Section = 'profile' | 'momo' | 'notifications'
+
+const NOTIF_KEY = 'agro_notif_prefs'
+
+interface NotifPrefs {
+  orders:    boolean
+  prices:    boolean
+  weather:   boolean
+  marketing: boolean
+}
+
+function loadNotifPrefs(): NotifPrefs {
+  if (typeof window === 'undefined') {
+    return { orders: true, prices: true, weather: true, marketing: false }
+  }
+  try {
+    const raw = localStorage.getItem(NOTIF_KEY)
+    if (raw) return JSON.parse(raw) as NotifPrefs
+  } catch { /* ignore */ }
+  return { orders: true, prices: true, weather: true, marketing: false }
+}
 
 export default function SettingsPage() {
-  const { user }      = useAuth()
+  const { user, refresh } = useAuth()
   const [section, setSection] = useState<Section>('profile')
   const [saving, setSaving]   = useState(false)
-  const [saved, setSaved]     = useState(false)
-  const [error, setError]     = useState<string | null>(null)
+  const [saved,  setSaved]    = useState(false)
+  const [error,  setError]    = useState<string | null>(null)
 
   // Profile fields
-  const [fullName, setFullName]   = useState(user?.fullName ?? '')
-  const [regionId, setRegionId]   = useState('')
+  const [fullName,  setFullName]  = useState('')
+  const [regionId,  setRegionId]  = useState('')
   const [community, setCommunity] = useState('')
 
-  // Phone change
-  const [newPhone, setNewPhone]   = useState('')
-  const [otp, setOtp]             = useState('')
-  const [otpSent, setOtpSent]     = useState(false)
-
   // MoMo
-  const [momoNumber, setMomoNumber]   = useState('')
+  const [momoNumber,  setMomoNumber]  = useState('')
   const [momoNetwork, setMomoNetwork] = useState('')
 
-  // Notifications
-  const [smsOrders, setSmsOrders]     = useState(true)
-  const [smsPrices, setSmsPrices]     = useState(true)
-  const [smsWeather, setSmsWeather]   = useState(true)
-  const [smsMarketing, setSmsMarketing] = useState(false)
+  // Notifications — stored in localStorage, not the server
+  const [notif, setNotif] = useState<NotifPrefs>(loadNotifPrefs)
+
+  // Sync profile fields when user loads (may be null on first render)
+  useEffect(() => {
+    if (!user) return
+    setFullName(user.fullName ?? '')
+    setRegionId(user.regionId?.toString() ?? '')
+    setCommunity(user.community ?? '')
+  }, [user])
+
+  // Load MoMo from farmer profile
+  useEffect(() => {
+    api.get('/users/me/farmer-profile').then(r => {
+      const d = r.data?.data
+      if (!d) return
+      setMomoNumber(d.mobileMoneyNumber ?? '')
+      setMomoNetwork(d.mobileMoneyNetwork ?? '')
+    }).catch(() => {})
+  }, [])
+
+  function toggleNotif(key: keyof NotifPrefs) {
+    const next = { ...notif, [key]: !notif[key] }
+    setNotif(next)
+    try { localStorage.setItem(NOTIF_KEY, JSON.stringify(next)) } catch { /* ignore */ }
+  }
+
+  const currentRegionName = GHANA_REGIONS.find(r => r.id.toString() === regionId)?.name
 
   const save = async () => {
     setSaving(true)
@@ -40,18 +78,15 @@ export default function SettingsPage() {
     try {
       if (section === 'profile') {
         await api.patch('/users/me', {
-          fullName: fullName || undefined,
-          regionId: regionId ? Number(regionId) : undefined,
+          fullName:  fullName || undefined,
+          regionId:  regionId ? Number(regionId) : undefined,
           community: community || undefined,
         })
-      } else if (section === 'notifications') {
-        await api.patch('/users/me/notification-prefs', {
-          smsOrders, smsPrices, smsWeather, smsMarketing,
-        })
+        await refresh()
       } else if (section === 'momo') {
-        await api.patch('/users/me', {
-          mobileMoneyNumber:  momoNumber || undefined,
-          mobileMoneyNetwork: momoNetwork || undefined,
+        await api.put('/users/me/farmer-profile', {
+          mobileMoneyNumber:  momoNumber  || null,
+          mobileMoneyNetwork: momoNetwork || null,
         })
       }
       setSaved(true)
@@ -64,40 +99,8 @@ export default function SettingsPage() {
     }
   }
 
-  const sendOTP = async () => {
-    if (!newPhone.match(/^0[235]\d{8}$/)) {
-      setError('Enter a valid Ghana phone number')
-      return
-    }
-    setError(null)
-    try {
-      await api.post('/auth/request-otp', { phone: newPhone })
-      setOtpSent(true)
-    } catch {
-      setError('Failed to send OTP')
-    }
-  }
-
-  const confirmPhoneChange = async () => {
-    setError(null)
-    setSaving(true)
-    try {
-      await api.post('/auth/verify-otp', { phone: newPhone, otp })
-      setSaved(true)
-      setOtpSent(false)
-      setNewPhone('')
-      setOtp('')
-      setTimeout(() => setSaved(false), 2500)
-    } catch {
-      setError('Invalid OTP. Please try again.')
-    } finally {
-      setSaving(false)
-    }
-  }
-
   const tabs: { key: Section; label: string }[] = [
     { key: 'profile',       label: 'Profile'       },
-    { key: 'phone',         label: 'Phone'         },
     { key: 'momo',          label: 'Mobile Money'  },
     { key: 'notifications', label: 'Notifications' },
   ]
@@ -115,7 +118,8 @@ export default function SettingsPage() {
           <button
             key={t.key}
             onClick={() => { setSection(t.key); setError(null); setSaved(false) }}
-            className={`flex-1 min-w-max px-3 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${
+            className={`flex-1 min-w-max px-3 py-2 rounded-lg text-xs font-semibold transition-colors
+                        whitespace-nowrap ${
               section === t.key
                 ? 'bg-white text-forest shadow-sm'
                 : 'text-muted-foreground hover:text-forest'
@@ -128,7 +132,7 @@ export default function SettingsPage() {
 
       <div className="bg-white rounded-2xl border border-border p-5 space-y-4">
 
-        {/* Profile section */}
+        {/* ── Profile ──────────────────────────────────────────────────── */}
         {section === 'profile' && (
           <>
             <h2 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
@@ -152,8 +156,12 @@ export default function SettingsPage() {
                 className="w-full h-11 px-4 rounded-xl border border-border bg-cream focus:outline-none
                            focus:ring-2 focus:ring-lime text-sm"
               >
-                <option value="">Current: {user?.regionId ? `Region ${user.regionId}` : 'Not set'}</option>
-                {GHANA_REGIONS.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+                <option value="">
+                  {currentRegionName ? `Current: ${currentRegionName}` : 'Select region'}
+                </option>
+                {GHANA_REGIONS.map(r => (
+                  <option key={r.id} value={r.id}>{r.name}</option>
+                ))}
               </select>
             </div>
             <div>
@@ -169,63 +177,7 @@ export default function SettingsPage() {
           </>
         )}
 
-        {/* Phone section */}
-        {section === 'phone' && (
-          <>
-            <h2 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Change phone</h2>
-            <div className="bg-cream-dark rounded-xl px-4 py-3">
-              <p className="text-xs text-muted-foreground">Current number</p>
-              <p className="font-mono text-sm font-bold text-forest mt-0.5">{user?.phone ?? '—'}</p>
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-forest mb-1.5">New phone number</label>
-              <div className="flex gap-2">
-                <input
-                  value={newPhone}
-                  onChange={e => setNewPhone(e.target.value)}
-                  placeholder="0241234567"
-                  type="tel"
-                  className="flex-1 h-11 px-4 rounded-xl border border-border bg-cream focus:outline-none
-                             focus:ring-2 focus:ring-lime text-sm font-mono"
-                />
-                <button
-                  type="button"
-                  onClick={sendOTP}
-                  disabled={otpSent}
-                  className="h-11 px-4 bg-forest text-white rounded-xl text-xs font-bold
-                             hover:bg-forest-dark disabled:opacity-60 whitespace-nowrap"
-                >
-                  {otpSent ? 'OTP sent' : 'Send OTP'}
-                </button>
-              </div>
-            </div>
-            {otpSent && (
-              <div>
-                <label className="block text-sm font-semibold text-forest mb-1.5">Enter OTP</label>
-                <input
-                  value={otp}
-                  onChange={e => setOtp(e.target.value)}
-                  placeholder="123456"
-                  maxLength={6}
-                  className="w-full h-11 px-4 rounded-xl border border-border bg-cream focus:outline-none
-                             focus:ring-2 focus:ring-lime text-sm font-mono text-center tracking-widest"
-                />
-              </div>
-            )}
-            {otpSent && (
-              <button
-                onClick={confirmPhoneChange}
-                disabled={saving || otp.length < 4}
-                className="w-full h-11 bg-forest text-white rounded-xl font-bold text-sm
-                           hover:bg-forest-dark disabled:opacity-60"
-              >
-                {saving ? 'Confirming…' : 'Confirm new number'}
-              </button>
-            )}
-          </>
-        )}
-
-        {/* MoMo section */}
+        {/* ── Mobile Money ──────────────────────────────────────────────── */}
         {section === 'momo' && (
           <>
             <h2 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
@@ -262,36 +214,45 @@ export default function SettingsPage() {
           </>
         )}
 
-        {/* Notifications section */}
+        {/* ── Notifications ─────────────────────────────────────────────── */}
         {section === 'notifications' && (
           <>
             <h2 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
               SMS notifications
             </h2>
-            {[
-              { label: 'Order updates', desc: 'When orders are confirmed, dispatched, delivered', value: smsOrders, set: setSmsOrders },
-              { label: 'Price alerts', desc: 'When market prices hit your set targets', value: smsPrices, set: setSmsPrices },
-              { label: 'Weather alerts', desc: 'Critical weather warnings for your region', value: smsWeather, set: setSmsWeather },
-              { label: 'Promotions', desc: 'New features, tips, and AgroConnect news', value: smsMarketing, set: setSmsMarketing },
-            ].map(item => (
-              <div key={item.label} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+            {([
+              { key: 'orders'    as const, label: 'Order updates',  desc: 'When orders are confirmed, dispatched, or delivered'  },
+              { key: 'prices'    as const, label: 'Price alerts',   desc: 'When market prices hit your set targets'              },
+              { key: 'weather'   as const, label: 'Weather alerts', desc: 'Critical weather warnings for your region'            },
+              { key: 'marketing' as const, label: 'Promotions',     desc: 'New features, tips, and AgroConnect news'            },
+            ] as const).map(item => (
+              <div key={item.key} className="flex items-center justify-between py-2.5
+                                             border-b border-border last:border-0">
                 <div>
                   <p className="text-sm font-semibold text-forest">{item.label}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
                 </div>
                 <button
                   type="button"
-                  onClick={() => item.set(!item.value)}
-                  className={`w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ${
-                    item.value ? 'bg-forest' : 'bg-border'
+                  role="switch"
+                  aria-checked={notif[item.key]}
+                  onClick={() => toggleNotif(item.key)}
+                  className={`relative flex-shrink-0 w-11 h-6 rounded-full transition-colors duration-200 ${
+                    notif[item.key] ? 'bg-forest' : 'bg-border'
                   }`}
                 >
-                  <span className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${
-                    item.value ? 'translate-x-5' : 'translate-x-1'
-                  }`} />
+                  <span
+                    className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow-sm
+                                transition-transform duration-200 ${
+                      notif[item.key] ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
                 </button>
               </div>
             ))}
+            <p className="text-xs text-muted-foreground pt-1">
+              Notification preferences are saved on this device.
+            </p>
           </>
         )}
       </div>
@@ -299,7 +260,6 @@ export default function SettingsPage() {
       {error && (
         <div className="bg-destructive/10 text-destructive text-sm px-4 py-3 rounded-xl">{error}</div>
       )}
-
       {saved && (
         <div className="bg-lime/20 border border-lime/40 text-forest text-sm font-semibold
                         px-4 py-3 rounded-xl">
@@ -307,7 +267,7 @@ export default function SettingsPage() {
         </div>
       )}
 
-      {section !== 'phone' && (
+      {section !== 'notifications' && (
         <button
           onClick={save}
           disabled={saving}

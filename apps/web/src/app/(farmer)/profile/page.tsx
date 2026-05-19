@@ -10,8 +10,9 @@ import {
   VerifiedBlueIcon, PremiumGreenIcon, LoadingIcon, LogoutIcon,
   PlusIcon, ChevronRightIcon, AgroScoreIcon, MapPinIcon,
 } from '@/components/shared/icons'
-import { formatPhoneGhana } from '@/lib/format'
-import { GHANA_REGIONS }    from '@/lib/types'
+import { formatPhoneGhana }   from '@/lib/format'
+import { GHANA_REGIONS }      from '@/lib/types'
+import { FarmLocationMap }    from '@/components/shared/farm-location-map'
 
 interface FarmerProfile {
   farmName:          string | null
@@ -389,15 +390,22 @@ export default function ProfilePage() {
                 Farm GPS location
               </label>
               {gps ? (
-                <div className="flex items-center gap-2 px-3 py-2.5 bg-lime/15 rounded-xl border border-lime/30">
-                  <MapPinIcon size={14} className="text-forest shrink-0" />
-                  <span className="font-mono text-xs text-forest flex-1">
-                    {gps.lat.toFixed(5)}, {gps.lng.toFixed(5)}
-                  </span>
-                  <button type="button" onClick={() => setGps(null)}
-                    className="text-xs text-muted-foreground hover:text-red-500 transition-colors">
-                    Remove
-                  </button>
+                <div className="space-y-2">
+                  <FarmLocationMap
+                    lat={gps.lat}
+                    lng={gps.lng}
+                    onMove={(lat, lng) => setGps({ lat, lng })}
+                    height="200px"
+                  />
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {gps.lat.toFixed(5)}, {gps.lng.toFixed(5)}
+                    </span>
+                    <button type="button" onClick={() => setGps(null)}
+                      className="text-xs text-red-400 hover:text-red-600 transition-colors font-semibold">
+                      Remove location
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <button type="button" onClick={captureGPS} disabled={gpsLoading}
@@ -409,7 +417,7 @@ export default function ProfilePage() {
                 </button>
               )}
               <p className="text-[11px] text-muted-foreground mt-1.5">
-                GPS coordinates improve your AgroScore and help buyers find your farm.
+                GPS improves your AgroScore and helps buyers find your farm. Drag the pin to adjust.
               </p>
             </div>
 
@@ -589,42 +597,14 @@ export default function ProfilePage() {
                 ))}
               </div>
             )}
-            {/* Ghana Card KYC */}
+            {/* KYC link */}
             {currentLevelIndex < 2 && (
-              <div>
-                <button
-                  onClick={() => setKycSection(!kycSection)}
-                  className="text-[11px] font-semibold underline underline-offset-2 opacity-80 hover:opacity-100">
-                  {kycSection ? 'Hide KYC form' : 'Submit Ghana Card for KYC'}
-                </button>
-                {kycSection && (
-                  <div className="mt-3 space-y-3">
-                    <div>
-                      <label className="text-[11px] font-bold uppercase tracking-wider block mb-1">
-                        Ghana Card number
-                      </label>
-                      <input
-                        value={nationalId}
-                        onChange={e => setNationalId(e.target.value)}
-                        placeholder="GHA-000000000-0"
-                        className="w-full px-3 py-2 bg-white border border-border rounded-xl text-xs
-                                   font-mono text-forest focus:border-forest focus:outline-none"
-                      />
-                    </div>
-                    <p className="text-[10px] text-muted-foreground leading-relaxed">
-                      A GENE Field Agent will visit your farm to verify your identity and GPS location.
-                      Ensure your farm photos and GPS coordinates are saved above before requesting.
-                    </p>
-                    <button
-                      onClick={saveFarmProfile}
-                      disabled={savingFarm || !nationalId}
-                      className="w-full py-2 bg-sector-fisheries text-white text-xs font-bold rounded-xl
-                                 hover:opacity-90 transition-opacity disabled:opacity-40">
-                      {savingFarm ? 'Saving…' : 'Save & Request Field Verification'}
-                    </button>
-                  </div>
-                )}
-              </div>
+              <Link href="/kyc"
+                className="inline-flex items-center gap-1.5 text-[11px] font-semibold
+                           text-sector-fisheries hover:underline underline-offset-2">
+                Submit Ghana Card &amp; selfie for KYC
+                <ChevronRightIcon size={11} />
+              </Link>
             )}
           </div>
 
@@ -658,9 +638,10 @@ export default function ProfilePage() {
         {/* ── Quick links ── */}
         <div className="bg-white rounded-2xl border border-border overflow-hidden">
           {[
-            { href: '/settings',  label: 'Account settings'  },
-            { href: '/bnpl',      label: 'BNPL credit'        },
-            { href: '/score',     label: 'Full AgroScore breakdown' },
+            { href: '/settings',  label: 'Account settings'       },
+            { href: '/kyc',       label: 'Identity verification (KYC)' },
+            { href: '/bnpl',      label: 'BNPL credit'             },
+            { href: '/score',     label: 'Full AgroScore breakdown'},
           ].map(({ href, label }) => (
             <Link key={href} href={href}
               className="flex items-center justify-between px-5 py-3.5 border-b border-border last:border-0

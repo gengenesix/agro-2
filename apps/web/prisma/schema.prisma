@@ -317,6 +317,13 @@ model FarmerProfile {
   bankName            String?  @map("bank_name")
   fieldVerifiedAt     DateTime? @map("field_verified_at")
   fieldAgentId        String?   @map("field_agent_id") @db.Uuid
+  // KYC document uploads
+  kycFrontPhotoUrl    String?  @map("kyc_front_photo_url")
+  kycBackPhotoUrl     String?  @map("kyc_back_photo_url")
+  kycSelfieUrl        String?  @map("kyc_selfie_url")
+  kycStatus           String   @default("not_submitted") @map("kyc_status")
+  kycSubmittedAt      DateTime? @map("kyc_submitted_at")
+  kycRejectedReason   String?  @map("kyc_rejected_reason")
   createdAt           DateTime @default(now()) @map("created_at")
 
   user       Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
