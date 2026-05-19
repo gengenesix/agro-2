@@ -1,3 +1,6 @@
+# Deprecated Fastify API server — backend pivoted to Next.js + Supabase
+apps/api/
+
 # Dependencies
 node_modules/
 .pnpm-store/
@@ -20,6 +23,12 @@ out/
 
 # Prisma generated client
 packages/database/generated/
+
+# Prisma platform-specific query engine binaries
+**/*.node
+
+# Supabase CLI local dev state
+supabase/.temp/
 
 # PWA service worker (generated at build time)
 apps/web/public/sw.js

@@ -658,7 +658,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/maddoxlinux/PROJECTING/agroconnect2.0/apps/web/src/generated/prisma",
+      "value": "C:\\Users\\user\\agroconnect2.0\\apps\\web\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -667,12 +667,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-1.1.x",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/maddoxlinux/PROJECTING/agroconnect2.0/apps/web/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\user\\agroconnect2.0\\apps\\web\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
