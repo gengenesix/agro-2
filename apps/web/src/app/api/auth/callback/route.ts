@@ -1,61 +1,91 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { randomUUID } from 'crypto'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 import { prisma } from '@/lib/prisma'
 import { signToken, storeSession } from '@/lib/otp-store'
 import type { Profile } from '@/lib/types'
 
-export async function GET(req: NextRequest) {
-  const { searchParams, origin } = new URL(req.url)
-  const code  = searchParams.get('code')
-  const next  = searchParams.get('next') ?? '/dashboard'
-  const error = searchParams.get('error')
+// Role → dashboard path
+const ROLE_HOME: Record<string, string> = {
+  farmer:      '/dashboard',
+  dealer:      '/dealer/dashboard',
+  buyer:       '/buyer/dashboard',
+  consumer:    '/consumer',
+  field_agent: '/field-agent/dashboard',
+  admin:       '/admin/dashboard',
+}
 
-  if (error) {
-    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error)}`)
+export async function GET(request: NextRequest) {
+  const requestUrl  = new URL(request.url)
+  const code        = requestUrl.searchParams.get('code')
+  const oauthError  = requestUrl.searchParams.get('error')
+
+  if (oauthError) {
+    const msg = encodeURIComponent(oauthError)
+    return NextResponse.redirect(new URL(`/login?error=${msg}`, requestUrl.origin))
   }
   if (!code) {
-    return NextResponse.redirect(`${origin}/login?error=missing_code`)
+    return NextResponse.redirect(new URL('/login?error=missing_code', requestUrl.origin))
   }
 
-  const supabase = await createServerSupabaseClient()
+  const cookieStore = await cookies()
+
+  // Collect any session cookies Supabase writes during the exchange.
+  // We apply them to the final redirect response so they reach the browser.
+  const pendingCookies: Array<{ name: string; value: string; options: Record<string, unknown> }> = []
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => cookieStore.getAll(),
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach((c) => pendingCookies.push(c))
+        },
+      },
+    },
+  )
+
   const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
 
   if (exchangeError || !data.session) {
-    return NextResponse.redirect(
-      `${origin}/login?error=${encodeURIComponent(exchangeError?.message ?? 'session_error')}`,
-    )
+    const msg = encodeURIComponent(exchangeError?.message ?? 'session_error')
+    return NextResponse.redirect(new URL(`/login?error=${msg}`, requestUrl.origin))
   }
 
   const { user } = data.session
   const email    = user.email ?? ''
-  const fullName = (user.user_metadata?.full_name as string | undefined) ?? ''
+  const fullName = (user.user_metadata?.full_name  as string | undefined) ?? ''
   const avatar   = (user.user_metadata?.avatar_url as string | undefined) ?? null
 
-  // Upsert profile keyed on Supabase user ID (stored in our id field)
+  // ── Find or create Profile ─────────────────────────────────────────────────
   let profileRow = await prisma.profile.findUnique({ where: { id: user.id } })
   let isNewUser  = false
 
   if (!profileRow) {
-    isNewUser = true
+    isNewUser  = true
     profileRow = await prisma.profile.create({
       data: {
         id:        user.id,
-        phone:     email,   // email used as the phone/identifier field for OAuth users
+        phone:     email,      // email stored in the phone field for OAuth users
         fullName:  fullName,
-        role:      'farmer', // default role — user updates via onboarding
+        role:      'farmer',   // default — user selects their real role in onboarding
         avatarUrl: avatar,
       },
     })
     await prisma.wallet.create({ data: { userId: profileRow.id } })
-  } else if (!profileRow.avatarUrl && avatar) {
-    await prisma.profile.update({
-      where: { id: profileRow.id },
-      data:  { avatarUrl: avatar },
-    })
-    profileRow = { ...profileRow, avatarUrl: avatar }
+  } else {
+    // Keep avatar in sync on first populate
+    if (!profileRow.avatarUrl && avatar) {
+      profileRow = await prisma.profile.update({
+        where: { id: profileRow.id },
+        data:  { avatarUrl: avatar },
+      })
+    }
   }
 
+  // ── Build our platform profile object ─────────────────────────────────────
   const profile: Profile = {
     id:                profileRow.id,
     phone:             profileRow.phone,
@@ -72,15 +102,29 @@ export async function GET(req: NextRequest) {
     createdAt:         profileRow.createdAt.toISOString(),
   }
 
-  const iat = Math.floor(Date.now() / 1000)
-  const exp = iat + 60 * 60 * 24 * 30  // 30 days
+  // ── Issue our platform JWT ─────────────────────────────────────────────────
+  const iat         = Math.floor(Date.now() / 1000)
+  const exp         = iat + 60 * 60 * 24 * 30  // 30 days
   const accessToken = signToken({ id: profile.id, phone: profile.phone, role: profile.role, iat, exp })
   storeSession(accessToken, profile)
 
-  const destination = isNewUser ? `${origin}/onboarding/role` : `${origin}${next}`
-  const res = NextResponse.redirect(destination)
+  // ── Decide where to send the user ─────────────────────────────────────────
+  // New users or users who haven't set their full name yet go through onboarding.
+  // Existing users with a complete profile go directly to their dashboard.
+  const needsOnboarding = isNewUser || !profileRow.fullName
+  const destination     = needsOnboarding
+    ? '/onboarding/role'
+    : (ROLE_HOME[profile.role] ?? '/dashboard')
 
-  res.cookies.set('agro_access_token', accessToken, {
+  const response = NextResponse.redirect(new URL(destination, requestUrl.origin))
+
+  // Apply Supabase session cookies
+  pendingCookies.forEach(({ name, value, options }) =>
+    response.cookies.set(name, value, options as Parameters<typeof response.cookies.set>[2]),
+  )
+
+  // Apply our platform access token
+  response.cookies.set('agro_access_token', accessToken, {
     httpOnly: true,
     path:     '/',
     maxAge:   60 * 60 * 24 * 30,
@@ -88,5 +132,5 @@ export async function GET(req: NextRequest) {
     secure:   process.env.NODE_ENV === 'production',
   })
 
-  return res
+  return response
 }
