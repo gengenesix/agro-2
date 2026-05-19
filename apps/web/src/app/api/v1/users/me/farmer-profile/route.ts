@@ -9,7 +9,19 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
   }
   const fp = await prisma.farmerProfile.findUnique({ where: { userId: profile.id } })
-  return NextResponse.json({ success: true, data: fp })
+  if (!fp) return NextResponse.json({ success: true, data: null })
+
+  // Prisma returns Decimal fields as Prisma.Decimal objects; coerce to JS numbers
+  // so the client receives proper number types (not strings that break .toFixed())
+  return NextResponse.json({
+    success: true,
+    data: {
+      ...fp,
+      farmSizeAcres: fp.farmSizeAcres != null ? Number(fp.farmSizeAcres) : null,
+      gpsLat:        fp.gpsLat        != null ? Number(fp.gpsLat)        : null,
+      gpsLng:        fp.gpsLng        != null ? Number(fp.gpsLng)        : null,
+    },
+  })
 }
 
 const schema = z.object({

@@ -123,7 +123,7 @@ const sectorClass: Record<string, string> = {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AnimatedLanding() {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const dashboardPath = ROLE_HOME[user?.role ?? ''] ?? '/dashboard'
 
   return (
@@ -174,8 +174,16 @@ export default function AnimatedLanding() {
               and get real-time weather and market intelligence.
             </motion.p>
 
-            {user ? (
-              <motion.div variants={fadeUp} className="flex gap-3">
+            {!loading && user ? (
+              // Independent animation so it fires correctly after async auth loads,
+              // not relying on the stagger parent that has already completed.
+              <motion.div
+                key="hero-cta-auth"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="flex gap-3"
+              >
                 <Link
                   href={dashboardPath}
                   className="flex items-center gap-2 px-8 py-4 bg-lime text-forest font-bold text-sm
@@ -192,8 +200,8 @@ export default function AnimatedLanding() {
                   Browse Marketplace
                 </Link>
               </motion.div>
-            ) : (
-              <motion.div variants={fadeUp} className="flex gap-2 max-w-lg">
+            ) : !loading ? (
+              <motion.div key="hero-cta-guest" variants={fadeUp} className="flex gap-2 max-w-lg">
                 <div className="flex-1 relative">
                   <SearchIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <input
@@ -213,7 +221,7 @@ export default function AnimatedLanding() {
                   <ChevronRightIcon size={16} />
                 </Link>
               </motion.div>
-            )}
+            ) : null}
           </motion.div>
 
           <motion.div
@@ -417,7 +425,7 @@ export default function AnimatedLanding() {
             Access credit, sell faster, buy smarter.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            {user ? (
+            {!loading && user ? (
               <Link
                 href={dashboardPath}
                 className="flex items-center justify-center gap-2 px-8 py-4 bg-lime text-forest
