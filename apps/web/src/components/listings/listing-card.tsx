@@ -8,19 +8,20 @@ import { formatDate }         from '@/lib/format'
 import type { ListingSummary } from '@/lib/types'
 
 interface ListingCardProps {
-  listing: ListingSummary
-  variant?: 'produce' | 'pledge' | 'input'
+  listing:   ListingSummary
+  variant?:  'produce' | 'pledge' | 'input'
+  basePath?: string
 }
 
 const PLACEHOLDER = 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80&fit=crop'
 
-export function ListingCard({ listing }: ListingCardProps) {
+export function ListingCard({ listing, basePath = '/produce' }: ListingCardProps) {
   const isPledge = listing.listingType === 'harvest_pledge'
   const moq      = listing.minOrderQuantity ?? 1
 
   return (
     <Link
-      href={`/produce/${listing.slug}`}
+      href={`${basePath}/${listing.slug}`}
       className={`group block bg-card rounded-2xl overflow-hidden border card-lift
         ${isPledge
           ? 'border-l-4 border-harvest-gold border-b border-r border-t border-border'

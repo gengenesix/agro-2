@@ -7,7 +7,8 @@ import { formatGHS }         from '@/lib/format'
 import type { ListingSummary } from '@/lib/types'
 
 interface PledgeCardProps {
-  listing: ListingSummary
+  listing:   ListingSummary
+  basePath?: string
 }
 
 function daysUntil(dateStr: string): number {
@@ -20,13 +21,13 @@ function urgencyClass(days: number) {
   return 'text-forest bg-cream border-border'
 }
 
-export function PledgeCard({ listing }: PledgeCardProps) {
+export function PledgeCard({ listing, basePath = '/produce' }: PledgeCardProps) {
   const days = listing.expectedHarvestDate ? daysUntil(listing.expectedHarvestDate) : null
   const photo = listing.photos?.[0] ?? '/placeholder-farm.jpg'
 
   return (
     <Link
-      href={`/produce/${listing.slug}`}
+      href={`${basePath}/${listing.slug}`}
       className="group block bg-white rounded-2xl border border-border overflow-hidden
                  hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200
                  border-l-4 border-l-harvest-gold"

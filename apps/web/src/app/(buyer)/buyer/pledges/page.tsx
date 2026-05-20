@@ -118,7 +118,7 @@ export default async function BuyerPledgesPage({
             <div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {listings.map(listing => (
-                  <PledgeCard key={listing.id} listing={listing} />
+                  <PledgeCard key={listing.id} listing={listing} basePath="/buyer/pledges" />
                 ))}
               </div>
 
