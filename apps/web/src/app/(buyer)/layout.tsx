@@ -1,4 +1,7 @@
-import Link from 'next/link'
+'use client'
+
+import Link           from 'next/link'
+import { usePathname } from 'next/navigation'
 import {
   HomeIcon, MarketIcon, PledgeIcon, OrdersIcon, WalletIcon, ProfileIcon,
   BellIcon, SettingsIcon,
@@ -6,16 +9,18 @@ import {
 import { BottomNav } from '@/components/shared/navbar'
 
 const SIDEBAR_ITEMS = [
-  { href: '/buyer/dashboard', label: 'Dashboard',   Icon: HomeIcon   },
-  { href: '/produce',         label: 'Marketplace', Icon: MarketIcon },
-  { href: '/pledges',         label: 'Pledges',     Icon: PledgeIcon },
-  { href: '/buyer/orders',    label: 'My Orders',   Icon: OrdersIcon },
-  { href: '/buyer/alerts',    label: 'Price Alerts',Icon: BellIcon   },
-  { href: '/wallet',          label: 'Wallet',      Icon: WalletIcon },
-  { href: '/profile',         label: 'Profile',     Icon: ProfileIcon},
+  { href: '/buyer/dashboard', label: 'Dashboard',    Icon: HomeIcon    },
+  { href: '/produce',         label: 'Marketplace',  Icon: MarketIcon  },
+  { href: '/pledges',         label: 'Pledges',      Icon: PledgeIcon  },
+  { href: '/buyer/orders',    label: 'My Orders',    Icon: OrdersIcon  },
+  { href: '/buyer/alerts',    label: 'Price Alerts', Icon: BellIcon    },
+  { href: '/buyer/wallet',    label: 'Wallet',       Icon: WalletIcon  },
+  { href: '/buyer/profile',   label: 'Profile',      Icon: ProfileIcon },
 ] as const
 
 export default function BuyerLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+
   return (
     <div className="flex min-h-screen bg-cream">
       <aside className="hidden lg:flex w-64 flex-col bg-white border-r border-border fixed top-0 left-0 h-full z-30">
@@ -33,25 +38,36 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
             </div>
           </Link>
         </div>
+
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-          {SIDEBAR_ITEMS.map(({ href, label, Icon }) => (
-            <Link key={href} href={href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold
-                         text-muted-foreground hover:text-forest hover:bg-cream transition-colors">
-              <Icon size={18} />
-              {label}
-            </Link>
-          ))}
+          {SIDEBAR_ITEMS.map(({ href, label, Icon }) => {
+            const active = pathname === href ||
+              (href !== '/buyer/dashboard' && pathname.startsWith(href))
+            return (
+              <Link key={href} href={href}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors
+                  ${active
+                    ? 'bg-forest text-white'
+                    : 'text-muted-foreground hover:text-forest hover:bg-cream'}`}>
+                <Icon size={18} />
+                {label}
+              </Link>
+            )
+          })}
         </nav>
+
         <div className="p-3 border-t border-border">
-          <Link href="/profile"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold
-                       text-muted-foreground hover:text-forest hover:bg-cream transition-colors">
+          <Link href="/settings"
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors
+              ${pathname === '/settings'
+                ? 'bg-forest text-white'
+                : 'text-muted-foreground hover:text-forest hover:bg-cream'}`}>
             <SettingsIcon size={18} />
             Settings
           </Link>
         </div>
       </aside>
+
       <div className="flex-1 lg:ml-64">{children}</div>
       <BottomNav />
     </div>

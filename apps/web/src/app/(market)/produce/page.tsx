@@ -3,30 +3,90 @@ import { ListingFilters }   from '@/components/listings/listing-filters'
 import { ListingGrid }      from '@/components/listings/listing-grid'
 import { ListingGridSkeleton } from '@/components/shared/skeleton'
 import { MapViewToggle }    from '@/components/listings/map-view-toggle'
+import { prisma }           from '@/lib/prisma'
 import type { ListingSummary } from '@/lib/types'
 import type { ListingFilters as Filters } from '@/lib/validators'
-
-const API = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:4000/api/v1'
 
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
 async function fetchListings(filters: Filters) {
-  const params = new URLSearchParams()
-  Object.entries(filters).forEach(([k, v]) => {
-    if (v !== undefined && v !== '') params.set(k, String(v))
-  })
   try {
-    const res = await fetch(`${API}/listings?${params}`, {
-      next: { revalidate: 60 },
-    })
-    if (!res.ok) return { listings: [], totalPages: 1, total: 0 }
-    const json = await res.json()
+    const where = {
+      status: 'active' as const,
+      ...(filters.sector
+        ? { category: { sector: filters.sector as 'crops' | 'livestock' | 'poultry' | 'fisheries' | 'inputs' } }
+        : {}),
+      ...(filters.listingType
+        ? { listingType: filters.listingType as 'available_now' | 'harvest_pledge' }
+        : {}),
+      ...(filters.regionId
+        ? { regionId: Number(filters.regionId) }
+        : {}),
+      ...(filters.farmingMethod
+        ? { farmingMethod: filters.farmingMethod as 'conventional' | 'organic' | 'certified_organic' }
+        : {}),
+      ...(filters.bnplOnly     ? { bnplAvailable: true } : {}),
+      ...(filters.verifiedOnly
+        ? { seller: { verificationLevel: { in: ['field_verified', 'premium'] as const } } }
+        : {}),
+      ...(filters.search
+        ? { title: { contains: filters.search, mode: 'insensitive' as const } }
+        : {}),
+    }
+
+    const orderBy = (() => {
+      if (filters.sortBy === 'price_asc')  return { pricePerUnit: 'asc'  as const }
+      if (filters.sortBy === 'price_desc') return { pricePerUnit: 'desc' as const }
+      return { createdAt: 'desc' as const }
+    })()
+
+    const page  = Math.max(1, filters.page  ?? 1)
+    const limit = Math.min(50, filters.limit ?? 24)
+
+    const [total, rows] = await Promise.all([
+      prisma.listing.count({ where }),
+      prisma.listing.findMany({
+        where,
+        orderBy,
+        skip:  (page - 1) * limit,
+        take:  limit,
+        include: {
+          category: { select: { name: true, sector: true, slug: true } },
+          unit:     { select: { name: true, abbreviation: true } },
+          seller:   { select: { id: true, fullName: true, avatarUrl: true, verificationLevel: true, agroScore: true } },
+          region:   { select: { name: true, code: true } },
+          district: { select: { name: true } },
+        },
+      }),
+    ])
+
     return {
-      listings:   (json.data?.listings   ?? []) as ListingSummary[],
-      totalPages: (json.data?.totalPages ?? 1)  as number,
-      total:      (json.data?.total      ?? 0)  as number,
+      listings: rows.map(l => ({
+        id:                  l.id,
+        title:               l.title,
+        slug:                l.slug,
+        listingType:         l.listingType,
+        status:              l.status,
+        quantityAvailable:   Number(l.quantityAvailable),
+        pricePerUnit:        Number(l.pricePerUnit),
+        photos:              l.photos,
+        farmingMethod:       l.farmingMethod ?? null,
+        expectedHarvestDate: l.expectedHarvestDate?.toISOString() ?? null,
+        depositPercentage:   l.depositPercentage,
+        pledgeStatus:        l.pledgeStatus ?? null,
+        bnplAvailable:       l.bnplAvailable,
+        viewsCount:          l.viewsCount,
+        createdAt:           l.createdAt.toISOString(),
+        unit:                l.unit,
+        category:            l.category,
+        region:              l.region,
+        district:            l.district,
+        seller:              l.seller,
+      })) as ListingSummary[],
+      total,
+      totalPages: Math.ceil(total / limit),
     }
   } catch {
     return { listings: [], totalPages: 1, total: 0 }
