@@ -151,6 +151,14 @@ enum BNPLTier {
   commercial
 }
 
+enum EscrowStatus {
+  HELD
+  PENDING_RELEASE
+  RELEASED
+  DISPUTED
+  REFUNDED
+}
+
 enum AlertSeverity {
   info
   warning
@@ -291,6 +299,8 @@ model Profile {
   receivedMessages Message[]       @relation("RecipientMessages")
   pestReports      PestReport[]
   verifiedByAgent  FarmerProfile[] @relation("VerifiedByAgent")
+  buyerEscrows     EscrowTransaction[] @relation("BuyerEscrows")
+  farmerEscrows    EscrowTransaction[] @relation("FarmerEscrows")
 
   @@map("profiles")
 }
@@ -463,11 +473,36 @@ model Order {
   payments Payment[]
   bnplApplications BNPLApplication[]
   reviews  Review[]
+  escrowTransaction EscrowTransaction?
 
   @@index([buyerId])
   @@index([sellerId])
   @@index([trackingStatus])
   @@map("orders")
+}
+
+// ─── ESCROW ───────────────────────────────────────────────────────────────────
+
+model EscrowTransaction {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId       String       @unique @map("order_id") @db.Uuid
+  buyerId       String       @map("buyer_id") @db.Uuid
+  farmerId      String       @map("farmer_id") @db.Uuid
+  amount        Decimal      @db.Decimal(12, 2)
+  platformFee   Decimal      @map("platform_fee") @db.Decimal(10, 2)
+  payoutAmount  Decimal      @map("payout_amount") @db.Decimal(12, 2)
+  status        EscrowStatus @default(HELD)
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+
+  order   Order   @relation(fields: [orderId],   references: [id])
+  buyer   Profile @relation("BuyerEscrows",  fields: [buyerId],   references: [id])
+  farmer  Profile @relation("FarmerEscrows", fields: [farmerId],  references: [id])
+
+  @@index([buyerId])
+  @@index([farmerId])
+  @@index([status])
+  @@map("escrow_transactions")
 }
 
 // ─── PAYMENTS & WALLET ────────────────────────────────────────────────────────
