@@ -70,8 +70,8 @@ export default function BuyerDashboardPage() {
         {/* Quick actions */}
         <div className="grid grid-cols-2 gap-3">
           {[
-            { href: '/produce',         Icon: MarketIcon,  label: 'Browse produce', sub: 'Find fresh listings' },
-            { href: '/pledges',         Icon: PledgeIcon,  label: 'Harvest pledges',sub: 'Reserve future harvests' },
+            { href: '/buyer/marketplace', Icon: MarketIcon,  label: 'Browse produce', sub: 'Find fresh listings' },
+            { href: '/buyer/pledges',    Icon: PledgeIcon,  label: 'Harvest pledges',sub: 'Reserve future harvests' },
             { href: '/buyer/orders',    Icon: OrdersIcon,  label: 'My orders',      sub: `${stats?.activeOrders ?? 0} active` },
             { href: '/buyer/alerts',    Icon: BellIcon,    label: 'Price alerts',   sub: 'Get notified on price drops' },
           ].map(({ href, Icon, label, sub }) => (
@@ -89,13 +89,13 @@ export default function BuyerDashboardPage() {
           <div className="bg-white rounded-2xl border border-border overflow-hidden">
             <div className="px-5 py-4 border-b border-border flex items-center justify-between">
               <h2 className="font-bold text-forest text-sm">Active pledges</h2>
-              <Link href="/pledges" className="text-xs font-semibold text-forest hover:underline flex items-center gap-0.5">
+              <Link href="/buyer/pledges" className="text-xs font-semibold text-forest hover:underline flex items-center gap-0.5">
                 All <ChevronRightIcon size={12} />
               </Link>
             </div>
             <div className="divide-y divide-border">
               {pledges.map((p: any) => (
-                <Link key={p.id} href={`/orders/${p.id}`}
+                <Link key={p.id} href={`/buyer/orders/${p.id}`}
                   className="flex items-center gap-4 px-5 py-3.5 hover:bg-cream/40 transition-colors">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
@@ -131,7 +131,7 @@ export default function BuyerDashboardPage() {
             </div>
             <div className="divide-y divide-border">
               {orders.map((order: any) => (
-                <Link key={order.id} href={`/orders/${order.id}`}
+                <Link key={order.id} href={`/buyer/orders/${order.id}`}
                   className="flex items-center gap-4 px-5 py-3.5 hover:bg-cream/40 transition-colors">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-forest truncate">{order.listing?.title ?? 'Order'}</p>
