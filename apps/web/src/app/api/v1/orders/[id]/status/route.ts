@@ -3,15 +3,15 @@ import { z } from 'zod'
 import { getAuthProfile } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 
-// Seller-allowed forward transitions only
+// Seller-allowed forward transitions for trackingStatus (enum values only)
 const SELLER_TRANSITIONS: Partial<Record<string, string>> = {
   pending:    'confirmed',
   confirmed:  'preparing',
   preparing:  'dispatched',
   dispatched: 'in_transit',
-  delivered:  'completed',
 }
 
+// 'completed' is a logical state stored via completedAt, not a TrackingStatus enum value
 const schema = z.object({
   status:      z.enum(['confirmed', 'preparing', 'dispatched', 'in_transit', 'completed']),
   sellerNotes: z.string().max(500).optional(),
@@ -48,13 +48,47 @@ export async function PATCH(
   }
 
   const { status, sellerNotes } = parsed.data
-  const allowedNext = SELLER_TRANSITIONS[order.trackingStatus]
 
+  // 'completed' closes the order via completedAt — not a TrackingStatus enum value
+  if (status === 'completed') {
+    if (order.trackingStatus !== 'delivered') {
+      return NextResponse.json(
+        { success: false, error: 'Order must be in delivered state before it can be completed.' },
+        { status: 400 },
+      )
+    }
+    if (order.completedAt) {
+      return NextResponse.json(
+        { success: false, error: 'Order is already completed.' },
+        { status: 400 },
+      )
+    }
+    const now = new Date()
+    const updated = await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        completedAt: now,
+        ...(sellerNotes ? { sellerNotes } : {}),
+      },
+    })
+    return NextResponse.json({
+      success: true,
+      data: {
+        id:             updated.id,
+        orderNumber:    updated.orderNumber,
+        trackingStatus: updated.trackingStatus,
+        completedAt:    now.toISOString(),
+        sellerNotes:    updated.sellerNotes,
+      },
+    })
+  }
+
+  const allowedNext = SELLER_TRANSITIONS[order.trackingStatus]
   if (allowedNext !== status) {
     return NextResponse.json(
       {
         success: false,
-        error:   `Cannot transition from '${order.trackingStatus}' to '${status}'. Expected next status: '${allowedNext ?? 'none'}'.`,
+        error:   `Cannot transition from '${order.trackingStatus}' to '${status}'. Expected next: '${allowedNext ?? 'none'}'.`,
       },
       { status: 400 },
     )
@@ -74,6 +108,7 @@ export async function PATCH(
       id:             updated.id,
       orderNumber:    updated.orderNumber,
       trackingStatus: updated.trackingStatus,
+      completedAt:    updated.completedAt?.toISOString() ?? null,
       sellerNotes:    updated.sellerNotes,
     },
   })

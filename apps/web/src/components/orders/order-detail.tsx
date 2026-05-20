@@ -294,7 +294,7 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
       )}
 
       {/* Seller: complete order after buyer confirms delivery */}
-      {isSeller && order.trackingStatus === 'delivered' && (
+      {isSeller && order.trackingStatus === 'delivered' && !order.completedAt && (
         <div className="bg-white rounded-2xl border border-lime/40 p-4 space-y-3">
           <p className="text-xs text-muted-foreground">
             Buyer has confirmed delivery. Mark as complete to finalise the transaction and move funds to your balance.

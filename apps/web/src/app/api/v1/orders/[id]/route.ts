@@ -67,6 +67,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       createdAt:          order.createdAt.toISOString(),
       confirmedAt:        order.confirmedAt?.toISOString()  ?? null,
       deliveredAt:        order.deliveredAt?.toISOString()  ?? null,
+      completedAt:        order.completedAt?.toISOString()  ?? null,
       listing: l ? {
         title:               l.title,
         slug:                l.slug,
