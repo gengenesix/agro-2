@@ -21,25 +21,41 @@ const TX_TYPE_LABEL: Record<string, string> = {
 }
 
 export default function WalletPage() {
-  const [wallet, setWallet]   = useState<Wallet | null>(null)
-  const [txns, setTxns]       = useState<WalletTransaction[]>([])
-  const [loading, setLoading] = useState(true)
+  const [wallet, setWallet]         = useState<Wallet | null>(null)
+  const [txns, setTxns]             = useState<WalletTransaction[]>([])
+  const [orders, setOrders]         = useState<any[]>([])
+  const [loading, setLoading]       = useState(true)
   const [showWithdraw, setShowWithdraw] = useState(false)
 
   async function load() {
     try {
-      const [w, t] = await Promise.all([
+      const [w, t, o] = await Promise.allSettled([
         api.get('/payments/wallet'),
         api.get('/payments/wallet/transactions'),
+        api.get('/orders/mine?limit=200'),
       ])
-      setWallet(w.data.data)
-      setTxns(t.data.data.transactions ?? [])
+      if (w.status === 'fulfilled') setWallet(w.value.data.data)
+      if (t.status === 'fulfilled') setTxns(t.value.data.data.transactions ?? [])
+      if (o.status === 'fulfilled') setOrders(o.value.data.data.orders ?? [])
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => { load() }, [])
+
+  // Primary: wallet ledger. Fallback: live seller-scoped order aggregation
+  const inEscrow = txns.length > 0
+    ? (wallet?.pendingBalance ?? 0)
+    : orders
+        .filter(o => ['pending', 'confirmed'].includes(o.trackingStatus))
+        .reduce((sum, o) => sum + Number(o.totalAmount), 0)
+
+  const totalEarned = txns.length > 0
+    ? (wallet?.totalEarned ?? 0)
+    : orders
+        .filter(o => ['completed', 'delivered'].includes(o.trackingStatus))
+        .reduce((sum, o) => sum + Number(o.totalAmount), 0)
 
   if (loading) return (
     <main className="min-h-screen bg-cream p-4 sm:p-6 space-y-5">
@@ -59,14 +75,14 @@ export default function WalletPage() {
         {wallet && (
           <WalletCard
             balance={wallet.balance ?? 0}
-            pendingBalance={wallet.pendingBalance ?? 0}
-            totalEarned={wallet.totalEarned ?? 0}
+            pendingBalance={inEscrow}
+            totalEarned={totalEarned}
             onWithdraw={() => setShowWithdraw(true)}
           />
         )}
 
-        {/* Pending / escrow */}
-        {wallet && wallet.pendingBalance > 0 && (
+        {/* Pending / escrow banner */}
+        {inEscrow > 0 && (
           <div className="bg-harvest-gold/10 border border-harvest-gold/30 rounded-2xl px-5 py-4 flex justify-between items-center">
             <div>
               <p className="text-xs font-bold text-harvest-gold uppercase tracking-wider">In Escrow</p>
@@ -75,7 +91,7 @@ export default function WalletPage() {
               </p>
             </div>
             <p className="font-mono text-lg font-bold text-harvest-gold">
-              {formatGHS(wallet.pendingBalance)}
+              {formatGHS(inEscrow)}
             </p>
           </div>
         )}
