@@ -18,10 +18,11 @@ type Step = 'quantity' | 'confirm' | 'processing' | 'success' | 'error'
 export function OrderForm({ listing }: OrderFormProps) {
   const { user }   = useAuth()
   const router     = useRouter()
-  const [step, setStep]         = useState<Step>('quantity')
-  const [qty, setQty]           = useState(listing.minOrderQuantity ?? 1)
-  const [paymentMethod, setPM]  = useState<'mobile_money' | 'bnpl'>('mobile_money')
-  const [errorMsg, setErrorMsg] = useState('')
+  const [step, setStep]           = useState<Step>('quantity')
+  const [qty, setQty]             = useState(listing.minOrderQuantity ?? 1)
+  const [paymentMethod, setPM]    = useState<'mobile_money' | 'bnpl'>('mobile_money')
+  const [deliveryOption, setDO]   = useState<string>(listing.deliveryOptions?.[0] ?? 'pickup')
+  const [errorMsg, setErrorMsg]   = useState('')
 
   const min    = listing.minOrderQuantity ?? 1
   const max    = listing.quantityAvailable
@@ -33,9 +34,10 @@ export function OrderForm({ listing }: OrderFormProps) {
     setStep('processing')
     try {
       const { data } = await api.post('/orders', {
-        listingId:     listing.id,
-        quantity:      parseInt(String(qty), 10),
+        listingId:      listing.id,
+        quantity:       parseInt(String(qty), 10),
         paymentMethod,
+        deliveryOption,
       })
       const order = data.data
       if (paymentMethod === 'mobile_money' && order.paymentUrl) {
@@ -47,7 +49,7 @@ export function OrderForm({ listing }: OrderFormProps) {
       console.error('[OrderForm] API error:', {
         status:  err?.response?.status,
         data:    err?.response?.data,
-        payload: { listingId: listing.id, quantity: parseInt(String(qty), 10), paymentMethod },
+        payload: { listingId: listing.id, quantity: parseInt(String(qty), 10), paymentMethod, deliveryOption },
       })
       setErrorMsg(err.response?.data?.error ?? 'Failed to place order. Try again.')
       setStep('error')
@@ -133,6 +135,32 @@ export function OrderForm({ listing }: OrderFormProps) {
             Min {min} · Max {max} {listing.unit.abbreviation}
           </p>
         </div>
+
+        {/* Delivery option */}
+        {listing.deliveryOptions && listing.deliveryOptions.length > 1 && (
+          <div>
+            <p className="text-xs font-bold text-forest uppercase tracking-wider mb-2.5">
+              Delivery option
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              {listing.deliveryOptions.map(opt => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => setDO(opt)}
+                  className={`p-3 rounded-xl border text-left transition-all
+                    ${deliveryOption === opt
+                      ? 'border-forest bg-forest/5 ring-1 ring-forest/20'
+                      : 'border-border hover:border-forest/40'}`}
+                >
+                  <p className="text-xs font-bold text-forest capitalize">
+                    {opt.replace(/_/g, ' ')}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Payment method */}
         {listing.bnplAvailable && (
