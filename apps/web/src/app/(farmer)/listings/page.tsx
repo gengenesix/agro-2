@@ -73,50 +73,59 @@ export default function MyListingsPage() {
                 <div key={listing.id}
                      className="bg-white rounded-2xl border border-border flex items-center gap-4 p-4
                                 hover:shadow-md transition-shadow">
-                  {/* Thumbnail */}
-                  <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-cream-dark flex-shrink-0">
-                    {listing.photos?.[0] ? (
-                      <Image src={listing.photos[0]} alt={listing.title} fill sizes="64px" className="object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <ListProduceIcon size={20} className="text-muted-foreground" />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <SectorChip sector={listing.category.sector} label={listing.category.name} size="sm" />
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${status.cls}`}>
-                        {status.label}
-                      </span>
+                  {/* Clickable body — thumbnail + info → edit page (stays in farmer layout) */}
+                  <Link
+                    href={`/listings/${listing.slug}/edit`}
+                    className="flex items-center gap-4 flex-1 min-w-0"
+                  >
+                    {/* Thumbnail */}
+                    <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-cream-dark flex-shrink-0">
+                      {listing.photos?.[0] ? (
+                        <Image src={listing.photos[0]} alt={listing.title} fill sizes="64px" className="object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <ListProduceIcon size={20} className="text-muted-foreground" />
+                        </div>
+                      )}
                     </div>
-                    <p className="font-display text-sm font-semibold text-forest truncate">{listing.title}</p>
-                    <div className="flex items-center justify-between mt-1.5 gap-4">
-                      <span className="font-mono text-xs font-bold text-forest flex-shrink-0">
-                        {formatGHS(listing.pricePerUnit)}/{listing.unit.abbreviation}
-                      </span>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span>{Number(listing.quantityAvailable).toLocaleString()} {listing.unit.abbreviation} left</span>
-                        <span className="flex items-center gap-1">
-                          <EyeIcon size={11} />
-                          {listing.viewsCount ?? 0} views
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <SectorChip sector={listing.category.sector} label={listing.category.name} size="sm" />
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${status.cls}`}>
+                          {status.label}
                         </span>
                       </div>
+                      <p className="font-display text-sm font-semibold text-forest truncate">{listing.title}</p>
+                      <div className="flex items-center justify-between mt-1.5 gap-4">
+                        <span className="font-mono text-xs font-bold text-forest flex-shrink-0">
+                          {formatGHS(listing.pricePerUnit)}/{listing.unit.abbreviation}
+                        </span>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <span>{Number(listing.quantityAvailable).toLocaleString()} {listing.unit.abbreviation} left</span>
+                          <span className="flex items-center gap-1">
+                            <EyeIcon size={11} />
+                            {listing.viewsCount ?? 0} views
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <Link
+                    {/* Public preview — opens in new tab, farmer keeps layout context */}
+                    <a
                       href={`/produce/${listing.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest
                                  hover:bg-cream transition-colors"
-                      title="Preview"
+                      title="Public preview"
                     >
                       <EyeIcon size={15} />
-                    </Link>
+                    </a>
                     <Link
                       href={`/listings/${listing.slug}/edit`}
                       className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest
