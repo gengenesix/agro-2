@@ -308,6 +308,19 @@ exports.Prisma.OrderScalarFieldEnum = {
   cancellationReason: 'cancellationReason'
 };
 
+exports.Prisma.EscrowTransactionScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  buyerId: 'buyerId',
+  farmerId: 'farmerId',
+  amount: 'amount',
+  platformFee: 'platformFee',
+  payoutAmount: 'payoutAmount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.PaymentScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
@@ -598,6 +611,14 @@ exports.PledgeProgress = exports.$Enums.PledgeProgress = {
   delivered: 'delivered'
 };
 
+exports.EscrowStatus = exports.$Enums.EscrowStatus = {
+  HELD: 'HELD',
+  PENDING_RELEASE: 'PENDING_RELEASE',
+  RELEASED: 'RELEASED',
+  DISPUTED: 'DISPUTED',
+  REFUNDED: 'REFUNDED'
+};
+
 exports.PaymentType = exports.$Enums.PaymentType = {
   deposit: 'deposit',
   balance: 'balance',
@@ -673,6 +694,7 @@ exports.Prisma.ModelName = {
   BuyerProfile: 'BuyerProfile',
   Listing: 'Listing',
   Order: 'Order',
+  EscrowTransaction: 'EscrowTransaction',
   Payment: 'Payment',
   Wallet: 'Wallet',
   WalletTransaction: 'WalletTransaction',

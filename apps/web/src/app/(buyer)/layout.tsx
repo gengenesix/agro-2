@@ -9,13 +9,13 @@ import {
 import { BottomNav } from '@/components/shared/navbar'
 
 const SIDEBAR_ITEMS = [
-  { href: '/buyer/dashboard', label: 'Dashboard',    Icon: HomeIcon    },
-  { href: '/produce',         label: 'Marketplace',  Icon: MarketIcon  },
-  { href: '/pledges',         label: 'Pledges',      Icon: PledgeIcon  },
-  { href: '/buyer/orders',    label: 'My Orders',    Icon: OrdersIcon  },
-  { href: '/buyer/alerts',    label: 'Price Alerts', Icon: BellIcon    },
-  { href: '/buyer/wallet',    label: 'Wallet',       Icon: WalletIcon  },
-  { href: '/buyer/profile',   label: 'Profile',      Icon: ProfileIcon },
+  { href: '/buyer/dashboard',    label: 'Dashboard',    Icon: HomeIcon    },
+  { href: '/buyer/marketplace',  label: 'Marketplace',  Icon: MarketIcon  },
+  { href: '/buyer/pledges',      label: 'Pledges',      Icon: PledgeIcon  },
+  { href: '/buyer/orders',       label: 'My Orders',    Icon: OrdersIcon  },
+  { href: '/buyer/alerts',       label: 'Price Alerts', Icon: BellIcon    },
+  { href: '/buyer/wallet',       label: 'Wallet',       Icon: WalletIcon  },
+  { href: '/buyer/profile',      label: 'Profile',      Icon: ProfileIcon },
 ] as const
 
 export default function BuyerLayout({ children }: { children: React.ReactNode }) {

@@ -64,6 +64,11 @@ export type Listing = $Result.DefaultSelection<Prisma.$ListingPayload>
  */
 export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
 /**
+ * Model EscrowTransaction
+ * 
+ */
+export type EscrowTransaction = $Result.DefaultSelection<Prisma.$EscrowTransactionPayload>
+/**
  * Model Payment
  * 
  */
@@ -270,6 +275,17 @@ export const PledgeProgress: {
 export type PledgeProgress = (typeof PledgeProgress)[keyof typeof PledgeProgress]
 
 
+export const EscrowStatus: {
+  HELD: 'HELD',
+  PENDING_RELEASE: 'PENDING_RELEASE',
+  RELEASED: 'RELEASED',
+  DISPUTED: 'DISPUTED',
+  REFUNDED: 'REFUNDED'
+};
+
+export type EscrowStatus = (typeof EscrowStatus)[keyof typeof EscrowStatus]
+
+
 export const PaymentType: {
   deposit: 'deposit',
   balance: 'balance',
@@ -410,6 +426,10 @@ export const TrackingStatus: typeof $Enums.TrackingStatus
 export type PledgeProgress = $Enums.PledgeProgress
 
 export const PledgeProgress: typeof $Enums.PledgeProgress
+
+export type EscrowStatus = $Enums.EscrowStatus
+
+export const EscrowStatus: typeof $Enums.EscrowStatus
 
 export type PaymentType = $Enums.PaymentType
 
@@ -665,6 +685,16 @@ export class PrismaClient<
     * ```
     */
   get order(): Prisma.OrderDelegate<ExtArgs>;
+
+  /**
+   * `prisma.escrowTransaction`: Exposes CRUD operations for the **EscrowTransaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EscrowTransactions
+    * const escrowTransactions = await prisma.escrowTransaction.findMany()
+    * ```
+    */
+  get escrowTransaction(): Prisma.EscrowTransactionDelegate<ExtArgs>;
 
   /**
    * `prisma.payment`: Exposes CRUD operations for the **Payment** model.
@@ -1236,6 +1266,7 @@ export namespace Prisma {
     BuyerProfile: 'BuyerProfile',
     Listing: 'Listing',
     Order: 'Order',
+    EscrowTransaction: 'EscrowTransaction',
     Payment: 'Payment',
     Wallet: 'Wallet',
     WalletTransaction: 'WalletTransaction',
@@ -1263,7 +1294,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "region" | "district" | "productCategory" | "unitOfMeasure" | "profile" | "farmerProfile" | "dealerProfile" | "buyerProfile" | "listing" | "order" | "payment" | "wallet" | "walletTransaction" | "bNPLApplication" | "bNPLRepayment" | "marketPrice" | "weatherAlert" | "pestReport" | "review" | "notification" | "message" | "platformStats"
+      modelProps: "region" | "district" | "productCategory" | "unitOfMeasure" | "profile" | "farmerProfile" | "dealerProfile" | "buyerProfile" | "listing" | "order" | "escrowTransaction" | "payment" | "wallet" | "walletTransaction" | "bNPLApplication" | "bNPLRepayment" | "marketPrice" | "weatherAlert" | "pestReport" | "review" | "notification" | "message" | "platformStats"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1964,6 +1995,76 @@ export namespace Prisma {
           count: {
             args: Prisma.OrderCountArgs<ExtArgs>
             result: $Utils.Optional<OrderCountAggregateOutputType> | number
+          }
+        }
+      }
+      EscrowTransaction: {
+        payload: Prisma.$EscrowTransactionPayload<ExtArgs>
+        fields: Prisma.EscrowTransactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EscrowTransactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EscrowTransactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload>
+          }
+          findFirst: {
+            args: Prisma.EscrowTransactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EscrowTransactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload>
+          }
+          findMany: {
+            args: Prisma.EscrowTransactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload>[]
+          }
+          create: {
+            args: Prisma.EscrowTransactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload>
+          }
+          createMany: {
+            args: Prisma.EscrowTransactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EscrowTransactionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload>[]
+          }
+          delete: {
+            args: Prisma.EscrowTransactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload>
+          }
+          update: {
+            args: Prisma.EscrowTransactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.EscrowTransactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EscrowTransactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EscrowTransactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EscrowTransactionPayload>
+          }
+          aggregate: {
+            args: Prisma.EscrowTransactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEscrowTransaction>
+          }
+          groupBy: {
+            args: Prisma.EscrowTransactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EscrowTransactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EscrowTransactionCountArgs<ExtArgs>
+            result: $Utils.Optional<EscrowTransactionCountAggregateOutputType> | number
           }
         }
       }
@@ -3203,6 +3304,8 @@ export namespace Prisma {
     receivedMessages: number
     pestReports: number
     verifiedByAgent: number
+    buyerEscrows: number
+    farmerEscrows: number
   }
 
   export type ProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3218,6 +3321,8 @@ export namespace Prisma {
     receivedMessages?: boolean | ProfileCountOutputTypeCountReceivedMessagesArgs
     pestReports?: boolean | ProfileCountOutputTypeCountPestReportsArgs
     verifiedByAgent?: boolean | ProfileCountOutputTypeCountVerifiedByAgentArgs
+    buyerEscrows?: boolean | ProfileCountOutputTypeCountBuyerEscrowsArgs
+    farmerEscrows?: boolean | ProfileCountOutputTypeCountFarmerEscrowsArgs
   }
 
   // Custom InputTypes
@@ -3313,6 +3418,20 @@ export namespace Prisma {
    */
   export type ProfileCountOutputTypeCountVerifiedByAgentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FarmerProfileWhereInput
+  }
+
+  /**
+   * ProfileCountOutputType without action
+   */
+  export type ProfileCountOutputTypeCountBuyerEscrowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EscrowTransactionWhereInput
+  }
+
+  /**
+   * ProfileCountOutputType without action
+   */
+  export type ProfileCountOutputTypeCountFarmerEscrowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EscrowTransactionWhereInput
   }
 
 
@@ -8090,6 +8209,8 @@ export namespace Prisma {
     receivedMessages?: boolean | Profile$receivedMessagesArgs<ExtArgs>
     pestReports?: boolean | Profile$pestReportsArgs<ExtArgs>
     verifiedByAgent?: boolean | Profile$verifiedByAgentArgs<ExtArgs>
+    buyerEscrows?: boolean | Profile$buyerEscrowsArgs<ExtArgs>
+    farmerEscrows?: boolean | Profile$farmerEscrowsArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["profile"]>
 
@@ -8150,6 +8271,8 @@ export namespace Prisma {
     receivedMessages?: boolean | Profile$receivedMessagesArgs<ExtArgs>
     pestReports?: boolean | Profile$pestReportsArgs<ExtArgs>
     verifiedByAgent?: boolean | Profile$verifiedByAgentArgs<ExtArgs>
+    buyerEscrows?: boolean | Profile$buyerEscrowsArgs<ExtArgs>
+    farmerEscrows?: boolean | Profile$farmerEscrowsArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -8173,6 +8296,8 @@ export namespace Prisma {
       receivedMessages: Prisma.$MessagePayload<ExtArgs>[]
       pestReports: Prisma.$PestReportPayload<ExtArgs>[]
       verifiedByAgent: Prisma.$FarmerProfilePayload<ExtArgs>[]
+      buyerEscrows: Prisma.$EscrowTransactionPayload<ExtArgs>[]
+      farmerEscrows: Prisma.$EscrowTransactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8572,6 +8697,8 @@ export namespace Prisma {
     receivedMessages<T extends Profile$receivedMessagesArgs<ExtArgs> = {}>(args?: Subset<T, Profile$receivedMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany"> | Null>
     pestReports<T extends Profile$pestReportsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$pestReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PestReportPayload<ExtArgs>, T, "findMany"> | Null>
     verifiedByAgent<T extends Profile$verifiedByAgentArgs<ExtArgs> = {}>(args?: Subset<T, Profile$verifiedByAgentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FarmerProfilePayload<ExtArgs>, T, "findMany"> | Null>
+    buyerEscrows<T extends Profile$buyerEscrowsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$buyerEscrowsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "findMany"> | Null>
+    farmerEscrows<T extends Profile$farmerEscrowsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$farmerEscrowsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9229,6 +9356,46 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FarmerProfileScalarFieldEnum | FarmerProfileScalarFieldEnum[]
+  }
+
+  /**
+   * Profile.buyerEscrows
+   */
+  export type Profile$buyerEscrowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    where?: EscrowTransactionWhereInput
+    orderBy?: EscrowTransactionOrderByWithRelationInput | EscrowTransactionOrderByWithRelationInput[]
+    cursor?: EscrowTransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EscrowTransactionScalarFieldEnum | EscrowTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Profile.farmerEscrows
+   */
+  export type Profile$farmerEscrowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    where?: EscrowTransactionWhereInput
+    orderBy?: EscrowTransactionOrderByWithRelationInput | EscrowTransactionOrderByWithRelationInput[]
+    cursor?: EscrowTransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EscrowTransactionScalarFieldEnum | EscrowTransactionScalarFieldEnum[]
   }
 
   /**
@@ -14441,6 +14608,7 @@ export namespace Prisma {
     payments?: boolean | Order$paymentsArgs<ExtArgs>
     bnplApplications?: boolean | Order$bnplApplicationsArgs<ExtArgs>
     reviews?: boolean | Order$reviewsArgs<ExtArgs>
+    escrowTransaction?: boolean | Order$escrowTransactionArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -14518,6 +14686,7 @@ export namespace Prisma {
     payments?: boolean | Order$paymentsArgs<ExtArgs>
     bnplApplications?: boolean | Order$bnplApplicationsArgs<ExtArgs>
     reviews?: boolean | Order$reviewsArgs<ExtArgs>
+    escrowTransaction?: boolean | Order$escrowTransactionArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14535,6 +14704,7 @@ export namespace Prisma {
       payments: Prisma.$PaymentPayload<ExtArgs>[]
       bnplApplications: Prisma.$BNPLApplicationPayload<ExtArgs>[]
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
+      escrowTransaction: Prisma.$EscrowTransactionPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14936,6 +15106,7 @@ export namespace Prisma {
     payments<T extends Order$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Order$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany"> | Null>
     bnplApplications<T extends Order$bnplApplicationsArgs<ExtArgs> = {}>(args?: Subset<T, Order$bnplApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BNPLApplicationPayload<ExtArgs>, T, "findMany"> | Null>
     reviews<T extends Order$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Order$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany"> | Null>
+    escrowTransaction<T extends Order$escrowTransactionArgs<ExtArgs> = {}>(args?: Subset<T, Order$escrowTransactionArgs<ExtArgs>>): Prisma__EscrowTransactionClient<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15372,6 +15543,21 @@ export namespace Prisma {
   }
 
   /**
+   * Order.escrowTransaction
+   */
+  export type Order$escrowTransactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    where?: EscrowTransactionWhereInput
+  }
+
+  /**
    * Order without action
    */
   export type OrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15383,6 +15569,1053 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EscrowTransaction
+   */
+
+  export type AggregateEscrowTransaction = {
+    _count: EscrowTransactionCountAggregateOutputType | null
+    _avg: EscrowTransactionAvgAggregateOutputType | null
+    _sum: EscrowTransactionSumAggregateOutputType | null
+    _min: EscrowTransactionMinAggregateOutputType | null
+    _max: EscrowTransactionMaxAggregateOutputType | null
+  }
+
+  export type EscrowTransactionAvgAggregateOutputType = {
+    amount: Decimal | null
+    platformFee: Decimal | null
+    payoutAmount: Decimal | null
+  }
+
+  export type EscrowTransactionSumAggregateOutputType = {
+    amount: Decimal | null
+    platformFee: Decimal | null
+    payoutAmount: Decimal | null
+  }
+
+  export type EscrowTransactionMinAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    buyerId: string | null
+    farmerId: string | null
+    amount: Decimal | null
+    platformFee: Decimal | null
+    payoutAmount: Decimal | null
+    status: $Enums.EscrowStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EscrowTransactionMaxAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    buyerId: string | null
+    farmerId: string | null
+    amount: Decimal | null
+    platformFee: Decimal | null
+    payoutAmount: Decimal | null
+    status: $Enums.EscrowStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EscrowTransactionCountAggregateOutputType = {
+    id: number
+    orderId: number
+    buyerId: number
+    farmerId: number
+    amount: number
+    platformFee: number
+    payoutAmount: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EscrowTransactionAvgAggregateInputType = {
+    amount?: true
+    platformFee?: true
+    payoutAmount?: true
+  }
+
+  export type EscrowTransactionSumAggregateInputType = {
+    amount?: true
+    platformFee?: true
+    payoutAmount?: true
+  }
+
+  export type EscrowTransactionMinAggregateInputType = {
+    id?: true
+    orderId?: true
+    buyerId?: true
+    farmerId?: true
+    amount?: true
+    platformFee?: true
+    payoutAmount?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EscrowTransactionMaxAggregateInputType = {
+    id?: true
+    orderId?: true
+    buyerId?: true
+    farmerId?: true
+    amount?: true
+    platformFee?: true
+    payoutAmount?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EscrowTransactionCountAggregateInputType = {
+    id?: true
+    orderId?: true
+    buyerId?: true
+    farmerId?: true
+    amount?: true
+    platformFee?: true
+    payoutAmount?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EscrowTransactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EscrowTransaction to aggregate.
+     */
+    where?: EscrowTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EscrowTransactions to fetch.
+     */
+    orderBy?: EscrowTransactionOrderByWithRelationInput | EscrowTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EscrowTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EscrowTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EscrowTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EscrowTransactions
+    **/
+    _count?: true | EscrowTransactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EscrowTransactionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EscrowTransactionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EscrowTransactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EscrowTransactionMaxAggregateInputType
+  }
+
+  export type GetEscrowTransactionAggregateType<T extends EscrowTransactionAggregateArgs> = {
+        [P in keyof T & keyof AggregateEscrowTransaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEscrowTransaction[P]>
+      : GetScalarType<T[P], AggregateEscrowTransaction[P]>
+  }
+
+
+
+
+  export type EscrowTransactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EscrowTransactionWhereInput
+    orderBy?: EscrowTransactionOrderByWithAggregationInput | EscrowTransactionOrderByWithAggregationInput[]
+    by: EscrowTransactionScalarFieldEnum[] | EscrowTransactionScalarFieldEnum
+    having?: EscrowTransactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EscrowTransactionCountAggregateInputType | true
+    _avg?: EscrowTransactionAvgAggregateInputType
+    _sum?: EscrowTransactionSumAggregateInputType
+    _min?: EscrowTransactionMinAggregateInputType
+    _max?: EscrowTransactionMaxAggregateInputType
+  }
+
+  export type EscrowTransactionGroupByOutputType = {
+    id: string
+    orderId: string
+    buyerId: string
+    farmerId: string
+    amount: Decimal
+    platformFee: Decimal
+    payoutAmount: Decimal
+    status: $Enums.EscrowStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: EscrowTransactionCountAggregateOutputType | null
+    _avg: EscrowTransactionAvgAggregateOutputType | null
+    _sum: EscrowTransactionSumAggregateOutputType | null
+    _min: EscrowTransactionMinAggregateOutputType | null
+    _max: EscrowTransactionMaxAggregateOutputType | null
+  }
+
+  type GetEscrowTransactionGroupByPayload<T extends EscrowTransactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EscrowTransactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EscrowTransactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EscrowTransactionGroupByOutputType[P]>
+            : GetScalarType<T[P], EscrowTransactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EscrowTransactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    buyerId?: boolean
+    farmerId?: boolean
+    amount?: boolean
+    platformFee?: boolean
+    payoutAmount?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    buyer?: boolean | ProfileDefaultArgs<ExtArgs>
+    farmer?: boolean | ProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["escrowTransaction"]>
+
+  export type EscrowTransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    buyerId?: boolean
+    farmerId?: boolean
+    amount?: boolean
+    platformFee?: boolean
+    payoutAmount?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    buyer?: boolean | ProfileDefaultArgs<ExtArgs>
+    farmer?: boolean | ProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["escrowTransaction"]>
+
+  export type EscrowTransactionSelectScalar = {
+    id?: boolean
+    orderId?: boolean
+    buyerId?: boolean
+    farmerId?: boolean
+    amount?: boolean
+    platformFee?: boolean
+    payoutAmount?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EscrowTransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    buyer?: boolean | ProfileDefaultArgs<ExtArgs>
+    farmer?: boolean | ProfileDefaultArgs<ExtArgs>
+  }
+  export type EscrowTransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    buyer?: boolean | ProfileDefaultArgs<ExtArgs>
+    farmer?: boolean | ProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $EscrowTransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EscrowTransaction"
+    objects: {
+      order: Prisma.$OrderPayload<ExtArgs>
+      buyer: Prisma.$ProfilePayload<ExtArgs>
+      farmer: Prisma.$ProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      orderId: string
+      buyerId: string
+      farmerId: string
+      amount: Prisma.Decimal
+      platformFee: Prisma.Decimal
+      payoutAmount: Prisma.Decimal
+      status: $Enums.EscrowStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["escrowTransaction"]>
+    composites: {}
+  }
+
+  type EscrowTransactionGetPayload<S extends boolean | null | undefined | EscrowTransactionDefaultArgs> = $Result.GetResult<Prisma.$EscrowTransactionPayload, S>
+
+  type EscrowTransactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<EscrowTransactionFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: EscrowTransactionCountAggregateInputType | true
+    }
+
+  export interface EscrowTransactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EscrowTransaction'], meta: { name: 'EscrowTransaction' } }
+    /**
+     * Find zero or one EscrowTransaction that matches the filter.
+     * @param {EscrowTransactionFindUniqueArgs} args - Arguments to find a EscrowTransaction
+     * @example
+     * // Get one EscrowTransaction
+     * const escrowTransaction = await prisma.escrowTransaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EscrowTransactionFindUniqueArgs>(args: SelectSubset<T, EscrowTransactionFindUniqueArgs<ExtArgs>>): Prisma__EscrowTransactionClient<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one EscrowTransaction that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {EscrowTransactionFindUniqueOrThrowArgs} args - Arguments to find a EscrowTransaction
+     * @example
+     * // Get one EscrowTransaction
+     * const escrowTransaction = await prisma.escrowTransaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EscrowTransactionFindUniqueOrThrowArgs>(args: SelectSubset<T, EscrowTransactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EscrowTransactionClient<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first EscrowTransaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EscrowTransactionFindFirstArgs} args - Arguments to find a EscrowTransaction
+     * @example
+     * // Get one EscrowTransaction
+     * const escrowTransaction = await prisma.escrowTransaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EscrowTransactionFindFirstArgs>(args?: SelectSubset<T, EscrowTransactionFindFirstArgs<ExtArgs>>): Prisma__EscrowTransactionClient<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first EscrowTransaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EscrowTransactionFindFirstOrThrowArgs} args - Arguments to find a EscrowTransaction
+     * @example
+     * // Get one EscrowTransaction
+     * const escrowTransaction = await prisma.escrowTransaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EscrowTransactionFindFirstOrThrowArgs>(args?: SelectSubset<T, EscrowTransactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__EscrowTransactionClient<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more EscrowTransactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EscrowTransactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EscrowTransactions
+     * const escrowTransactions = await prisma.escrowTransaction.findMany()
+     * 
+     * // Get first 10 EscrowTransactions
+     * const escrowTransactions = await prisma.escrowTransaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const escrowTransactionWithIdOnly = await prisma.escrowTransaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EscrowTransactionFindManyArgs>(args?: SelectSubset<T, EscrowTransactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a EscrowTransaction.
+     * @param {EscrowTransactionCreateArgs} args - Arguments to create a EscrowTransaction.
+     * @example
+     * // Create one EscrowTransaction
+     * const EscrowTransaction = await prisma.escrowTransaction.create({
+     *   data: {
+     *     // ... data to create a EscrowTransaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends EscrowTransactionCreateArgs>(args: SelectSubset<T, EscrowTransactionCreateArgs<ExtArgs>>): Prisma__EscrowTransactionClient<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many EscrowTransactions.
+     * @param {EscrowTransactionCreateManyArgs} args - Arguments to create many EscrowTransactions.
+     * @example
+     * // Create many EscrowTransactions
+     * const escrowTransaction = await prisma.escrowTransaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EscrowTransactionCreateManyArgs>(args?: SelectSubset<T, EscrowTransactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EscrowTransactions and returns the data saved in the database.
+     * @param {EscrowTransactionCreateManyAndReturnArgs} args - Arguments to create many EscrowTransactions.
+     * @example
+     * // Create many EscrowTransactions
+     * const escrowTransaction = await prisma.escrowTransaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EscrowTransactions and only return the `id`
+     * const escrowTransactionWithIdOnly = await prisma.escrowTransaction.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EscrowTransactionCreateManyAndReturnArgs>(args?: SelectSubset<T, EscrowTransactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a EscrowTransaction.
+     * @param {EscrowTransactionDeleteArgs} args - Arguments to delete one EscrowTransaction.
+     * @example
+     * // Delete one EscrowTransaction
+     * const EscrowTransaction = await prisma.escrowTransaction.delete({
+     *   where: {
+     *     // ... filter to delete one EscrowTransaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EscrowTransactionDeleteArgs>(args: SelectSubset<T, EscrowTransactionDeleteArgs<ExtArgs>>): Prisma__EscrowTransactionClient<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one EscrowTransaction.
+     * @param {EscrowTransactionUpdateArgs} args - Arguments to update one EscrowTransaction.
+     * @example
+     * // Update one EscrowTransaction
+     * const escrowTransaction = await prisma.escrowTransaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EscrowTransactionUpdateArgs>(args: SelectSubset<T, EscrowTransactionUpdateArgs<ExtArgs>>): Prisma__EscrowTransactionClient<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more EscrowTransactions.
+     * @param {EscrowTransactionDeleteManyArgs} args - Arguments to filter EscrowTransactions to delete.
+     * @example
+     * // Delete a few EscrowTransactions
+     * const { count } = await prisma.escrowTransaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EscrowTransactionDeleteManyArgs>(args?: SelectSubset<T, EscrowTransactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EscrowTransactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EscrowTransactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EscrowTransactions
+     * const escrowTransaction = await prisma.escrowTransaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EscrowTransactionUpdateManyArgs>(args: SelectSubset<T, EscrowTransactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EscrowTransaction.
+     * @param {EscrowTransactionUpsertArgs} args - Arguments to update or create a EscrowTransaction.
+     * @example
+     * // Update or create a EscrowTransaction
+     * const escrowTransaction = await prisma.escrowTransaction.upsert({
+     *   create: {
+     *     // ... data to create a EscrowTransaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EscrowTransaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EscrowTransactionUpsertArgs>(args: SelectSubset<T, EscrowTransactionUpsertArgs<ExtArgs>>): Prisma__EscrowTransactionClient<$Result.GetResult<Prisma.$EscrowTransactionPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of EscrowTransactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EscrowTransactionCountArgs} args - Arguments to filter EscrowTransactions to count.
+     * @example
+     * // Count the number of EscrowTransactions
+     * const count = await prisma.escrowTransaction.count({
+     *   where: {
+     *     // ... the filter for the EscrowTransactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends EscrowTransactionCountArgs>(
+      args?: Subset<T, EscrowTransactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EscrowTransactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EscrowTransaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EscrowTransactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EscrowTransactionAggregateArgs>(args: Subset<T, EscrowTransactionAggregateArgs>): Prisma.PrismaPromise<GetEscrowTransactionAggregateType<T>>
+
+    /**
+     * Group by EscrowTransaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EscrowTransactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EscrowTransactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EscrowTransactionGroupByArgs['orderBy'] }
+        : { orderBy?: EscrowTransactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EscrowTransactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEscrowTransactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EscrowTransaction model
+   */
+  readonly fields: EscrowTransactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EscrowTransaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EscrowTransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    buyer<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    farmer<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EscrowTransaction model
+   */ 
+  interface EscrowTransactionFieldRefs {
+    readonly id: FieldRef<"EscrowTransaction", 'String'>
+    readonly orderId: FieldRef<"EscrowTransaction", 'String'>
+    readonly buyerId: FieldRef<"EscrowTransaction", 'String'>
+    readonly farmerId: FieldRef<"EscrowTransaction", 'String'>
+    readonly amount: FieldRef<"EscrowTransaction", 'Decimal'>
+    readonly platformFee: FieldRef<"EscrowTransaction", 'Decimal'>
+    readonly payoutAmount: FieldRef<"EscrowTransaction", 'Decimal'>
+    readonly status: FieldRef<"EscrowTransaction", 'EscrowStatus'>
+    readonly createdAt: FieldRef<"EscrowTransaction", 'DateTime'>
+    readonly updatedAt: FieldRef<"EscrowTransaction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EscrowTransaction findUnique
+   */
+  export type EscrowTransactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which EscrowTransaction to fetch.
+     */
+    where: EscrowTransactionWhereUniqueInput
+  }
+
+  /**
+   * EscrowTransaction findUniqueOrThrow
+   */
+  export type EscrowTransactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which EscrowTransaction to fetch.
+     */
+    where: EscrowTransactionWhereUniqueInput
+  }
+
+  /**
+   * EscrowTransaction findFirst
+   */
+  export type EscrowTransactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which EscrowTransaction to fetch.
+     */
+    where?: EscrowTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EscrowTransactions to fetch.
+     */
+    orderBy?: EscrowTransactionOrderByWithRelationInput | EscrowTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EscrowTransactions.
+     */
+    cursor?: EscrowTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EscrowTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EscrowTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EscrowTransactions.
+     */
+    distinct?: EscrowTransactionScalarFieldEnum | EscrowTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * EscrowTransaction findFirstOrThrow
+   */
+  export type EscrowTransactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which EscrowTransaction to fetch.
+     */
+    where?: EscrowTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EscrowTransactions to fetch.
+     */
+    orderBy?: EscrowTransactionOrderByWithRelationInput | EscrowTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EscrowTransactions.
+     */
+    cursor?: EscrowTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EscrowTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EscrowTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EscrowTransactions.
+     */
+    distinct?: EscrowTransactionScalarFieldEnum | EscrowTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * EscrowTransaction findMany
+   */
+  export type EscrowTransactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which EscrowTransactions to fetch.
+     */
+    where?: EscrowTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EscrowTransactions to fetch.
+     */
+    orderBy?: EscrowTransactionOrderByWithRelationInput | EscrowTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EscrowTransactions.
+     */
+    cursor?: EscrowTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EscrowTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EscrowTransactions.
+     */
+    skip?: number
+    distinct?: EscrowTransactionScalarFieldEnum | EscrowTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * EscrowTransaction create
+   */
+  export type EscrowTransactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EscrowTransaction.
+     */
+    data: XOR<EscrowTransactionCreateInput, EscrowTransactionUncheckedCreateInput>
+  }
+
+  /**
+   * EscrowTransaction createMany
+   */
+  export type EscrowTransactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EscrowTransactions.
+     */
+    data: EscrowTransactionCreateManyInput | EscrowTransactionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EscrowTransaction createManyAndReturn
+   */
+  export type EscrowTransactionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many EscrowTransactions.
+     */
+    data: EscrowTransactionCreateManyInput | EscrowTransactionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EscrowTransaction update
+   */
+  export type EscrowTransactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EscrowTransaction.
+     */
+    data: XOR<EscrowTransactionUpdateInput, EscrowTransactionUncheckedUpdateInput>
+    /**
+     * Choose, which EscrowTransaction to update.
+     */
+    where: EscrowTransactionWhereUniqueInput
+  }
+
+  /**
+   * EscrowTransaction updateMany
+   */
+  export type EscrowTransactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EscrowTransactions.
+     */
+    data: XOR<EscrowTransactionUpdateManyMutationInput, EscrowTransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which EscrowTransactions to update
+     */
+    where?: EscrowTransactionWhereInput
+  }
+
+  /**
+   * EscrowTransaction upsert
+   */
+  export type EscrowTransactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EscrowTransaction to update in case it exists.
+     */
+    where: EscrowTransactionWhereUniqueInput
+    /**
+     * In case the EscrowTransaction found by the `where` argument doesn't exist, create a new EscrowTransaction with this data.
+     */
+    create: XOR<EscrowTransactionCreateInput, EscrowTransactionUncheckedCreateInput>
+    /**
+     * In case the EscrowTransaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EscrowTransactionUpdateInput, EscrowTransactionUncheckedUpdateInput>
+  }
+
+  /**
+   * EscrowTransaction delete
+   */
+  export type EscrowTransactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
+    /**
+     * Filter which EscrowTransaction to delete.
+     */
+    where: EscrowTransactionWhereUniqueInput
+  }
+
+  /**
+   * EscrowTransaction deleteMany
+   */
+  export type EscrowTransactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EscrowTransactions to delete
+     */
+    where?: EscrowTransactionWhereInput
+  }
+
+  /**
+   * EscrowTransaction without action
+   */
+  export type EscrowTransactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EscrowTransaction
+     */
+    select?: EscrowTransactionSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EscrowTransactionInclude<ExtArgs> | null
   }
 
 
@@ -28231,6 +29464,22 @@ export namespace Prisma {
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
+  export const EscrowTransactionScalarFieldEnum: {
+    id: 'id',
+    orderId: 'orderId',
+    buyerId: 'buyerId',
+    farmerId: 'farmerId',
+    amount: 'amount',
+    platformFee: 'platformFee',
+    payoutAmount: 'payoutAmount',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EscrowTransactionScalarFieldEnum = (typeof EscrowTransactionScalarFieldEnum)[keyof typeof EscrowTransactionScalarFieldEnum]
+
+
   export const PaymentScalarFieldEnum: {
     id: 'id',
     orderId: 'orderId',
@@ -28721,6 +29970,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'EscrowStatus'
+   */
+  export type EnumEscrowStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EscrowStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'EscrowStatus[]'
+   */
+  export type ListEnumEscrowStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EscrowStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'PaymentType'
    */
   export type EnumPaymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentType'>
@@ -29185,6 +30448,8 @@ export namespace Prisma {
     receivedMessages?: MessageListRelationFilter
     pestReports?: PestReportListRelationFilter
     verifiedByAgent?: FarmerProfileListRelationFilter
+    buyerEscrows?: EscrowTransactionListRelationFilter
+    farmerEscrows?: EscrowTransactionListRelationFilter
   }
 
   export type ProfileOrderByWithRelationInput = {
@@ -29221,6 +30486,8 @@ export namespace Prisma {
     receivedMessages?: MessageOrderByRelationAggregateInput
     pestReports?: PestReportOrderByRelationAggregateInput
     verifiedByAgent?: FarmerProfileOrderByRelationAggregateInput
+    buyerEscrows?: EscrowTransactionOrderByRelationAggregateInput
+    farmerEscrows?: EscrowTransactionOrderByRelationAggregateInput
   }
 
   export type ProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -29260,6 +30527,8 @@ export namespace Prisma {
     receivedMessages?: MessageListRelationFilter
     pestReports?: PestReportListRelationFilter
     verifiedByAgent?: FarmerProfileListRelationFilter
+    buyerEscrows?: EscrowTransactionListRelationFilter
+    farmerEscrows?: EscrowTransactionListRelationFilter
   }, "id" | "phone">
 
   export type ProfileOrderByWithAggregationInput = {
@@ -29921,6 +31190,7 @@ export namespace Prisma {
     payments?: PaymentListRelationFilter
     bnplApplications?: BNPLApplicationListRelationFilter
     reviews?: ReviewListRelationFilter
+    escrowTransaction?: XOR<EscrowTransactionNullableRelationFilter, EscrowTransactionWhereInput> | null
   }
 
   export type OrderOrderByWithRelationInput = {
@@ -29959,6 +31229,7 @@ export namespace Prisma {
     payments?: PaymentOrderByRelationAggregateInput
     bnplApplications?: BNPLApplicationOrderByRelationAggregateInput
     reviews?: ReviewOrderByRelationAggregateInput
+    escrowTransaction?: EscrowTransactionOrderByWithRelationInput
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -30000,6 +31271,7 @@ export namespace Prisma {
     payments?: PaymentListRelationFilter
     bnplApplications?: BNPLApplicationListRelationFilter
     reviews?: ReviewListRelationFilter
+    escrowTransaction?: XOR<EscrowTransactionNullableRelationFilter, EscrowTransactionWhereInput> | null
   }, "id" | "orderNumber">
 
   export type OrderOrderByWithAggregationInput = {
@@ -30072,6 +31344,94 @@ export namespace Prisma {
     deliveredAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     cancelledAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     cancellationReason?: StringNullableWithAggregatesFilter<"Order"> | string | null
+  }
+
+  export type EscrowTransactionWhereInput = {
+    AND?: EscrowTransactionWhereInput | EscrowTransactionWhereInput[]
+    OR?: EscrowTransactionWhereInput[]
+    NOT?: EscrowTransactionWhereInput | EscrowTransactionWhereInput[]
+    id?: UuidFilter<"EscrowTransaction"> | string
+    orderId?: UuidFilter<"EscrowTransaction"> | string
+    buyerId?: UuidFilter<"EscrowTransaction"> | string
+    farmerId?: UuidFilter<"EscrowTransaction"> | string
+    amount?: DecimalFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFilter<"EscrowTransaction"> | $Enums.EscrowStatus
+    createdAt?: DateTimeFilter<"EscrowTransaction"> | Date | string
+    updatedAt?: DateTimeFilter<"EscrowTransaction"> | Date | string
+    order?: XOR<OrderRelationFilter, OrderWhereInput>
+    buyer?: XOR<ProfileRelationFilter, ProfileWhereInput>
+    farmer?: XOR<ProfileRelationFilter, ProfileWhereInput>
+  }
+
+  export type EscrowTransactionOrderByWithRelationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    buyerId?: SortOrder
+    farmerId?: SortOrder
+    amount?: SortOrder
+    platformFee?: SortOrder
+    payoutAmount?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    order?: OrderOrderByWithRelationInput
+    buyer?: ProfileOrderByWithRelationInput
+    farmer?: ProfileOrderByWithRelationInput
+  }
+
+  export type EscrowTransactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    orderId?: string
+    AND?: EscrowTransactionWhereInput | EscrowTransactionWhereInput[]
+    OR?: EscrowTransactionWhereInput[]
+    NOT?: EscrowTransactionWhereInput | EscrowTransactionWhereInput[]
+    buyerId?: UuidFilter<"EscrowTransaction"> | string
+    farmerId?: UuidFilter<"EscrowTransaction"> | string
+    amount?: DecimalFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFilter<"EscrowTransaction"> | $Enums.EscrowStatus
+    createdAt?: DateTimeFilter<"EscrowTransaction"> | Date | string
+    updatedAt?: DateTimeFilter<"EscrowTransaction"> | Date | string
+    order?: XOR<OrderRelationFilter, OrderWhereInput>
+    buyer?: XOR<ProfileRelationFilter, ProfileWhereInput>
+    farmer?: XOR<ProfileRelationFilter, ProfileWhereInput>
+  }, "id" | "orderId">
+
+  export type EscrowTransactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    buyerId?: SortOrder
+    farmerId?: SortOrder
+    amount?: SortOrder
+    platformFee?: SortOrder
+    payoutAmount?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EscrowTransactionCountOrderByAggregateInput
+    _avg?: EscrowTransactionAvgOrderByAggregateInput
+    _max?: EscrowTransactionMaxOrderByAggregateInput
+    _min?: EscrowTransactionMinOrderByAggregateInput
+    _sum?: EscrowTransactionSumOrderByAggregateInput
+  }
+
+  export type EscrowTransactionScalarWhereWithAggregatesInput = {
+    AND?: EscrowTransactionScalarWhereWithAggregatesInput | EscrowTransactionScalarWhereWithAggregatesInput[]
+    OR?: EscrowTransactionScalarWhereWithAggregatesInput[]
+    NOT?: EscrowTransactionScalarWhereWithAggregatesInput | EscrowTransactionScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"EscrowTransaction"> | string
+    orderId?: UuidWithAggregatesFilter<"EscrowTransaction"> | string
+    buyerId?: UuidWithAggregatesFilter<"EscrowTransaction"> | string
+    farmerId?: UuidWithAggregatesFilter<"EscrowTransaction"> | string
+    amount?: DecimalWithAggregatesFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalWithAggregatesFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalWithAggregatesFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusWithAggregatesFilter<"EscrowTransaction"> | $Enums.EscrowStatus
+    createdAt?: DateTimeWithAggregatesFilter<"EscrowTransaction"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EscrowTransaction"> | Date | string
   }
 
   export type PaymentWhereInput = {
@@ -31466,6 +32826,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateInput = {
@@ -31502,6 +32864,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUpdateInput = {
@@ -31538,6 +32902,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateInput = {
@@ -31574,6 +32940,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileCreateManyInput = {
@@ -32347,6 +33715,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationCreateNestedManyWithoutOrderInput
     reviews?: ReviewCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateInput = {
@@ -32382,6 +33751,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutOrderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUpdateInput = {
@@ -32417,6 +33787,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateInput = {
@@ -32452,6 +33823,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderCreateManyInput = {
@@ -32545,6 +33917,94 @@ export namespace Prisma {
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EscrowTransactionCreateInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    order: OrderCreateNestedOneWithoutEscrowTransactionInput
+    buyer: ProfileCreateNestedOneWithoutBuyerEscrowsInput
+    farmer: ProfileCreateNestedOneWithoutFarmerEscrowsInput
+  }
+
+  export type EscrowTransactionUncheckedCreateInput = {
+    id?: string
+    orderId: string
+    buyerId: string
+    farmerId: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EscrowTransactionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutEscrowTransactionNestedInput
+    buyer?: ProfileUpdateOneRequiredWithoutBuyerEscrowsNestedInput
+    farmer?: ProfileUpdateOneRequiredWithoutFarmerEscrowsNestedInput
+  }
+
+  export type EscrowTransactionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    buyerId?: StringFieldUpdateOperationsInput | string
+    farmerId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EscrowTransactionCreateManyInput = {
+    id?: string
+    orderId: string
+    buyerId: string
+    farmerId: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EscrowTransactionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EscrowTransactionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    buyerId?: StringFieldUpdateOperationsInput | string
+    farmerId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PaymentCreateInput = {
@@ -34191,6 +35651,12 @@ export namespace Prisma {
     none?: FarmerProfileWhereInput
   }
 
+  export type EscrowTransactionListRelationFilter = {
+    every?: EscrowTransactionWhereInput
+    some?: EscrowTransactionWhereInput
+    none?: EscrowTransactionWhereInput
+  }
+
   export type OrderOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -34216,6 +35682,10 @@ export namespace Prisma {
   }
 
   export type FarmerProfileOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EscrowTransactionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34901,6 +36371,11 @@ export namespace Prisma {
     isNot?: ListingWhereInput
   }
 
+  export type EscrowTransactionNullableRelationFilter = {
+    is?: EscrowTransactionWhereInput | null
+    isNot?: EscrowTransactionWhereInput | null
+  }
+
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
     orderNumber?: SortOrder
@@ -35049,6 +36524,79 @@ export namespace Prisma {
     _max?: NestedEnumPledgeProgressNullableFilter<$PrismaModel>
   }
 
+  export type EnumEscrowStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EscrowStatus | EnumEscrowStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EscrowStatus[] | ListEnumEscrowStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EscrowStatus[] | ListEnumEscrowStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEscrowStatusFilter<$PrismaModel> | $Enums.EscrowStatus
+  }
+
+  export type OrderRelationFilter = {
+    is?: OrderWhereInput
+    isNot?: OrderWhereInput
+  }
+
+  export type EscrowTransactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    buyerId?: SortOrder
+    farmerId?: SortOrder
+    amount?: SortOrder
+    platformFee?: SortOrder
+    payoutAmount?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EscrowTransactionAvgOrderByAggregateInput = {
+    amount?: SortOrder
+    platformFee?: SortOrder
+    payoutAmount?: SortOrder
+  }
+
+  export type EscrowTransactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    buyerId?: SortOrder
+    farmerId?: SortOrder
+    amount?: SortOrder
+    platformFee?: SortOrder
+    payoutAmount?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EscrowTransactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    buyerId?: SortOrder
+    farmerId?: SortOrder
+    amount?: SortOrder
+    platformFee?: SortOrder
+    payoutAmount?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EscrowTransactionSumOrderByAggregateInput = {
+    amount?: SortOrder
+    platformFee?: SortOrder
+    payoutAmount?: SortOrder
+  }
+
+  export type EnumEscrowStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EscrowStatus | EnumEscrowStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EscrowStatus[] | ListEnumEscrowStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EscrowStatus[] | ListEnumEscrowStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEscrowStatusWithAggregatesFilter<$PrismaModel> | $Enums.EscrowStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEscrowStatusFilter<$PrismaModel>
+    _max?: NestedEnumEscrowStatusFilter<$PrismaModel>
+  }
+
   export type EnumPaymentTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.PaymentType | EnumPaymentTypeFieldRefInput<$PrismaModel>
     in?: $Enums.PaymentType[] | ListEnumPaymentTypeFieldRefInput<$PrismaModel>
@@ -35068,11 +36616,6 @@ export namespace Prisma {
     in?: $Enums.PaymentMethod[] | ListEnumPaymentMethodFieldRefInput<$PrismaModel>
     notIn?: $Enums.PaymentMethod[] | ListEnumPaymentMethodFieldRefInput<$PrismaModel>
     not?: NestedEnumPaymentMethodFilter<$PrismaModel> | $Enums.PaymentMethod
-  }
-
-  export type OrderRelationFilter = {
-    is?: OrderWhereInput
-    isNot?: OrderWhereInput
   }
 
   export type PaymentCountOrderByAggregateInput = {
@@ -36710,6 +38253,20 @@ export namespace Prisma {
     connect?: FarmerProfileWhereUniqueInput | FarmerProfileWhereUniqueInput[]
   }
 
+  export type EscrowTransactionCreateNestedManyWithoutBuyerInput = {
+    create?: XOR<EscrowTransactionCreateWithoutBuyerInput, EscrowTransactionUncheckedCreateWithoutBuyerInput> | EscrowTransactionCreateWithoutBuyerInput[] | EscrowTransactionUncheckedCreateWithoutBuyerInput[]
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutBuyerInput | EscrowTransactionCreateOrConnectWithoutBuyerInput[]
+    createMany?: EscrowTransactionCreateManyBuyerInputEnvelope
+    connect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+  }
+
+  export type EscrowTransactionCreateNestedManyWithoutFarmerInput = {
+    create?: XOR<EscrowTransactionCreateWithoutFarmerInput, EscrowTransactionUncheckedCreateWithoutFarmerInput> | EscrowTransactionCreateWithoutFarmerInput[] | EscrowTransactionUncheckedCreateWithoutFarmerInput[]
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutFarmerInput | EscrowTransactionCreateOrConnectWithoutFarmerInput[]
+    createMany?: EscrowTransactionCreateManyFarmerInputEnvelope
+    connect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+  }
+
   export type FarmerProfileUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<FarmerProfileCreateWithoutUserInput, FarmerProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: FarmerProfileCreateOrConnectWithoutUserInput
@@ -36816,6 +38373,20 @@ export namespace Prisma {
     connectOrCreate?: FarmerProfileCreateOrConnectWithoutFieldAgentInput | FarmerProfileCreateOrConnectWithoutFieldAgentInput[]
     createMany?: FarmerProfileCreateManyFieldAgentInputEnvelope
     connect?: FarmerProfileWhereUniqueInput | FarmerProfileWhereUniqueInput[]
+  }
+
+  export type EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput = {
+    create?: XOR<EscrowTransactionCreateWithoutBuyerInput, EscrowTransactionUncheckedCreateWithoutBuyerInput> | EscrowTransactionCreateWithoutBuyerInput[] | EscrowTransactionUncheckedCreateWithoutBuyerInput[]
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutBuyerInput | EscrowTransactionCreateOrConnectWithoutBuyerInput[]
+    createMany?: EscrowTransactionCreateManyBuyerInputEnvelope
+    connect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+  }
+
+  export type EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput = {
+    create?: XOR<EscrowTransactionCreateWithoutFarmerInput, EscrowTransactionUncheckedCreateWithoutFarmerInput> | EscrowTransactionCreateWithoutFarmerInput[] | EscrowTransactionUncheckedCreateWithoutFarmerInput[]
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutFarmerInput | EscrowTransactionCreateOrConnectWithoutFarmerInput[]
+    createMany?: EscrowTransactionCreateManyFarmerInputEnvelope
+    connect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
   }
 
   export type EnumRoleFieldUpdateOperationsInput = {
@@ -37042,6 +38613,34 @@ export namespace Prisma {
     deleteMany?: FarmerProfileScalarWhereInput | FarmerProfileScalarWhereInput[]
   }
 
+  export type EscrowTransactionUpdateManyWithoutBuyerNestedInput = {
+    create?: XOR<EscrowTransactionCreateWithoutBuyerInput, EscrowTransactionUncheckedCreateWithoutBuyerInput> | EscrowTransactionCreateWithoutBuyerInput[] | EscrowTransactionUncheckedCreateWithoutBuyerInput[]
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutBuyerInput | EscrowTransactionCreateOrConnectWithoutBuyerInput[]
+    upsert?: EscrowTransactionUpsertWithWhereUniqueWithoutBuyerInput | EscrowTransactionUpsertWithWhereUniqueWithoutBuyerInput[]
+    createMany?: EscrowTransactionCreateManyBuyerInputEnvelope
+    set?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    disconnect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    delete?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    connect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    update?: EscrowTransactionUpdateWithWhereUniqueWithoutBuyerInput | EscrowTransactionUpdateWithWhereUniqueWithoutBuyerInput[]
+    updateMany?: EscrowTransactionUpdateManyWithWhereWithoutBuyerInput | EscrowTransactionUpdateManyWithWhereWithoutBuyerInput[]
+    deleteMany?: EscrowTransactionScalarWhereInput | EscrowTransactionScalarWhereInput[]
+  }
+
+  export type EscrowTransactionUpdateManyWithoutFarmerNestedInput = {
+    create?: XOR<EscrowTransactionCreateWithoutFarmerInput, EscrowTransactionUncheckedCreateWithoutFarmerInput> | EscrowTransactionCreateWithoutFarmerInput[] | EscrowTransactionUncheckedCreateWithoutFarmerInput[]
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutFarmerInput | EscrowTransactionCreateOrConnectWithoutFarmerInput[]
+    upsert?: EscrowTransactionUpsertWithWhereUniqueWithoutFarmerInput | EscrowTransactionUpsertWithWhereUniqueWithoutFarmerInput[]
+    createMany?: EscrowTransactionCreateManyFarmerInputEnvelope
+    set?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    disconnect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    delete?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    connect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    update?: EscrowTransactionUpdateWithWhereUniqueWithoutFarmerInput | EscrowTransactionUpdateWithWhereUniqueWithoutFarmerInput[]
+    updateMany?: EscrowTransactionUpdateManyWithWhereWithoutFarmerInput | EscrowTransactionUpdateManyWithWhereWithoutFarmerInput[]
+    deleteMany?: EscrowTransactionScalarWhereInput | EscrowTransactionScalarWhereInput[]
+  }
+
   export type FarmerProfileUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<FarmerProfileCreateWithoutUserInput, FarmerProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: FarmerProfileCreateOrConnectWithoutUserInput
@@ -37248,6 +38847,34 @@ export namespace Prisma {
     update?: FarmerProfileUpdateWithWhereUniqueWithoutFieldAgentInput | FarmerProfileUpdateWithWhereUniqueWithoutFieldAgentInput[]
     updateMany?: FarmerProfileUpdateManyWithWhereWithoutFieldAgentInput | FarmerProfileUpdateManyWithWhereWithoutFieldAgentInput[]
     deleteMany?: FarmerProfileScalarWhereInput | FarmerProfileScalarWhereInput[]
+  }
+
+  export type EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput = {
+    create?: XOR<EscrowTransactionCreateWithoutBuyerInput, EscrowTransactionUncheckedCreateWithoutBuyerInput> | EscrowTransactionCreateWithoutBuyerInput[] | EscrowTransactionUncheckedCreateWithoutBuyerInput[]
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutBuyerInput | EscrowTransactionCreateOrConnectWithoutBuyerInput[]
+    upsert?: EscrowTransactionUpsertWithWhereUniqueWithoutBuyerInput | EscrowTransactionUpsertWithWhereUniqueWithoutBuyerInput[]
+    createMany?: EscrowTransactionCreateManyBuyerInputEnvelope
+    set?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    disconnect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    delete?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    connect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    update?: EscrowTransactionUpdateWithWhereUniqueWithoutBuyerInput | EscrowTransactionUpdateWithWhereUniqueWithoutBuyerInput[]
+    updateMany?: EscrowTransactionUpdateManyWithWhereWithoutBuyerInput | EscrowTransactionUpdateManyWithWhereWithoutBuyerInput[]
+    deleteMany?: EscrowTransactionScalarWhereInput | EscrowTransactionScalarWhereInput[]
+  }
+
+  export type EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput = {
+    create?: XOR<EscrowTransactionCreateWithoutFarmerInput, EscrowTransactionUncheckedCreateWithoutFarmerInput> | EscrowTransactionCreateWithoutFarmerInput[] | EscrowTransactionUncheckedCreateWithoutFarmerInput[]
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutFarmerInput | EscrowTransactionCreateOrConnectWithoutFarmerInput[]
+    upsert?: EscrowTransactionUpsertWithWhereUniqueWithoutFarmerInput | EscrowTransactionUpsertWithWhereUniqueWithoutFarmerInput[]
+    createMany?: EscrowTransactionCreateManyFarmerInputEnvelope
+    set?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    disconnect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    delete?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    connect?: EscrowTransactionWhereUniqueInput | EscrowTransactionWhereUniqueInput[]
+    update?: EscrowTransactionUpdateWithWhereUniqueWithoutFarmerInput | EscrowTransactionUpdateWithWhereUniqueWithoutFarmerInput[]
+    updateMany?: EscrowTransactionUpdateManyWithWhereWithoutFarmerInput | EscrowTransactionUpdateManyWithWhereWithoutFarmerInput[]
+    deleteMany?: EscrowTransactionScalarWhereInput | EscrowTransactionScalarWhereInput[]
   }
 
   export type FarmerProfileCreatesectorsInput = {
@@ -37627,6 +39254,12 @@ export namespace Prisma {
     connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
   }
 
+  export type EscrowTransactionCreateNestedOneWithoutOrderInput = {
+    create?: XOR<EscrowTransactionCreateWithoutOrderInput, EscrowTransactionUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutOrderInput
+    connect?: EscrowTransactionWhereUniqueInput
+  }
+
   export type PaymentUncheckedCreateNestedManyWithoutOrderInput = {
     create?: XOR<PaymentCreateWithoutOrderInput, PaymentUncheckedCreateWithoutOrderInput> | PaymentCreateWithoutOrderInput[] | PaymentUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: PaymentCreateOrConnectWithoutOrderInput | PaymentCreateOrConnectWithoutOrderInput[]
@@ -37646,6 +39279,12 @@ export namespace Prisma {
     connectOrCreate?: ReviewCreateOrConnectWithoutOrderInput | ReviewCreateOrConnectWithoutOrderInput[]
     createMany?: ReviewCreateManyOrderInputEnvelope
     connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
+  export type EscrowTransactionUncheckedCreateNestedOneWithoutOrderInput = {
+    create?: XOR<EscrowTransactionCreateWithoutOrderInput, EscrowTransactionUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutOrderInput
+    connect?: EscrowTransactionWhereUniqueInput
   }
 
   export type EnumOrderTypeFieldUpdateOperationsInput = {
@@ -37726,6 +39365,16 @@ export namespace Prisma {
     deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
+  export type EscrowTransactionUpdateOneWithoutOrderNestedInput = {
+    create?: XOR<EscrowTransactionCreateWithoutOrderInput, EscrowTransactionUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutOrderInput
+    upsert?: EscrowTransactionUpsertWithoutOrderInput
+    disconnect?: EscrowTransactionWhereInput | boolean
+    delete?: EscrowTransactionWhereInput | boolean
+    connect?: EscrowTransactionWhereUniqueInput
+    update?: XOR<XOR<EscrowTransactionUpdateToOneWithWhereWithoutOrderInput, EscrowTransactionUpdateWithoutOrderInput>, EscrowTransactionUncheckedUpdateWithoutOrderInput>
+  }
+
   export type PaymentUncheckedUpdateManyWithoutOrderNestedInput = {
     create?: XOR<PaymentCreateWithoutOrderInput, PaymentUncheckedCreateWithoutOrderInput> | PaymentCreateWithoutOrderInput[] | PaymentUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: PaymentCreateOrConnectWithoutOrderInput | PaymentCreateOrConnectWithoutOrderInput[]
@@ -37766,6 +39415,62 @@ export namespace Prisma {
     update?: ReviewUpdateWithWhereUniqueWithoutOrderInput | ReviewUpdateWithWhereUniqueWithoutOrderInput[]
     updateMany?: ReviewUpdateManyWithWhereWithoutOrderInput | ReviewUpdateManyWithWhereWithoutOrderInput[]
     deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
+  export type EscrowTransactionUncheckedUpdateOneWithoutOrderNestedInput = {
+    create?: XOR<EscrowTransactionCreateWithoutOrderInput, EscrowTransactionUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: EscrowTransactionCreateOrConnectWithoutOrderInput
+    upsert?: EscrowTransactionUpsertWithoutOrderInput
+    disconnect?: EscrowTransactionWhereInput | boolean
+    delete?: EscrowTransactionWhereInput | boolean
+    connect?: EscrowTransactionWhereUniqueInput
+    update?: XOR<XOR<EscrowTransactionUpdateToOneWithWhereWithoutOrderInput, EscrowTransactionUpdateWithoutOrderInput>, EscrowTransactionUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type OrderCreateNestedOneWithoutEscrowTransactionInput = {
+    create?: XOR<OrderCreateWithoutEscrowTransactionInput, OrderUncheckedCreateWithoutEscrowTransactionInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutEscrowTransactionInput
+    connect?: OrderWhereUniqueInput
+  }
+
+  export type ProfileCreateNestedOneWithoutBuyerEscrowsInput = {
+    create?: XOR<ProfileCreateWithoutBuyerEscrowsInput, ProfileUncheckedCreateWithoutBuyerEscrowsInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutBuyerEscrowsInput
+    connect?: ProfileWhereUniqueInput
+  }
+
+  export type ProfileCreateNestedOneWithoutFarmerEscrowsInput = {
+    create?: XOR<ProfileCreateWithoutFarmerEscrowsInput, ProfileUncheckedCreateWithoutFarmerEscrowsInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutFarmerEscrowsInput
+    connect?: ProfileWhereUniqueInput
+  }
+
+  export type EnumEscrowStatusFieldUpdateOperationsInput = {
+    set?: $Enums.EscrowStatus
+  }
+
+  export type OrderUpdateOneRequiredWithoutEscrowTransactionNestedInput = {
+    create?: XOR<OrderCreateWithoutEscrowTransactionInput, OrderUncheckedCreateWithoutEscrowTransactionInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutEscrowTransactionInput
+    upsert?: OrderUpsertWithoutEscrowTransactionInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutEscrowTransactionInput, OrderUpdateWithoutEscrowTransactionInput>, OrderUncheckedUpdateWithoutEscrowTransactionInput>
+  }
+
+  export type ProfileUpdateOneRequiredWithoutBuyerEscrowsNestedInput = {
+    create?: XOR<ProfileCreateWithoutBuyerEscrowsInput, ProfileUncheckedCreateWithoutBuyerEscrowsInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutBuyerEscrowsInput
+    upsert?: ProfileUpsertWithoutBuyerEscrowsInput
+    connect?: ProfileWhereUniqueInput
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutBuyerEscrowsInput, ProfileUpdateWithoutBuyerEscrowsInput>, ProfileUncheckedUpdateWithoutBuyerEscrowsInput>
+  }
+
+  export type ProfileUpdateOneRequiredWithoutFarmerEscrowsNestedInput = {
+    create?: XOR<ProfileCreateWithoutFarmerEscrowsInput, ProfileUncheckedCreateWithoutFarmerEscrowsInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutFarmerEscrowsInput
+    upsert?: ProfileUpsertWithoutFarmerEscrowsInput
+    connect?: ProfileWhereUniqueInput
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutFarmerEscrowsInput, ProfileUpdateWithoutFarmerEscrowsInput>, ProfileUncheckedUpdateWithoutFarmerEscrowsInput>
   }
 
   export type OrderCreateNestedOneWithoutPaymentsInput = {
@@ -38778,6 +40483,23 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumPledgeProgressNullableFilter<$PrismaModel>
     _max?: NestedEnumPledgeProgressNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEscrowStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EscrowStatus | EnumEscrowStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EscrowStatus[] | ListEnumEscrowStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EscrowStatus[] | ListEnumEscrowStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEscrowStatusFilter<$PrismaModel> | $Enums.EscrowStatus
+  }
+
+  export type NestedEnumEscrowStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EscrowStatus | EnumEscrowStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EscrowStatus[] | ListEnumEscrowStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EscrowStatus[] | ListEnumEscrowStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEscrowStatusWithAggregatesFilter<$PrismaModel> | $Enums.EscrowStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEscrowStatusFilter<$PrismaModel>
+    _max?: NestedEnumEscrowStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumPaymentTypeFilter<$PrismaModel = never> = {
@@ -40460,6 +42182,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationCreateNestedManyWithoutOrderInput
     reviews?: ReviewCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutBuyerInput = {
@@ -40494,6 +42217,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutOrderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutBuyerInput = {
@@ -40538,6 +42262,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationCreateNestedManyWithoutOrderInput
     reviews?: ReviewCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutSellerInput = {
@@ -40572,6 +42297,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutOrderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutSellerInput = {
@@ -40958,6 +42684,74 @@ export namespace Prisma {
 
   export type FarmerProfileCreateManyFieldAgentInputEnvelope = {
     data: FarmerProfileCreateManyFieldAgentInput | FarmerProfileCreateManyFieldAgentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EscrowTransactionCreateWithoutBuyerInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    order: OrderCreateNestedOneWithoutEscrowTransactionInput
+    farmer: ProfileCreateNestedOneWithoutFarmerEscrowsInput
+  }
+
+  export type EscrowTransactionUncheckedCreateWithoutBuyerInput = {
+    id?: string
+    orderId: string
+    farmerId: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EscrowTransactionCreateOrConnectWithoutBuyerInput = {
+    where: EscrowTransactionWhereUniqueInput
+    create: XOR<EscrowTransactionCreateWithoutBuyerInput, EscrowTransactionUncheckedCreateWithoutBuyerInput>
+  }
+
+  export type EscrowTransactionCreateManyBuyerInputEnvelope = {
+    data: EscrowTransactionCreateManyBuyerInput | EscrowTransactionCreateManyBuyerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EscrowTransactionCreateWithoutFarmerInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    order: OrderCreateNestedOneWithoutEscrowTransactionInput
+    buyer: ProfileCreateNestedOneWithoutBuyerEscrowsInput
+  }
+
+  export type EscrowTransactionUncheckedCreateWithoutFarmerInput = {
+    id?: string
+    orderId: string
+    buyerId: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EscrowTransactionCreateOrConnectWithoutFarmerInput = {
+    where: EscrowTransactionWhereUniqueInput
+    create: XOR<EscrowTransactionCreateWithoutFarmerInput, EscrowTransactionUncheckedCreateWithoutFarmerInput>
+  }
+
+  export type EscrowTransactionCreateManyFarmerInputEnvelope = {
+    data: EscrowTransactionCreateManyFarmerInput | EscrowTransactionCreateManyFarmerInput[]
     skipDuplicates?: boolean
   }
 
@@ -41477,6 +43271,54 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"FarmerProfile"> | Date | string
   }
 
+  export type EscrowTransactionUpsertWithWhereUniqueWithoutBuyerInput = {
+    where: EscrowTransactionWhereUniqueInput
+    update: XOR<EscrowTransactionUpdateWithoutBuyerInput, EscrowTransactionUncheckedUpdateWithoutBuyerInput>
+    create: XOR<EscrowTransactionCreateWithoutBuyerInput, EscrowTransactionUncheckedCreateWithoutBuyerInput>
+  }
+
+  export type EscrowTransactionUpdateWithWhereUniqueWithoutBuyerInput = {
+    where: EscrowTransactionWhereUniqueInput
+    data: XOR<EscrowTransactionUpdateWithoutBuyerInput, EscrowTransactionUncheckedUpdateWithoutBuyerInput>
+  }
+
+  export type EscrowTransactionUpdateManyWithWhereWithoutBuyerInput = {
+    where: EscrowTransactionScalarWhereInput
+    data: XOR<EscrowTransactionUpdateManyMutationInput, EscrowTransactionUncheckedUpdateManyWithoutBuyerInput>
+  }
+
+  export type EscrowTransactionScalarWhereInput = {
+    AND?: EscrowTransactionScalarWhereInput | EscrowTransactionScalarWhereInput[]
+    OR?: EscrowTransactionScalarWhereInput[]
+    NOT?: EscrowTransactionScalarWhereInput | EscrowTransactionScalarWhereInput[]
+    id?: UuidFilter<"EscrowTransaction"> | string
+    orderId?: UuidFilter<"EscrowTransaction"> | string
+    buyerId?: UuidFilter<"EscrowTransaction"> | string
+    farmerId?: UuidFilter<"EscrowTransaction"> | string
+    amount?: DecimalFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFilter<"EscrowTransaction"> | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFilter<"EscrowTransaction"> | $Enums.EscrowStatus
+    createdAt?: DateTimeFilter<"EscrowTransaction"> | Date | string
+    updatedAt?: DateTimeFilter<"EscrowTransaction"> | Date | string
+  }
+
+  export type EscrowTransactionUpsertWithWhereUniqueWithoutFarmerInput = {
+    where: EscrowTransactionWhereUniqueInput
+    update: XOR<EscrowTransactionUpdateWithoutFarmerInput, EscrowTransactionUncheckedUpdateWithoutFarmerInput>
+    create: XOR<EscrowTransactionCreateWithoutFarmerInput, EscrowTransactionUncheckedCreateWithoutFarmerInput>
+  }
+
+  export type EscrowTransactionUpdateWithWhereUniqueWithoutFarmerInput = {
+    where: EscrowTransactionWhereUniqueInput
+    data: XOR<EscrowTransactionUpdateWithoutFarmerInput, EscrowTransactionUncheckedUpdateWithoutFarmerInput>
+  }
+
+  export type EscrowTransactionUpdateManyWithWhereWithoutFarmerInput = {
+    where: EscrowTransactionScalarWhereInput
+    data: XOR<EscrowTransactionUpdateManyMutationInput, EscrowTransactionUncheckedUpdateManyWithoutFarmerInput>
+  }
+
   export type ProfileCreateWithoutFarmerProfileInput = {
     id: string
     phone: string
@@ -41510,6 +43352,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutFarmerProfileInput = {
@@ -41545,6 +43389,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutFarmerProfileInput = {
@@ -41585,6 +43431,8 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutVerifiedByAgentInput = {
@@ -41620,6 +43468,8 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutVerifiedByAgentInput = {
@@ -41671,6 +43521,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutFarmerProfileInput = {
@@ -41706,6 +43558,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUpsertWithoutVerifiedByAgentInput = {
@@ -41752,6 +43606,8 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutVerifiedByAgentInput = {
@@ -41787,6 +43643,8 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileCreateWithoutDealerProfileInput = {
@@ -41822,6 +43680,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutDealerProfileInput = {
@@ -41857,6 +43717,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutDealerProfileInput = {
@@ -41908,6 +43770,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutDealerProfileInput = {
@@ -41943,6 +43807,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileCreateWithoutBuyerProfileInput = {
@@ -41978,6 +43844,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutBuyerProfileInput = {
@@ -42013,6 +43881,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutBuyerProfileInput = {
@@ -42064,6 +43934,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutBuyerProfileInput = {
@@ -42099,6 +43971,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileCreateWithoutListingsAsSellerInput = {
@@ -42134,6 +44008,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutListingsAsSellerInput = {
@@ -42169,6 +44045,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutListingsAsSellerInput = {
@@ -42320,6 +44198,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationCreateNestedManyWithoutOrderInput
     reviews?: ReviewCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutListingInput = {
@@ -42354,6 +44233,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutOrderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutListingInput = {
@@ -42440,6 +44320,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutListingsAsSellerInput = {
@@ -42475,6 +44357,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProductCategoryUpsertWithoutListingsInput = {
@@ -42678,6 +44562,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutOrdersAsBuyerInput = {
@@ -42713,6 +44599,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutOrdersAsBuyerInput = {
@@ -42753,6 +44641,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutOrdersAsSellerInput = {
@@ -42788,6 +44678,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutOrdersAsSellerInput = {
@@ -43004,6 +44896,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EscrowTransactionCreateWithoutOrderInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    buyer: ProfileCreateNestedOneWithoutBuyerEscrowsInput
+    farmer: ProfileCreateNestedOneWithoutFarmerEscrowsInput
+  }
+
+  export type EscrowTransactionUncheckedCreateWithoutOrderInput = {
+    id?: string
+    buyerId: string
+    farmerId: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EscrowTransactionCreateOrConnectWithoutOrderInput = {
+    where: EscrowTransactionWhereUniqueInput
+    create: XOR<EscrowTransactionCreateWithoutOrderInput, EscrowTransactionUncheckedCreateWithoutOrderInput>
+  }
+
   export type ProfileUpsertWithoutOrdersAsBuyerInput = {
     update: XOR<ProfileUpdateWithoutOrdersAsBuyerInput, ProfileUncheckedUpdateWithoutOrdersAsBuyerInput>
     create: XOR<ProfileCreateWithoutOrdersAsBuyerInput, ProfileUncheckedCreateWithoutOrdersAsBuyerInput>
@@ -43048,6 +44969,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutOrdersAsBuyerInput = {
@@ -43083,6 +45006,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUpsertWithoutOrdersAsSellerInput = {
@@ -43129,6 +45054,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutOrdersAsSellerInput = {
@@ -43164,6 +45091,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ListingUpsertWithoutOrdersInput = {
@@ -43307,6 +45236,525 @@ export namespace Prisma {
     data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutOrderInput>
   }
 
+  export type EscrowTransactionUpsertWithoutOrderInput = {
+    update: XOR<EscrowTransactionUpdateWithoutOrderInput, EscrowTransactionUncheckedUpdateWithoutOrderInput>
+    create: XOR<EscrowTransactionCreateWithoutOrderInput, EscrowTransactionUncheckedCreateWithoutOrderInput>
+    where?: EscrowTransactionWhereInput
+  }
+
+  export type EscrowTransactionUpdateToOneWithWhereWithoutOrderInput = {
+    where?: EscrowTransactionWhereInput
+    data: XOR<EscrowTransactionUpdateWithoutOrderInput, EscrowTransactionUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type EscrowTransactionUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    buyer?: ProfileUpdateOneRequiredWithoutBuyerEscrowsNestedInput
+    farmer?: ProfileUpdateOneRequiredWithoutFarmerEscrowsNestedInput
+  }
+
+  export type EscrowTransactionUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    buyerId?: StringFieldUpdateOperationsInput | string
+    farmerId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderCreateWithoutEscrowTransactionInput = {
+    id?: string
+    orderNumber: string
+    orderType: $Enums.OrderType
+    quantity: Decimal | DecimalJsLike | number | string
+    unitPrice: Decimal | DecimalJsLike | number | string
+    subtotal: Decimal | DecimalJsLike | number | string
+    deliveryCost?: Decimal | DecimalJsLike | number | string
+    platformCommission: Decimal | DecimalJsLike | number | string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    depositAmount?: Decimal | DecimalJsLike | number | string | null
+    balanceAmount?: Decimal | DecimalJsLike | number | string | null
+    depositPaidAt?: Date | string | null
+    balancePaidAt?: Date | string | null
+    deliveryOption?: string | null
+    deliveryAddress?: string | null
+    expectedDeliveryDate?: Date | string | null
+    actualDeliveryDate?: Date | string | null
+    trackingStatus?: $Enums.TrackingStatus
+    pledgeProgress?: $Enums.PledgeProgress | null
+    buyerNotes?: string | null
+    sellerNotes?: string | null
+    createdAt?: Date | string
+    confirmedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    cancellationReason?: string | null
+    buyer: ProfileCreateNestedOneWithoutOrdersAsBuyerInput
+    seller: ProfileCreateNestedOneWithoutOrdersAsSellerInput
+    listing: ListingCreateNestedOneWithoutOrdersInput
+    payments?: PaymentCreateNestedManyWithoutOrderInput
+    bnplApplications?: BNPLApplicationCreateNestedManyWithoutOrderInput
+    reviews?: ReviewCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutEscrowTransactionInput = {
+    id?: string
+    orderNumber: string
+    buyerId: string
+    sellerId: string
+    listingId: string
+    orderType: $Enums.OrderType
+    quantity: Decimal | DecimalJsLike | number | string
+    unitPrice: Decimal | DecimalJsLike | number | string
+    subtotal: Decimal | DecimalJsLike | number | string
+    deliveryCost?: Decimal | DecimalJsLike | number | string
+    platformCommission: Decimal | DecimalJsLike | number | string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    depositAmount?: Decimal | DecimalJsLike | number | string | null
+    balanceAmount?: Decimal | DecimalJsLike | number | string | null
+    depositPaidAt?: Date | string | null
+    balancePaidAt?: Date | string | null
+    deliveryOption?: string | null
+    deliveryAddress?: string | null
+    expectedDeliveryDate?: Date | string | null
+    actualDeliveryDate?: Date | string | null
+    trackingStatus?: $Enums.TrackingStatus
+    pledgeProgress?: $Enums.PledgeProgress | null
+    buyerNotes?: string | null
+    sellerNotes?: string | null
+    createdAt?: Date | string
+    confirmedAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    cancellationReason?: string | null
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
+    bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutOrderInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutEscrowTransactionInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutEscrowTransactionInput, OrderUncheckedCreateWithoutEscrowTransactionInput>
+  }
+
+  export type ProfileCreateWithoutBuyerEscrowsInput = {
+    id: string
+    phone: string
+    email?: string | null
+    fullName: string
+    role: $Enums.Role
+    language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
+    community?: string | null
+    avatarUrl?: string | null
+    isActive?: boolean
+    isBanned?: boolean
+    banReason?: string | null
+    agroScore?: number
+    verificationLevel?: $Enums.VerificationLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
+    buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
+    listingsAsSeller?: ListingCreateNestedManyWithoutSellerInput
+    ordersAsBuyer?: OrderCreateNestedManyWithoutBuyerInput
+    ordersAsSeller?: OrderCreateNestedManyWithoutSellerInput
+    payments?: PaymentCreateNestedManyWithoutPayerInput
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    bnplApplications?: BNPLApplicationCreateNestedManyWithoutFarmerInput
+    reviewsGiven?: ReviewCreateNestedManyWithoutReviewerInput
+    reviewsReceived?: ReviewCreateNestedManyWithoutRevieweeInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    messages?: MessageCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
+    pestReports?: PestReportCreateNestedManyWithoutReporterInput
+    verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
+  }
+
+  export type ProfileUncheckedCreateWithoutBuyerEscrowsInput = {
+    id: string
+    phone: string
+    email?: string | null
+    fullName: string
+    role: $Enums.Role
+    language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
+    community?: string | null
+    avatarUrl?: string | null
+    isActive?: boolean
+    isBanned?: boolean
+    banReason?: string | null
+    agroScore?: number
+    verificationLevel?: $Enums.VerificationLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    farmerProfile?: FarmerProfileUncheckedCreateNestedOneWithoutUserInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutUserInput
+    buyerProfile?: BuyerProfileUncheckedCreateNestedOneWithoutUserInput
+    listingsAsSeller?: ListingUncheckedCreateNestedManyWithoutSellerInput
+    ordersAsBuyer?: OrderUncheckedCreateNestedManyWithoutBuyerInput
+    ordersAsSeller?: OrderUncheckedCreateNestedManyWithoutSellerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPayerInput
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutFarmerInput
+    reviewsGiven?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
+    reviewsReceived?: ReviewUncheckedCreateNestedManyWithoutRevieweeInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
+    pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
+    verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
+  }
+
+  export type ProfileCreateOrConnectWithoutBuyerEscrowsInput = {
+    where: ProfileWhereUniqueInput
+    create: XOR<ProfileCreateWithoutBuyerEscrowsInput, ProfileUncheckedCreateWithoutBuyerEscrowsInput>
+  }
+
+  export type ProfileCreateWithoutFarmerEscrowsInput = {
+    id: string
+    phone: string
+    email?: string | null
+    fullName: string
+    role: $Enums.Role
+    language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
+    community?: string | null
+    avatarUrl?: string | null
+    isActive?: boolean
+    isBanned?: boolean
+    banReason?: string | null
+    agroScore?: number
+    verificationLevel?: $Enums.VerificationLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
+    buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
+    listingsAsSeller?: ListingCreateNestedManyWithoutSellerInput
+    ordersAsBuyer?: OrderCreateNestedManyWithoutBuyerInput
+    ordersAsSeller?: OrderCreateNestedManyWithoutSellerInput
+    payments?: PaymentCreateNestedManyWithoutPayerInput
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    bnplApplications?: BNPLApplicationCreateNestedManyWithoutFarmerInput
+    reviewsGiven?: ReviewCreateNestedManyWithoutReviewerInput
+    reviewsReceived?: ReviewCreateNestedManyWithoutRevieweeInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    messages?: MessageCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
+    pestReports?: PestReportCreateNestedManyWithoutReporterInput
+    verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+  }
+
+  export type ProfileUncheckedCreateWithoutFarmerEscrowsInput = {
+    id: string
+    phone: string
+    email?: string | null
+    fullName: string
+    role: $Enums.Role
+    language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
+    community?: string | null
+    avatarUrl?: string | null
+    isActive?: boolean
+    isBanned?: boolean
+    banReason?: string | null
+    agroScore?: number
+    verificationLevel?: $Enums.VerificationLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    farmerProfile?: FarmerProfileUncheckedCreateNestedOneWithoutUserInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutUserInput
+    buyerProfile?: BuyerProfileUncheckedCreateNestedOneWithoutUserInput
+    listingsAsSeller?: ListingUncheckedCreateNestedManyWithoutSellerInput
+    ordersAsBuyer?: OrderUncheckedCreateNestedManyWithoutBuyerInput
+    ordersAsSeller?: OrderUncheckedCreateNestedManyWithoutSellerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutPayerInput
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutFarmerInput
+    reviewsGiven?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
+    reviewsReceived?: ReviewUncheckedCreateNestedManyWithoutRevieweeInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
+    pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
+    verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+  }
+
+  export type ProfileCreateOrConnectWithoutFarmerEscrowsInput = {
+    where: ProfileWhereUniqueInput
+    create: XOR<ProfileCreateWithoutFarmerEscrowsInput, ProfileUncheckedCreateWithoutFarmerEscrowsInput>
+  }
+
+  export type OrderUpsertWithoutEscrowTransactionInput = {
+    update: XOR<OrderUpdateWithoutEscrowTransactionInput, OrderUncheckedUpdateWithoutEscrowTransactionInput>
+    create: XOR<OrderCreateWithoutEscrowTransactionInput, OrderUncheckedCreateWithoutEscrowTransactionInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutEscrowTransactionInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutEscrowTransactionInput, OrderUncheckedUpdateWithoutEscrowTransactionInput>
+  }
+
+  export type OrderUpdateWithoutEscrowTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    orderType?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    subtotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    deliveryCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformCommission?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    depositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    balanceAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    balancePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveryOption?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actualDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingStatus?: EnumTrackingStatusFieldUpdateOperationsInput | $Enums.TrackingStatus
+    pledgeProgress?: NullableEnumPledgeProgressFieldUpdateOperationsInput | $Enums.PledgeProgress | null
+    buyerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    sellerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    buyer?: ProfileUpdateOneRequiredWithoutOrdersAsBuyerNestedInput
+    seller?: ProfileUpdateOneRequiredWithoutOrdersAsSellerNestedInput
+    listing?: ListingUpdateOneRequiredWithoutOrdersNestedInput
+    payments?: PaymentUpdateManyWithoutOrderNestedInput
+    bnplApplications?: BNPLApplicationUpdateManyWithoutOrderNestedInput
+    reviews?: ReviewUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutEscrowTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderNumber?: StringFieldUpdateOperationsInput | string
+    buyerId?: StringFieldUpdateOperationsInput | string
+    sellerId?: StringFieldUpdateOperationsInput | string
+    listingId?: StringFieldUpdateOperationsInput | string
+    orderType?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    subtotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    deliveryCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformCommission?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    depositAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    balanceAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    balancePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveryOption?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    expectedDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actualDeliveryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingStatus?: EnumTrackingStatusFieldUpdateOperationsInput | $Enums.TrackingStatus
+    pledgeProgress?: NullableEnumPledgeProgressFieldUpdateOperationsInput | $Enums.PledgeProgress | null
+    buyerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    sellerNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
+    bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutOrderNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type ProfileUpsertWithoutBuyerEscrowsInput = {
+    update: XOR<ProfileUpdateWithoutBuyerEscrowsInput, ProfileUncheckedUpdateWithoutBuyerEscrowsInput>
+    create: XOR<ProfileCreateWithoutBuyerEscrowsInput, ProfileUncheckedCreateWithoutBuyerEscrowsInput>
+    where?: ProfileWhereInput
+  }
+
+  export type ProfileUpdateToOneWithWhereWithoutBuyerEscrowsInput = {
+    where?: ProfileWhereInput
+    data: XOR<ProfileUpdateWithoutBuyerEscrowsInput, ProfileUncheckedUpdateWithoutBuyerEscrowsInput>
+  }
+
+  export type ProfileUpdateWithoutBuyerEscrowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
+    community?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    agroScore?: IntFieldUpdateOperationsInput | number
+    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
+    buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
+    listingsAsSeller?: ListingUpdateManyWithoutSellerNestedInput
+    ordersAsBuyer?: OrderUpdateManyWithoutBuyerNestedInput
+    ordersAsSeller?: OrderUpdateManyWithoutSellerNestedInput
+    payments?: PaymentUpdateManyWithoutPayerNestedInput
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    bnplApplications?: BNPLApplicationUpdateManyWithoutFarmerNestedInput
+    reviewsGiven?: ReviewUpdateManyWithoutReviewerNestedInput
+    reviewsReceived?: ReviewUpdateManyWithoutRevieweeNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    messages?: MessageUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
+    pestReports?: PestReportUpdateManyWithoutReporterNestedInput
+    verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
+  }
+
+  export type ProfileUncheckedUpdateWithoutBuyerEscrowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
+    community?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    agroScore?: IntFieldUpdateOperationsInput | number
+    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    farmerProfile?: FarmerProfileUncheckedUpdateOneWithoutUserNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutUserNestedInput
+    buyerProfile?: BuyerProfileUncheckedUpdateOneWithoutUserNestedInput
+    listingsAsSeller?: ListingUncheckedUpdateManyWithoutSellerNestedInput
+    ordersAsBuyer?: OrderUncheckedUpdateManyWithoutBuyerNestedInput
+    ordersAsSeller?: OrderUncheckedUpdateManyWithoutSellerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPayerNestedInput
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutFarmerNestedInput
+    reviewsGiven?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+    reviewsReceived?: ReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
+    pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
+    verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
+  }
+
+  export type ProfileUpsertWithoutFarmerEscrowsInput = {
+    update: XOR<ProfileUpdateWithoutFarmerEscrowsInput, ProfileUncheckedUpdateWithoutFarmerEscrowsInput>
+    create: XOR<ProfileCreateWithoutFarmerEscrowsInput, ProfileUncheckedCreateWithoutFarmerEscrowsInput>
+    where?: ProfileWhereInput
+  }
+
+  export type ProfileUpdateToOneWithWhereWithoutFarmerEscrowsInput = {
+    where?: ProfileWhereInput
+    data: XOR<ProfileUpdateWithoutFarmerEscrowsInput, ProfileUncheckedUpdateWithoutFarmerEscrowsInput>
+  }
+
+  export type ProfileUpdateWithoutFarmerEscrowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
+    community?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    agroScore?: IntFieldUpdateOperationsInput | number
+    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
+    buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
+    listingsAsSeller?: ListingUpdateManyWithoutSellerNestedInput
+    ordersAsBuyer?: OrderUpdateManyWithoutBuyerNestedInput
+    ordersAsSeller?: OrderUpdateManyWithoutSellerNestedInput
+    payments?: PaymentUpdateManyWithoutPayerNestedInput
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    bnplApplications?: BNPLApplicationUpdateManyWithoutFarmerNestedInput
+    reviewsGiven?: ReviewUpdateManyWithoutReviewerNestedInput
+    reviewsReceived?: ReviewUpdateManyWithoutRevieweeNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    messages?: MessageUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
+    pestReports?: PestReportUpdateManyWithoutReporterNestedInput
+    verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+  }
+
+  export type ProfileUncheckedUpdateWithoutFarmerEscrowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    fullName?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
+    community?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    agroScore?: IntFieldUpdateOperationsInput | number
+    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    farmerProfile?: FarmerProfileUncheckedUpdateOneWithoutUserNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutUserNestedInput
+    buyerProfile?: BuyerProfileUncheckedUpdateOneWithoutUserNestedInput
+    listingsAsSeller?: ListingUncheckedUpdateManyWithoutSellerNestedInput
+    ordersAsBuyer?: OrderUncheckedUpdateManyWithoutBuyerNestedInput
+    ordersAsSeller?: OrderUncheckedUpdateManyWithoutSellerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutPayerNestedInput
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutFarmerNestedInput
+    reviewsGiven?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+    reviewsReceived?: ReviewUncheckedUpdateManyWithoutRevieweeNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
+    pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
+    verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+  }
+
   export type OrderCreateWithoutPaymentsInput = {
     id?: string
     orderNumber: string
@@ -43339,6 +45787,7 @@ export namespace Prisma {
     listing: ListingCreateNestedOneWithoutOrdersInput
     bnplApplications?: BNPLApplicationCreateNestedManyWithoutOrderInput
     reviews?: ReviewCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutPaymentsInput = {
@@ -43373,6 +45822,7 @@ export namespace Prisma {
     cancellationReason?: string | null
     bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutOrderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutPaymentsInput = {
@@ -43413,6 +45863,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutPaymentsInput = {
@@ -43448,6 +45900,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutPaymentsInput = {
@@ -43498,6 +45952,7 @@ export namespace Prisma {
     listing?: ListingUpdateOneRequiredWithoutOrdersNestedInput
     bnplApplications?: BNPLApplicationUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutPaymentsInput = {
@@ -43532,6 +45987,7 @@ export namespace Prisma {
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type ProfileUpsertWithoutPaymentsInput = {
@@ -43578,6 +46034,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutPaymentsInput = {
@@ -43613,6 +46071,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileCreateWithoutWalletInput = {
@@ -43648,6 +46108,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutWalletInput = {
@@ -43683,6 +46145,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutWalletInput = {
@@ -43766,6 +46230,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutWalletInput = {
@@ -43801,6 +46267,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type WalletTransactionUpsertWithWhereUniqueWithoutWalletInput = {
@@ -43923,6 +46391,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutBnplApplicationsInput = {
@@ -43958,6 +46428,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutBnplApplicationsInput = {
@@ -43997,6 +46469,7 @@ export namespace Prisma {
     listing: ListingCreateNestedOneWithoutOrdersInput
     payments?: PaymentCreateNestedManyWithoutOrderInput
     reviews?: ReviewCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutBnplApplicationsInput = {
@@ -44031,6 +46504,7 @@ export namespace Prisma {
     cancellationReason?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutBnplApplicationsInput = {
@@ -44110,6 +46584,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutBnplApplicationsInput = {
@@ -44145,6 +46621,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type OrderUpsertWithoutBnplApplicationsInput = {
@@ -44190,6 +46668,7 @@ export namespace Prisma {
     listing?: ListingUpdateOneRequiredWithoutOrdersNestedInput
     payments?: PaymentUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutBnplApplicationsInput = {
@@ -44224,6 +46703,7 @@ export namespace Prisma {
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type BNPLRepaymentUpsertWithWhereUniqueWithoutApplicationInput = {
@@ -44752,6 +47232,8 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutPestReportsInput = {
@@ -44787,6 +47269,8 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutPestReportsInput = {
@@ -44930,6 +47414,8 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutPestReportsInput = {
@@ -44965,6 +47451,8 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProductCategoryUpsertWithoutPestReportsInput = {
@@ -45110,6 +47598,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutReviewsGivenInput = {
@@ -45145,6 +47635,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutReviewsGivenInput = {
@@ -45185,6 +47677,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutReviewsReceivedInput = {
@@ -45220,6 +47714,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutReviewsReceivedInput = {
@@ -45259,6 +47755,7 @@ export namespace Prisma {
     listing: ListingCreateNestedOneWithoutOrdersInput
     payments?: PaymentCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutReviewsInput = {
@@ -45293,6 +47790,7 @@ export namespace Prisma {
     cancellationReason?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
     bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutOrderInput
+    escrowTransaction?: EscrowTransactionUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutReviewsInput = {
@@ -45344,6 +47842,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutReviewsGivenInput = {
@@ -45379,6 +47879,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUpsertWithoutReviewsReceivedInput = {
@@ -45425,6 +47927,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutReviewsReceivedInput = {
@@ -45460,6 +47964,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type OrderUpsertWithoutReviewsInput = {
@@ -45505,6 +48011,7 @@ export namespace Prisma {
     listing?: ListingUpdateOneRequiredWithoutOrdersNestedInput
     payments?: PaymentUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutReviewsInput = {
@@ -45539,6 +48046,7 @@ export namespace Prisma {
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type ProfileCreateWithoutNotificationsInput = {
@@ -45574,6 +48082,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutNotificationsInput = {
@@ -45609,6 +48119,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutNotificationsInput = {
@@ -45660,6 +48172,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutNotificationsInput = {
@@ -45695,6 +48209,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileCreateWithoutMessagesInput = {
@@ -45730,6 +48246,8 @@ export namespace Prisma {
     receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutMessagesInput = {
@@ -45765,6 +48283,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutMessagesInput = {
@@ -45805,6 +48325,8 @@ export namespace Prisma {
     messages?: MessageCreateNestedManyWithoutSenderInput
     pestReports?: PestReportCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileUncheckedCreateWithoutReceivedMessagesInput = {
@@ -45840,6 +48362,8 @@ export namespace Prisma {
     messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
     verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
+    buyerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutBuyerInput
+    farmerEscrows?: EscrowTransactionUncheckedCreateNestedManyWithoutFarmerInput
   }
 
   export type ProfileCreateOrConnectWithoutReceivedMessagesInput = {
@@ -45978,6 +48502,8 @@ export namespace Prisma {
     receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutMessagesInput = {
@@ -46013,6 +48539,8 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUpsertWithoutReceivedMessagesInput = {
@@ -46059,6 +48587,8 @@ export namespace Prisma {
     messages?: MessageUpdateManyWithoutSenderNestedInput
     pestReports?: PestReportUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUpdateManyWithoutFarmerNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -46094,6 +48624,8 @@ export namespace Prisma {
     messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
     verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
+    buyerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutBuyerNestedInput
+    farmerEscrows?: EscrowTransactionUncheckedUpdateManyWithoutFarmerNestedInput
   }
 
   export type ListingUpsertWithoutInquiriesInput = {
@@ -47636,6 +50168,30 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type EscrowTransactionCreateManyBuyerInput = {
+    id?: string
+    orderId: string
+    farmerId: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EscrowTransactionCreateManyFarmerInput = {
+    id?: string
+    orderId: string
+    buyerId: string
+    amount: Decimal | DecimalJsLike | number | string
+    platformFee: Decimal | DecimalJsLike | number | string
+    payoutAmount: Decimal | DecimalJsLike | number | string
+    status?: $Enums.EscrowStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ListingUpdateWithoutSellerInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -47789,6 +50345,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutBuyerInput = {
@@ -47823,6 +50380,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutBuyerInput = {
@@ -47888,6 +50446,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutSellerInput = {
@@ -47922,6 +50481,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutSellerInput = {
@@ -48347,6 +50907,78 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EscrowTransactionUpdateWithoutBuyerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutEscrowTransactionNestedInput
+    farmer?: ProfileUpdateOneRequiredWithoutFarmerEscrowsNestedInput
+  }
+
+  export type EscrowTransactionUncheckedUpdateWithoutBuyerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    farmerId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EscrowTransactionUncheckedUpdateManyWithoutBuyerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    farmerId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EscrowTransactionUpdateWithoutFarmerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutEscrowTransactionNestedInput
+    buyer?: ProfileUpdateOneRequiredWithoutBuyerEscrowsNestedInput
+  }
+
+  export type EscrowTransactionUncheckedUpdateWithoutFarmerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    buyerId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EscrowTransactionUncheckedUpdateManyWithoutFarmerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    buyerId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    platformFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    payoutAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OrderCreateManyListingInput = {
     id?: string
     orderNumber: string
@@ -48420,6 +51052,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutListingInput = {
@@ -48454,6 +51087,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
     bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutOrderNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutOrderNestedInput
+    escrowTransaction?: EscrowTransactionUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutListingInput = {
@@ -48860,6 +51494,10 @@ export namespace Prisma {
      * @deprecated Use OrderDefaultArgs instead
      */
     export type OrderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = OrderDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use EscrowTransactionDefaultArgs instead
+     */
+    export type EscrowTransactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = EscrowTransactionDefaultArgs<ExtArgs>
     /**
      * @deprecated Use PaymentDefaultArgs instead
      */

@@ -34,6 +34,7 @@ export default function IntelligencePage() {
   const [pests, setPests]         = useState<PestAlert[]>([])
   const [loading, setLoading]     = useState(true)
   const [district, setDistrict]   = useState('Accra, Greater Accra')
+  const [priceQuery, setPriceQuery] = useState('')
 
   useEffect(() => {
     const dist = (user as any)?.farmerProfile?.district ?? 'Accra'
@@ -75,7 +76,42 @@ export default function IntelligencePage() {
         )}
 
         {/* Market prices */}
-        <PriceChart prices={prices} />
+        <div className="space-y-3">
+          <div className="relative">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5"
+                 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none">
+              <circle cx="8.5" cy="8.5" r="5.5" />
+              <path d="M13 13l3.5 3.5" strokeLinecap="round" />
+            </svg>
+            <input
+              type="text"
+              value={priceQuery}
+              onChange={e => setPriceQuery(e.target.value)}
+              placeholder="Search commodity prices..."
+              className="w-full h-11 pl-10 pr-4 text-sm rounded-xl border border-border bg-white
+                         focus:outline-none focus:ring-2 focus:ring-lime/40 placeholder:text-muted-foreground/60"
+            />
+          </div>
+
+          {priceQuery && prices.filter(p =>
+            p.category.name.toLowerCase().includes(priceQuery.toLowerCase())
+          ).length === 0 ? (
+            <div className="bg-white rounded-2xl border border-border px-5 py-10 text-center">
+              <p className="text-sm font-semibold text-forest">No local price data for "{priceQuery}"</p>
+              <p className="text-xs text-muted-foreground mt-1.5 max-w-sm mx-auto">
+                Check external agricultural bulletins at{' '}
+                <span className="font-semibold text-forest">Esoko Ghana</span> or{' '}
+                <span className="font-semibold text-forest">MoFA price portals</span> for this commodity.
+              </p>
+            </div>
+          ) : (
+            <PriceChart
+              prices={priceQuery
+                ? prices.filter(p => p.category.name.toLowerCase().includes(priceQuery.toLowerCase()))
+                : prices}
+            />
+          )}
+        </div>
 
         {/* Pest alerts */}
         <div className="bg-white rounded-2xl border border-border overflow-hidden">

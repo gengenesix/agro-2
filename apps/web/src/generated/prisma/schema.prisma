@@ -151,6 +151,14 @@ enum BNPLTier {
   commercial
 }
 
+enum EscrowStatus {
+  HELD
+  PENDING_RELEASE
+  RELEASED
+  DISPUTED
+  REFUNDED
+}
+
 enum AlertSeverity {
   info
   warning
@@ -278,19 +286,21 @@ model Profile {
   dealerProfile DealerProfile?
   buyerProfile  BuyerProfile?
 
-  listingsAsSeller Listing[]         @relation("SellerListings")
-  ordersAsBuyer    Order[]           @relation("BuyerOrders")
-  ordersAsSeller   Order[]           @relation("SellerOrders")
-  payments         Payment[]         @relation("PayerPayments")
+  listingsAsSeller Listing[]           @relation("SellerListings")
+  ordersAsBuyer    Order[]             @relation("BuyerOrders")
+  ordersAsSeller   Order[]             @relation("SellerOrders")
+  payments         Payment[]           @relation("PayerPayments")
   wallet           Wallet?
   bnplApplications BNPLApplication[]
-  reviewsGiven     Review[]          @relation("ReviewerReviews")
-  reviewsReceived  Review[]          @relation("RevieweeReviews")
+  reviewsGiven     Review[]            @relation("ReviewerReviews")
+  reviewsReceived  Review[]            @relation("RevieweeReviews")
   notifications    Notification[]
-  messages         Message[]         @relation("SenderMessages")
-  receivedMessages Message[]         @relation("RecipientMessages")
+  messages         Message[]           @relation("SenderMessages")
+  receivedMessages Message[]           @relation("RecipientMessages")
   pestReports      PestReport[]
-  verifiedByAgent  FarmerProfile[]   @relation("VerifiedByAgent")
+  verifiedByAgent  FarmerProfile[]     @relation("VerifiedByAgent")
+  buyerEscrows     EscrowTransaction[] @relation("BuyerEscrows")
+  farmerEscrows    EscrowTransaction[] @relation("FarmerEscrows")
 
   @@map("profiles")
 }
@@ -457,17 +467,42 @@ model Order {
   cancelledAt          DateTime?       @map("cancelled_at")
   cancellationReason   String?         @map("cancellation_reason")
 
-  buyer            Profile           @relation("BuyerOrders", fields: [buyerId], references: [id])
-  seller           Profile           @relation("SellerOrders", fields: [sellerId], references: [id])
-  listing          Listing           @relation(fields: [listingId], references: [id])
-  payments         Payment[]
-  bnplApplications BNPLApplication[]
-  reviews          Review[]
+  buyer             Profile            @relation("BuyerOrders", fields: [buyerId], references: [id])
+  seller            Profile            @relation("SellerOrders", fields: [sellerId], references: [id])
+  listing           Listing            @relation(fields: [listingId], references: [id])
+  payments          Payment[]
+  bnplApplications  BNPLApplication[]
+  reviews           Review[]
+  escrowTransaction EscrowTransaction?
 
   @@index([buyerId])
   @@index([sellerId])
   @@index([trackingStatus])
   @@map("orders")
+}
+
+// ─── ESCROW ───────────────────────────────────────────────────────────────────
+
+model EscrowTransaction {
+  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId      String       @unique @map("order_id") @db.Uuid
+  buyerId      String       @map("buyer_id") @db.Uuid
+  farmerId     String       @map("farmer_id") @db.Uuid
+  amount       Decimal      @db.Decimal(12, 2)
+  platformFee  Decimal      @map("platform_fee") @db.Decimal(10, 2)
+  payoutAmount Decimal      @map("payout_amount") @db.Decimal(12, 2)
+  status       EscrowStatus @default(HELD)
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  order  Order   @relation(fields: [orderId], references: [id])
+  buyer  Profile @relation("BuyerEscrows", fields: [buyerId], references: [id])
+  farmer Profile @relation("FarmerEscrows", fields: [farmerId], references: [id])
+
+  @@index([buyerId])
+  @@index([farmerId])
+  @@index([status])
+  @@map("escrow_transactions")
 }
 
 // ─── PAYMENTS & WALLET ────────────────────────────────────────────────────────
