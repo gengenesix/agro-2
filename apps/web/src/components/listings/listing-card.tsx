@@ -48,7 +48,9 @@ export function ListingCard({ listing, basePath = '/produce' }: ListingCardProps
           <div className="absolute top-3 right-3">
             <span className="inline-flex items-center gap-1 bg-harvest-gold/90 backdrop-blur-sm
                              text-white text-[9px] font-bold rounded-full px-2 py-1 uppercase tracking-wide">
-              <HarvestPledgeIcon size={9} />
+              <svg viewBox="0 0 12 12" width="9" height="9" fill="currentColor">
+                <path d="M6 1C4 1 2 3 2 5c0 2.5 4 6 4 6s4-3.5 4-6c0-2-2-4-4-4Z" />
+              </svg>
               Harvest Pledge
             </span>
           </div>
