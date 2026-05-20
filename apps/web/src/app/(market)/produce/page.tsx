@@ -75,6 +75,7 @@ async function fetchListings(filters: Filters) {
         status:              l.status,
         quantityAvailable:   Number(l.quantityAvailable),
         pricePerUnit:        Number(l.pricePerUnit),
+        minOrderQuantity:    Number(l.minOrderQuantity),
         photos:              l.photos,
         farmingMethod:       l.farmingMethod ?? null,
         expectedHarvestDate: l.expectedHarvestDate?.toISOString() ?? null,

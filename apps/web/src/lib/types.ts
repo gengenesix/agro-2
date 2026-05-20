@@ -88,6 +88,7 @@ export interface ListingSummary {
   listingType: ListingType
   quantityAvailable: number
   pricePerUnit: number
+  minOrderQuantity: number
   photos: string[]
   farmingMethod: FarmingMethod | null
   expectedHarvestDate: string | null

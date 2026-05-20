@@ -16,6 +16,7 @@ const PLACEHOLDER = 'https://images.unsplash.com/photo-1500937386664-56d1dfef385
 
 export function ListingCard({ listing }: ListingCardProps) {
   const isPledge = listing.listingType === 'harvest_pledge'
+  const moq      = listing.minOrderQuantity ?? 1
 
   return (
     <Link
@@ -54,13 +55,13 @@ export function ListingCard({ listing }: ListingCardProps) {
         )}
 
         {/* Organic badge */}
-        {listing.farmingMethod === 'organic' || listing.farmingMethod === 'certified_organic' ? (
+        {(listing.farmingMethod === 'organic' || listing.farmingMethod === 'certified_organic') && (
           <div className="absolute bottom-3 left-3">
             <span className="bg-lime/95 text-forest text-[9px] font-bold rounded-full px-2 py-0.5 uppercase tracking-wide">
               Organic
             </span>
           </div>
-        ) : null}
+        )}
       </div>
 
       {/* Body */}
@@ -95,24 +96,41 @@ export function ListingCard({ listing }: ListingCardProps) {
           )}
         </div>
 
-        {/* Price + quantity */}
-        <div className="flex items-end justify-between mb-3">
-          <div>
-            <PriceDisplay amount={listing.pricePerUnit} unit={listing.unit.abbreviation} size="lg" />
-            {listing.bnplAvailable && (
-              <span className="inline-flex items-center gap-1 mt-1 bg-lime/20 text-forest text-[9px]
-                               font-bold rounded-full px-2 py-0.5 uppercase tracking-wide">
-                Pay at Harvest
+        {/* Wholesale price block */}
+        <div className="rounded-xl bg-cream px-3 py-2.5 mb-3">
+          <div className="flex items-baseline justify-between gap-2">
+            <div>
+              <PriceDisplay amount={listing.pricePerUnit} unit={listing.unit.abbreviation} size="lg" />
+              <p className="text-[10px] text-muted-foreground mt-0.5">
+                per {listing.unit.name ?? listing.unit.abbreviation}
+              </p>
+            </div>
+            <div className="text-right flex-shrink-0">
+              <p className="font-mono text-xs font-bold text-forest">
+                {Number(listing.quantityAvailable).toLocaleString()} {listing.unit.abbreviation}
+              </p>
+              <p className="text-[10px] text-muted-foreground">available</p>
+            </div>
+          </div>
+
+          {/* MOQ row */}
+          {moq > 1 && (
+            <div className="flex items-center justify-between mt-2 pt-2 border-t border-border/60">
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Min. order</span>
+              <span className="font-mono text-xs font-bold text-forest">
+                {moq.toLocaleString()} {listing.unit.abbreviation}
               </span>
-            )}
-          </div>
-          <div className="text-right">
-            <span className="font-mono text-sm font-bold text-forest">
-              {Number(listing.quantityAvailable).toLocaleString()}
-            </span>
-            <span className="text-[11px] text-muted-foreground ml-1">{listing.unit.abbreviation}</span>
-          </div>
+            </div>
+          )}
         </div>
+
+        {/* BNPL badge */}
+        {listing.bnplAvailable && (
+          <span className="inline-flex items-center gap-1 mb-3 bg-lime/20 text-forest text-[9px]
+                           font-bold rounded-full px-2 py-0.5 uppercase tracking-wide">
+            Pay at Harvest
+          </span>
+        )}
 
         {/* Harvest date (pledge only) */}
         {isPledge && listing.expectedHarvestDate && (

@@ -399,7 +399,7 @@ export default function IntelligencePage() {
                 </a>
                 {' '}or the{' '}
                 <a
-                  href="https://mofa.gov.gh/"
+                  href="http://mofa.gov.gh/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-semibold text-emerald-700 underline underline-offset-2

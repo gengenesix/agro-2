@@ -34,7 +34,7 @@ export function OrderForm({ listing }: OrderFormProps) {
     try {
       const { data } = await api.post('/orders', {
         listingId:     listing.id,
-        quantity:      qty,
+        quantity:      parseInt(String(qty), 10),
         paymentMethod,
       })
       const order = data.data
@@ -107,7 +107,10 @@ export function OrderForm({ listing }: OrderFormProps) {
               min={min}
               max={max}
               value={qty}
-              onChange={e => setQty(Math.min(max, Math.max(min, Number(e.target.value))))}
+              onChange={e => {
+                const parsed = parseInt(e.target.value, 10)
+                setQty(isNaN(parsed) ? min : Math.min(max, Math.max(min, parsed)))
+              }}
               className="flex-1 text-center font-mono text-lg font-bold text-forest border border-border
                          rounded-xl py-2 focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/10"
             />

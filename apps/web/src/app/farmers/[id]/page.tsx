@@ -1,39 +1,73 @@
-import { notFound }   from 'next/navigation'
-import Image          from 'next/image'
-import Link           from 'next/link'
-import { SectorChip } from '@/components/shared/sector-chip'
+import { notFound }    from 'next/navigation'
+import Image           from 'next/image'
+import Link            from 'next/link'
+import { SectorChip }  from '@/components/shared/sector-chip'
 import { AgroScoreBar } from '@/components/shared/agro-score-bar'
 import { ListingCard }  from '@/components/listings/listing-card'
 import {
   VerifiedBlueIcon, PremiumGreenIcon, MapPinIcon, CalendarIcon,
 } from '@/components/shared/icons'
-import { formatDate } from '@/lib/format'
-
-const API = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:4000/api/v1'
+import { formatDate }  from '@/lib/format'
+import { prisma }      from '@/lib/prisma'
+import { GHANA_REGIONS } from '@/lib/types'
+import type { ListingSummary } from '@/lib/types'
 
 async function fetchFarmer(id: string) {
   try {
-    const res = await fetch(`${API}/users/${id}/profile`, { next: { revalidate: 300 } })
-    if (!res.ok) return null
-    return (await res.json()).data
+    return await prisma.profile.findUnique({
+      where:   { id },
+      include: { farmerProfile: true },
+    })
   } catch {
     return null
   }
 }
 
-async function fetchFarmerListings(id: string) {
+async function fetchFarmerListings(id: string): Promise<ListingSummary[]> {
   try {
-    const res = await fetch(`${API}/users/${id}/listings?limit=12`, { next: { revalidate: 120 } })
-    if (!res.ok) return []
-    return (await res.json()).data ?? []
+    const rows = await prisma.listing.findMany({
+      where:   { sellerId: id, status: 'active' },
+      take:    12,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        category: { select: { name: true, sector: true, slug: true } },
+        unit:     { select: { name: true, abbreviation: true } },
+        seller:   { select: { id: true, fullName: true, avatarUrl: true, verificationLevel: true, agroScore: true } },
+        region:   { select: { name: true, code: true } },
+        district: { select: { name: true } },
+      },
+    })
+    return rows.map(l => ({
+      id:                  l.id,
+      title:               l.title,
+      slug:                l.slug,
+      listingType:         l.listingType,
+      status:              l.status,
+      quantityAvailable:   Number(l.quantityAvailable),
+      pricePerUnit:        Number(l.pricePerUnit),
+      minOrderQuantity:    Number(l.minOrderQuantity),
+      photos:              l.photos,
+      farmingMethod:       l.farmingMethod ?? null,
+      expectedHarvestDate: l.expectedHarvestDate?.toISOString() ?? null,
+      depositPercentage:   l.depositPercentage,
+      pledgeStatus:        l.pledgeStatus ?? null,
+      bnplAvailable:       l.bnplAvailable,
+      viewsCount:          l.viewsCount,
+      createdAt:           l.createdAt.toISOString(),
+      unit:                l.unit,
+      category:            l.category,
+      region:              l.region,
+      district:            l.district,
+      seller:              l.seller,
+    }))
   } catch {
     return []
   }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  const farmer = await fetchFarmer(id)
+  const { id }  = await params
+  const farmer  = await fetchFarmer(id)
   if (!farmer) return { title: 'Farmer not found' }
   return {
     title:       `${farmer.fullName} — AgroConnect`,
@@ -42,12 +76,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 }
 
 export default async function PublicFarmerProfilePage({ params }: { params: Promise<{ id: string }> }) {
-  const { id }           = await params
-  const [farmer, listings] = await Promise.all([fetchFarmer(id), fetchFarmerListings(id)])
+  const { id }              = await params
+  const [farmer, listings]  = await Promise.all([fetchFarmer(id), fetchFarmerListings(id)])
   if (!farmer) notFound()
 
-  const fp   = farmer.farmerProfile
-  const lvl  = farmer.verificationLevel
+  const fp         = farmer.farmerProfile
+  const lvl        = farmer.verificationLevel
+  const regionName = GHANA_REGIONS.find(r => r.id === farmer.regionId)?.name ?? null
 
   return (
     <main className="min-h-screen bg-cream pb-20">
@@ -63,7 +98,6 @@ export default async function PublicFarmerProfilePage({ params }: { params: Prom
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-5">
         {/* Profile card */}
         <div className="bg-white rounded-2xl border border-border overflow-hidden">
-          {/* Cover / hero */}
           <div className="h-24 bg-gradient-to-r from-forest to-forest-dark" />
 
           <div className="px-5 pb-5">
@@ -72,7 +106,8 @@ export default async function PublicFarmerProfilePage({ params }: { params: Prom
               <div className="w-20 h-20 rounded-2xl border-4 border-white overflow-hidden bg-forest
                               flex items-center justify-center">
                 {farmer.avatarUrl ? (
-                  <Image src={farmer.avatarUrl} alt={farmer.fullName} width={80} height={80} className="object-cover" />
+                  <Image src={farmer.avatarUrl} alt={farmer.fullName} width={80} height={80}
+                    className="object-cover" />
                 ) : (
                   <span className="text-white font-bold text-2xl">
                     {farmer.fullName.charAt(0).toUpperCase()}
@@ -92,16 +127,16 @@ export default async function PublicFarmerProfilePage({ params }: { params: Prom
                   {fp?.farmName && (
                     <span className="text-sm text-muted-foreground">{fp.farmName}</span>
                   )}
-                  {fp?.regionId && (
+                  {(regionName || farmer.community) && (
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <MapPinIcon size={12} />
-                      {fp.district && `${fp.district}, `}
-                      Ghana
+                      {farmer.community && `${farmer.community}, `}
+                      {regionName ?? 'Ghana'}
                     </div>
                   )}
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <CalendarIcon size={12} />
-                    Member since {formatDate(farmer.createdAt)}
+                    Member since {formatDate(farmer.createdAt.toISOString())}
                   </div>
                 </div>
               </div>
@@ -126,17 +161,12 @@ export default async function PublicFarmerProfilePage({ params }: { params: Prom
                 )}
                 {lvl === 'premium' && (
                   <span className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full
-                                   bg-premium-green/10 text-premium-green border border-premium-green/20">
+                                   bg-lime/20 text-forest border border-lime/30">
                     <PremiumGreenIcon size={12} /> Premium Verified
                   </span>
                 )}
               </div>
             </div>
-
-            {/* Farmer bio */}
-            {fp?.bio && (
-              <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{fp.bio}</p>
-            )}
 
             {/* Farm details */}
             {fp && (
@@ -144,14 +174,18 @@ export default async function PublicFarmerProfilePage({ params }: { params: Prom
                 {fp.farmSizeAcres && (
                   <div>
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Farm size</p>
-                    <p className="text-sm font-bold text-forest mt-0.5">{fp.farmSizeAcres} acres</p>
+                    <p className="text-sm font-bold text-forest mt-0.5">
+                      {Number(fp.farmSizeAcres)} acres
+                    </p>
                   </div>
                 )}
-                {fp.sectors?.length > 0 && (
+                {fp.sectors.length > 0 && (
                   <div>
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">Sectors</p>
                     <div className="flex gap-1 flex-wrap">
-                      {fp.sectors.map((s: string) => <SectorChip key={s} sector={s as any} label={s} size="sm" />)}
+                      {fp.sectors.map(s => (
+                        <SectorChip key={s} sector={s as any} label={s} size="sm" />
+                      ))}
                     </div>
                   </div>
                 )}
@@ -160,14 +194,12 @@ export default async function PublicFarmerProfilePage({ params }: { params: Prom
           </div>
 
           {/* AgroScore */}
-          {farmer.agroScore != null && (
-            <div className="px-5 pb-5 pt-0">
-              <div className="bg-cream rounded-xl p-4">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-2">AgroScore</p>
-                <AgroScoreBar score={farmer.agroScore} />
-              </div>
+          <div className="px-5 pb-5 pt-0">
+            <div className="bg-cream rounded-xl p-4">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-2">AgroScore</p>
+              <AgroScoreBar score={farmer.agroScore} />
             </div>
-          )}
+          </div>
         </div>
 
         {/* Active listings */}
@@ -187,7 +219,7 @@ export default async function PublicFarmerProfilePage({ params }: { params: Prom
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              {listings.map((l: any) => <ListingCard key={l.id} listing={l} />)}
+              {listings.map(l => <ListingCard key={l.id} listing={l} />)}
             </div>
           )}
         </div>
