@@ -44,6 +44,11 @@ export function OrderForm({ listing }: OrderFormProps) {
         setStep('success')
       }
     } catch (err: any) {
+      console.error('[OrderForm] API error:', {
+        status:  err?.response?.status,
+        data:    err?.response?.data,
+        payload: { listingId: listing.id, quantity: parseInt(String(qty), 10), paymentMethod },
+      })
       setErrorMsg(err.response?.data?.error ?? 'Failed to place order. Try again.')
       setStep('error')
     }
@@ -63,7 +68,7 @@ export function OrderForm({ listing }: OrderFormProps) {
           Your {isPledge ? 'pledge' : 'order'} has been confirmed. The seller will be notified.
         </p>
         <button
-          onClick={() => router.push('/orders')}
+          onClick={() => router.push('/buyer/orders')}
           className="w-full py-2.5 bg-forest text-white text-sm font-bold rounded-xl hover:bg-forest-dark transition-colors"
         >
           View orders
