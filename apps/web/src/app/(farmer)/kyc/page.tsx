@@ -330,7 +330,7 @@ export default function KYCPage() {
                   <div className="relative w-full aspect-video max-w-xs mx-auto rounded-xl overflow-hidden
                                   border-2 border-forest/30 bg-black">
                     {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                    <video ref={videoRef} className="w-full h-full object-cover" playsInline muted />
+                    <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />
                     <canvas ref={canvasRef} className="hidden" />
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <div className="w-32 h-40 rounded-full border-2 border-white/60 border-dashed" />
