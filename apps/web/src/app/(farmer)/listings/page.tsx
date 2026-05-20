@@ -117,7 +117,7 @@ export default function MyListingsPage() {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {/* Public preview — opens in new tab, farmer keeps layout context */}
                     <a
-                      href={`/produce/${listing.slug}`}
+                      href={`/produce/${listing.slug}?preview=true`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest

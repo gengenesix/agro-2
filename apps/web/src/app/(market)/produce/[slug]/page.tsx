@@ -99,9 +99,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export default async function ListingDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ListingDetailPage({
+  params,
+  searchParams,
+}: {
+  params:       Promise<{ slug: string }>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
   const { slug } = await params
-  const listing  = await fetchListing(slug)
+  const sp        = await searchParams
+  const isPreview = sp['preview'] === 'true'
+
+  const listing = await fetchListing(slug)
   if (!listing) notFound()
 
   const isPledge = listing.listingType === 'harvest_pledge'
@@ -111,16 +120,40 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
       {/* Breadcrumb */}
       <div className="bg-white border-b border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Link href="/produce" className="hover:text-forest transition-colors">Marketplace</Link>
-          <ChevronRightIcon size={12} />
-          <SectorChip sector={listing.category.sector} label={listing.category.name} size="sm" />
-          <ChevronRightIcon size={12} />
-          <span className="text-forest font-semibold truncate max-w-[200px]">{listing.title}</span>
+          {isPreview ? (
+            <Link href="/listings" className="hover:text-forest transition-colors font-semibold">
+              ← Back to my listings
+            </Link>
+          ) : (
+            <>
+              <Link href="/produce" className="hover:text-forest transition-colors">Marketplace</Link>
+              <ChevronRightIcon size={12} />
+              <SectorChip sector={listing.category.sector} label={listing.category.name} size="sm" />
+              <ChevronRightIcon size={12} />
+              <span className="text-forest font-semibold truncate max-w-[200px]">{listing.title}</span>
+            </>
+          )}
         </div>
       </div>
 
+      {/* Preview mode banner */}
+      {isPreview && (
+        <div className="bg-harvest-gold/10 border-b border-harvest-gold/30">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 flex items-center gap-2">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75"
+                 className="w-3.5 h-3.5 text-harvest-gold flex-shrink-0">
+              <circle cx="8" cy="8" r="6" />
+              <path d="M8 7v4M8 5.5v.5" strokeLinecap="round" />
+            </svg>
+            <p className="text-xs font-semibold text-harvest-gold">
+              Preview mode — this is how your listing appears to buyers
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-        <div className="grid lg:grid-cols-[1fr_380px] gap-8">
+        <div className={`grid gap-8 ${isPreview ? '' : 'lg:grid-cols-[1fr_380px]'}`}>
           {/* Left column */}
           <div className="space-y-6">
             {/* Photo gallery */}
@@ -244,26 +277,26 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
             )}
           </div>
 
-          {/* Right column — sticky order form + seller card */}
-          <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-            {/* Order / pledge form */}
-            <Suspense fallback={<div className="h-64 bg-white rounded-2xl border border-border animate-pulse" />}>
-              <OrderForm listing={listing} />
-            </Suspense>
-
-            {/* Seller card */}
-            {listing.seller && (
-              <Suspense fallback={null}>
-                <SellerCard seller={{
-                  id: listing.seller.id,
-                  name: listing.seller.fullName,
-                  avatar: listing.seller.avatarUrl ?? undefined,
-                  verificationLevel: listing.seller.verificationLevel,
-                  agroScore: listing.seller.agroScore,
-                }} />
+          {/* Right column — hidden in preview mode */}
+          {!isPreview && (
+            <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+              <Suspense fallback={<div className="h-64 bg-white rounded-2xl border border-border animate-pulse" />}>
+                <OrderForm listing={listing} />
               </Suspense>
-            )}
-          </div>
+
+              {listing.seller && (
+                <Suspense fallback={null}>
+                  <SellerCard seller={{
+                    id: listing.seller.id,
+                    name: listing.seller.fullName,
+                    avatar: listing.seller.avatarUrl ?? undefined,
+                    verificationLevel: listing.seller.verificationLevel,
+                    agroScore: listing.seller.agroScore,
+                  }} />
+                </Suspense>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </main>
