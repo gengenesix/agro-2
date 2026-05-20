@@ -55,21 +55,21 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
           initialPhotos={listing.photos ?? []}
           initialData={{
             title:             listing.title,
-            description:       listing.description,
+            description:       listing.description      ?? undefined,
             sector:            listing.sector,
             category:          listing.category,
             listingType:       listing.listingType,
             quantity:          listing.quantityTotal,
             unit:              listing.unit,
             pricePerUnit:      listing.pricePerUnit,
-            minimumOrder:      listing.minimumOrder,
-            farmingMethod:     listing.farmingMethod,
-            harvestDate:       listing.harvestDate,
-            depositPercent:    listing.depositPercent,
-            regionId:          listing.regionId,
+            minimumOrder:      listing.minimumOrder      ?? undefined,
+            farmingMethod:     listing.farmingMethod     ?? undefined,
+            harvestDate:       listing.harvestDate       ?? undefined,
+            depositPercent:    listing.depositPercent    ?? undefined,
+            regionId:          listing.regionId          ?? undefined,
             district:          listing.district,
-            bnplEligible:      listing.bnplEligible,
-            deliveryAvailable: listing.deliveryAvailable,
+            bnplEligible:      listing.bnplEligible      ?? undefined,
+            deliveryAvailable: listing.deliveryAvailable ?? undefined,
           }}
         />
       </div>
