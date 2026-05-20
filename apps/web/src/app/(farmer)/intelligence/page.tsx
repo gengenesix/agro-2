@@ -41,7 +41,7 @@ export default function IntelligencePage() {
 
     Promise.allSettled([
       api.get('/intelligence/weather'),
-      api.get('/intelligence/prices'),
+      api.get('/market-prices'),
       api.get('/intelligence/pest-alerts'),
     ]).then(([w, p, pe]) => {
       if (w.status === 'fulfilled') {
