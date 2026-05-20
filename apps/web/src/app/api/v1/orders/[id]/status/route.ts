@@ -63,14 +63,81 @@ export async function PATCH(
         { status: 400 },
       )
     }
-    const now = new Date()
-    const updated = await prisma.order.update({
-      where: { id: order.id },
-      data: {
-        completedAt: now,
-        ...(sellerNotes ? { sellerNotes } : {}),
-      },
-    })
+
+    const now         = new Date()
+    const totalAmount = Number(order.totalAmount)
+    const platformFee = Number(order.platformCommission)
+    const netEarnings = totalAmount - platformFee
+
+    // Ensure both wallets exist before the transaction so we have their IDs
+    const [buyerWallet, sellerWallet] = await Promise.all([
+      prisma.wallet.upsert({
+        where:  { userId: order.buyerId },
+        create: { userId: order.buyerId,  balance: 0, pendingBalance: 0, totalEarned: 0, totalWithdrawn: 0 },
+        update: {},
+      }),
+      prisma.wallet.upsert({
+        where:  { userId: order.sellerId },
+        create: { userId: order.sellerId, balance: 0, pendingBalance: 0, totalEarned: 0, totalWithdrawn: 0 },
+        update: {},
+      }),
+    ])
+
+    const buyerNewPending  = Math.max(0, Number(buyerWallet.pendingBalance)  - totalAmount)
+    const sellerNewBalance = Number(sellerWallet.balance) + netEarnings
+
+    const [updated] = await prisma.$transaction([
+      // 1. Stamp completedAt on the order
+      prisma.order.update({
+        where: { id: order.id },
+        data: {
+          completedAt: now,
+          ...(sellerNotes ? { sellerNotes } : {}),
+        },
+      }),
+
+      // 2. Release escrow from buyer's pendingBalance
+      prisma.wallet.update({
+        where: { userId: order.buyerId },
+        data:  { pendingBalance: { decrement: totalAmount } },
+      }),
+
+      // 3. Credit net earnings into seller's available balance
+      prisma.wallet.update({
+        where: { userId: order.sellerId },
+        data: {
+          balance:     { increment: netEarnings },
+          totalEarned: { increment: netEarnings },
+        },
+      }),
+
+      // 4. Buyer ledger row — escrow released
+      prisma.walletTransaction.create({
+        data: {
+          walletId:    buyerWallet.id,
+          type:        'escrow_release',
+          amount:      totalAmount,
+          balanceAfter: buyerNewPending,
+          reference:   order.orderNumber,
+          description: `Escrow released — order ${order.orderNumber}`,
+          orderId:     order.id,
+        },
+      }),
+
+      // 5. Seller ledger row — order revenue credited
+      prisma.walletTransaction.create({
+        data: {
+          walletId:    sellerWallet.id,
+          type:        'credit',
+          amount:      netEarnings,
+          balanceAfter: sellerNewBalance,
+          reference:   order.orderNumber,
+          description: `Payment received — order ${order.orderNumber}`,
+          orderId:     order.id,
+        },
+      }),
+    ])
+
     return NextResponse.json({
       success: true,
       data: {
