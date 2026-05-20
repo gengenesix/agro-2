@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
       where: { id: listing.id },
       data:  {
         quantityAvailable: { decrement: d.quantity },
-        ...(remaining <= 0 ? { status: 'inactive' } : {}),
+        ...(remaining <= 0 ? { status: 'sold_out' } : {}),
       },
     })
 
