@@ -241,7 +241,7 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
       </div>
 
       {/* Seller action controls */}
-      {isSeller && !['cancelled', 'completed', 'delivered', 'in_transit'].includes(order.trackingStatus) && (
+      {isSeller && !['cancelled', 'completed', 'delivered'].includes(order.trackingStatus) && (
         <div className="bg-white rounded-2xl border border-border p-4 space-y-3">
           <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Seller actions</p>
 
@@ -275,16 +275,40 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
         </div>
       )}
 
-      {/* Actions */}
-      {isBuyer && order.trackingStatus === 'dispatched' && (
-        <button
-          disabled={acting}
-          onClick={confirmDelivery}
-          className="w-full py-3.5 bg-forest text-white font-bold rounded-2xl
-                     hover:bg-forest-dark transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
-          <CheckIcon size={16} />
-          {acting ? 'Processing…' : 'Confirm delivery received'}
-        </button>
+      {/* Buyer: confirm delivery */}
+      {isBuyer && ['dispatched', 'in_transit'].includes(order.trackingStatus) && (
+        <div className="bg-white rounded-2xl border border-forest/20 p-4 space-y-3">
+          <p className="text-xs text-muted-foreground">
+            Received your order? Confirming releases payment to the seller.
+          </p>
+          <button
+            disabled={acting}
+            onClick={confirmDelivery}
+            className="w-full py-3.5 bg-forest text-white font-bold rounded-2xl
+                       hover:bg-forest-dark transition-colors disabled:opacity-60
+                       flex items-center justify-center gap-2">
+            <CheckIcon size={16} />
+            {acting ? 'Processing…' : 'Confirm delivery received'}
+          </button>
+        </div>
+      )}
+
+      {/* Seller: complete order after buyer confirms delivery */}
+      {isSeller && order.trackingStatus === 'delivered' && (
+        <div className="bg-white rounded-2xl border border-lime/40 p-4 space-y-3">
+          <p className="text-xs text-muted-foreground">
+            Buyer has confirmed delivery. Mark as complete to finalise the transaction and move funds to your balance.
+          </p>
+          <button
+            disabled={acting}
+            onClick={() => advanceStatus('completed')}
+            className="w-full py-3.5 bg-lime text-forest font-bold rounded-2xl
+                       hover:bg-lime-dark transition-colors disabled:opacity-60
+                       flex items-center justify-center gap-2">
+            <CheckIcon size={16} />
+            {acting ? 'Processing…' : 'Complete order & release funds'}
+          </button>
+        </div>
       )}
 
       {isSeller && isPledge && !['delivered', 'completed', 'cancelled'].includes(order.trackingStatus) && (
