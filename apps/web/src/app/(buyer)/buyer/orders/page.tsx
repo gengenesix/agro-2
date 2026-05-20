@@ -93,7 +93,7 @@ export default function BuyerOrdersPage() {
             const listing = (order as any).listing
             return (
               <div key={order.id} className="bg-white rounded-2xl border border-border overflow-hidden hover:shadow-sm transition-shadow">
-                <Link href={`/orders/${order.id}`} className="flex items-center gap-4 p-4">
+                <Link href={`/buyer/orders/${order.id}`} className="flex items-center gap-4 p-4">
                   <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-cream-dark flex-shrink-0">
                     {listing?.photos?.[0] ? (
                       <Image src={listing.photos[0]} alt="" fill sizes="56px" className="object-cover" />
