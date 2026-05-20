@@ -3,8 +3,7 @@ import Image from 'next/image'
 import { SectorChip }         from '@/components/shared/sector-chip'
 import { VerificationBadge }  from '@/components/shared/verification-badge'
 import { PriceDisplay }       from '@/components/shared/price-display'
-import { AgroScoreIcon, MapPinIcon, EyeIcon, HarvestPledgeIcon } from '@/components/shared/icons'
-import { formatDate }         from '@/lib/format'
+import { AgroScoreIcon, MapPinIcon, EyeIcon } from '@/components/shared/icons'
 import type { ListingSummary } from '@/lib/types'
 
 interface ListingCardProps {
@@ -124,25 +123,6 @@ export function ListingCard({ listing, basePath = '/produce' }: ListingCardProps
             </div>
           )}
         </div>
-
-        {/* BNPL badge */}
-        {listing.bnplAvailable && (
-          <span className="inline-flex items-center gap-1 mb-3 bg-lime/20 text-forest text-[9px]
-                           font-bold rounded-full px-2 py-0.5 uppercase tracking-wide">
-            Pay at Harvest
-          </span>
-        )}
-
-        {/* Harvest date (pledge only) */}
-        {isPledge && listing.expectedHarvestDate && (
-          <div className="flex items-center gap-1.5 py-2 px-3 bg-harvest-gold/10
-                          rounded-xl border border-harvest-gold/20 mb-3">
-            <HarvestPledgeIcon size={13} className="text-harvest-gold flex-shrink-0" />
-            <span className="text-xs font-semibold text-harvest-gold">
-              Harvest: {formatDate(listing.expectedHarvestDate)}
-            </span>
-          </div>
-        )}
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-3 border-t border-border">

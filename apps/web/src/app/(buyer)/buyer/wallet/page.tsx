@@ -20,23 +20,38 @@ const TX_TYPE_LABEL: Record<string, string> = {
 }
 
 export default function BuyerWalletPage() {
-  const [wallet, setWallet]   = useState<Wallet | null>(null)
-  const [txns, setTxns]       = useState<WalletTransaction[]>([])
-  const [loading, setLoading] = useState(true)
+  const [wallet, setWallet]         = useState<Wallet | null>(null)
+  const [txns, setTxns]             = useState<WalletTransaction[]>([])
+  const [orders, setOrders]         = useState<any[]>([])
+  const [loading, setLoading]       = useState(true)
 
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       api.get('/payments/wallet'),
       api.get('/payments/wallet/transactions'),
-    ]).then(([w, t]) => {
-      setWallet(w.data.data)
-      setTxns(t.data.data.transactions ?? [])
-    }).catch(() => {}).finally(() => setLoading(false))
+      api.get('/orders/mine?limit=200'),
+    ]).then(([w, t, o]) => {
+      if (w.status === 'fulfilled') setWallet(w.value.data.data)
+      if (t.status === 'fulfilled') setTxns(t.value.data.data.transactions ?? [])
+      if (o.status === 'fulfilled') setOrders(o.value.data.data.orders ?? [])
+    }).finally(() => setLoading(false))
   }, [])
 
-  const totalProcurement = txns
-    .filter(tx => tx.type === 'debit' || tx.type === 'escrow_hold')
-    .reduce((sum, tx) => sum + tx.amount, 0)
+  // Primary: aggregate from ledger transactions
+  // Fallback: aggregate from live order states when ledger is empty
+  const totalProcurement = txns.length > 0
+    ? txns
+        .filter(tx => tx.type === 'debit' || tx.type === 'escrow_hold')
+        .reduce((sum, tx) => sum + tx.amount, 0)
+    : orders
+        .filter(o => ['completed', 'delivered'].includes(o.trackingStatus))
+        .reduce((sum, o) => sum + Number(o.totalAmount), 0)
+
+  const activeEscrow = txns.length > 0
+    ? (wallet?.pendingBalance ?? 0)
+    : orders
+        .filter(o => ['pending', 'confirmed'].includes(o.trackingStatus))
+        .reduce((sum, o) => sum + Number(o.totalAmount), 0)
 
   if (loading) return (
     <main className="min-h-screen bg-cream p-4 sm:p-6 space-y-5">
@@ -84,7 +99,7 @@ export default function BuyerWalletPage() {
                   Active Escrow
                 </p>
                 <p className="text-white font-bold font-mono text-sm">
-                  {formatGHS(wallet?.pendingBalance ?? 0)}
+                  {formatGHS(activeEscrow)}
                 </p>
                 <p className="text-white/40 text-[10px] mt-0.5">Pending order fulfilment</p>
               </div>
@@ -102,7 +117,7 @@ export default function BuyerWalletPage() {
         </div>
 
         {/* Escrow info banner */}
-        {(wallet?.pendingBalance ?? 0) > 0 && (
+        {activeEscrow > 0 && (
           <div className="bg-harvest-gold/10 border border-harvest-gold/30 rounded-2xl px-5 py-4">
             <div className="flex items-start gap-3">
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5"
@@ -113,7 +128,7 @@ export default function BuyerWalletPage() {
               <div>
                 <p className="text-xs font-bold text-harvest-gold">Funds protected in escrow</p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  {formatGHS(wallet?.pendingBalance ?? 0)} is held securely until your orders are confirmed delivered.
+                  {formatGHS(activeEscrow)} is held securely until your orders are confirmed delivered.
                   You will be automatically refunded if a farmer fails to fulfil.
                 </p>
               </div>
