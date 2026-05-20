@@ -78,6 +78,8 @@ export async function POST(req: NextRequest) {
     getOrCreateUnit(d.unit, d.sector),
   ])
 
+  const regionId = Math.trunc(d.regionId)
+
   const listing = await prisma.listing.create({
     data: {
       sellerId:           profile.id,
@@ -90,11 +92,11 @@ export async function POST(req: NextRequest) {
       quantityAvailable:  d.quantity,
       pricePerUnit:       d.pricePerUnit,
       minOrderQuantity:   d.minimumOrder ?? 1,
-      regionId:           d.regionId,
+      regionId:           regionId > 0 ? regionId : null,
       community:          d.district,
       farmingMethod:      d.farmingMethod ?? null,
       expectedHarvestDate: d.harvestDate ? new Date(d.harvestDate) : null,
-      depositPercentage:  d.depositPercent ?? 20,
+      depositPercentage:  Math.trunc(d.depositPercent ?? 20),
       photos:             d.photos ?? [],
       bnplAvailable:      d.bnplEligible ?? false,
       deliveryOptions:    d.deliveryAvailable ? ['farmer_delivery', 'pickup'] : ['pickup'],
