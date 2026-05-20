@@ -14,16 +14,66 @@ import {
   TruckIcon, PayAtHarvestIcon, AgroScoreIcon,
 } from '@/components/shared/icons'
 import { formatGHS, formatDate, formatQuantity } from '@/lib/format'
+import { prisma } from '@/lib/prisma'
 import type { ListingDetail } from '@/lib/types'
-
-const API = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:4000/api/v1'
 
 async function fetchListing(slug: string): Promise<ListingDetail | null> {
   try {
-    const res = await fetch(`${API}/listings/${slug}`, { next: { revalidate: 120 } })
-    if (!res.ok) return null
-    const json = await res.json()
-    return json.data as ListingDetail
+    const row = await prisma.listing.findFirst({
+      where: { slug, status: 'active' },
+      include: {
+        category: { select: { name: true, sector: true, slug: true } },
+        unit:     { select: { name: true, abbreviation: true } },
+        seller: {
+          select: {
+            id: true, fullName: true, avatarUrl: true,
+            verificationLevel: true, agroScore: true, createdAt: true,
+          },
+        },
+        region:   { select: { name: true, code: true } },
+        district: { select: { name: true } },
+      },
+    })
+    if (!row) return null
+
+    // Fire-and-forget view increment
+    prisma.listing.update({ where: { id: row.id }, data: { viewsCount: { increment: 1 } } })
+      .catch(() => undefined)
+
+    return {
+      id:                  row.id,
+      slug:                row.slug,
+      title:               row.title,
+      description:         row.description ?? null,
+      listingType:         row.listingType,
+      status:              row.status,
+      quantityAvailable:   Number(row.quantityAvailable),
+      pricePerUnit:        Number(row.pricePerUnit),
+      minOrderQuantity:    Number(row.minOrderQuantity),
+      allowNegotiation:    row.allowNegotiation,
+      photos:              row.photos,
+      farmingMethod:       row.farmingMethod ?? null,
+      freshnessDays:       row.freshnessDays ?? null,
+      deliveryOptions:     row.deliveryOptions,
+      expectedHarvestDate: row.expectedHarvestDate?.toISOString() ?? null,
+      depositPercentage:   row.depositPercentage,
+      pledgeStatus:        row.pledgeStatus ?? null,
+      bnplAvailable:       row.bnplAvailable,
+      viewsCount:          row.viewsCount + 1,
+      createdAt:           row.createdAt.toISOString(),
+      category:            row.category,
+      unit:                row.unit,
+      seller: {
+        id:                row.seller.id,
+        fullName:          row.seller.fullName,
+        avatarUrl:         row.seller.avatarUrl ?? null,
+        verificationLevel: row.seller.verificationLevel,
+        agroScore:         row.seller.agroScore,
+        memberSince:       row.seller.createdAt.toISOString(),
+      },
+      region:   row.region,
+      district: row.district,
+    } as ListingDetail
   } catch {
     return null
   }
