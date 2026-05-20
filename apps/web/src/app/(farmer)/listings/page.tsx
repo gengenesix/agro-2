@@ -93,13 +93,17 @@ export default function MyListingsPage() {
                       </span>
                     </div>
                     <p className="font-display text-sm font-semibold text-forest truncate">{listing.title}</p>
-                    <div className="flex items-center gap-3 mt-1 flex-wrap">
-                      <span className="font-mono text-xs font-bold text-forest">{formatGHS(listing.pricePerUnit)}/{listing.unit.abbreviation}</span>
-                      <span className="text-xs text-muted-foreground">{listing.quantityAvailable} {listing.unit.abbreviation} left</span>
-                      <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
-                        <EyeIcon size={11} />
-                        {listing.viewsCount ?? 0}
+                    <div className="flex items-center justify-between mt-1.5 gap-4">
+                      <span className="font-mono text-xs font-bold text-forest flex-shrink-0">
+                        {formatGHS(listing.pricePerUnit)}/{listing.unit.abbreviation}
                       </span>
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <span>{Number(listing.quantityAvailable).toLocaleString()} {listing.unit.abbreviation} left</span>
+                        <span className="flex items-center gap-1">
+                          <EyeIcon size={11} />
+                          {listing.viewsCount ?? 0} views
+                        </span>
+                      </div>
                     </div>
                   </div>
 
