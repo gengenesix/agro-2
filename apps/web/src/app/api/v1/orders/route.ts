@@ -93,27 +93,40 @@ export async function POST(req: NextRequest) {
     ? parseFloat((totalAmount - depositAmount).toFixed(2))
     : null
 
-  const order = await prisma.order.create({
-    data: {
-      orderNumber:        generateOrderNumber(),
-      buyerId:            profile.id,
-      sellerId:           listing.sellerId,
-      listingId:          listing.id,
-      orderType,
-      quantity:           d.quantity,
-      unitPrice:          Number(listing.pricePerUnit),
-      subtotal,
-      deliveryCost:       0,
-      platformCommission,
-      totalAmount,
-      depositAmount,
-      balanceAmount,
-      deliveryOption:     d.deliveryOption,
-      deliveryAddress:    d.deliveryAddress ?? null,
-      buyerNotes:         d.buyerNotes ?? null,
-      pledgeProgress:     isHarvestPledge ? 'planted' : null,
-      trackingStatus:     'pending',
-    },
+  const order = await prisma.$transaction(async (tx) => {
+    const created = await tx.order.create({
+      data: {
+        orderNumber:        generateOrderNumber(),
+        buyerId:            profile.id,
+        sellerId:           listing.sellerId,
+        listingId:          listing.id,
+        orderType,
+        quantity:           d.quantity,
+        unitPrice:          Number(listing.pricePerUnit),
+        subtotal,
+        deliveryCost:       0,
+        platformCommission,
+        totalAmount,
+        depositAmount,
+        balanceAmount,
+        deliveryOption:     d.deliveryOption,
+        deliveryAddress:    d.deliveryAddress ?? null,
+        buyerNotes:         d.buyerNotes ?? null,
+        pledgeProgress:     isHarvestPledge ? 'planted' : null,
+        trackingStatus:     'pending',
+      },
+    })
+
+    const remaining = Number(listing.quantityAvailable) - d.quantity
+    await tx.listing.update({
+      where: { id: listing.id },
+      data:  {
+        quantityAvailable: { decrement: d.quantity },
+        ...(remaining <= 0 ? { status: 'inactive' } : {}),
+      },
+    })
+
+    return created
   })
 
   return NextResponse.json({
