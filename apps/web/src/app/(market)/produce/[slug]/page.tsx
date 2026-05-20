@@ -55,12 +55,19 @@ async function fetchListing(slug: string): Promise<ListingDetail | null> {
       farmingMethod:       row.farmingMethod ?? null,
       freshnessDays:       row.freshnessDays ?? null,
       deliveryOptions:     row.deliveryOptions,
+      deliveryCostPerKm:   row.deliveryCostPerKm   ? Number(row.deliveryCostPerKm)   : null,
       expectedHarvestDate: row.expectedHarvestDate?.toISOString() ?? null,
       depositPercentage:   row.depositPercentage,
+      harvestWindowDays:   row.harvestWindowDays,
       pledgeStatus:        row.pledgeStatus ?? null,
       bnplAvailable:       row.bnplAvailable,
       viewsCount:          row.viewsCount + 1,
       createdAt:           row.createdAt.toISOString(),
+      community:           row.community ?? null,
+      gpsLat:              row.gpsLat    ? Number(row.gpsLat)    : null,
+      gpsLng:              row.gpsLng    ? Number(row.gpsLng)    : null,
+      brand:               row.brand        ?? null,
+      manufacturer:        row.manufacturer ?? null,
       category:            row.category,
       unit:                row.unit,
       seller: {
@@ -69,11 +76,10 @@ async function fetchListing(slug: string): Promise<ListingDetail | null> {
         avatarUrl:         row.seller.avatarUrl ?? null,
         verificationLevel: row.seller.verificationLevel,
         agroScore:         row.seller.agroScore,
-        memberSince:       row.seller.createdAt.toISOString(),
       },
       region:   row.region,
       district: row.district,
-    } as ListingDetail
+    }
   } catch {
     return null
   }
