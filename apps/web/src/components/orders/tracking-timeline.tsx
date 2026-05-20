@@ -2,7 +2,7 @@
 
 import { CheckIcon } from '@/components/shared/icons'
 
-type OrderStatus  = 'pending' | 'confirmed' | 'dispatched' | 'delivered' | 'completed' | 'cancelled' | 'disputed'
+type OrderStatus  = 'pending' | 'confirmed' | 'preparing' | 'dispatched' | 'in_transit' | 'delivered' | 'completed' | 'cancelled' | 'disputed'
 type PledgeProgress = 'planted' | 'growing' | 'ready_to_harvest' | 'harvested' | 'dispatched' | 'delivered'
 
 interface TrackingTimelineProps {
@@ -12,9 +12,11 @@ interface TrackingTimelineProps {
 }
 
 const DIRECT_STEPS = [
-  { key: 'pending',    label: 'Order Placed',   desc: 'Waiting for confirmation' },
+  { key: 'pending',    label: 'Order Placed',   desc: 'Waiting for seller confirmation' },
   { key: 'confirmed',  label: 'Confirmed',      desc: 'Seller confirmed your order' },
-  { key: 'dispatched', label: 'Dispatched',     desc: 'Produce is on the way' },
+  { key: 'preparing',  label: 'Preparing',      desc: 'Seller is preparing your order' },
+  { key: 'dispatched', label: 'Dispatched',     desc: 'Produce has been dispatched' },
+  { key: 'in_transit', label: 'In Transit',     desc: 'Your order is on the way' },
   { key: 'delivered',  label: 'Delivered',      desc: 'Delivered to you' },
   { key: 'completed',  label: 'Completed',      desc: 'Payment released to seller' },
 ]
@@ -30,7 +32,7 @@ const PLEDGE_STEPS = [
   { key: 'completed',        label: 'Completed',          desc: 'Payment released to farmer' },
 ]
 
-const DIRECT_ORDER = ['pending', 'confirmed', 'dispatched', 'delivered', 'completed']
+const DIRECT_ORDER = ['pending', 'confirmed', 'preparing', 'dispatched', 'in_transit', 'delivered', 'completed']
 const PLEDGE_ORDER = ['pending', 'planted', 'growing', 'ready_to_harvest', 'harvested', 'dispatched', 'delivered', 'completed']
 
 function getActiveIndex(steps: string[], orderType: string, status: OrderStatus, pledge?: PledgeProgress | null): number {

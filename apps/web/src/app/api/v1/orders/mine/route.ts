@@ -16,14 +16,29 @@ export async function GET(req: NextRequest) {
     ? { buyerId: profile.id }
     : { sellerId: profile.id }
 
+  const isSeller = profile.role !== 'buyer' && profile.role !== 'consumer'
+
+  const orderTypeFilter = url.searchParams.get('orderType')
+
   const [total, orders] = await Promise.all([
     prisma.order.count({ where }),
     prisma.order.findMany({
-      where,
+      where: orderTypeFilter ? { ...where, orderType: orderTypeFilter as any } : where,
       orderBy: { createdAt: 'desc' },
       skip:    (page - 1) * limit,
       take:    limit,
-      include: { listing: { select: { title: true, photos: true, category: { select: { name: true, sector: true } }, unit: { select: { abbreviation: true } } } } },
+      include: {
+        listing: {
+          select: {
+            title: true, photos: true, slug: true,
+            expectedHarvestDate: true,
+            category: { select: { name: true, sector: true } },
+            unit:     { select: { abbreviation: true } },
+          },
+        },
+        buyer:  isSeller ? { select: { id: true, fullName: true, avatarUrl: true } } : false,
+        seller: !isSeller ? { select: { id: true, fullName: true, avatarUrl: true } } : false,
+      },
     }),
   ])
 
@@ -34,18 +49,24 @@ export async function GET(req: NextRequest) {
         id:             o.id,
         orderNumber:    o.orderNumber,
         orderType:      o.orderType,
+        buyerId:        o.buyerId,
+        sellerId:       o.sellerId,
         quantity:       Number(o.quantity),
         totalAmount:    Number(o.totalAmount),
         trackingStatus: o.trackingStatus,
         pledgeProgress: o.pledgeProgress,
         createdAt:      o.createdAt.toISOString(),
-        listing:        o.listing ? {
-          title:       o.listing.title,
-          photos:      o.listing.photos,
-          sector:      o.listing.category.sector,
-          sectorLabel: o.listing.category.name,
-          unit:        o.listing.unit.abbreviation,
+        listing: o.listing ? {
+          title:               o.listing.title,
+          photos:              o.listing.photos,
+          slug:                o.listing.slug,
+          sector:              o.listing.category.sector,
+          category:            { name: o.listing.category.name },
+          unit:                o.listing.unit.abbreviation,
+          expectedHarvestDate: o.listing.expectedHarvestDate?.toISOString() ?? null,
         } : null,
+        buyer:  (o as any).buyer  ?? null,
+        seller: (o as any).seller ?? null,
       })),
       pagination: { page, limit, total, pages: Math.ceil(total / limit) },
     },

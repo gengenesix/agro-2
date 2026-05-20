@@ -107,7 +107,7 @@ export default function FarmerPledgesPage() {
                   <div className="flex-1 min-w-0">
                     <p className="font-display text-sm font-semibold text-forest truncate">{order.listing.title}</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {order.quantity} {order.listing.unit} — {order.buyer.fullName}
+                      {order.quantity} {order.listing?.unit} — {order.buyer?.fullName ?? '—'}
                     </p>
                     <div className="flex items-center gap-2 mt-1.5">
                       {prog && (

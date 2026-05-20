@@ -115,17 +115,14 @@ export default function MyListingsPage() {
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    {/* Public preview — opens in new tab, farmer keeps layout context */}
-                    <a
-                      href={`/produce/${listing.slug}?preview=true`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      href={`/listings/${listing.slug}/preview`}
                       className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest
                                  hover:bg-cream transition-colors"
-                      title="Public preview"
+                      title="Preview"
                     >
                       <EyeIcon size={15} />
-                    </a>
+                    </Link>
                     <Link
                       href={`/listings/${listing.slug}/edit`}
                       className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest
