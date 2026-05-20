@@ -7,8 +7,8 @@ const schema = z.object({
   reason: z.string().min(5).max(500),
 })
 
-// Statuses that can still be cancelled (payment not yet confirmed = no escrow to unwind)
-const CANCELLABLE = new Set(['pending'])
+// Statuses that can still be cancelled (payment not yet cleared = no escrow to unwind)
+const CANCELLABLE = new Set(['pending', 'confirmed'])
 
 export async function POST(
   req: NextRequest,

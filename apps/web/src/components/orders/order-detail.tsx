@@ -26,6 +26,12 @@ const PLEDGE_PROGRESS_OPTIONS = [
   { value: 'dispatched',       label: 'Dispatched'        },
 ]
 
+const NEXT_TRACKING: Partial<Record<string, { status: string; label: string }>> = {
+  confirmed:  { status: 'preparing',  label: 'Mark as Preparing'   },
+  preparing:  { status: 'dispatched', label: 'Mark as Dispatched'  },
+  dispatched: { status: 'in_transit', label: 'Mark as In Transit'  },
+}
+
 export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProps) {
   const [acting, setActing]     = useState(false)
   const [cancelOpen, setCancelOpen] = useState(false)
@@ -62,6 +68,16 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
     try {
       await api.post(`/orders/${order.id}/cancel`, { reason })
       setCancelOpen(false)
+      onRefresh()
+    } finally {
+      setActing(false)
+    }
+  }
+
+  async function advanceStatus(status: string) {
+    setActing(true)
+    try {
+      await api.patch(`/orders/${order.id}/status`, { status })
       onRefresh()
     } finally {
       setActing(false)
@@ -223,6 +239,41 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
           </div>
         ))}
       </div>
+
+      {/* Seller action controls */}
+      {isSeller && !['cancelled', 'completed', 'delivered', 'in_transit'].includes(order.trackingStatus) && (
+        <div className="bg-white rounded-2xl border border-border p-4 space-y-3">
+          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Seller actions</p>
+
+          {/* Confirm a pending order */}
+          {order.trackingStatus === 'pending' && (
+            <div className="flex gap-2">
+              <button
+                disabled={acting}
+                onClick={() => advanceStatus('confirmed')}
+                className="flex-1 py-3 bg-forest text-white text-sm font-bold rounded-xl
+                           hover:bg-forest-dark transition-colors disabled:opacity-60
+                           flex items-center justify-center gap-2"
+              >
+                <CheckIcon size={15} />
+                {acting ? 'Processing…' : 'Confirm order'}
+              </button>
+            </div>
+          )}
+
+          {/* Advance tracking status for direct purchase orders */}
+          {!isPledge && NEXT_TRACKING[order.trackingStatus] && (
+            <button
+              disabled={acting}
+              onClick={() => advanceStatus(NEXT_TRACKING[order.trackingStatus]!.status)}
+              className="w-full py-3 bg-forest text-white text-sm font-bold rounded-xl
+                         hover:bg-forest-dark transition-colors disabled:opacity-60"
+            >
+              {acting ? 'Processing…' : NEXT_TRACKING[order.trackingStatus]!.label}
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Actions */}
       {isBuyer && order.trackingStatus === 'dispatched' && (

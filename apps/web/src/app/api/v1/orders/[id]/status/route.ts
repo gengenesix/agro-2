@@ -5,13 +5,14 @@ import { prisma } from '@/lib/prisma'
 
 // Seller-allowed forward transitions only
 const SELLER_TRANSITIONS: Partial<Record<string, string>> = {
+  pending:    'confirmed',
   confirmed:  'preparing',
   preparing:  'dispatched',
   dispatched: 'in_transit',
 }
 
 const schema = z.object({
-  status:      z.enum(['preparing', 'dispatched', 'in_transit']),
+  status:      z.enum(['confirmed', 'preparing', 'dispatched', 'in_transit']),
   sellerNotes: z.string().max(500).optional(),
 })
 
