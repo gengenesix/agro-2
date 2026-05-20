@@ -7799,6 +7799,7 @@ export namespace Prisma {
   export type ProfileMinAggregateOutputType = {
     id: string | null
     phone: string | null
+    email: string | null
     fullName: string | null
     role: $Enums.Role | null
     language: $Enums.Language | null
@@ -7818,6 +7819,7 @@ export namespace Prisma {
   export type ProfileMaxAggregateOutputType = {
     id: string | null
     phone: string | null
+    email: string | null
     fullName: string | null
     role: $Enums.Role | null
     language: $Enums.Language | null
@@ -7837,6 +7839,7 @@ export namespace Prisma {
   export type ProfileCountAggregateOutputType = {
     id: number
     phone: number
+    email: number
     fullName: number
     role: number
     language: number
@@ -7870,6 +7873,7 @@ export namespace Prisma {
   export type ProfileMinAggregateInputType = {
     id?: true
     phone?: true
+    email?: true
     fullName?: true
     role?: true
     language?: true
@@ -7889,6 +7893,7 @@ export namespace Prisma {
   export type ProfileMaxAggregateInputType = {
     id?: true
     phone?: true
+    email?: true
     fullName?: true
     role?: true
     language?: true
@@ -7908,6 +7913,7 @@ export namespace Prisma {
   export type ProfileCountAggregateInputType = {
     id?: true
     phone?: true
+    email?: true
     fullName?: true
     role?: true
     language?: true
@@ -8014,6 +8020,7 @@ export namespace Prisma {
   export type ProfileGroupByOutputType = {
     id: string
     phone: string
+    email: string | null
     fullName: string
     role: $Enums.Role
     language: $Enums.Language
@@ -8052,6 +8059,7 @@ export namespace Prisma {
   export type ProfileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     phone?: boolean
+    email?: boolean
     fullName?: boolean
     role?: boolean
     language?: boolean
@@ -8088,6 +8096,7 @@ export namespace Prisma {
   export type ProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     phone?: boolean
+    email?: boolean
     fullName?: boolean
     role?: boolean
     language?: boolean
@@ -8107,6 +8116,7 @@ export namespace Prisma {
   export type ProfileSelectScalar = {
     id?: boolean
     phone?: boolean
+    email?: boolean
     fullName?: boolean
     role?: boolean
     language?: boolean
@@ -8167,6 +8177,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       phone: string
+      email: string | null
       fullName: string
       role: $Enums.Role
       language: $Enums.Language
@@ -8592,6 +8603,7 @@ export namespace Prisma {
   interface ProfileFieldRefs {
     readonly id: FieldRef<"Profile", 'String'>
     readonly phone: FieldRef<"Profile", 'String'>
+    readonly email: FieldRef<"Profile", 'String'>
     readonly fullName: FieldRef<"Profile", 'String'>
     readonly role: FieldRef<"Profile", 'Role'>
     readonly language: FieldRef<"Profile", 'Language'>
@@ -28055,6 +28067,7 @@ export namespace Prisma {
   export const ProfileScalarFieldEnum: {
     id: 'id',
     phone: 'phone',
+    email: 'email',
     fullName: 'fullName',
     role: 'role',
     language: 'language',
@@ -29141,6 +29154,7 @@ export namespace Prisma {
     NOT?: ProfileWhereInput | ProfileWhereInput[]
     id?: UuidFilter<"Profile"> | string
     phone?: StringFilter<"Profile"> | string
+    email?: StringNullableFilter<"Profile"> | string | null
     fullName?: StringFilter<"Profile"> | string
     role?: EnumRoleFilter<"Profile"> | $Enums.Role
     language?: EnumLanguageFilter<"Profile"> | $Enums.Language
@@ -29176,6 +29190,7 @@ export namespace Prisma {
   export type ProfileOrderByWithRelationInput = {
     id?: SortOrder
     phone?: SortOrder
+    email?: SortOrderInput | SortOrder
     fullName?: SortOrder
     role?: SortOrder
     language?: SortOrder
@@ -29214,6 +29229,7 @@ export namespace Prisma {
     AND?: ProfileWhereInput | ProfileWhereInput[]
     OR?: ProfileWhereInput[]
     NOT?: ProfileWhereInput | ProfileWhereInput[]
+    email?: StringNullableFilter<"Profile"> | string | null
     fullName?: StringFilter<"Profile"> | string
     role?: EnumRoleFilter<"Profile"> | $Enums.Role
     language?: EnumLanguageFilter<"Profile"> | $Enums.Language
@@ -29249,6 +29265,7 @@ export namespace Prisma {
   export type ProfileOrderByWithAggregationInput = {
     id?: SortOrder
     phone?: SortOrder
+    email?: SortOrderInput | SortOrder
     fullName?: SortOrder
     role?: SortOrder
     language?: SortOrder
@@ -29276,6 +29293,7 @@ export namespace Prisma {
     NOT?: ProfileScalarWhereWithAggregatesInput | ProfileScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"Profile"> | string
     phone?: StringWithAggregatesFilter<"Profile"> | string
+    email?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     fullName?: StringWithAggregatesFilter<"Profile"> | string
     role?: EnumRoleWithAggregatesFilter<"Profile"> | $Enums.Role
     language?: EnumLanguageWithAggregatesFilter<"Profile"> | $Enums.Language
@@ -31417,6 +31435,7 @@ export namespace Prisma {
   export type ProfileCreateInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -31452,6 +31471,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -31487,6 +31507,7 @@ export namespace Prisma {
   export type ProfileUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -31522,6 +31543,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -31557,6 +31579,7 @@ export namespace Prisma {
   export type ProfileCreateManyInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -31576,6 +31599,7 @@ export namespace Prisma {
   export type ProfileUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -31595,6 +31619,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -34197,6 +34222,7 @@ export namespace Prisma {
   export type ProfileCountOrderByAggregateInput = {
     id?: SortOrder
     phone?: SortOrder
+    email?: SortOrder
     fullName?: SortOrder
     role?: SortOrder
     language?: SortOrder
@@ -34222,6 +34248,7 @@ export namespace Prisma {
   export type ProfileMaxOrderByAggregateInput = {
     id?: SortOrder
     phone?: SortOrder
+    email?: SortOrder
     fullName?: SortOrder
     role?: SortOrder
     language?: SortOrder
@@ -34241,6 +34268,7 @@ export namespace Prisma {
   export type ProfileMinOrderByAggregateInput = {
     id?: SortOrder
     phone?: SortOrder
+    email?: SortOrder
     fullName?: SortOrder
     role?: SortOrder
     language?: SortOrder
@@ -41452,6 +41480,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutFarmerProfileInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -41486,6 +41515,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutFarmerProfileInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -41525,6 +41555,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutVerifiedByAgentInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -41559,6 +41590,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutVerifiedByAgentInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -41609,6 +41641,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutFarmerProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -41643,6 +41676,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutFarmerProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -41688,6 +41722,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutVerifiedByAgentInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -41722,6 +41757,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutVerifiedByAgentInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -41756,6 +41792,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutDealerProfileInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -41790,6 +41827,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutDealerProfileInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -41840,6 +41878,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutDealerProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -41874,6 +41913,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutDealerProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -41908,6 +41948,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutBuyerProfileInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -41942,6 +41983,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutBuyerProfileInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -41992,6 +42034,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutBuyerProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -42026,6 +42069,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutBuyerProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -42060,6 +42104,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutListingsAsSellerInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -42094,6 +42139,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutListingsAsSellerInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -42364,6 +42410,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutListingsAsSellerInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -42398,6 +42445,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutListingsAsSellerInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -42600,6 +42648,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutOrdersAsBuyerInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -42634,6 +42683,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutOrdersAsBuyerInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -42673,6 +42723,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutOrdersAsSellerInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -42707,6 +42758,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutOrdersAsSellerInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -42966,6 +43018,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutOrdersAsBuyerInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -43000,6 +43053,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutOrdersAsBuyerInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -43045,6 +43099,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutOrdersAsSellerInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -43079,6 +43134,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutOrdersAsSellerInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -43327,6 +43383,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutPaymentsInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -43361,6 +43418,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutPaymentsInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -43490,6 +43548,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -43524,6 +43583,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -43558,6 +43618,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutWalletInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -43592,6 +43653,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutWalletInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -43674,6 +43736,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutWalletInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -43708,6 +43771,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutWalletInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -43829,6 +43893,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutBnplApplicationsInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -43863,6 +43928,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutBnplApplicationsInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -44014,6 +44080,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutBnplApplicationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -44048,6 +44115,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutBnplApplicationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -44654,6 +44722,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutPestReportsInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -44688,6 +44757,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutPestReportsInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -44830,6 +44900,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutPestReportsInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -44864,6 +44935,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutPestReportsInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45008,6 +45080,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutReviewsGivenInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45042,6 +45115,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutReviewsGivenInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45081,6 +45155,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutReviewsReceivedInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45115,6 +45190,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutReviewsReceivedInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45238,6 +45314,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutReviewsGivenInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45272,6 +45349,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutReviewsGivenInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45317,6 +45395,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutReviewsReceivedInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45351,6 +45430,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutReviewsReceivedInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45464,6 +45544,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutNotificationsInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45498,6 +45579,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutNotificationsInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45548,6 +45630,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutNotificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45582,6 +45665,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutNotificationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45616,6 +45700,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutMessagesInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45650,6 +45735,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutMessagesInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45689,6 +45775,7 @@ export namespace Prisma {
   export type ProfileCreateWithoutReceivedMessagesInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45723,6 +45810,7 @@ export namespace Prisma {
   export type ProfileUncheckedCreateWithoutReceivedMessagesInput = {
     id: string
     phone: string
+    email?: string | null
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
@@ -45860,6 +45948,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45894,6 +45983,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45939,6 +46029,7 @@ export namespace Prisma {
   export type ProfileUpdateWithoutReceivedMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
@@ -45973,6 +46064,7 @@ export namespace Prisma {
   export type ProfileUncheckedUpdateWithoutReceivedMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language

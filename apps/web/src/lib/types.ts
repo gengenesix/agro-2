@@ -27,6 +27,7 @@ export interface GhanaRegion {
 export interface Profile {
   id: string
   phone: string
+  email: string | null
   fullName: string
   role: Role
   language: Language

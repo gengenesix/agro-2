@@ -267,7 +267,7 @@ export default function ProfilePage() {
                   {user.fullName || 'No name set'}
                 </p>
                 <p className="text-xs text-muted-foreground font-mono mt-0.5">
-                  {formatPhoneGhana(user.phone)}
+                  {user.email ?? formatPhoneGhana(user.phone)}
                 </p>
               </div>
               <div className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1

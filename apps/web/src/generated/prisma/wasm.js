@@ -162,6 +162,7 @@ exports.Prisma.UnitOfMeasureScalarFieldEnum = {
 exports.Prisma.ProfileScalarFieldEnum = {
   id: 'id',
   phone: 'phone',
+  email: 'email',
   fullName: 'fullName',
   role: 'role',
   language: 'language',

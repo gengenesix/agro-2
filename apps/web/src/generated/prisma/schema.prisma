@@ -258,6 +258,7 @@ model UnitOfMeasure {
 model Profile {
   id                String            @id @db.Uuid
   phone             String            @unique
+  email             String?
   fullName          String            @map("full_name")
   role              Role
   language          Language          @default(en)

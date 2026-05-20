@@ -68,19 +68,24 @@ export async function GET(request: NextRequest) {
     profileRow = await prisma.profile.create({
       data: {
         id:        user.id,
-        phone:     email,      // email stored in the phone field for OAuth users
+        phone:     email,   // used as unique key for OAuth users (no phone number yet)
+        email:     email,
         fullName:  fullName,
-        role:      'farmer',   // default — user selects their real role in onboarding
+        role:      'farmer',
         avatarUrl: avatar,
       },
     })
     await prisma.wallet.create({ data: { userId: profileRow.id } })
   } else {
-    // Keep avatar in sync on first populate
-    if (!profileRow.avatarUrl && avatar) {
+    // Backfill email + avatar for existing OAuth profiles that predate the email column
+    const needsUpdate = (!profileRow.avatarUrl && avatar) || (!profileRow.email && email)
+    if (needsUpdate) {
       profileRow = await prisma.profile.update({
         where: { id: profileRow.id },
-        data:  { avatarUrl: avatar },
+        data:  {
+          ...((!profileRow.avatarUrl && avatar) ? { avatarUrl: avatar } : {}),
+          ...((!profileRow.email && email)      ? { email }              : {}),
+        },
       })
     }
   }

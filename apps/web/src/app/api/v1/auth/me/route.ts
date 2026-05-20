@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
   const profile: Profile = {
     id:                row.id,
     phone:             row.phone,
+    email:             row.email ?? null,
     fullName:          row.fullName,
     role:              row.role as Profile['role'],
     language:          row.language as Profile['language'],
