@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { MapPinIcon } from '@/components/shared/icons'
+// Static import ensures Leaflet CSS is in the CSS bundle, not injected at runtime
+import 'leaflet/dist/leaflet.css'
 
 interface FarmLocationMapProps {
   lat:     number
@@ -56,11 +58,8 @@ export function FarmLocationMap({ lat, lng, onMove, height = '220px' }: FarmLoca
     if (!mounted || !containerRef.current) return
     let cancelled = false
 
-    import('leaflet').then(async (L) => {
+    import('leaflet').then((L) => {
       if (cancelled || mapRef.current) return
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await import('leaflet/dist/leaflet.css' as any)
 
       // Fix broken default icon paths in Next.js
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -136,7 +135,9 @@ export function FarmLocationMap({ lat, lng, onMove, height = '220px' }: FarmLoca
 
   return (
     <div className="space-y-1.5">
-      <div style={{ height }} className="rounded-xl overflow-hidden border border-border">
+      {/* relative + z-0 creates a stacking context that traps Leaflet's
+          internal z-indices (200-800) so they can't escape and float over the navbar */}
+      <div style={{ height }} className="relative z-0 w-full rounded-xl overflow-hidden border border-border">
         <div ref={containerRef} className="w-full h-full" />
       </div>
       {placeName && (

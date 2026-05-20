@@ -215,7 +215,7 @@ export default function ProfilePage() {
 
   return (
     <main className="min-h-screen bg-cream pb-24">
-      <div className="bg-white border-b border-border sticky top-0 z-20">
+      <div className="bg-white border-b border-border sticky top-0 z-30">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <h1 className="font-bold text-forest text-lg">Profile</h1>
           <button onClick={logout}
