@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import Image        from 'next/image'
-import Link         from 'next/link'
+import { useState }    from 'react'
+import Image           from 'next/image'
+import Link            from 'next/link'
+import { useRouter }   from 'next/navigation'
 import { api }      from '@/lib/api'
 import { TrackingTimeline } from '@/components/orders/tracking-timeline'
 import { SectorChip }       from '@/components/shared/sector-chip'
@@ -33,6 +34,7 @@ const NEXT_TRACKING: Partial<Record<string, { status: string; label: string }>> 
 }
 
 export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProps) {
+  const router = useRouter()
   const [acting, setActing]     = useState(false)
   const [cancelOpen, setCancelOpen] = useState(false)
   const [reason, setReason]     = useState('')
@@ -79,6 +81,8 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
     try {
       await api.patch(`/orders/${order.id}/status`, { status })
       onRefresh()
+      // Bust the router cache so wallet balances reflect the sweep immediately
+      if (status === 'completed') router.refresh()
     } finally {
       setActing(false)
     }
