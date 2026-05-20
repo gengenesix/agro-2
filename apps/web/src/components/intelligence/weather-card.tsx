@@ -111,7 +111,7 @@ export function WeatherCard({ forecast, assessment, district }: WeatherCardProps
             <>
               <Stat label="Humidity" value={`${Math.round((today as any).humidity ?? 65)}%`} />
               <Stat label="Wind" value={`${Math.round((today as any).windSpeed ?? 12)} km/h`} />
-              <Stat label="UV Index" value={String((today as any).uvIndex ?? 'N/A')} />
+              <Stat label="UV Index" value={String(today.uvIndex)} />
             </>
           )}
         </div>

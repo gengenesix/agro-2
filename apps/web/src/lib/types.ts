@@ -205,6 +205,7 @@ export interface WeatherDay {
   precipitationMm: number
   weatherCode: number
   description: string
+  uvIndex: number
 }
 
 export interface WeatherAssessment {

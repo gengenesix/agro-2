@@ -29,7 +29,7 @@ async function fetchListings(filters: Filters) {
         : {}),
       ...(filters.bnplOnly     ? { bnplAvailable: true } : {}),
       ...(filters.verifiedOnly
-        ? { seller: { verificationLevel: { in: ['field_verified', 'premium'] as const } } }
+        ? { seller: { verificationLevel: { in: ['field_verified', 'premium'] as ('field_verified' | 'premium')[] } } }
         : {}),
       ...(filters.search
         ? { title: { contains: filters.search, mode: 'insensitive' as const } }

@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     const meteoUrl = new URL('https://api.open-meteo.com/v1/forecast')
     meteoUrl.searchParams.set('latitude',   String(coords.lat))
     meteoUrl.searchParams.set('longitude',  String(coords.lon))
-    meteoUrl.searchParams.set('daily',      'temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode')
+    meteoUrl.searchParams.set('daily',      'temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode,uv_index_max')
     meteoUrl.searchParams.set('timezone',   'Africa/Accra')
     meteoUrl.searchParams.set('forecast_days', '7')
 
@@ -44,6 +44,7 @@ export async function GET(req: NextRequest) {
         temperature_2m_min:  number[]
         precipitation_sum:   number[]
         weathercode:         number[]
+        uv_index_max:        number[]
       }
     }
 
@@ -55,6 +56,7 @@ export async function GET(req: NextRequest) {
       precipitationMm: d.precipitation_sum[i]   ?? 0,
       weatherCode:     d.weathercode[i]          ?? 0,
       description:     codeToLabel(d.weathercode[i] ?? 0),
+      uvIndex:         d.uv_index_max[i]         ?? 0,
     }))
 
     // Farming assessment based on next 3 days
