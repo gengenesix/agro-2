@@ -261,15 +261,17 @@ export default function ProfilePage() {
                 onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
             </div>
 
-            <div className="flex-1 min-w-0">
-              <p className="font-bold text-forest text-base leading-tight">
-                {user.fullName || 'No name set'}
-              </p>
-              <p className="text-xs text-muted-foreground font-mono mt-0.5">
-                {formatPhoneGhana(user.phone)}
-              </p>
-              <div className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 mt-2
-                              rounded-full border capitalize ${LEVEL_BADGE[verificationLevel]}`}>
+            <div className="flex-1 min-w-0 flex flex-col gap-2">
+              <div>
+                <p className="font-bold text-forest text-base leading-tight">
+                  {user.fullName || 'No name set'}
+                </p>
+                <p className="text-xs text-muted-foreground font-mono mt-0.5">
+                  {formatPhoneGhana(user.phone)}
+                </p>
+              </div>
+              <div className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1
+                              rounded-full border capitalize self-start ${LEVEL_BADGE[verificationLevel]}`}>
                 {verificationLevel !== 'unverified' && <VerifiedBlueIcon size={11} />}
                 {LEVEL_LABEL[verificationLevel]}
               </div>

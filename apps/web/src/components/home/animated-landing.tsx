@@ -8,8 +8,6 @@ import {
   SearchIcon, ChevronRightIcon, MapPinIcon, WeatherIcon, PricesIcon,
   HarvestPledgeIcon,
 } from '@/components/shared/icons'
-import { SectorChip }  from '@/components/shared/sector-chip'
-import { PriceDisplay } from '@/components/shared/price-display'
 import { useAuth } from '@/context/auth-context'
 
 const ROLE_HOME: Record<string, string> = {
@@ -67,50 +65,6 @@ const ACTIONS = [
   { href: '/intelligence', label: 'Weather Alerts',  Icon: WeatherIcon,       color: 'text-sector-fisheries' },
 ]
 
-const FEATURED = [
-  {
-    slug:     'fresh-organic-tomatoes-kumasi',
-    title:    'Fresh Organic Tomatoes — Kumasi Farm',
-    seller:   'Kwame A. Boateng',
-    region:   'Ashanti',
-    price:    2.50,
-    unit:     'kg',
-    qty:      500,
-    sector:   'crops'     as const,
-    category: 'Tomato',
-    photo:    'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=800&q=80&fit=crop',
-    score:    87,
-    organic:  true,
-  },
-  {
-    slug:     'maize-harvest-pledge-eastern',
-    title:    '2-Month Maize Harvest — 5 Tonnes Reserved',
-    seller:   'Abena Owusu Mensah',
-    region:   'Eastern',
-    price:    1.80,
-    unit:     'kg',
-    qty:      5000,
-    sector:   'crops'     as const,
-    category: 'Maize',
-    photo:    'https://images.unsplash.com/photo-1568219557405-376e23e4f7cf?w=800&q=80&fit=crop',
-    score:    72,
-    pledge:   true,
-    harvest:  '2025-09-15',
-  },
-  {
-    slug:     'live-tilapia-volta-lake',
-    title:    'Live Tilapia — Volta Lake Farm',
-    seller:   'Yaw Darko Asante',
-    region:   'Volta',
-    price:    22.00,
-    unit:     'kg',
-    qty:      800,
-    sector:   'fisheries' as const,
-    category: 'Tilapia',
-    photo:    'https://images.unsplash.com/photo-1570367823578-74b3ef1eba96?w=800&q=80&fit=crop',
-    score:    65,
-  },
-] as const
 
 const sectorClass: Record<string, string> = {
   crops:     'bg-sector-crops-bg     text-sector-crops',
@@ -122,7 +76,11 @@ const sectorClass: Record<string, string> = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function AnimatedLanding() {
+interface Props {
+  featuredSection?: React.ReactNode
+}
+
+export default function AnimatedLanding({ featuredSection }: Props) {
   const { user, loading } = useAuth()
   const dashboardPath = ROLE_HOME[user?.role ?? ''] ?? '/dashboard'
 
@@ -311,99 +269,8 @@ export default function AnimatedLanding() {
         </motion.div>
       </section>
 
-      {/* ── Featured listings ────────────────────────────────────────────── */}
-      <section className="bg-cream py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <motion.div
-            className="flex items-end justify-between mb-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-          >
-            <div>
-              <h2 className="text-2xl font-extrabold text-forest">Featured Listings</h2>
-              <p className="text-muted-foreground text-sm mt-1">Fresh produce and inputs from verified farmers.</p>
-            </div>
-            <Link
-              href="/produce"
-              className="flex items-center gap-1 text-sm font-semibold text-forest hover:text-forest-dark"
-            >
-              View all
-              <ChevronRightIcon size={16} />
-            </Link>
-          </motion.div>
-
-          <motion.div
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
-            variants={stagger(0.1)}
-          >
-            {FEATURED.map((listing) => (
-              <motion.div key={listing.slug} variants={fadeUp}>
-                <Link
-                  href={`/produce/${listing.slug}`}
-                  className={`group block bg-white rounded-2xl overflow-hidden border card-lift
-                    ${'pledge' in listing && listing.pledge
-                      ? 'border-l-4 border-harvest-gold border-b border-r border-t border-border'
-                      : 'border-border'}`}
-                >
-                  <div className="relative aspect-video overflow-hidden bg-cream-dark">
-                    <Image
-                      src={listing.photo}
-                      alt={listing.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                      draggable={false}
-                    />
-                    <div className="absolute top-3 left-3">
-                      <SectorChip sector={listing.sector as import('@/lib/types').Sector} label={listing.category} />
-                    </div>
-                    {'pledge' in listing && listing.pledge && (
-                      <div className="absolute top-3 right-3">
-                        <span className="inline-flex items-center gap-1 bg-harvest-gold/90 backdrop-blur-sm
-                                         text-white text-[9px] font-bold rounded-full px-2 py-1 uppercase tracking-wide">
-                          <HarvestPledgeIcon size={9} />
-                          Pledge
-                        </span>
-                      </div>
-                    )}
-                    {'organic' in listing && listing.organic && (
-                      <div className="absolute bottom-3 left-3">
-                        <span className="bg-lime/95 text-forest text-[9px] font-bold rounded-full px-2 py-0.5 uppercase tracking-wide">
-                          Organic
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="p-4">
-                    <h3 className="font-display text-base font-bold text-forest leading-snug line-clamp-2 mb-2
-                                   group-hover:text-forest-dark transition-colors">
-                      {listing.title}
-                    </h3>
-                    <div className="flex items-center gap-1 mb-3">
-                      <MapPinIcon size={11} className="text-muted-foreground" />
-                      <span className="text-[11px] text-muted-foreground">{listing.region}</span>
-                      <span className="text-muted-foreground/40 mx-1">·</span>
-                      <span className="text-[11px] text-muted-foreground">{listing.seller}</span>
-                    </div>
-                    <div className="flex items-end justify-between">
-                      <PriceDisplay amount={listing.price} unit={listing.unit} size="lg" />
-                      <span className="font-mono text-sm font-bold text-forest">
-                        {listing.qty.toLocaleString()}
-                        <span className="text-[11px] font-normal text-muted-foreground ml-1">{listing.unit}</span>
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* ── Featured listings (server component slot) ───────────────────── */}
+      {featuredSection}
 
       {/* ── CTA ─────────────────────────────────────────────────────────── */}
       <motion.section

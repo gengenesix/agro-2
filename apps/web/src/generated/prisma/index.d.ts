@@ -2969,7 +2969,6 @@ export namespace Prisma {
 
   export type RegionCountOutputType = {
     districts: number
-    profiles: number
     listings: number
     prices: number
     alerts: number
@@ -2978,7 +2977,6 @@ export namespace Prisma {
 
   export type RegionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     districts?: boolean | RegionCountOutputTypeCountDistrictsArgs
-    profiles?: boolean | RegionCountOutputTypeCountProfilesArgs
     listings?: boolean | RegionCountOutputTypeCountListingsArgs
     prices?: boolean | RegionCountOutputTypeCountPricesArgs
     alerts?: boolean | RegionCountOutputTypeCountAlertsArgs
@@ -3001,13 +2999,6 @@ export namespace Prisma {
    */
   export type RegionCountOutputTypeCountDistrictsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DistrictWhereInput
-  }
-
-  /**
-   * RegionCountOutputType without action
-   */
-  export type RegionCountOutputTypeCountProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProfileWhereInput
   }
 
   /**
@@ -3044,7 +3035,6 @@ export namespace Prisma {
    */
 
   export type DistrictCountOutputType = {
-    profiles: number
     listings: number
     prices: number
     alerts: number
@@ -3052,7 +3042,6 @@ export namespace Prisma {
   }
 
   export type DistrictCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    profiles?: boolean | DistrictCountOutputTypeCountProfilesArgs
     listings?: boolean | DistrictCountOutputTypeCountListingsArgs
     prices?: boolean | DistrictCountOutputTypeCountPricesArgs
     alerts?: boolean | DistrictCountOutputTypeCountAlertsArgs
@@ -3068,13 +3057,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the DistrictCountOutputType
      */
     select?: DistrictCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * DistrictCountOutputType without action
-   */
-  export type DistrictCountOutputTypeCountProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProfileWhereInput
   }
 
   /**
@@ -3688,7 +3670,6 @@ export namespace Prisma {
     code?: boolean
     zone?: boolean
     districts?: boolean | Region$districtsArgs<ExtArgs>
-    profiles?: boolean | Region$profilesArgs<ExtArgs>
     listings?: boolean | Region$listingsArgs<ExtArgs>
     prices?: boolean | Region$pricesArgs<ExtArgs>
     alerts?: boolean | Region$alertsArgs<ExtArgs>
@@ -3714,7 +3695,6 @@ export namespace Prisma {
 
   export type RegionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     districts?: boolean | Region$districtsArgs<ExtArgs>
-    profiles?: boolean | Region$profilesArgs<ExtArgs>
     listings?: boolean | Region$listingsArgs<ExtArgs>
     prices?: boolean | Region$pricesArgs<ExtArgs>
     alerts?: boolean | Region$alertsArgs<ExtArgs>
@@ -3727,7 +3707,6 @@ export namespace Prisma {
     name: "Region"
     objects: {
       districts: Prisma.$DistrictPayload<ExtArgs>[]
-      profiles: Prisma.$ProfilePayload<ExtArgs>[]
       listings: Prisma.$ListingPayload<ExtArgs>[]
       prices: Prisma.$MarketPricePayload<ExtArgs>[]
       alerts: Prisma.$WeatherAlertPayload<ExtArgs>[]
@@ -4104,7 +4083,6 @@ export namespace Prisma {
   export interface Prisma__RegionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     districts<T extends Region$districtsArgs<ExtArgs> = {}>(args?: Subset<T, Region$districtsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findMany"> | Null>
-    profiles<T extends Region$profilesArgs<ExtArgs> = {}>(args?: Subset<T, Region$profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany"> | Null>
     listings<T extends Region$listingsArgs<ExtArgs> = {}>(args?: Subset<T, Region$listingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ListingPayload<ExtArgs>, T, "findMany"> | Null>
     prices<T extends Region$pricesArgs<ExtArgs> = {}>(args?: Subset<T, Region$pricesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketPricePayload<ExtArgs>, T, "findMany"> | Null>
     alerts<T extends Region$alertsArgs<ExtArgs> = {}>(args?: Subset<T, Region$alertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeatherAlertPayload<ExtArgs>, T, "findMany"> | Null>
@@ -4477,26 +4455,6 @@ export namespace Prisma {
   }
 
   /**
-   * Region.profiles
-   */
-  export type Region$profilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    where?: ProfileWhereInput
-    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
-    cursor?: ProfileWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
-  }
-
-  /**
    * Region.listings
    */
   export type Region$listingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4810,7 +4768,6 @@ export namespace Prisma {
     centerLat?: boolean
     centerLng?: boolean
     region?: boolean | RegionDefaultArgs<ExtArgs>
-    profiles?: boolean | District$profilesArgs<ExtArgs>
     listings?: boolean | District$listingsArgs<ExtArgs>
     prices?: boolean | District$pricesArgs<ExtArgs>
     alerts?: boolean | District$alertsArgs<ExtArgs>
@@ -4839,7 +4796,6 @@ export namespace Prisma {
 
   export type DistrictInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     region?: boolean | RegionDefaultArgs<ExtArgs>
-    profiles?: boolean | District$profilesArgs<ExtArgs>
     listings?: boolean | District$listingsArgs<ExtArgs>
     prices?: boolean | District$pricesArgs<ExtArgs>
     alerts?: boolean | District$alertsArgs<ExtArgs>
@@ -4854,7 +4810,6 @@ export namespace Prisma {
     name: "District"
     objects: {
       region: Prisma.$RegionPayload<ExtArgs>
-      profiles: Prisma.$ProfilePayload<ExtArgs>[]
       listings: Prisma.$ListingPayload<ExtArgs>[]
       prices: Prisma.$MarketPricePayload<ExtArgs>[]
       alerts: Prisma.$WeatherAlertPayload<ExtArgs>[]
@@ -5232,7 +5187,6 @@ export namespace Prisma {
   export interface Prisma__DistrictClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     region<T extends RegionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegionDefaultArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    profiles<T extends District$profilesArgs<ExtArgs> = {}>(args?: Subset<T, District$profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany"> | Null>
     listings<T extends District$listingsArgs<ExtArgs> = {}>(args?: Subset<T, District$listingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ListingPayload<ExtArgs>, T, "findMany"> | Null>
     prices<T extends District$pricesArgs<ExtArgs> = {}>(args?: Subset<T, District$pricesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketPricePayload<ExtArgs>, T, "findMany"> | Null>
     alerts<T extends District$alertsArgs<ExtArgs> = {}>(args?: Subset<T, District$alertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeatherAlertPayload<ExtArgs>, T, "findMany"> | Null>
@@ -5587,26 +5541,6 @@ export namespace Prisma {
      * Filter which Districts to delete
      */
     where?: DistrictWhereInput
-  }
-
-  /**
-   * District.profiles
-   */
-  export type District$profilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    where?: ProfileWhereInput
-    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
-    cursor?: ProfileWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
   }
 
   /**
@@ -8132,8 +8066,6 @@ export namespace Prisma {
     verificationLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    region?: boolean | Profile$regionArgs<ExtArgs>
-    district?: boolean | Profile$districtArgs<ExtArgs>
     farmerProfile?: boolean | Profile$farmerProfileArgs<ExtArgs>
     dealerProfile?: boolean | Profile$dealerProfileArgs<ExtArgs>
     buyerProfile?: boolean | Profile$buyerProfileArgs<ExtArgs>
@@ -8170,8 +8102,6 @@ export namespace Prisma {
     verificationLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    region?: boolean | Profile$regionArgs<ExtArgs>
-    district?: boolean | Profile$districtArgs<ExtArgs>
   }, ExtArgs["result"]["profile"]>
 
   export type ProfileSelectScalar = {
@@ -8194,8 +8124,6 @@ export namespace Prisma {
   }
 
   export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    region?: boolean | Profile$regionArgs<ExtArgs>
-    district?: boolean | Profile$districtArgs<ExtArgs>
     farmerProfile?: boolean | Profile$farmerProfileArgs<ExtArgs>
     dealerProfile?: boolean | Profile$dealerProfileArgs<ExtArgs>
     buyerProfile?: boolean | Profile$buyerProfileArgs<ExtArgs>
@@ -8214,16 +8142,11 @@ export namespace Prisma {
     verifiedByAgent?: boolean | Profile$verifiedByAgentArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type ProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    region?: boolean | Profile$regionArgs<ExtArgs>
-    district?: boolean | Profile$districtArgs<ExtArgs>
-  }
+  export type ProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $ProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Profile"
     objects: {
-      region: Prisma.$RegionPayload<ExtArgs> | null
-      district: Prisma.$DistrictPayload<ExtArgs> | null
       farmerProfile: Prisma.$FarmerProfilePayload<ExtArgs> | null
       dealerProfile: Prisma.$DealerProfilePayload<ExtArgs> | null
       buyerProfile: Prisma.$BuyerProfilePayload<ExtArgs> | null
@@ -8622,8 +8545,6 @@ export namespace Prisma {
    */
   export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    region<T extends Profile$regionArgs<ExtArgs> = {}>(args?: Subset<T, Profile$regionArgs<ExtArgs>>): Prisma__RegionClient<$Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
-    district<T extends Profile$districtArgs<ExtArgs> = {}>(args?: Subset<T, Profile$districtArgs<ExtArgs>>): Prisma__DistrictClient<$Result.GetResult<Prisma.$DistrictPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     farmerProfile<T extends Profile$farmerProfileArgs<ExtArgs> = {}>(args?: Subset<T, Profile$farmerProfileArgs<ExtArgs>>): Prisma__FarmerProfileClient<$Result.GetResult<Prisma.$FarmerProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     dealerProfile<T extends Profile$dealerProfileArgs<ExtArgs> = {}>(args?: Subset<T, Profile$dealerProfileArgs<ExtArgs>>): Prisma__DealerProfileClient<$Result.GetResult<Prisma.$DealerProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     buyerProfile<T extends Profile$buyerProfileArgs<ExtArgs> = {}>(args?: Subset<T, Profile$buyerProfileArgs<ExtArgs>>): Prisma__BuyerProfileClient<$Result.GetResult<Prisma.$BuyerProfilePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
@@ -8906,10 +8827,6 @@ export namespace Prisma {
      */
     data: ProfileCreateManyInput | ProfileCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -9000,36 +8917,6 @@ export namespace Prisma {
      * Filter which Profiles to delete
      */
     where?: ProfileWhereInput
-  }
-
-  /**
-   * Profile.region
-   */
-  export type Profile$regionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Region
-     */
-    select?: RegionSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RegionInclude<ExtArgs> | null
-    where?: RegionWhereInput
-  }
-
-  /**
-   * Profile.district
-   */
-  export type Profile$districtArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the District
-     */
-    select?: DistrictSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DistrictInclude<ExtArgs> | null
-    where?: DistrictWhereInput
   }
 
   /**
@@ -28966,7 +28853,6 @@ export namespace Prisma {
     code?: StringFilter<"Region"> | string
     zone?: EnumZoneFilter<"Region"> | $Enums.Zone
     districts?: DistrictListRelationFilter
-    profiles?: ProfileListRelationFilter
     listings?: ListingListRelationFilter
     prices?: MarketPriceListRelationFilter
     alerts?: WeatherAlertListRelationFilter
@@ -28980,7 +28866,6 @@ export namespace Prisma {
     code?: SortOrder
     zone?: SortOrder
     districts?: DistrictOrderByRelationAggregateInput
-    profiles?: ProfileOrderByRelationAggregateInput
     listings?: ListingOrderByRelationAggregateInput
     prices?: MarketPriceOrderByRelationAggregateInput
     alerts?: WeatherAlertOrderByRelationAggregateInput
@@ -28997,7 +28882,6 @@ export namespace Prisma {
     capital?: StringNullableFilter<"Region"> | string | null
     zone?: EnumZoneFilter<"Region"> | $Enums.Zone
     districts?: DistrictListRelationFilter
-    profiles?: ProfileListRelationFilter
     listings?: ListingListRelationFilter
     prices?: MarketPriceListRelationFilter
     alerts?: WeatherAlertListRelationFilter
@@ -29039,7 +28923,6 @@ export namespace Prisma {
     centerLat?: DecimalNullableFilter<"District"> | Decimal | DecimalJsLike | number | string | null
     centerLng?: DecimalNullableFilter<"District"> | Decimal | DecimalJsLike | number | string | null
     region?: XOR<RegionRelationFilter, RegionWhereInput>
-    profiles?: ProfileListRelationFilter
     listings?: ListingListRelationFilter
     prices?: MarketPriceListRelationFilter
     alerts?: WeatherAlertListRelationFilter
@@ -29054,7 +28937,6 @@ export namespace Prisma {
     centerLat?: SortOrderInput | SortOrder
     centerLng?: SortOrderInput | SortOrder
     region?: RegionOrderByWithRelationInput
-    profiles?: ProfileOrderByRelationAggregateInput
     listings?: ListingOrderByRelationAggregateInput
     prices?: MarketPriceOrderByRelationAggregateInput
     alerts?: WeatherAlertOrderByRelationAggregateInput
@@ -29072,7 +28954,6 @@ export namespace Prisma {
     centerLat?: DecimalNullableFilter<"District"> | Decimal | DecimalJsLike | number | string | null
     centerLng?: DecimalNullableFilter<"District"> | Decimal | DecimalJsLike | number | string | null
     region?: XOR<RegionRelationFilter, RegionWhereInput>
-    profiles?: ProfileListRelationFilter
     listings?: ListingListRelationFilter
     prices?: MarketPriceListRelationFilter
     alerts?: WeatherAlertListRelationFilter
@@ -29274,8 +29155,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFilter<"Profile"> | $Enums.VerificationLevel
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     updatedAt?: DateTimeFilter<"Profile"> | Date | string
-    region?: XOR<RegionNullableRelationFilter, RegionWhereInput> | null
-    district?: XOR<DistrictNullableRelationFilter, DistrictWhereInput> | null
     farmerProfile?: XOR<FarmerProfileNullableRelationFilter, FarmerProfileWhereInput> | null
     dealerProfile?: XOR<DealerProfileNullableRelationFilter, DealerProfileWhereInput> | null
     buyerProfile?: XOR<BuyerProfileNullableRelationFilter, BuyerProfileWhereInput> | null
@@ -29311,8 +29190,6 @@ export namespace Prisma {
     verificationLevel?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    region?: RegionOrderByWithRelationInput
-    district?: DistrictOrderByWithRelationInput
     farmerProfile?: FarmerProfileOrderByWithRelationInput
     dealerProfile?: DealerProfileOrderByWithRelationInput
     buyerProfile?: BuyerProfileOrderByWithRelationInput
@@ -29351,8 +29228,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFilter<"Profile"> | $Enums.VerificationLevel
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     updatedAt?: DateTimeFilter<"Profile"> | Date | string
-    region?: XOR<RegionNullableRelationFilter, RegionWhereInput> | null
-    district?: XOR<DistrictNullableRelationFilter, DistrictWhereInput> | null
     farmerProfile?: XOR<FarmerProfileNullableRelationFilter, FarmerProfileWhereInput> | null
     dealerProfile?: XOR<DealerProfileNullableRelationFilter, DealerProfileWhereInput> | null
     buyerProfile?: XOR<BuyerProfileNullableRelationFilter, BuyerProfileWhereInput> | null
@@ -31240,7 +31115,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictCreateNestedManyWithoutRegionInput
-    profiles?: ProfileCreateNestedManyWithoutRegionInput
     listings?: ListingCreateNestedManyWithoutRegionInput
     prices?: MarketPriceCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertCreateNestedManyWithoutRegionInput
@@ -31254,7 +31128,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictUncheckedCreateNestedManyWithoutRegionInput
-    profiles?: ProfileUncheckedCreateNestedManyWithoutRegionInput
     listings?: ListingUncheckedCreateNestedManyWithoutRegionInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutRegionInput
@@ -31267,7 +31140,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUpdateManyWithoutRegionNestedInput
     listings?: ListingUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUpdateManyWithoutRegionNestedInput
@@ -31281,7 +31153,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUncheckedUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUncheckedUpdateManyWithoutRegionNestedInput
     listings?: ListingUncheckedUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutRegionNestedInput
@@ -31317,7 +31188,6 @@ export namespace Prisma {
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
     region: RegionCreateNestedOneWithoutDistrictsInput
-    profiles?: ProfileCreateNestedManyWithoutDistrictInput
     listings?: ListingCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertCreateNestedManyWithoutDistrictInput
@@ -31331,7 +31201,6 @@ export namespace Prisma {
     capital?: string | null
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedCreateNestedManyWithoutDistrictInput
     listings?: ListingUncheckedCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutDistrictInput
@@ -31344,7 +31213,6 @@ export namespace Prisma {
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     region?: RegionUpdateOneRequiredWithoutDistrictsNestedInput
-    profiles?: ProfileUpdateManyWithoutDistrictNestedInput
     listings?: ListingUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUpdateManyWithoutDistrictNestedInput
@@ -31358,7 +31226,6 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedUpdateManyWithoutDistrictNestedInput
     listings?: ListingUncheckedUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutDistrictNestedInput
@@ -31553,6 +31420,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -31562,8 +31431,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -31623,6 +31490,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -31632,8 +31501,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -31712,6 +31579,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -33819,12 +33688,6 @@ export namespace Prisma {
     none?: DistrictWhereInput
   }
 
-  export type ProfileListRelationFilter = {
-    every?: ProfileWhereInput
-    some?: ProfileWhereInput
-    none?: ProfileWhereInput
-  }
-
   export type ListingListRelationFilter = {
     every?: ListingWhereInput
     some?: ListingWhereInput
@@ -33855,10 +33718,6 @@ export namespace Prisma {
   }
 
   export type DistrictOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ProfileOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34243,16 +34102,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type RegionNullableRelationFilter = {
-    is?: RegionWhereInput | null
-    isNot?: RegionWhereInput | null
-  }
-
-  export type DistrictNullableRelationFilter = {
-    is?: DistrictWhereInput | null
-    isNot?: DistrictWhereInput | null
   }
 
   export type FarmerProfileNullableRelationFilter = {
@@ -34780,6 +34629,16 @@ export namespace Prisma {
   export type UnitOfMeasureRelationFilter = {
     is?: UnitOfMeasureWhereInput
     isNot?: UnitOfMeasureWhereInput
+  }
+
+  export type RegionNullableRelationFilter = {
+    is?: RegionWhereInput | null
+    isNot?: RegionWhereInput | null
+  }
+
+  export type DistrictNullableRelationFilter = {
+    is?: DistrictWhereInput | null
+    isNot?: DistrictWhereInput | null
   }
 
   export type ListingCountOrderByAggregateInput = {
@@ -36009,13 +35868,6 @@ export namespace Prisma {
     connect?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
   }
 
-  export type ProfileCreateNestedManyWithoutRegionInput = {
-    create?: XOR<ProfileCreateWithoutRegionInput, ProfileUncheckedCreateWithoutRegionInput> | ProfileCreateWithoutRegionInput[] | ProfileUncheckedCreateWithoutRegionInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutRegionInput | ProfileCreateOrConnectWithoutRegionInput[]
-    createMany?: ProfileCreateManyRegionInputEnvelope
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-  }
-
   export type ListingCreateNestedManyWithoutRegionInput = {
     create?: XOR<ListingCreateWithoutRegionInput, ListingUncheckedCreateWithoutRegionInput> | ListingCreateWithoutRegionInput[] | ListingUncheckedCreateWithoutRegionInput[]
     connectOrCreate?: ListingCreateOrConnectWithoutRegionInput | ListingCreateOrConnectWithoutRegionInput[]
@@ -36049,13 +35901,6 @@ export namespace Prisma {
     connectOrCreate?: DistrictCreateOrConnectWithoutRegionInput | DistrictCreateOrConnectWithoutRegionInput[]
     createMany?: DistrictCreateManyRegionInputEnvelope
     connect?: DistrictWhereUniqueInput | DistrictWhereUniqueInput[]
-  }
-
-  export type ProfileUncheckedCreateNestedManyWithoutRegionInput = {
-    create?: XOR<ProfileCreateWithoutRegionInput, ProfileUncheckedCreateWithoutRegionInput> | ProfileCreateWithoutRegionInput[] | ProfileUncheckedCreateWithoutRegionInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutRegionInput | ProfileCreateOrConnectWithoutRegionInput[]
-    createMany?: ProfileCreateManyRegionInputEnvelope
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
   export type ListingUncheckedCreateNestedManyWithoutRegionInput = {
@@ -36110,20 +35955,6 @@ export namespace Prisma {
     update?: DistrictUpdateWithWhereUniqueWithoutRegionInput | DistrictUpdateWithWhereUniqueWithoutRegionInput[]
     updateMany?: DistrictUpdateManyWithWhereWithoutRegionInput | DistrictUpdateManyWithWhereWithoutRegionInput[]
     deleteMany?: DistrictScalarWhereInput | DistrictScalarWhereInput[]
-  }
-
-  export type ProfileUpdateManyWithoutRegionNestedInput = {
-    create?: XOR<ProfileCreateWithoutRegionInput, ProfileUncheckedCreateWithoutRegionInput> | ProfileCreateWithoutRegionInput[] | ProfileUncheckedCreateWithoutRegionInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutRegionInput | ProfileCreateOrConnectWithoutRegionInput[]
-    upsert?: ProfileUpsertWithWhereUniqueWithoutRegionInput | ProfileUpsertWithWhereUniqueWithoutRegionInput[]
-    createMany?: ProfileCreateManyRegionInputEnvelope
-    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    update?: ProfileUpdateWithWhereUniqueWithoutRegionInput | ProfileUpdateWithWhereUniqueWithoutRegionInput[]
-    updateMany?: ProfileUpdateManyWithWhereWithoutRegionInput | ProfileUpdateManyWithWhereWithoutRegionInput[]
-    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
   export type ListingUpdateManyWithoutRegionNestedInput = {
@@ -36204,20 +36035,6 @@ export namespace Prisma {
     deleteMany?: DistrictScalarWhereInput | DistrictScalarWhereInput[]
   }
 
-  export type ProfileUncheckedUpdateManyWithoutRegionNestedInput = {
-    create?: XOR<ProfileCreateWithoutRegionInput, ProfileUncheckedCreateWithoutRegionInput> | ProfileCreateWithoutRegionInput[] | ProfileUncheckedCreateWithoutRegionInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutRegionInput | ProfileCreateOrConnectWithoutRegionInput[]
-    upsert?: ProfileUpsertWithWhereUniqueWithoutRegionInput | ProfileUpsertWithWhereUniqueWithoutRegionInput[]
-    createMany?: ProfileCreateManyRegionInputEnvelope
-    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    update?: ProfileUpdateWithWhereUniqueWithoutRegionInput | ProfileUpdateWithWhereUniqueWithoutRegionInput[]
-    updateMany?: ProfileUpdateManyWithWhereWithoutRegionInput | ProfileUpdateManyWithWhereWithoutRegionInput[]
-    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
-  }
-
   export type ListingUncheckedUpdateManyWithoutRegionNestedInput = {
     create?: XOR<ListingCreateWithoutRegionInput, ListingUncheckedCreateWithoutRegionInput> | ListingCreateWithoutRegionInput[] | ListingUncheckedCreateWithoutRegionInput[]
     connectOrCreate?: ListingCreateOrConnectWithoutRegionInput | ListingCreateOrConnectWithoutRegionInput[]
@@ -36280,13 +36097,6 @@ export namespace Prisma {
     connect?: RegionWhereUniqueInput
   }
 
-  export type ProfileCreateNestedManyWithoutDistrictInput = {
-    create?: XOR<ProfileCreateWithoutDistrictInput, ProfileUncheckedCreateWithoutDistrictInput> | ProfileCreateWithoutDistrictInput[] | ProfileUncheckedCreateWithoutDistrictInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutDistrictInput | ProfileCreateOrConnectWithoutDistrictInput[]
-    createMany?: ProfileCreateManyDistrictInputEnvelope
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-  }
-
   export type ListingCreateNestedManyWithoutDistrictInput = {
     create?: XOR<ListingCreateWithoutDistrictInput, ListingUncheckedCreateWithoutDistrictInput> | ListingCreateWithoutDistrictInput[] | ListingUncheckedCreateWithoutDistrictInput[]
     connectOrCreate?: ListingCreateOrConnectWithoutDistrictInput | ListingCreateOrConnectWithoutDistrictInput[]
@@ -36313,13 +36123,6 @@ export namespace Prisma {
     connectOrCreate?: PestReportCreateOrConnectWithoutDistrictInput | PestReportCreateOrConnectWithoutDistrictInput[]
     createMany?: PestReportCreateManyDistrictInputEnvelope
     connect?: PestReportWhereUniqueInput | PestReportWhereUniqueInput[]
-  }
-
-  export type ProfileUncheckedCreateNestedManyWithoutDistrictInput = {
-    create?: XOR<ProfileCreateWithoutDistrictInput, ProfileUncheckedCreateWithoutDistrictInput> | ProfileCreateWithoutDistrictInput[] | ProfileUncheckedCreateWithoutDistrictInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutDistrictInput | ProfileCreateOrConnectWithoutDistrictInput[]
-    createMany?: ProfileCreateManyDistrictInputEnvelope
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
   export type ListingUncheckedCreateNestedManyWithoutDistrictInput = {
@@ -36364,20 +36167,6 @@ export namespace Prisma {
     upsert?: RegionUpsertWithoutDistrictsInput
     connect?: RegionWhereUniqueInput
     update?: XOR<XOR<RegionUpdateToOneWithWhereWithoutDistrictsInput, RegionUpdateWithoutDistrictsInput>, RegionUncheckedUpdateWithoutDistrictsInput>
-  }
-
-  export type ProfileUpdateManyWithoutDistrictNestedInput = {
-    create?: XOR<ProfileCreateWithoutDistrictInput, ProfileUncheckedCreateWithoutDistrictInput> | ProfileCreateWithoutDistrictInput[] | ProfileUncheckedCreateWithoutDistrictInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutDistrictInput | ProfileCreateOrConnectWithoutDistrictInput[]
-    upsert?: ProfileUpsertWithWhereUniqueWithoutDistrictInput | ProfileUpsertWithWhereUniqueWithoutDistrictInput[]
-    createMany?: ProfileCreateManyDistrictInputEnvelope
-    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    update?: ProfileUpdateWithWhereUniqueWithoutDistrictInput | ProfileUpdateWithWhereUniqueWithoutDistrictInput[]
-    updateMany?: ProfileUpdateManyWithWhereWithoutDistrictInput | ProfileUpdateManyWithWhereWithoutDistrictInput[]
-    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
   export type ListingUpdateManyWithoutDistrictNestedInput = {
@@ -36434,20 +36223,6 @@ export namespace Prisma {
     update?: PestReportUpdateWithWhereUniqueWithoutDistrictInput | PestReportUpdateWithWhereUniqueWithoutDistrictInput[]
     updateMany?: PestReportUpdateManyWithWhereWithoutDistrictInput | PestReportUpdateManyWithWhereWithoutDistrictInput[]
     deleteMany?: PestReportScalarWhereInput | PestReportScalarWhereInput[]
-  }
-
-  export type ProfileUncheckedUpdateManyWithoutDistrictNestedInput = {
-    create?: XOR<ProfileCreateWithoutDistrictInput, ProfileUncheckedCreateWithoutDistrictInput> | ProfileCreateWithoutDistrictInput[] | ProfileUncheckedCreateWithoutDistrictInput[]
-    connectOrCreate?: ProfileCreateOrConnectWithoutDistrictInput | ProfileCreateOrConnectWithoutDistrictInput[]
-    upsert?: ProfileUpsertWithWhereUniqueWithoutDistrictInput | ProfileUpsertWithWhereUniqueWithoutDistrictInput[]
-    createMany?: ProfileCreateManyDistrictInputEnvelope
-    set?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    disconnect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    delete?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
-    update?: ProfileUpdateWithWhereUniqueWithoutDistrictInput | ProfileUpdateWithWhereUniqueWithoutDistrictInput[]
-    updateMany?: ProfileUpdateManyWithWhereWithoutDistrictInput | ProfileUpdateManyWithWhereWithoutDistrictInput[]
-    deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
   export type ListingUncheckedUpdateManyWithoutDistrictNestedInput = {
@@ -36799,18 +36574,6 @@ export namespace Prisma {
     deleteMany?: MarketPriceScalarWhereInput | MarketPriceScalarWhereInput[]
   }
 
-  export type RegionCreateNestedOneWithoutProfilesInput = {
-    create?: XOR<RegionCreateWithoutProfilesInput, RegionUncheckedCreateWithoutProfilesInput>
-    connectOrCreate?: RegionCreateOrConnectWithoutProfilesInput
-    connect?: RegionWhereUniqueInput
-  }
-
-  export type DistrictCreateNestedOneWithoutProfilesInput = {
-    create?: XOR<DistrictCreateWithoutProfilesInput, DistrictUncheckedCreateWithoutProfilesInput>
-    connectOrCreate?: DistrictCreateOrConnectWithoutProfilesInput
-    connect?: DistrictWhereUniqueInput
-  }
-
   export type FarmerProfileCreateNestedOneWithoutUserInput = {
     create?: XOR<FarmerProfileCreateWithoutUserInput, FarmerProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: FarmerProfileCreateOrConnectWithoutUserInput
@@ -37041,26 +36804,6 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
-  }
-
-  export type RegionUpdateOneWithoutProfilesNestedInput = {
-    create?: XOR<RegionCreateWithoutProfilesInput, RegionUncheckedCreateWithoutProfilesInput>
-    connectOrCreate?: RegionCreateOrConnectWithoutProfilesInput
-    upsert?: RegionUpsertWithoutProfilesInput
-    disconnect?: RegionWhereInput | boolean
-    delete?: RegionWhereInput | boolean
-    connect?: RegionWhereUniqueInput
-    update?: XOR<XOR<RegionUpdateToOneWithWhereWithoutProfilesInput, RegionUpdateWithoutProfilesInput>, RegionUncheckedUpdateWithoutProfilesInput>
-  }
-
-  export type DistrictUpdateOneWithoutProfilesNestedInput = {
-    create?: XOR<DistrictCreateWithoutProfilesInput, DistrictUncheckedCreateWithoutProfilesInput>
-    connectOrCreate?: DistrictCreateOrConnectWithoutProfilesInput
-    upsert?: DistrictUpsertWithoutProfilesInput
-    disconnect?: DistrictWhereInput | boolean
-    delete?: DistrictWhereInput | boolean
-    connect?: DistrictWhereUniqueInput
-    update?: XOR<XOR<DistrictUpdateToOneWithWhereWithoutProfilesInput, DistrictUpdateWithoutProfilesInput>, DistrictUncheckedUpdateWithoutProfilesInput>
   }
 
   export type FarmerProfileUpdateOneWithoutUserNestedInput = {
@@ -39172,7 +38915,6 @@ export namespace Prisma {
     capital?: string | null
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileCreateNestedManyWithoutDistrictInput
     listings?: ListingCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertCreateNestedManyWithoutDistrictInput
@@ -39185,7 +38927,6 @@ export namespace Prisma {
     capital?: string | null
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedCreateNestedManyWithoutDistrictInput
     listings?: ListingUncheckedCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutDistrictInput
@@ -39199,84 +38940,6 @@ export namespace Prisma {
 
   export type DistrictCreateManyRegionInputEnvelope = {
     data: DistrictCreateManyRegionInput | DistrictCreateManyRegionInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ProfileCreateWithoutRegionInput = {
-    id: string
-    phone: string
-    fullName: string
-    role: $Enums.Role
-    language?: $Enums.Language
-    community?: string | null
-    avatarUrl?: string | null
-    isActive?: boolean
-    isBanned?: boolean
-    banReason?: string | null
-    agroScore?: number
-    verificationLevel?: $Enums.VerificationLevel
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    district?: DistrictCreateNestedOneWithoutProfilesInput
-    farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
-    dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
-    buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
-    listingsAsSeller?: ListingCreateNestedManyWithoutSellerInput
-    ordersAsBuyer?: OrderCreateNestedManyWithoutBuyerInput
-    ordersAsSeller?: OrderCreateNestedManyWithoutSellerInput
-    payments?: PaymentCreateNestedManyWithoutPayerInput
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    bnplApplications?: BNPLApplicationCreateNestedManyWithoutFarmerInput
-    reviewsGiven?: ReviewCreateNestedManyWithoutReviewerInput
-    reviewsReceived?: ReviewCreateNestedManyWithoutRevieweeInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    messages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
-    pestReports?: PestReportCreateNestedManyWithoutReporterInput
-    verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
-  }
-
-  export type ProfileUncheckedCreateWithoutRegionInput = {
-    id: string
-    phone: string
-    fullName: string
-    role: $Enums.Role
-    language?: $Enums.Language
-    districtId?: number | null
-    community?: string | null
-    avatarUrl?: string | null
-    isActive?: boolean
-    isBanned?: boolean
-    banReason?: string | null
-    agroScore?: number
-    verificationLevel?: $Enums.VerificationLevel
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    farmerProfile?: FarmerProfileUncheckedCreateNestedOneWithoutUserInput
-    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutUserInput
-    buyerProfile?: BuyerProfileUncheckedCreateNestedOneWithoutUserInput
-    listingsAsSeller?: ListingUncheckedCreateNestedManyWithoutSellerInput
-    ordersAsBuyer?: OrderUncheckedCreateNestedManyWithoutBuyerInput
-    ordersAsSeller?: OrderUncheckedCreateNestedManyWithoutSellerInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutPayerInput
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutFarmerInput
-    reviewsGiven?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
-    reviewsReceived?: ReviewUncheckedCreateNestedManyWithoutRevieweeInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
-    pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
-    verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
-  }
-
-  export type ProfileCreateOrConnectWithoutRegionInput = {
-    where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutRegionInput, ProfileUncheckedCreateWithoutRegionInput>
-  }
-
-  export type ProfileCreateManyRegionInputEnvelope = {
-    data: ProfileCreateManyRegionInput | ProfileCreateManyRegionInput[]
     skipDuplicates?: boolean
   }
 
@@ -39512,44 +39175,6 @@ export namespace Prisma {
     centerLng?: DecimalNullableFilter<"District"> | Decimal | DecimalJsLike | number | string | null
   }
 
-  export type ProfileUpsertWithWhereUniqueWithoutRegionInput = {
-    where: ProfileWhereUniqueInput
-    update: XOR<ProfileUpdateWithoutRegionInput, ProfileUncheckedUpdateWithoutRegionInput>
-    create: XOR<ProfileCreateWithoutRegionInput, ProfileUncheckedCreateWithoutRegionInput>
-  }
-
-  export type ProfileUpdateWithWhereUniqueWithoutRegionInput = {
-    where: ProfileWhereUniqueInput
-    data: XOR<ProfileUpdateWithoutRegionInput, ProfileUncheckedUpdateWithoutRegionInput>
-  }
-
-  export type ProfileUpdateManyWithWhereWithoutRegionInput = {
-    where: ProfileScalarWhereInput
-    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyWithoutRegionInput>
-  }
-
-  export type ProfileScalarWhereInput = {
-    AND?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
-    OR?: ProfileScalarWhereInput[]
-    NOT?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
-    id?: UuidFilter<"Profile"> | string
-    phone?: StringFilter<"Profile"> | string
-    fullName?: StringFilter<"Profile"> | string
-    role?: EnumRoleFilter<"Profile"> | $Enums.Role
-    language?: EnumLanguageFilter<"Profile"> | $Enums.Language
-    regionId?: IntNullableFilter<"Profile"> | number | null
-    districtId?: IntNullableFilter<"Profile"> | number | null
-    community?: StringNullableFilter<"Profile"> | string | null
-    avatarUrl?: StringNullableFilter<"Profile"> | string | null
-    isActive?: BoolFilter<"Profile"> | boolean
-    isBanned?: BoolFilter<"Profile"> | boolean
-    banReason?: StringNullableFilter<"Profile"> | string | null
-    agroScore?: IntFilter<"Profile"> | number
-    verificationLevel?: EnumVerificationLevelFilter<"Profile"> | $Enums.VerificationLevel
-    createdAt?: DateTimeFilter<"Profile"> | Date | string
-    updatedAt?: DateTimeFilter<"Profile"> | Date | string
-  }
-
   export type ListingUpsertWithWhereUniqueWithoutRegionInput = {
     where: ListingWhereUniqueInput
     update: XOR<ListingUpdateWithoutRegionInput, ListingUncheckedUpdateWithoutRegionInput>
@@ -39716,7 +39341,6 @@ export namespace Prisma {
     capital?: string | null
     code: string
     zone: $Enums.Zone
-    profiles?: ProfileCreateNestedManyWithoutRegionInput
     listings?: ListingCreateNestedManyWithoutRegionInput
     prices?: MarketPriceCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertCreateNestedManyWithoutRegionInput
@@ -39729,7 +39353,6 @@ export namespace Prisma {
     capital?: string | null
     code: string
     zone: $Enums.Zone
-    profiles?: ProfileUncheckedCreateNestedManyWithoutRegionInput
     listings?: ListingUncheckedCreateNestedManyWithoutRegionInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutRegionInput
@@ -39739,84 +39362,6 @@ export namespace Prisma {
   export type RegionCreateOrConnectWithoutDistrictsInput = {
     where: RegionWhereUniqueInput
     create: XOR<RegionCreateWithoutDistrictsInput, RegionUncheckedCreateWithoutDistrictsInput>
-  }
-
-  export type ProfileCreateWithoutDistrictInput = {
-    id: string
-    phone: string
-    fullName: string
-    role: $Enums.Role
-    language?: $Enums.Language
-    community?: string | null
-    avatarUrl?: string | null
-    isActive?: boolean
-    isBanned?: boolean
-    banReason?: string | null
-    agroScore?: number
-    verificationLevel?: $Enums.VerificationLevel
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
-    dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
-    buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
-    listingsAsSeller?: ListingCreateNestedManyWithoutSellerInput
-    ordersAsBuyer?: OrderCreateNestedManyWithoutBuyerInput
-    ordersAsSeller?: OrderCreateNestedManyWithoutSellerInput
-    payments?: PaymentCreateNestedManyWithoutPayerInput
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    bnplApplications?: BNPLApplicationCreateNestedManyWithoutFarmerInput
-    reviewsGiven?: ReviewCreateNestedManyWithoutReviewerInput
-    reviewsReceived?: ReviewCreateNestedManyWithoutRevieweeInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    messages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutRecipientInput
-    pestReports?: PestReportCreateNestedManyWithoutReporterInput
-    verifiedByAgent?: FarmerProfileCreateNestedManyWithoutFieldAgentInput
-  }
-
-  export type ProfileUncheckedCreateWithoutDistrictInput = {
-    id: string
-    phone: string
-    fullName: string
-    role: $Enums.Role
-    language?: $Enums.Language
-    regionId?: number | null
-    community?: string | null
-    avatarUrl?: string | null
-    isActive?: boolean
-    isBanned?: boolean
-    banReason?: string | null
-    agroScore?: number
-    verificationLevel?: $Enums.VerificationLevel
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    farmerProfile?: FarmerProfileUncheckedCreateNestedOneWithoutUserInput
-    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutUserInput
-    buyerProfile?: BuyerProfileUncheckedCreateNestedOneWithoutUserInput
-    listingsAsSeller?: ListingUncheckedCreateNestedManyWithoutSellerInput
-    ordersAsBuyer?: OrderUncheckedCreateNestedManyWithoutBuyerInput
-    ordersAsSeller?: OrderUncheckedCreateNestedManyWithoutSellerInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutPayerInput
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutFarmerInput
-    reviewsGiven?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
-    reviewsReceived?: ReviewUncheckedCreateNestedManyWithoutRevieweeInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    messages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutRecipientInput
-    pestReports?: PestReportUncheckedCreateNestedManyWithoutReporterInput
-    verifiedByAgent?: FarmerProfileUncheckedCreateNestedManyWithoutFieldAgentInput
-  }
-
-  export type ProfileCreateOrConnectWithoutDistrictInput = {
-    where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutDistrictInput, ProfileUncheckedCreateWithoutDistrictInput>
-  }
-
-  export type ProfileCreateManyDistrictInputEnvelope = {
-    data: ProfileCreateManyDistrictInput | ProfileCreateManyDistrictInput[]
-    skipDuplicates?: boolean
   }
 
   export type ListingCreateWithoutDistrictInput = {
@@ -40039,7 +39584,6 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
-    profiles?: ProfileUpdateManyWithoutRegionNestedInput
     listings?: ListingUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUpdateManyWithoutRegionNestedInput
@@ -40052,27 +39596,10 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
-    profiles?: ProfileUncheckedUpdateManyWithoutRegionNestedInput
     listings?: ListingUncheckedUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutRegionNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutRegionNestedInput
-  }
-
-  export type ProfileUpsertWithWhereUniqueWithoutDistrictInput = {
-    where: ProfileWhereUniqueInput
-    update: XOR<ProfileUpdateWithoutDistrictInput, ProfileUncheckedUpdateWithoutDistrictInput>
-    create: XOR<ProfileCreateWithoutDistrictInput, ProfileUncheckedCreateWithoutDistrictInput>
-  }
-
-  export type ProfileUpdateWithWhereUniqueWithoutDistrictInput = {
-    where: ProfileWhereUniqueInput
-    data: XOR<ProfileUpdateWithoutDistrictInput, ProfileUncheckedUpdateWithoutDistrictInput>
-  }
-
-  export type ProfileUpdateManyWithWhereWithoutDistrictInput = {
-    where: ProfileScalarWhereInput
-    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyWithoutDistrictInput>
   }
 
   export type ListingUpsertWithWhereUniqueWithoutDistrictInput = {
@@ -40656,66 +40183,6 @@ export namespace Prisma {
   export type MarketPriceUpdateManyWithWhereWithoutUnitInput = {
     where: MarketPriceScalarWhereInput
     data: XOR<MarketPriceUpdateManyMutationInput, MarketPriceUncheckedUpdateManyWithoutUnitInput>
-  }
-
-  export type RegionCreateWithoutProfilesInput = {
-    name: string
-    capital?: string | null
-    code: string
-    zone: $Enums.Zone
-    districts?: DistrictCreateNestedManyWithoutRegionInput
-    listings?: ListingCreateNestedManyWithoutRegionInput
-    prices?: MarketPriceCreateNestedManyWithoutRegionInput
-    alerts?: WeatherAlertCreateNestedManyWithoutRegionInput
-    pestReports?: PestReportCreateNestedManyWithoutRegionInput
-  }
-
-  export type RegionUncheckedCreateWithoutProfilesInput = {
-    id?: number
-    name: string
-    capital?: string | null
-    code: string
-    zone: $Enums.Zone
-    districts?: DistrictUncheckedCreateNestedManyWithoutRegionInput
-    listings?: ListingUncheckedCreateNestedManyWithoutRegionInput
-    prices?: MarketPriceUncheckedCreateNestedManyWithoutRegionInput
-    alerts?: WeatherAlertUncheckedCreateNestedManyWithoutRegionInput
-    pestReports?: PestReportUncheckedCreateNestedManyWithoutRegionInput
-  }
-
-  export type RegionCreateOrConnectWithoutProfilesInput = {
-    where: RegionWhereUniqueInput
-    create: XOR<RegionCreateWithoutProfilesInput, RegionUncheckedCreateWithoutProfilesInput>
-  }
-
-  export type DistrictCreateWithoutProfilesInput = {
-    name: string
-    capital?: string | null
-    centerLat?: Decimal | DecimalJsLike | number | string | null
-    centerLng?: Decimal | DecimalJsLike | number | string | null
-    region: RegionCreateNestedOneWithoutDistrictsInput
-    listings?: ListingCreateNestedManyWithoutDistrictInput
-    prices?: MarketPriceCreateNestedManyWithoutDistrictInput
-    alerts?: WeatherAlertCreateNestedManyWithoutDistrictInput
-    pestReports?: PestReportCreateNestedManyWithoutDistrictInput
-  }
-
-  export type DistrictUncheckedCreateWithoutProfilesInput = {
-    id?: number
-    regionId: number
-    name: string
-    capital?: string | null
-    centerLat?: Decimal | DecimalJsLike | number | string | null
-    centerLng?: Decimal | DecimalJsLike | number | string | null
-    listings?: ListingUncheckedCreateNestedManyWithoutDistrictInput
-    prices?: MarketPriceUncheckedCreateNestedManyWithoutDistrictInput
-    alerts?: WeatherAlertUncheckedCreateNestedManyWithoutDistrictInput
-    pestReports?: PestReportUncheckedCreateNestedManyWithoutDistrictInput
-  }
-
-  export type DistrictCreateOrConnectWithoutProfilesInput = {
-    where: DistrictWhereUniqueInput
-    create: XOR<DistrictCreateWithoutProfilesInput, DistrictUncheckedCreateWithoutProfilesInput>
   }
 
   export type FarmerProfileCreateWithoutUserInput = {
@@ -41466,78 +40933,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type RegionUpsertWithoutProfilesInput = {
-    update: XOR<RegionUpdateWithoutProfilesInput, RegionUncheckedUpdateWithoutProfilesInput>
-    create: XOR<RegionCreateWithoutProfilesInput, RegionUncheckedCreateWithoutProfilesInput>
-    where?: RegionWhereInput
-  }
-
-  export type RegionUpdateToOneWithWhereWithoutProfilesInput = {
-    where?: RegionWhereInput
-    data: XOR<RegionUpdateWithoutProfilesInput, RegionUncheckedUpdateWithoutProfilesInput>
-  }
-
-  export type RegionUpdateWithoutProfilesInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    capital?: NullableStringFieldUpdateOperationsInput | string | null
-    code?: StringFieldUpdateOperationsInput | string
-    zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
-    districts?: DistrictUpdateManyWithoutRegionNestedInput
-    listings?: ListingUpdateManyWithoutRegionNestedInput
-    prices?: MarketPriceUpdateManyWithoutRegionNestedInput
-    alerts?: WeatherAlertUpdateManyWithoutRegionNestedInput
-    pestReports?: PestReportUpdateManyWithoutRegionNestedInput
-  }
-
-  export type RegionUncheckedUpdateWithoutProfilesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    capital?: NullableStringFieldUpdateOperationsInput | string | null
-    code?: StringFieldUpdateOperationsInput | string
-    zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
-    districts?: DistrictUncheckedUpdateManyWithoutRegionNestedInput
-    listings?: ListingUncheckedUpdateManyWithoutRegionNestedInput
-    prices?: MarketPriceUncheckedUpdateManyWithoutRegionNestedInput
-    alerts?: WeatherAlertUncheckedUpdateManyWithoutRegionNestedInput
-    pestReports?: PestReportUncheckedUpdateManyWithoutRegionNestedInput
-  }
-
-  export type DistrictUpsertWithoutProfilesInput = {
-    update: XOR<DistrictUpdateWithoutProfilesInput, DistrictUncheckedUpdateWithoutProfilesInput>
-    create: XOR<DistrictCreateWithoutProfilesInput, DistrictUncheckedCreateWithoutProfilesInput>
-    where?: DistrictWhereInput
-  }
-
-  export type DistrictUpdateToOneWithWhereWithoutProfilesInput = {
-    where?: DistrictWhereInput
-    data: XOR<DistrictUpdateWithoutProfilesInput, DistrictUncheckedUpdateWithoutProfilesInput>
-  }
-
-  export type DistrictUpdateWithoutProfilesInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    capital?: NullableStringFieldUpdateOperationsInput | string | null
-    centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    region?: RegionUpdateOneRequiredWithoutDistrictsNestedInput
-    listings?: ListingUpdateManyWithoutDistrictNestedInput
-    prices?: MarketPriceUpdateManyWithoutDistrictNestedInput
-    alerts?: WeatherAlertUpdateManyWithoutDistrictNestedInput
-    pestReports?: PestReportUpdateManyWithoutDistrictNestedInput
-  }
-
-  export type DistrictUncheckedUpdateWithoutProfilesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    regionId?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    capital?: NullableStringFieldUpdateOperationsInput | string | null
-    centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    listings?: ListingUncheckedUpdateManyWithoutDistrictNestedInput
-    prices?: MarketPriceUncheckedUpdateManyWithoutDistrictNestedInput
-    alerts?: WeatherAlertUncheckedUpdateManyWithoutDistrictNestedInput
-    pestReports?: PestReportUncheckedUpdateManyWithoutDistrictNestedInput
-  }
-
   export type FarmerProfileUpsertWithoutUserInput = {
     update: XOR<FarmerProfileUpdateWithoutUserInput, FarmerProfileUncheckedUpdateWithoutUserInput>
     create: XOR<FarmerProfileCreateWithoutUserInput, FarmerProfileUncheckedCreateWithoutUserInput>
@@ -42060,6 +41455,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -42069,8 +41466,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
     listingsAsSeller?: ListingCreateNestedManyWithoutSellerInput
@@ -42133,6 +41528,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -42142,8 +41539,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -42217,6 +41612,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -42226,8 +41623,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
     listingsAsSeller?: ListingUpdateManyWithoutSellerNestedInput
@@ -42296,6 +41691,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -42305,8 +41702,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -42364,6 +41759,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -42373,8 +41770,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
     listingsAsSeller?: ListingCreateNestedManyWithoutSellerInput
@@ -42448,6 +41843,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -42457,8 +41854,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
     listingsAsSeller?: ListingUpdateManyWithoutSellerNestedInput
@@ -42516,6 +41911,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -42525,8 +41922,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     listingsAsSeller?: ListingCreateNestedManyWithoutSellerInput
@@ -42600,6 +41995,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -42609,8 +42006,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     listingsAsSeller?: ListingUpdateManyWithoutSellerNestedInput
@@ -42668,6 +42063,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -42677,8 +42074,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -42797,7 +42192,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictCreateNestedManyWithoutRegionInput
-    profiles?: ProfileCreateNestedManyWithoutRegionInput
     prices?: MarketPriceCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertCreateNestedManyWithoutRegionInput
     pestReports?: PestReportCreateNestedManyWithoutRegionInput
@@ -42810,7 +42204,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictUncheckedCreateNestedManyWithoutRegionInput
-    profiles?: ProfileUncheckedCreateNestedManyWithoutRegionInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutRegionInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutRegionInput
@@ -42827,7 +42220,6 @@ export namespace Prisma {
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
     region: RegionCreateNestedOneWithoutDistrictsInput
-    profiles?: ProfileCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertCreateNestedManyWithoutDistrictInput
     pestReports?: PestReportCreateNestedManyWithoutDistrictInput
@@ -42840,7 +42232,6 @@ export namespace Prisma {
     capital?: string | null
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutDistrictInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutDistrictInput
@@ -42976,6 +42367,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -42985,8 +42378,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -43123,7 +42514,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUpdateManyWithoutRegionNestedInput
     pestReports?: PestReportUpdateManyWithoutRegionNestedInput
@@ -43136,7 +42526,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUncheckedUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUncheckedUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutRegionNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutRegionNestedInput
@@ -43159,7 +42548,6 @@ export namespace Prisma {
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     region?: RegionUpdateOneRequiredWithoutDistrictsNestedInput
-    profiles?: ProfileUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUpdateManyWithoutDistrictNestedInput
     pestReports?: PestReportUpdateManyWithoutDistrictNestedInput
@@ -43172,7 +42560,6 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutDistrictNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutDistrictNestedInput
@@ -43216,6 +42603,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -43225,8 +42614,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -43289,6 +42676,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -43298,8 +42687,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -43582,6 +42969,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -43591,8 +42980,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -43661,6 +43048,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -43670,8 +43059,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -43943,6 +43330,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -43952,8 +43341,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -44106,6 +43493,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -44115,8 +43504,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -44174,6 +43561,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -44183,8 +43572,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -44290,6 +43677,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -44299,8 +43688,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -44445,6 +43832,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -44454,8 +43843,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -44630,6 +44017,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -44639,8 +44028,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -44934,7 +44321,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictCreateNestedManyWithoutRegionInput
-    profiles?: ProfileCreateNestedManyWithoutRegionInput
     listings?: ListingCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertCreateNestedManyWithoutRegionInput
     pestReports?: PestReportCreateNestedManyWithoutRegionInput
@@ -44947,7 +44333,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictUncheckedCreateNestedManyWithoutRegionInput
-    profiles?: ProfileUncheckedCreateNestedManyWithoutRegionInput
     listings?: ListingUncheckedCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutRegionInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutRegionInput
@@ -44964,7 +44349,6 @@ export namespace Prisma {
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
     region: RegionCreateNestedOneWithoutDistrictsInput
-    profiles?: ProfileCreateNestedManyWithoutDistrictInput
     listings?: ListingCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertCreateNestedManyWithoutDistrictInput
     pestReports?: PestReportCreateNestedManyWithoutDistrictInput
@@ -44977,7 +44361,6 @@ export namespace Prisma {
     capital?: string | null
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedCreateNestedManyWithoutDistrictInput
     listings?: ListingUncheckedCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutDistrictInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutDistrictInput
@@ -45067,7 +44450,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUpdateManyWithoutRegionNestedInput
     listings?: ListingUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUpdateManyWithoutRegionNestedInput
     pestReports?: PestReportUpdateManyWithoutRegionNestedInput
@@ -45080,7 +44462,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUncheckedUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUncheckedUpdateManyWithoutRegionNestedInput
     listings?: ListingUncheckedUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutRegionNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutRegionNestedInput
@@ -45103,7 +44484,6 @@ export namespace Prisma {
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     region?: RegionUpdateOneRequiredWithoutDistrictsNestedInput
-    profiles?: ProfileUpdateManyWithoutDistrictNestedInput
     listings?: ListingUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUpdateManyWithoutDistrictNestedInput
     pestReports?: PestReportUpdateManyWithoutDistrictNestedInput
@@ -45116,7 +44496,6 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedUpdateManyWithoutDistrictNestedInput
     listings?: ListingUncheckedUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutDistrictNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutDistrictNestedInput
@@ -45154,7 +44533,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictCreateNestedManyWithoutRegionInput
-    profiles?: ProfileCreateNestedManyWithoutRegionInput
     listings?: ListingCreateNestedManyWithoutRegionInput
     prices?: MarketPriceCreateNestedManyWithoutRegionInput
     pestReports?: PestReportCreateNestedManyWithoutRegionInput
@@ -45167,7 +44545,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictUncheckedCreateNestedManyWithoutRegionInput
-    profiles?: ProfileUncheckedCreateNestedManyWithoutRegionInput
     listings?: ListingUncheckedCreateNestedManyWithoutRegionInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutRegionInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutRegionInput
@@ -45184,7 +44561,6 @@ export namespace Prisma {
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
     region: RegionCreateNestedOneWithoutDistrictsInput
-    profiles?: ProfileCreateNestedManyWithoutDistrictInput
     listings?: ListingCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceCreateNestedManyWithoutDistrictInput
     pestReports?: PestReportCreateNestedManyWithoutDistrictInput
@@ -45197,7 +44573,6 @@ export namespace Prisma {
     capital?: string | null
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedCreateNestedManyWithoutDistrictInput
     listings?: ListingUncheckedCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutDistrictInput
     pestReports?: PestReportUncheckedCreateNestedManyWithoutDistrictInput
@@ -45225,7 +44600,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUpdateManyWithoutRegionNestedInput
     listings?: ListingUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUpdateManyWithoutRegionNestedInput
     pestReports?: PestReportUpdateManyWithoutRegionNestedInput
@@ -45238,7 +44612,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUncheckedUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUncheckedUpdateManyWithoutRegionNestedInput
     listings?: ListingUncheckedUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutRegionNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutRegionNestedInput
@@ -45261,7 +44634,6 @@ export namespace Prisma {
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     region?: RegionUpdateOneRequiredWithoutDistrictsNestedInput
-    profiles?: ProfileUpdateManyWithoutDistrictNestedInput
     listings?: ListingUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUpdateManyWithoutDistrictNestedInput
     pestReports?: PestReportUpdateManyWithoutDistrictNestedInput
@@ -45274,7 +44646,6 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedUpdateManyWithoutDistrictNestedInput
     listings?: ListingUncheckedUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutDistrictNestedInput
     pestReports?: PestReportUncheckedUpdateManyWithoutDistrictNestedInput
@@ -45286,6 +44657,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -45295,8 +44668,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -45395,7 +44766,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictCreateNestedManyWithoutRegionInput
-    profiles?: ProfileCreateNestedManyWithoutRegionInput
     listings?: ListingCreateNestedManyWithoutRegionInput
     prices?: MarketPriceCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertCreateNestedManyWithoutRegionInput
@@ -45408,7 +44778,6 @@ export namespace Prisma {
     code: string
     zone: $Enums.Zone
     districts?: DistrictUncheckedCreateNestedManyWithoutRegionInput
-    profiles?: ProfileUncheckedCreateNestedManyWithoutRegionInput
     listings?: ListingUncheckedCreateNestedManyWithoutRegionInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutRegionInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutRegionInput
@@ -45425,7 +44794,6 @@ export namespace Prisma {
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
     region: RegionCreateNestedOneWithoutDistrictsInput
-    profiles?: ProfileCreateNestedManyWithoutDistrictInput
     listings?: ListingCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertCreateNestedManyWithoutDistrictInput
@@ -45438,7 +44806,6 @@ export namespace Prisma {
     capital?: string | null
     centerLat?: Decimal | DecimalJsLike | number | string | null
     centerLng?: Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedCreateNestedManyWithoutDistrictInput
     listings?: ListingUncheckedCreateNestedManyWithoutDistrictInput
     prices?: MarketPriceUncheckedCreateNestedManyWithoutDistrictInput
     alerts?: WeatherAlertUncheckedCreateNestedManyWithoutDistrictInput
@@ -45466,6 +44833,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -45475,8 +44844,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -45587,7 +44954,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUpdateManyWithoutRegionNestedInput
     listings?: ListingUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUpdateManyWithoutRegionNestedInput
@@ -45600,7 +44966,6 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     zone?: EnumZoneFieldUpdateOperationsInput | $Enums.Zone
     districts?: DistrictUncheckedUpdateManyWithoutRegionNestedInput
-    profiles?: ProfileUncheckedUpdateManyWithoutRegionNestedInput
     listings?: ListingUncheckedUpdateManyWithoutRegionNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutRegionNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutRegionNestedInput
@@ -45623,7 +44988,6 @@ export namespace Prisma {
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     region?: RegionUpdateOneRequiredWithoutDistrictsNestedInput
-    profiles?: ProfileUpdateManyWithoutDistrictNestedInput
     listings?: ListingUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUpdateManyWithoutDistrictNestedInput
@@ -45636,7 +45000,6 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedUpdateManyWithoutDistrictNestedInput
     listings?: ListingUncheckedUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutDistrictNestedInput
@@ -45648,6 +45011,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -45657,8 +45022,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -45721,6 +45084,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -45730,8 +45095,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -45878,6 +45241,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -45887,8 +45252,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -45957,6 +45320,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -45966,8 +45331,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -46104,6 +45467,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -46113,8 +45478,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -46188,6 +45551,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -46197,8 +45562,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -46256,6 +45619,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -46265,8 +45630,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -46329,6 +45692,8 @@ export namespace Prisma {
     fullName: string
     role: $Enums.Role
     language?: $Enums.Language
+    regionId?: number | null
+    districtId?: number | null
     community?: string | null
     avatarUrl?: string | null
     isActive?: boolean
@@ -46338,8 +45703,6 @@ export namespace Prisma {
     verificationLevel?: $Enums.VerificationLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    region?: RegionCreateNestedOneWithoutProfilesInput
-    district?: DistrictCreateNestedOneWithoutProfilesInput
     farmerProfile?: FarmerProfileCreateNestedOneWithoutUserInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutUserInput
     buyerProfile?: BuyerProfileCreateNestedOneWithoutUserInput
@@ -46500,6 +45863,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -46509,8 +45874,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -46579,6 +45942,8 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
+    regionId?: NullableIntFieldUpdateOperationsInput | number | null
+    districtId?: NullableIntFieldUpdateOperationsInput | number | null
     community?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -46588,8 +45953,6 @@ export namespace Prisma {
     verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
     farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
     buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
@@ -46742,24 +46105,6 @@ export namespace Prisma {
     centerLng?: Decimal | DecimalJsLike | number | string | null
   }
 
-  export type ProfileCreateManyRegionInput = {
-    id: string
-    phone: string
-    fullName: string
-    role: $Enums.Role
-    language?: $Enums.Language
-    districtId?: number | null
-    community?: string | null
-    avatarUrl?: string | null
-    isActive?: boolean
-    isBanned?: boolean
-    banReason?: string | null
-    agroScore?: number
-    verificationLevel?: $Enums.VerificationLevel
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type ListingCreateManyRegionInput = {
     id?: string
     sellerId: string
@@ -46846,7 +46191,6 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUpdateManyWithoutDistrictNestedInput
     listings?: ListingUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUpdateManyWithoutDistrictNestedInput
@@ -46859,7 +46203,6 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    profiles?: ProfileUncheckedUpdateManyWithoutDistrictNestedInput
     listings?: ListingUncheckedUpdateManyWithoutDistrictNestedInput
     prices?: MarketPriceUncheckedUpdateManyWithoutDistrictNestedInput
     alerts?: WeatherAlertUncheckedUpdateManyWithoutDistrictNestedInput
@@ -46872,92 +46215,6 @@ export namespace Prisma {
     capital?: NullableStringFieldUpdateOperationsInput | string | null
     centerLat?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     centerLng?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type ProfileUpdateWithoutRegionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
-    community?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    agroScore?: IntFieldUpdateOperationsInput | number
-    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    district?: DistrictUpdateOneWithoutProfilesNestedInput
-    farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
-    dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
-    buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
-    listingsAsSeller?: ListingUpdateManyWithoutSellerNestedInput
-    ordersAsBuyer?: OrderUpdateManyWithoutBuyerNestedInput
-    ordersAsSeller?: OrderUpdateManyWithoutSellerNestedInput
-    payments?: PaymentUpdateManyWithoutPayerNestedInput
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    bnplApplications?: BNPLApplicationUpdateManyWithoutFarmerNestedInput
-    reviewsGiven?: ReviewUpdateManyWithoutReviewerNestedInput
-    reviewsReceived?: ReviewUpdateManyWithoutRevieweeNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    messages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
-    pestReports?: PestReportUpdateManyWithoutReporterNestedInput
-    verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
-  }
-
-  export type ProfileUncheckedUpdateWithoutRegionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
-    districtId?: NullableIntFieldUpdateOperationsInput | number | null
-    community?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    agroScore?: IntFieldUpdateOperationsInput | number
-    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    farmerProfile?: FarmerProfileUncheckedUpdateOneWithoutUserNestedInput
-    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutUserNestedInput
-    buyerProfile?: BuyerProfileUncheckedUpdateOneWithoutUserNestedInput
-    listingsAsSeller?: ListingUncheckedUpdateManyWithoutSellerNestedInput
-    ordersAsBuyer?: OrderUncheckedUpdateManyWithoutBuyerNestedInput
-    ordersAsSeller?: OrderUncheckedUpdateManyWithoutSellerNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutPayerNestedInput
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutFarmerNestedInput
-    reviewsGiven?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
-    reviewsReceived?: ReviewUncheckedUpdateManyWithoutRevieweeNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
-    pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
-    verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
-  }
-
-  export type ProfileUncheckedUpdateManyWithoutRegionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
-    districtId?: NullableIntFieldUpdateOperationsInput | number | null
-    community?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    agroScore?: IntFieldUpdateOperationsInput | number
-    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ListingUpdateWithoutRegionInput = {
@@ -47205,24 +46462,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ProfileCreateManyDistrictInput = {
-    id: string
-    phone: string
-    fullName: string
-    role: $Enums.Role
-    language?: $Enums.Language
-    regionId?: number | null
-    community?: string | null
-    avatarUrl?: string | null
-    isActive?: boolean
-    isBanned?: boolean
-    banReason?: string | null
-    agroScore?: number
-    verificationLevel?: $Enums.VerificationLevel
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type ListingCreateManyDistrictInput = {
     id?: string
     sellerId: string
@@ -47302,92 +46541,6 @@ export namespace Prisma {
     isVerified?: boolean
     adminNote?: string | null
     createdAt?: Date | string
-  }
-
-  export type ProfileUpdateWithoutDistrictInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
-    community?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    agroScore?: IntFieldUpdateOperationsInput | number
-    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    region?: RegionUpdateOneWithoutProfilesNestedInput
-    farmerProfile?: FarmerProfileUpdateOneWithoutUserNestedInput
-    dealerProfile?: DealerProfileUpdateOneWithoutUserNestedInput
-    buyerProfile?: BuyerProfileUpdateOneWithoutUserNestedInput
-    listingsAsSeller?: ListingUpdateManyWithoutSellerNestedInput
-    ordersAsBuyer?: OrderUpdateManyWithoutBuyerNestedInput
-    ordersAsSeller?: OrderUpdateManyWithoutSellerNestedInput
-    payments?: PaymentUpdateManyWithoutPayerNestedInput
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    bnplApplications?: BNPLApplicationUpdateManyWithoutFarmerNestedInput
-    reviewsGiven?: ReviewUpdateManyWithoutReviewerNestedInput
-    reviewsReceived?: ReviewUpdateManyWithoutRevieweeNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    messages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutRecipientNestedInput
-    pestReports?: PestReportUpdateManyWithoutReporterNestedInput
-    verifiedByAgent?: FarmerProfileUpdateManyWithoutFieldAgentNestedInput
-  }
-
-  export type ProfileUncheckedUpdateWithoutDistrictInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
-    regionId?: NullableIntFieldUpdateOperationsInput | number | null
-    community?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    agroScore?: IntFieldUpdateOperationsInput | number
-    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    farmerProfile?: FarmerProfileUncheckedUpdateOneWithoutUserNestedInput
-    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutUserNestedInput
-    buyerProfile?: BuyerProfileUncheckedUpdateOneWithoutUserNestedInput
-    listingsAsSeller?: ListingUncheckedUpdateManyWithoutSellerNestedInput
-    ordersAsBuyer?: OrderUncheckedUpdateManyWithoutBuyerNestedInput
-    ordersAsSeller?: OrderUncheckedUpdateManyWithoutSellerNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutPayerNestedInput
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutFarmerNestedInput
-    reviewsGiven?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
-    reviewsReceived?: ReviewUncheckedUpdateManyWithoutRevieweeNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    messages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutRecipientNestedInput
-    pestReports?: PestReportUncheckedUpdateManyWithoutReporterNestedInput
-    verifiedByAgent?: FarmerProfileUncheckedUpdateManyWithoutFieldAgentNestedInput
-  }
-
-  export type ProfileUncheckedUpdateManyWithoutDistrictInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    language?: EnumLanguageFieldUpdateOperationsInput | $Enums.Language
-    regionId?: NullableIntFieldUpdateOperationsInput | number | null
-    community?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    agroScore?: IntFieldUpdateOperationsInput | number
-    verificationLevel?: EnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ListingUpdateWithoutDistrictInput = {

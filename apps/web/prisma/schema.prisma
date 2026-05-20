@@ -190,7 +190,6 @@ model Region {
   zone     Zone
 
   districts  District[]
-  profiles   Profile[]
   listings   Listing[]
   prices     MarketPrice[]
   alerts     WeatherAlert[]
@@ -208,7 +207,6 @@ model District {
   centerLng Decimal? @map("center_lng") @db.Decimal(11, 8)
 
   region      Region       @relation(fields: [regionId], references: [id])
-  profiles    Profile[]
   listings    Listing[]
   prices      MarketPrice[]
   alerts      WeatherAlert[]
@@ -274,9 +272,6 @@ model Profile {
   verificationLevel VerificationLevel @default(unverified) @map("verification_level")
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @updatedAt @map("updated_at")
-
-  region       Region?   @relation(fields: [regionId], references: [id])
-  district     District? @relation(fields: [districtId], references: [id])
 
   farmerProfile  FarmerProfile?
   dealerProfile  DealerProfile?

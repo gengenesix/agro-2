@@ -3,9 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useAuth }  from '@/context/auth-context'
 import { api }      from '@/lib/api'
-import { GHANA_REGIONS } from '@/lib/types'
 
-type Section = 'profile' | 'momo' | 'notifications'
+type Section = 'momo' | 'notifications'
 
 const NOTIF_KEY = 'agro_notif_prefs'
 
@@ -28,16 +27,11 @@ function loadNotifPrefs(): NotifPrefs {
 }
 
 export default function SettingsPage() {
-  const { user, refresh } = useAuth()
-  const [section, setSection] = useState<Section>('profile')
+  const { user } = useAuth()
+  const [section, setSection] = useState<Section>('momo')
   const [saving, setSaving]   = useState(false)
   const [saved,  setSaved]    = useState(false)
   const [error,  setError]    = useState<string | null>(null)
-
-  // Profile fields
-  const [fullName,  setFullName]  = useState('')
-  const [regionId,  setRegionId]  = useState('')
-  const [community, setCommunity] = useState('')
 
   // MoMo
   const [momoNumber,  setMomoNumber]  = useState('')
@@ -45,14 +39,6 @@ export default function SettingsPage() {
 
   // Notifications — stored in localStorage, not the server
   const [notif, setNotif] = useState<NotifPrefs>(loadNotifPrefs)
-
-  // Sync profile fields when user loads (may be null on first render)
-  useEffect(() => {
-    if (!user) return
-    setFullName(user.fullName ?? '')
-    setRegionId(user.regionId?.toString() ?? '')
-    setCommunity(user.community ?? '')
-  }, [user])
 
   // Load MoMo from farmer profile
   useEffect(() => {
@@ -70,25 +56,15 @@ export default function SettingsPage() {
     try { localStorage.setItem(NOTIF_KEY, JSON.stringify(next)) } catch { /* ignore */ }
   }
 
-  const currentRegionName = GHANA_REGIONS.find(r => r.id.toString() === regionId)?.name
-
   const save = async () => {
+    if (section !== 'momo') return
     setSaving(true)
     setError(null)
     try {
-      if (section === 'profile') {
-        await api.patch('/users/me', {
-          fullName:  fullName || undefined,
-          regionId:  regionId ? Number(regionId) : undefined,
-          community: community || undefined,
-        })
-        await refresh()
-      } else if (section === 'momo') {
-        await api.put('/users/me/farmer-profile', {
-          mobileMoneyNumber:  momoNumber  || null,
-          mobileMoneyNetwork: momoNetwork || null,
-        })
-      }
+      await api.put('/users/me/farmer-profile', {
+        mobileMoneyNumber:  momoNumber  || null,
+        mobileMoneyNetwork: momoNetwork || null,
+      })
       setSaved(true)
       setTimeout(() => setSaved(false), 2500)
     } catch (err: unknown) {
@@ -99,8 +75,9 @@ export default function SettingsPage() {
     }
   }
 
+  if (!user) return null
+
   const tabs: { key: Section; label: string }[] = [
-    { key: 'profile',       label: 'Profile'       },
     { key: 'momo',          label: 'Mobile Money'  },
     { key: 'notifications', label: 'Notifications' },
   ]
@@ -113,13 +90,12 @@ export default function SettingsPage() {
       </div>
 
       {/* Tab strip */}
-      <div className="flex gap-1 bg-cream-dark rounded-xl p-1 overflow-x-auto">
+      <div className="flex gap-1 bg-cream-dark rounded-xl p-1">
         {tabs.map(t => (
           <button
             key={t.key}
             onClick={() => { setSection(t.key); setError(null); setSaved(false) }}
-            className={`flex-1 min-w-max px-3 py-2 rounded-lg text-xs font-semibold transition-colors
-                        whitespace-nowrap ${
+            className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
               section === t.key
                 ? 'bg-white text-forest shadow-sm'
                 : 'text-muted-foreground hover:text-forest'
@@ -131,51 +107,6 @@ export default function SettingsPage() {
       </div>
 
       <div className="bg-white rounded-2xl border border-border p-5 space-y-4">
-
-        {/* ── Profile ──────────────────────────────────────────────────── */}
-        {section === 'profile' && (
-          <>
-            <h2 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-              Profile details
-            </h2>
-            <div>
-              <label className="block text-sm font-semibold text-forest mb-1.5">Full name</label>
-              <input
-                value={fullName}
-                onChange={e => setFullName(e.target.value)}
-                placeholder="Your full name"
-                className="w-full h-11 px-4 rounded-xl border border-border bg-cream focus:outline-none
-                           focus:ring-2 focus:ring-lime text-sm"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-forest mb-1.5">Region</label>
-              <select
-                value={regionId}
-                onChange={e => setRegionId(e.target.value)}
-                className="w-full h-11 px-4 rounded-xl border border-border bg-cream focus:outline-none
-                           focus:ring-2 focus:ring-lime text-sm"
-              >
-                <option value="">
-                  {currentRegionName ? `Current: ${currentRegionName}` : 'Select region'}
-                </option>
-                {GHANA_REGIONS.map(r => (
-                  <option key={r.id} value={r.id}>{r.name}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-forest mb-1.5">Community</label>
-              <input
-                value={community}
-                onChange={e => setCommunity(e.target.value)}
-                placeholder="e.g. Nsawam"
-                className="w-full h-11 px-4 rounded-xl border border-border bg-cream focus:outline-none
-                           focus:ring-2 focus:ring-lime text-sm"
-              />
-            </div>
-          </>
-        )}
 
         {/* ── Mobile Money ──────────────────────────────────────────────── */}
         {section === 'momo' && (
@@ -267,7 +198,7 @@ export default function SettingsPage() {
         </div>
       )}
 
-      {section !== 'notifications' && (
+      {section === 'momo' && (
         <button
           onClick={save}
           disabled={saving}
