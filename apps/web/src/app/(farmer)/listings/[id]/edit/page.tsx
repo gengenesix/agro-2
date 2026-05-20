@@ -2,22 +2,41 @@ import { CreateListingForm } from '@/components/listings/create-listing-form'
 import Link                  from 'next/link'
 import { ArrowLeftIcon }     from '@/components/shared/icons'
 import { notFound }          from 'next/navigation'
-
-const BASE = process.env['NEXT_PUBLIC_APP_URL'] ?? 'http://localhost:3000'
-
-async function fetchListing(id: string) {
-  try {
-    const res = await fetch(`${BASE}/api/v1/listings/${id}`, { cache: 'no-store' })
-    if (!res.ok) return null
-    const json = await res.json()
-    return json.data
-  } catch { return null }
-}
+import { prisma }            from '@/lib/prisma'
 
 export default async function EditListingPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const listing = await fetchListing(id)
-  if (!listing) notFound()
+
+  // `id` segment holds the slug (linked from listings page as /listings/[slug]/edit)
+  const row = await prisma.listing.findFirst({
+    where: { slug: id },
+    select: {
+      id: true, slug: true, title: true, description: true, listingType: true,
+      quantityAvailable: true, pricePerUnit: true, minOrderQuantity: true,
+      farmingMethod: true, expectedHarvestDate: true, depositPercentage: true,
+      regionId: true, community: true, bnplAvailable: true, deliveryOptions: true,
+      photos: true,
+      category: { select: { name: true, sector: true } },
+      unit:     { select: { name: true } },
+    },
+  }).catch(() => null)
+
+  if (!row) notFound()
+
+  const listing = {
+    ...row,
+    sector:            row.category.sector,
+    category:          row.category.name,
+    unit:              row.unit.name,
+    quantityTotal:     Number(row.quantityAvailable),
+    pricePerUnit:      Number(row.pricePerUnit),
+    minimumOrder:      Number(row.minOrderQuantity),
+    harvestDate:       row.expectedHarvestDate?.toISOString().slice(0, 10) ?? null,
+    depositPercent:    row.depositPercentage,
+    district:          row.community ?? '',
+    bnplEligible:      row.bnplAvailable,
+    deliveryAvailable: row.deliveryOptions.includes('farmer_delivery'),
+  }
 
   return (
     <main className="min-h-screen bg-cream">

@@ -118,7 +118,7 @@ export default function MyListingsPage() {
                       <EyeIcon size={15} />
                     </Link>
                     <Link
-                      href={`/listings/${listing.id}/edit`}
+                      href={`/listings/${listing.slug}/edit`}
                       className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest
                                  hover:bg-cream transition-colors"
                       title="Edit"
