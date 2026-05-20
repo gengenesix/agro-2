@@ -50,17 +50,17 @@ export async function GET(req: NextRequest) {
     const d = json.daily
     const forecast = d.time.map((date, i) => ({
       date,
-      tempMax:       d.temperature_2m_max[i],
-      tempMin:       d.temperature_2m_min[i],
-      precipitation: d.precipitation_sum[i],
-      code:          d.weathercode[i],
-      label:         codeToLabel(d.weathercode[i] ?? 0),
+      maxTempC:        d.temperature_2m_max[i]  ?? 0,
+      minTempC:        d.temperature_2m_min[i]  ?? 0,
+      precipitationMm: d.precipitation_sum[i]   ?? 0,
+      weatherCode:     d.weathercode[i]          ?? 0,
+      description:     codeToLabel(d.weathercode[i] ?? 0),
     }))
 
     // Farming assessment based on next 3 days
-    const avgRain    = forecast.slice(0, 3).reduce((s, d) => s + (d.precipitation ?? 0), 0) / 3
-    const hasHeavy   = forecast.slice(0, 3).some(d => (d.precipitation ?? 0) > 20)
-    const allDry     = forecast.slice(0, 7).every(d => (d.precipitation ?? 0) < 1)
+    const avgRain    = forecast.slice(0, 3).reduce((s, d) => s + d.precipitationMm, 0) / 3
+    const hasHeavy   = forecast.slice(0, 3).some(d => d.precipitationMm > 20)
+    const allDry     = forecast.slice(0, 7).every(d => d.precipitationMm < 1)
 
     const assessment = {
       alert:    hasHeavy || allDry,
