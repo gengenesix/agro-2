@@ -68,7 +68,6 @@ export async function GET(
         avatarUrl:         listing.seller.avatarUrl,
         verificationLevel: listing.seller.verificationLevel,
         agroScore:         listing.seller.agroScore,
-        region:            listing.seller.region,
         memberSince:       listing.seller.createdAt.toISOString(),
       },
       region:   listing.region,
