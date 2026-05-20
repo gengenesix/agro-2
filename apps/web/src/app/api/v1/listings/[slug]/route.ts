@@ -20,7 +20,6 @@ export async function GET(
           verificationLevel: true,
           agroScore: true,
           createdAt: true,
-          region: { select: { name: true } },
         },
       },
       region:   { select: { name: true, code: true } },
