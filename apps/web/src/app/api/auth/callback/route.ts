@@ -94,6 +94,7 @@ export async function GET(request: NextRequest) {
   const profile: Profile = {
     id:                profileRow.id,
     phone:             profileRow.phone,
+    email:             profileRow.email ?? null,
     fullName:          profileRow.fullName,
     role:              profileRow.role as Profile['role'],
     language:          profileRow.language as Profile['language'],
