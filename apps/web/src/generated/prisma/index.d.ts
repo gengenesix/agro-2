@@ -14246,6 +14246,7 @@ export namespace Prisma {
     createdAt: Date | null
     confirmedAt: Date | null
     deliveredAt: Date | null
+    completedAt: Date | null
     cancelledAt: Date | null
     cancellationReason: string | null
   }
@@ -14278,6 +14279,7 @@ export namespace Prisma {
     createdAt: Date | null
     confirmedAt: Date | null
     deliveredAt: Date | null
+    completedAt: Date | null
     cancelledAt: Date | null
     cancellationReason: string | null
   }
@@ -14310,6 +14312,7 @@ export namespace Prisma {
     createdAt: number
     confirmedAt: number
     deliveredAt: number
+    completedAt: number
     cancelledAt: number
     cancellationReason: number
     _all: number
@@ -14366,6 +14369,7 @@ export namespace Prisma {
     createdAt?: true
     confirmedAt?: true
     deliveredAt?: true
+    completedAt?: true
     cancelledAt?: true
     cancellationReason?: true
   }
@@ -14398,6 +14402,7 @@ export namespace Prisma {
     createdAt?: true
     confirmedAt?: true
     deliveredAt?: true
+    completedAt?: true
     cancelledAt?: true
     cancellationReason?: true
   }
@@ -14430,6 +14435,7 @@ export namespace Prisma {
     createdAt?: true
     confirmedAt?: true
     deliveredAt?: true
+    completedAt?: true
     cancelledAt?: true
     cancellationReason?: true
     _all?: true
@@ -14549,6 +14555,7 @@ export namespace Prisma {
     createdAt: Date
     confirmedAt: Date | null
     deliveredAt: Date | null
+    completedAt: Date | null
     cancelledAt: Date | null
     cancellationReason: string | null
     _count: OrderCountAggregateOutputType | null
@@ -14600,6 +14607,7 @@ export namespace Prisma {
     createdAt?: boolean
     confirmedAt?: boolean
     deliveredAt?: boolean
+    completedAt?: boolean
     cancelledAt?: boolean
     cancellationReason?: boolean
     buyer?: boolean | ProfileDefaultArgs<ExtArgs>
@@ -14640,6 +14648,7 @@ export namespace Prisma {
     createdAt?: boolean
     confirmedAt?: boolean
     deliveredAt?: boolean
+    completedAt?: boolean
     cancelledAt?: boolean
     cancellationReason?: boolean
     buyer?: boolean | ProfileDefaultArgs<ExtArgs>
@@ -14675,6 +14684,7 @@ export namespace Prisma {
     createdAt?: boolean
     confirmedAt?: boolean
     deliveredAt?: boolean
+    completedAt?: boolean
     cancelledAt?: boolean
     cancellationReason?: boolean
   }
@@ -14734,6 +14744,7 @@ export namespace Prisma {
       createdAt: Date
       confirmedAt: Date | null
       deliveredAt: Date | null
+      completedAt: Date | null
       cancelledAt: Date | null
       cancellationReason: string | null
     }, ExtArgs["result"]["order"]>
@@ -15163,6 +15174,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Order", 'DateTime'>
     readonly confirmedAt: FieldRef<"Order", 'DateTime'>
     readonly deliveredAt: FieldRef<"Order", 'DateTime'>
+    readonly completedAt: FieldRef<"Order", 'DateTime'>
     readonly cancelledAt: FieldRef<"Order", 'DateTime'>
     readonly cancellationReason: FieldRef<"Order", 'String'>
   }
@@ -29457,6 +29469,7 @@ export namespace Prisma {
     createdAt: 'createdAt',
     confirmedAt: 'confirmedAt',
     deliveredAt: 'deliveredAt',
+    completedAt: 'completedAt',
     cancelledAt: 'cancelledAt',
     cancellationReason: 'cancellationReason'
   };
@@ -31182,6 +31195,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Order"> | Date | string
     confirmedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     cancellationReason?: StringNullableFilter<"Order"> | string | null
     buyer?: XOR<ProfileRelationFilter, ProfileWhereInput>
@@ -31221,6 +31235,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     confirmedAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
     cancelledAt?: SortOrderInput | SortOrder
     cancellationReason?: SortOrderInput | SortOrder
     buyer?: ProfileOrderByWithRelationInput
@@ -31263,6 +31278,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Order"> | Date | string
     confirmedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     cancellationReason?: StringNullableFilter<"Order"> | string | null
     buyer?: XOR<ProfileRelationFilter, ProfileWhereInput>
@@ -31302,6 +31318,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     confirmedAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
     cancelledAt?: SortOrderInput | SortOrder
     cancellationReason?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
@@ -31342,6 +31359,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     confirmedAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     deliveredAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     cancelledAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     cancellationReason?: StringNullableWithAggregatesFilter<"Order"> | string | null
   }
@@ -33707,6 +33725,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     buyer: ProfileCreateNestedOneWithoutOrdersAsBuyerInput
@@ -33746,6 +33765,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -33779,6 +33799,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     buyer?: ProfileUpdateOneRequiredWithoutOrdersAsBuyerNestedInput
@@ -33818,6 +33839,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -33854,6 +33876,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
   }
@@ -33883,6 +33906,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -33915,6 +33939,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -36404,6 +36429,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     confirmedAt?: SortOrder
     deliveredAt?: SortOrder
+    completedAt?: SortOrder
     cancelledAt?: SortOrder
     cancellationReason?: SortOrder
   }
@@ -36447,6 +36473,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     confirmedAt?: SortOrder
     deliveredAt?: SortOrder
+    completedAt?: SortOrder
     cancelledAt?: SortOrder
     cancellationReason?: SortOrder
   }
@@ -36479,6 +36506,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     confirmedAt?: SortOrder
     deliveredAt?: SortOrder
+    completedAt?: SortOrder
     cancelledAt?: SortOrder
     cancellationReason?: SortOrder
   }
@@ -42175,6 +42203,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     seller: ProfileCreateNestedOneWithoutOrdersAsSellerInput
@@ -42212,6 +42241,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -42255,6 +42285,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     buyer: ProfileCreateNestedOneWithoutOrdersAsBuyerInput
@@ -42292,6 +42323,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -42959,6 +42991,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Order"> | Date | string
     confirmedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     cancellationReason?: StringNullableFilter<"Order"> | string | null
   }
@@ -44191,6 +44224,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     buyer: ProfileCreateNestedOneWithoutOrdersAsBuyerInput
@@ -44228,6 +44262,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -45296,6 +45331,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     buyer: ProfileCreateNestedOneWithoutOrdersAsBuyerInput
@@ -45334,6 +45370,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -45540,6 +45577,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     buyer?: ProfileUpdateOneRequiredWithoutOrdersAsBuyerNestedInput
@@ -45578,6 +45616,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -45780,6 +45819,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     buyer: ProfileCreateNestedOneWithoutOrdersAsBuyerInput
@@ -45818,6 +45858,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     bnplApplications?: BNPLApplicationUncheckedCreateNestedManyWithoutOrderInput
@@ -45945,6 +45986,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     buyer?: ProfileUpdateOneRequiredWithoutOrdersAsBuyerNestedInput
@@ -45983,6 +46025,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     bnplApplications?: BNPLApplicationUncheckedUpdateManyWithoutOrderNestedInput
@@ -46462,6 +46505,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     buyer: ProfileCreateNestedOneWithoutOrdersAsBuyerInput
@@ -46500,6 +46544,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -46661,6 +46706,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     buyer?: ProfileUpdateOneRequiredWithoutOrdersAsBuyerNestedInput
@@ -46699,6 +46745,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -47748,6 +47795,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     buyer: ProfileCreateNestedOneWithoutOrdersAsBuyerInput
@@ -47786,6 +47834,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
     payments?: PaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -48004,6 +48053,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     buyer?: ProfileUpdateOneRequiredWithoutOrdersAsBuyerNestedInput
@@ -48042,6 +48092,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -50003,6 +50054,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
   }
@@ -50034,6 +50086,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
   }
@@ -50338,6 +50391,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     seller?: ProfileUpdateOneRequiredWithoutOrdersAsSellerNestedInput
@@ -50375,6 +50429,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -50410,6 +50465,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -50439,6 +50495,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     buyer?: ProfileUpdateOneRequiredWithoutOrdersAsBuyerNestedInput
@@ -50476,6 +50533,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -50511,6 +50569,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -51006,6 +51065,7 @@ export namespace Prisma {
     createdAt?: Date | string
     confirmedAt?: Date | string | null
     deliveredAt?: Date | string | null
+    completedAt?: Date | string | null
     cancelledAt?: Date | string | null
     cancellationReason?: string | null
   }
@@ -51045,6 +51105,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     buyer?: ProfileUpdateOneRequiredWithoutOrdersAsBuyerNestedInput
@@ -51082,6 +51143,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     payments?: PaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -51117,6 +51179,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     confirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
   }

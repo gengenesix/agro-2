@@ -304,6 +304,7 @@ exports.Prisma.OrderScalarFieldEnum = {
   createdAt: 'createdAt',
   confirmedAt: 'confirmedAt',
   deliveredAt: 'deliveredAt',
+  completedAt: 'completedAt',
   cancelledAt: 'cancelledAt',
   cancellationReason: 'cancellationReason'
 };
