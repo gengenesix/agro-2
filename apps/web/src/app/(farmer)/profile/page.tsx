@@ -404,12 +404,14 @@ export default function ProfilePage() {
               </label>
               {gps ? (
                 <div className="space-y-2">
-                  <FarmLocationMap
-                    lat={gps.lat}
-                    lng={gps.lng}
-                    onMove={(lat, lng) => setGps({ lat, lng })}
-                    height="200px"
-                  />
+                  <div className="relative z-0 w-full h-[250px] overflow-hidden rounded-xl">
+                    <FarmLocationMap
+                      lat={gps.lat}
+                      lng={gps.lng}
+                      onMove={(lat, lng) => setGps({ lat, lng })}
+                      height="250px"
+                    />
+                  </div>
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs text-muted-foreground">
                       {gps.lat.toFixed(5)}, {gps.lng.toFixed(5)}
