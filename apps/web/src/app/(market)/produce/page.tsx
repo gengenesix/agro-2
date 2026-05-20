@@ -36,11 +36,15 @@ async function fetchListings(filters: Filters) {
         : {}),
     }
 
-    const orderBy = (() => {
-      if (filters.sortBy === 'price_asc')  return { pricePerUnit: 'asc'  as const }
-      if (filters.sortBy === 'price_desc') return { pricePerUnit: 'desc' as const }
-      return { createdAt: 'desc' as const }
-    })()
+    const ORDER_MAP: Record<string, { [col: string]: 'asc' | 'desc' }> = {
+      newest:          { createdAt:           'desc' },
+      price_low:       { pricePerUnit:        'asc'  },
+      price_high:      { pricePerUnit:        'desc' },
+      most_viewed:     { viewsCount:          'desc' },
+      harvest_soonest: { expectedHarvestDate: 'asc'  },
+      top_rated:       { viewsCount:          'desc' },
+    }
+    const orderBy = ORDER_MAP[filters.sortBy ?? 'newest'] ?? ORDER_MAP['newest']
 
     const page  = Math.max(1, filters.page  ?? 1)
     const limit = Math.min(50, filters.limit ?? 24)
