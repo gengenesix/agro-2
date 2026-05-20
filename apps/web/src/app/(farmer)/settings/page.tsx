@@ -168,14 +168,13 @@ export default function SettingsPage() {
                   role="switch"
                   aria-checked={notif[item.key]}
                   onClick={() => toggleNotif(item.key)}
-                  className={`relative flex-shrink-0 w-11 h-6 rounded-full transition-colors duration-200 ${
+                  className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full items-center transition-colors duration-200 ease-in-out focus:outline-none ${
                     notif[item.key] ? 'bg-forest' : 'bg-border'
                   }`}
                 >
                   <span
-                    className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow-sm
-                                transition-transform duration-200 ${
-                      notif[item.key] ? 'translate-x-6' : 'translate-x-1'
+                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                      notif[item.key] ? 'translate-x-5' : 'translate-x-1'
                     }`}
                   />
                 </button>
