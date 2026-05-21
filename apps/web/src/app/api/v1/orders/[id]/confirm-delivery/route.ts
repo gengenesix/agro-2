@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAuthProfile } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 
-// Buyer confirms they received the goods → releases escrow to seller's spendable balance
+const COMMISSION_RATES: Record<string, number> = {
+  direct_purchase: 0.030,
+  harvest_pledge:  0.025,
+  input_purchase:  0.015,
+  input_bnpl:      0,
+}
+
+// Buyer confirms they received the goods → advances to 'delivered' and releases escrow
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -22,17 +29,6 @@ export async function POST(
     return NextResponse.json({ success: false, error: 'Order not found' }, { status: 404 })
   }
 
-  const validStatuses = ['dispatched', 'in_transit', 'delivered'] as const
-  if (!validStatuses.includes(order.trackingStatus as typeof validStatuses[number])) {
-    return NextResponse.json(
-      {
-        success: false,
-        error:   `Delivery cannot be confirmed when order status is '${order.trackingStatus}'.`,
-      },
-      { status: 400 },
-    )
-  }
-
   if (order.trackingStatus === 'delivered' && order.deliveredAt) {
     return NextResponse.json(
       { success: false, error: 'Delivery has already been confirmed.' },
@@ -40,46 +36,69 @@ export async function POST(
     )
   }
 
-  // Amount to release from escrow — the full order amount minus platform commission
-  // pendingBalance already holds the net seller amount (set by webhook)
-  const sellerWallet = await prisma.wallet.findUnique({ where: { userId: order.sellerId } })
-  if (!sellerWallet) {
-    return NextResponse.json(
-      { success: false, error: 'Seller wallet not found.' },
-      { status: 500 },
-    )
+  const isPledge = order.orderType === 'harvest_pledge'
+
+  // Pledge orders track dispatch via pledgeProgress; direct orders use trackingStatus
+  if (isPledge) {
+    if (order.pledgeProgress !== 'dispatched') {
+      return NextResponse.json(
+        {
+          success: false,
+          error:   `Delivery cannot be confirmed until the pledge is marked dispatched. Current progress: '${order.pledgeProgress ?? 'none'}'.`,
+        },
+        { status: 400 },
+      )
+    }
+  } else {
+    const validStatuses = ['dispatched', 'in_transit'] as const
+    if (!validStatuses.includes(order.trackingStatus as typeof validStatuses[number])) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:   `Delivery cannot be confirmed when order status is '${order.trackingStatus}'.`,
+        },
+        { status: 400 },
+      )
+    }
   }
 
-  // Determine how much to release: sum of all successful payments for this order,
-  // net of commission, which equals what is sitting in pendingBalance for this order.
-  // Simplification: release the full pendingBalance attributed to this order.
-  // For a production system with concurrent orders, track per-order escrow amounts.
-  const payments = await prisma.payment.findMany({
-    where: { orderId: order.id, status: 'success' },
+  const sellerWallet = await prisma.wallet.upsert({
+    where:  { userId: order.sellerId },
+    create: { userId: order.sellerId, balance: 0, pendingBalance: 0, totalEarned: 0, totalWithdrawn: 0 },
+    update: {},
   })
-  const commissionRates: Record<string, number> = {
-    direct_purchase: 0.030,
-    harvest_pledge:  0.025,
-    input_purchase:  0.015,
-    input_bnpl:      0,
+
+  const commissionRate = COMMISSION_RATES[order.orderType] ?? 0.030
+
+  // Pledges: only the deposit has cleared into escrow — releasing the full subtotal would
+  // overdraw pending balance. Direct orders: sum actual successful payments.
+  let releaseAmount: number
+  if (isPledge) {
+    const deposit = Number(order.depositAmount ?? 0)
+    releaseAmount = parseFloat((deposit * (1 - commissionRate)).toFixed(2))
+  } else {
+    const payments = await prisma.payment.findMany({
+      where: { orderId: order.id, status: 'success' },
+    })
+    const totalPaid = payments.reduce((sum, p) => sum + Number(p.amount), 0)
+    releaseAmount = parseFloat((totalPaid * (1 - commissionRate)).toFixed(2))
   }
-  const commissionRate = commissionRates[order.orderType] ?? 0.030
-  const totalPaid = payments.reduce((sum, p) => sum + Number(p.amount), 0)
-  const releaseAmount = parseFloat((totalPaid * (1 - commissionRate)).toFixed(2))
 
   const now = new Date()
 
   await prisma.$transaction(async (tx) => {
+    // Advance order state — pledges also update pledgeProgress
     await tx.order.update({
       where: { id: order.id },
       data: {
         trackingStatus: 'delivered',
         deliveredAt:    now,
+        ...(isPledge ? { pledgeProgress: 'delivered' } : {}),
       },
     })
 
     const currentPending = Number(sellerWallet.pendingBalance)
-    const safeRelease    = Math.min(releaseAmount, currentPending)
+    const safeRelease    = parseFloat(Math.min(releaseAmount, currentPending).toFixed(2))
     const newPending     = parseFloat((currentPending - safeRelease).toFixed(2))
     const newBalance     = parseFloat((Number(sellerWallet.balance) + safeRelease).toFixed(2))
 
@@ -98,7 +117,8 @@ export async function POST(
         amount:       safeRelease,
         balanceAfter: newBalance,
         reference:    order.orderNumber,
-        description:  `Delivery confirmed for order ${order.orderNumber}`,
+        description:  `Delivery confirmed — order ${order.orderNumber}`,
+        orderId:      order.id,
       },
     })
   })
@@ -109,6 +129,7 @@ export async function POST(
       orderId:        order.id,
       orderNumber:    order.orderNumber,
       trackingStatus: 'delivered',
+      pledgeProgress: isPledge ? 'delivered' : order.pledgeProgress,
       deliveredAt:    now.toISOString(),
       escrowReleased: releaseAmount,
     },

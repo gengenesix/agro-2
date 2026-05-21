@@ -49,6 +49,7 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
     try {
       await api.post(`/orders/${order.id}/confirm-delivery`)
       onRefresh()
+      router.refresh()
     } finally {
       setActing(false)
     }
