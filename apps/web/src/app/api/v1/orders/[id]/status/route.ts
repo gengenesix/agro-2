@@ -64,10 +64,13 @@ export async function PATCH(
       )
     }
 
-    const now         = new Date()
-    const totalAmount = Number(order.totalAmount)
-    const platformFee = Number(order.platformCommission)
-    const netEarnings = totalAmount - platformFee
+    const now             = new Date()
+    const isPledge        = order.orderType === 'harvest_pledge'
+    const platformFee     = Number(order.platformCommission)
+
+    // Pledges: only the deposit has been escrowed — releasing totalAmount would overdraw
+    const settlementAmount = isPledge ? Number(order.depositAmount ?? 0) : Number(order.totalAmount)
+    const farmerPayout     = settlementAmount - platformFee
 
     // Ensure both wallets exist before the transaction so we have their IDs
     const [buyerWallet, sellerWallet] = await Promise.all([
@@ -83,8 +86,8 @@ export async function PATCH(
       }),
     ])
 
-    const buyerNewPending  = Math.max(0, Number(buyerWallet.pendingBalance)  - totalAmount)
-    const sellerNewBalance = Number(sellerWallet.balance) + netEarnings
+    const buyerNewPending  = Math.max(0, Number(buyerWallet.pendingBalance) - settlementAmount)
+    const sellerNewBalance = Number(sellerWallet.balance) + farmerPayout
 
     const [updated] = await prisma.$transaction([
       // 1. Stamp completedAt on the order
@@ -96,44 +99,44 @@ export async function PATCH(
         },
       }),
 
-      // 2. Release escrow from buyer's pendingBalance
+      // 2. Release escrowed amount from buyer's pendingBalance
       prisma.wallet.update({
         where: { userId: order.buyerId },
-        data:  { pendingBalance: { decrement: totalAmount } },
+        data:  { pendingBalance: { decrement: settlementAmount } },
       }),
 
-      // 3. Credit net earnings into seller's available balance
+      // 3. Credit farmer payout into seller's available balance
       prisma.wallet.update({
         where: { userId: order.sellerId },
         data: {
-          balance:     { increment: netEarnings },
-          totalEarned: { increment: netEarnings },
+          balance:     { increment: farmerPayout },
+          totalEarned: { increment: farmerPayout },
         },
       }),
 
       // 4. Buyer ledger row — escrow released
       prisma.walletTransaction.create({
         data: {
-          walletId:    buyerWallet.id,
-          type:        'escrow_release',
-          amount:      totalAmount,
+          walletId:     buyerWallet.id,
+          type:         'escrow_release',
+          amount:       settlementAmount,
           balanceAfter: buyerNewPending,
-          reference:   order.orderNumber,
-          description: `Escrow released — order ${order.orderNumber}`,
-          orderId:     order.id,
+          reference:    order.orderNumber,
+          description:  `Escrow released — order ${order.orderNumber}`,
+          orderId:      order.id,
         },
       }),
 
       // 5. Seller ledger row — order revenue credited
       prisma.walletTransaction.create({
         data: {
-          walletId:    sellerWallet.id,
-          type:        'credit',
-          amount:      netEarnings,
+          walletId:     sellerWallet.id,
+          type:         'credit',
+          amount:       farmerPayout,
           balanceAfter: sellerNewBalance,
-          reference:   order.orderNumber,
-          description: `Payment received — order ${order.orderNumber}`,
-          orderId:     order.id,
+          reference:    order.orderNumber,
+          description:  `Payment received — order ${order.orderNumber}`,
+          orderId:      order.id,
         },
       }),
     ])
