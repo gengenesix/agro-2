@@ -14,19 +14,17 @@ import {
 import { formatGHS } from '@/lib/format'
 
 interface InputListing {
-  id:              string
-  slug:            string
-  title:           string
-  sector:          string
-  category:        string
-  pricePerUnit:    number
-  unit:            string
+  id:               string
+  slug:             string
+  title:            string
+  pricePerUnit:     number
+  unit:             { name: string; abbreviation: string } | null
   quantityAvailable: number
-  bnplEligible:    boolean
-  photos:          string[]
-  region:          string
-  district:        string
-  seller:          { fullName: string; businessName?: string }
+  bnplAvailable:    boolean
+  photos:           string[]
+  region:           { name: string; code: string } | null
+  category:         { name: string; sector: string; slug: string } | null
+  seller:           { fullName: string } | null
 }
 
 const INPUT_CATEGORIES = [
@@ -59,7 +57,7 @@ export default function InputsMarketPage() {
       page:   String(page),
       limit:  '24',
     })
-    if (search)   params.set('search', search)
+    if (search)   params.set('q', search)
     if (category !== 'All') params.set('category', category)
     if (bnplOnly) params.set('bnplEligible', 'true')
 
@@ -136,52 +134,59 @@ export default function InputsMarketPage() {
               />
             </div>
           ) : (
-            listings.map(item => (
-              <Link key={item.id} href={`/inputs/${item.slug}`}
-                className="bg-white rounded-2xl border border-border overflow-hidden hover:shadow-md transition-shadow group">
-                {/* Photo */}
-                <div className="relative aspect-[4/3] bg-cream-dark overflow-hidden">
-                  {item.photos?.[0] ? (
-                    <Image
-                      src={item.photos[0]}
-                      alt={item.title}
-                      fill sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <InputsIcon size={32} className="text-muted-foreground/40" />
+            listings.map(item => {
+              const unitLabel   = item.unit?.abbreviation ?? item.unit?.name ?? ''
+              const regionLabel = item.region?.name ?? ''
+              const sellerLabel = item.seller?.fullName ?? ''
+              return (
+                <Link key={item.id} href={`/inputs/${item.slug ?? item.id}`}
+                  className="bg-white rounded-2xl border border-border overflow-hidden hover:shadow-md transition-shadow group">
+                  {/* Photo */}
+                  <div className="relative aspect-[4/3] bg-cream-dark overflow-hidden">
+                    {item.photos?.[0] ? (
+                      <Image
+                        src={item.photos[0]}
+                        alt={item.title ?? ''}
+                        fill sizes="(max-width: 640px) 50vw, 25vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <InputsIcon size={32} className="text-muted-foreground/40" />
+                      </div>
+                    )}
+                    {item.bnplAvailable && (
+                      <div className="absolute top-2 right-2">
+                        <BnplBadge />
+                      </div>
+                    )}
+                    <div className="absolute top-2 left-2">
+                      <SectorChip sector="inputs" label="Inputs" size="sm" />
                     </div>
-                  )}
-                  {item.bnplEligible && (
-                    <div className="absolute top-2 right-2">
-                      <BnplBadge />
-                    </div>
-                  )}
-                  <div className="absolute top-2 left-2">
-                    <SectorChip sector="inputs" label="Inputs" size="sm" />
                   </div>
-                </div>
 
-                {/* Info */}
-                <div className="p-3">
-                  <p className="font-display text-sm font-semibold text-forest leading-tight line-clamp-2 mb-1">
-                    {item.title}
-                  </p>
-                  <div className="flex items-baseline gap-1 mb-2">
-                    <span className="font-mono text-sm font-bold text-forest">{formatGHS(item.pricePerUnit)}</span>
-                    <span className="text-xs text-muted-foreground">/{item.unit}</span>
+                  {/* Info */}
+                  <div className="p-3">
+                    <p className="font-display text-sm font-semibold text-forest leading-tight line-clamp-2 mb-1">
+                      {item.title ?? '—'}
+                    </p>
+                    <div className="flex items-baseline gap-1 mb-2">
+                      <span className="font-mono text-sm font-bold text-forest">{formatGHS(item.pricePerUnit ?? 0)}</span>
+                      {unitLabel && <span className="text-xs text-muted-foreground">/{unitLabel}</span>}
+                    </div>
+                    {regionLabel && (
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <MapPinIcon size={11} />
+                        <span className="truncate">{regionLabel}</span>
+                      </div>
+                    )}
+                    {sellerLabel && (
+                      <p className="text-xs text-muted-foreground mt-1 truncate">{sellerLabel}</p>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <MapPinIcon size={11} />
-                    <span className="truncate">{item.district}, {item.region}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1 truncate">
-                    {item.seller.businessName ?? item.seller.fullName}
-                  </p>
-                </div>
-              </Link>
-            ))
+                </Link>
+              )
+            })
           )}
         </div>
 

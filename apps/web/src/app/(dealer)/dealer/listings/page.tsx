@@ -67,7 +67,8 @@ export default function DealerListingsPage() {
         ) : (
           <div className="space-y-3">
             {listings.map((l: any) => {
-              const sector = safeSector(l.sector)
+              const sector    = safeSector(l.category?.sector)
+              const unitLabel = l.unit?.abbreviation ?? l.unit?.name ?? ''
               return (
                 <div key={l.id}
                      className="bg-white rounded-2xl border border-border flex items-center gap-4 p-4">
@@ -82,7 +83,7 @@ export default function DealerListingsPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <SectorChip sector={sector} label={l.category?.name ?? l.sector ?? sector} size="sm" />
+                      <SectorChip sector={sector} label={l.category?.name ?? sector} size="sm" />
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full capitalize
                         ${l.status === 'active' ? 'bg-lime/20 text-forest' : 'bg-cream-dark text-muted-foreground'}`}>
                         {l.status ?? 'unknown'}
@@ -91,19 +92,19 @@ export default function DealerListingsPage() {
                     <p className="font-display text-sm font-semibold text-forest truncate">{l.title ?? '—'}</p>
                     <div className="flex items-center gap-3 mt-1">
                       <span className="font-mono text-xs font-bold text-forest">
-                        {formatGHS(l.pricePerUnit ?? 0)}{l.unit ? `/${l.unit}` : ''}
+                        {formatGHS(l.pricePerUnit ?? 0)}{unitLabel ? `/${unitLabel}` : ''}
                       </span>
                       <span className="text-xs text-muted-foreground">
-                        {(l.quantityAvailable ?? 0).toLocaleString()}{l.unit ? ` ${l.unit}` : ''} in stock
+                        {(l.quantityAvailable ?? 0).toLocaleString()}{unitLabel ? ` ${unitLabel}` : ''} in stock
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Link href={`/produce/${l.slug ?? l.id}`}
+                    <Link href={`/inputs/${l.slug ?? l.id}`}
                       className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest hover:bg-cream transition-colors">
                       <EyeIcon size={15} />
                     </Link>
-                    <Link href={`/listings/${l.id}/edit`}
+                    <Link href={`/dealer/listings/${l.id}/edit`}
                       className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest hover:bg-cream transition-colors">
                       <ChevronRightIcon size={15} />
                     </Link>
