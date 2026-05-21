@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { useAuth } from '@/context/auth-context'
 import type { Role } from '@/lib/types'
 
 // Inline SVG icons — one per role
@@ -33,6 +34,13 @@ const ROLE_ICONS: Record<string, React.ReactNode> = {
       <circle cx="9" cy="21" r="1"/>
       <circle cx="20" cy="21" r="1"/>
       <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+    </svg>
+  ),
+  field_agent: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2a4 4 0 0 1 4 4c0 4-4 9-4 9S8 10 8 6a4 4 0 0 1 4-4Z"/>
+      <circle cx="12" cy="6" r="1" fill="currentColor" stroke="none"/>
+      <path d="M5 20a7 7 0 0 1 14 0"/>
     </svg>
   ),
 }
@@ -77,11 +85,26 @@ const ROLES: {
     bg:    'bg-sector-fisheries-bg',
     next:  '/onboarding/consumer',
   },
+  {
+    id:    'field_agent',
+    label: 'Field Agent',
+    desc:  'Register farmers offline, verify farms with GPS, and earn per onboarded user.',
+    color: 'text-blue-600',
+    bg:    'bg-blue-50',
+    next:  '/onboarding/field-agent',
+  },
 ]
 
 export default function OnboardingRolePage() {
   const [loading, setLoading] = useState<Role | null>(null)
   const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
+
+  useEffect(() => {
+    if (!authLoading && user?.role === 'admin') {
+      router.replace('/admin/dashboard')
+    }
+  }, [user, authLoading, router])
 
   async function selectRole(role: Role, next: string) {
     setLoading(role)
@@ -98,6 +121,17 @@ export default function OnboardingRolePage() {
       toast.error(err instanceof Error ? err.message : 'Something went wrong. Try again.')
       setLoading(null)
     }
+  }
+
+  if (authLoading || user?.role === 'admin') {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <svg className="animate-spin text-forest" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"
+                  strokeDasharray="31.4" strokeDashoffset="10" strokeLinecap="round"/>
+        </svg>
+      </div>
+    )
   }
 
   return (

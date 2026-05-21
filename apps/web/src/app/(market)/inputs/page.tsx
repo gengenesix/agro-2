@@ -137,7 +137,7 @@ export default function InputsMarketPage() {
             </div>
           ) : (
             listings.map(item => (
-              <Link key={item.id} href={`/produce/${item.slug}`}
+              <Link key={item.id} href={`/inputs/${item.slug}`}
                 className="bg-white rounded-2xl border border-border overflow-hidden hover:shadow-md transition-shadow group">
                 {/* Photo */}
                 <div className="relative aspect-[4/3] bg-cream-dark overflow-hidden">

@@ -14,7 +14,7 @@ export function InputCard({ listing }: InputCardProps) {
 
   return (
     <Link
-      href={`/produce/${listing.slug}`}
+      href={`/inputs/${listing.slug}`}
       className="group block bg-white rounded-2xl border border-border overflow-hidden
                  hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
     >

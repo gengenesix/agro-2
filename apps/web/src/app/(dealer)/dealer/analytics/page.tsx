@@ -7,6 +7,8 @@ import {
 } from 'recharts'
 import { api }           from '@/lib/api'
 import { DashboardStatsSkeleton } from '@/components/shared/skeleton'
+import { EmptyState } from '@/components/shared/empty-state'
+import { BuyInputsIcon } from '@/components/shared/icons'
 import { formatGHS, formatGHSCompact } from '@/lib/format'
 
 interface AnalyticsData {
@@ -51,38 +53,8 @@ export default function DealerAnalyticsPage() {
 
   useEffect(() => {
     api.get('/dealer/analytics')
-      .then(r => setData(r.data.data))
-      .catch(() => {
-        // Fallback with realistic Ghana demo data
-        setData({
-          totalRevenue:   87_450,
-          totalOrders:    342,
-          avgOrderValue:  255.70,
-          completionRate: 0.87,
-          monthlyRevenue: [
-            { month: 'Nov', revenue: 6800,  orders: 24 },
-            { month: 'Dec', revenue: 9200,  orders: 31 },
-            { month: 'Jan', revenue: 7500,  orders: 28 },
-            { month: 'Feb', revenue: 11200, orders: 38 },
-            { month: 'Mar', revenue: 14300, orders: 52 },
-            { month: 'Apr', revenue: 12800, orders: 47 },
-            { month: 'May', revenue: 15900, orders: 58 },
-          ],
-          topProducts: [
-            { title: 'NPK 15-15-15 Fertilizer',  revenue: 28600, orders: 112 },
-            { title: 'Maize Seeds 1kg',           revenue: 14200, orders: 89  },
-            { title: 'Herbicide 1L',              revenue: 12800, orders: 64  },
-            { title: 'Organic Compost 50kg',      revenue: 9400,  orders: 47  },
-            { title: 'Urea Fertilizer',           revenue: 8200,  orders: 30  },
-          ],
-          statusBreakdown: [
-            { status: 'completed',  count: 298 },
-            { status: 'pending',    count: 21  },
-            { status: 'confirmed',  count: 14  },
-            { status: 'cancelled',  count: 9   },
-          ],
-        })
-      })
+      .then(r => setData(r.data.data ?? null))
+      .catch(() => setData(null))
       .finally(() => setLoading(false))
   }, [])
 
@@ -94,7 +66,25 @@ export default function DealerAnalyticsPage() {
     )
   }
 
-  if (!data) return null
+  if (!data) {
+    return (
+      <main className="min-h-screen bg-cream">
+        <div className="bg-white border-b border-border">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
+            <h1 className="font-bold text-forest text-lg">Analytics</h1>
+            <p className="text-xs text-muted-foreground">Sales performance overview</p>
+          </div>
+        </div>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+          <EmptyState
+            icon={<BuyInputsIcon size={32} />}
+            title="No analytics data yet"
+            description="Analytics will appear here once you receive and complete your first orders."
+          />
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className="min-h-screen bg-cream pb-10">
