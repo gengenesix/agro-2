@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/context/auth-context'
 import { api } from '@/lib/api'
@@ -45,16 +45,20 @@ function DealerProfileContent() {
     deliveryRadiusKm:   20,
     sectorsServed:      ['inputs'],
   })
+  const loadedForm            = useRef<DealerForm | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving]   = useState(false)
   const [saved, setSaved]     = useState(false)
   const [error, setError]     = useState<string | null>(null)
 
+  const isDirty = loadedForm.current !== null
+    && JSON.stringify(form) !== JSON.stringify(loadedForm.current)
+
   useEffect(() => {
     api.get('/users/me/dealer-profile')
       .then(r => {
         const d = r.data?.data
-        setForm({
+        const loaded: DealerForm = {
           businessName:       d?.businessName       || user?.fullName  || '',
           registrationNumber: d?.registrationNumber ?? '',
           physicalAddress:    d?.physicalAddress    ?? '',
@@ -62,10 +66,22 @@ function DealerProfileContent() {
           mobileMoneyNetwork: d?.mobileMoneyNetwork ?? 'mtn',
           deliveryRadiusKm:   d?.deliveryRadiusKm   ?? 20,
           sectorsServed:      d?.sectorsServed       ?? ['inputs'],
-        })
+        }
+        setForm(loaded)
+        loadedForm.current = loaded
       })
       .catch(() => {
-        setForm(f => ({ ...f, businessName: user?.fullName ?? '' }))
+        const fallback: DealerForm = {
+          businessName:       user?.fullName ?? '',
+          registrationNumber: '',
+          physicalAddress:    '',
+          mobileMoneyNumber:  '',
+          mobileMoneyNetwork: 'mtn',
+          deliveryRadiusKm:   20,
+          sectorsServed:      ['inputs'],
+        }
+        setForm(fallback)
+        loadedForm.current = fallback
       })
       .finally(() => setLoading(false))
   }, [user?.fullName])
@@ -87,6 +103,7 @@ function DealerProfileContent() {
       await api.patch('/users/me/dealer-profile', form)
       await refresh()
       sessionStorage.setItem('dealerProfileStatus', 'complete')
+      loadedForm.current = { ...form }
       setSaved(true)
       setTimeout(() => setSaved(false), 2500)
     } catch (err: any) {
@@ -260,10 +277,12 @@ function DealerProfileContent() {
 
         <button
           type="submit"
-          disabled={saving}
-          className="w-full py-3 bg-forest text-white text-sm font-bold rounded-xl
-                     hover:bg-forest-dark transition-colors disabled:opacity-60
-                     flex items-center justify-center gap-2"
+          disabled={!isDirty || saving}
+          className={`w-full py-3 text-sm font-bold rounded-xl transition-colors
+                      flex items-center justify-center gap-2
+                      ${!isDirty || saving
+                        ? 'bg-cream-dark text-muted-foreground cursor-default'
+                        : 'bg-forest text-white hover:bg-forest-dark'}`}
         >
           {saving
             ? <><LoadingIcon size={16} className="animate-spin" /> Saving…</>

@@ -9,14 +9,22 @@ import { ListingGridSkeleton } from '@/components/shared/skeleton'
 import { EmptyState }    from '@/components/shared/empty-state'
 import { formatGHS }     from '@/lib/format'
 import { PlusIcon, ListProduceIcon, EyeIcon, ChevronRightIcon } from '@/components/shared/icons'
+import type { Sector } from '@/lib/types'
+
+const VALID_SECTORS = new Set<string>(['crops', 'livestock', 'poultry', 'fisheries', 'inputs'])
+function safeSector(s: unknown): Sector {
+  return (typeof s === 'string' && VALID_SECTORS.has(s)) ? (s as Sector) : 'inputs'
+}
 
 export default function DealerListingsPage() {
   const [listings, setListings] = useState<any[]>([])
   const [loading, setLoading]   = useState(true)
+  const [fetchError, setFetchError] = useState(false)
 
   useEffect(() => {
     api.get('/listings/mine')
-      .then(r => setListings(r.data.data.listings ?? []))
+      .then(r => setListings(r.data?.data?.listings ?? []))
+      .catch(() => setFetchError(true))
       .finally(() => setLoading(false))
   }, [])
 
@@ -37,6 +45,11 @@ export default function DealerListingsPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
         {loading ? (
           <ListingGridSkeleton count={6} />
+        ) : fetchError ? (
+          <div className="bg-white rounded-2xl border border-border p-8 text-center">
+            <p className="text-sm font-semibold text-forest">Could not load products</p>
+            <p className="text-xs text-muted-foreground mt-1">Check your connection and refresh the page.</p>
+          </div>
         ) : listings.length === 0 ? (
           <EmptyState
             icon={<ListProduceIcon size={32} />}
@@ -53,44 +66,51 @@ export default function DealerListingsPage() {
           />
         ) : (
           <div className="space-y-3">
-            {listings.map((l: any) => (
-              <div key={l.id}
-                   className="bg-white rounded-2xl border border-border flex items-center gap-4 p-4">
-                <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-cream-dark flex-shrink-0">
-                  {l.photos?.[0] ? (
-                    <Image src={l.photos[0]} alt="" fill sizes="64px" className="object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <ListProduceIcon size={20} className="text-muted-foreground" />
+            {listings.map((l: any) => {
+              const sector = safeSector(l.sector)
+              return (
+                <div key={l.id}
+                     className="bg-white rounded-2xl border border-border flex items-center gap-4 p-4">
+                  <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-cream-dark flex-shrink-0">
+                    {l.photos?.[0] ? (
+                      <Image src={l.photos[0]} alt="" fill sizes="64px" className="object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <ListProduceIcon size={20} className="text-muted-foreground" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <SectorChip sector={sector} label={l.category?.name ?? l.sector ?? sector} size="sm" />
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full capitalize
+                        ${l.status === 'active' ? 'bg-lime/20 text-forest' : 'bg-cream-dark text-muted-foreground'}`}>
+                        {l.status ?? 'unknown'}
+                      </span>
                     </div>
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <SectorChip sector={l.sector} label={l.category?.name ?? l.sector} size="sm" />
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full capitalize
-                      ${l.status === 'active' ? 'bg-lime/20 text-forest' : 'bg-cream-dark text-muted-foreground'}`}>
-                      {l.status}
-                    </span>
+                    <p className="font-display text-sm font-semibold text-forest truncate">{l.title ?? '—'}</p>
+                    <div className="flex items-center gap-3 mt-1">
+                      <span className="font-mono text-xs font-bold text-forest">
+                        {formatGHS(l.pricePerUnit ?? 0)}{l.unit ? `/${l.unit}` : ''}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {(l.quantityAvailable ?? 0).toLocaleString()}{l.unit ? ` ${l.unit}` : ''} in stock
+                      </span>
+                    </div>
                   </div>
-                  <p className="font-display text-sm font-semibold text-forest truncate">{l.title}</p>
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="font-mono text-xs font-bold text-forest">{formatGHS(l.pricePerUnit)}/{l.unit}</span>
-                    <span className="text-xs text-muted-foreground">{l.quantityAvailable} {l.unit} in stock</span>
+                  <div className="flex items-center gap-2">
+                    <Link href={`/produce/${l.slug ?? l.id}`}
+                      className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest hover:bg-cream transition-colors">
+                      <EyeIcon size={15} />
+                    </Link>
+                    <Link href={`/listings/${l.id}/edit`}
+                      className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest hover:bg-cream transition-colors">
+                      <ChevronRightIcon size={15} />
+                    </Link>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Link href={`/produce/${l.slug}`}
-                    className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest hover:bg-cream transition-colors">
-                    <EyeIcon size={15} />
-                  </Link>
-                  <Link href={`/listings/${l.id}/edit`}
-                    className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest hover:bg-cream transition-colors">
-                    <ChevronRightIcon size={15} />
-                  </Link>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>
