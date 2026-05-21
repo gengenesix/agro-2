@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/context/auth-context'
 import { api } from '@/lib/api'
@@ -31,7 +31,7 @@ interface DealerForm {
   sectorsServed:      string[]
 }
 
-export default function DealerProfilePage() {
+function DealerProfileContent() {
   const { user, refresh } = useAuth()
   const searchParams      = useSearchParams()
   const isSetupFlow       = searchParams.get('setup') === '1'
@@ -274,5 +274,17 @@ export default function DealerProfilePage() {
         </button>
       </form>
     </main>
+  )
+}
+
+export default function DealerProfilePage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-cream flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-forest border-t-transparent animate-spin" />
+      </main>
+    }>
+      <DealerProfileContent />
+    </Suspense>
   )
 }
