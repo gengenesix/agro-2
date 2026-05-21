@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { SettingsIcon } from '@/components/shared/icons'
 
@@ -65,14 +65,13 @@ export function AppSidebar({
   theme         = 'light',
 }: AppSidebarProps) {
   const pathname = usePathname()
-  const router   = useRouter()
   const t        = T[theme]
 
   async function handleSignOut() {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.push('/login')
-    router.refresh()
+    sessionStorage.clear()
+    window.location.href = '/'
   }
 
   function isActive(href: string, exact?: boolean): boolean {
