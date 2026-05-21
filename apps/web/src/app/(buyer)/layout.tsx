@@ -1,8 +1,9 @@
 'use client'
 
-import { useState }       from 'react'
-import Link               from 'next/link'
-import { usePathname }    from 'next/navigation'
+import { useState }                from 'react'
+import Link                        from 'next/link'
+import { usePathname, useRouter }  from 'next/navigation'
+import { createClient }            from '@/lib/supabase'
 import {
   HomeIcon, MarketIcon, PledgeIcon, OrdersIcon, WalletIcon, ProfileIcon,
   BellIcon, SettingsIcon,
@@ -21,7 +22,15 @@ const SIDEBAR_ITEMS = [
 
 export default function BuyerLayout({ children }: { children: React.ReactNode }) {
   const pathname    = usePathname()
+  const router      = useRouter()
   const [collapsed, setCollapsed] = useState(false)
+
+  async function handleSignOut() {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
 
   return (
     <div className="flex min-h-screen bg-cream">
@@ -102,8 +111,8 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
           })}
         </nav>
 
-        {/* Settings footer */}
-        <div className={`border-t border-border ${collapsed ? 'p-2' : 'p-3'}`}>
+        {/* Settings + sign-out footer */}
+        <div className={`border-t border-border ${collapsed ? 'p-2' : 'p-3'} space-y-0.5`}>
           <Link
             href="/settings"
             title={collapsed ? 'Settings' : undefined}
@@ -116,6 +125,22 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
             <SettingsIcon size={collapsed ? 20 : 18} className="flex-shrink-0" />
             {!collapsed && 'Settings'}
           </Link>
+
+          <button
+            onClick={handleSignOut}
+            title={collapsed ? 'Sign out' : undefined}
+            className={`flex items-center rounded-xl text-sm font-semibold transition-colors w-full
+              ${collapsed ? 'justify-center h-11' : 'gap-3 px-3 py-2.5'}
+              text-muted-foreground hover:bg-red-50 hover:text-red-600`}
+          >
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.75"
+                 width={collapsed ? 20 : 18} height={collapsed ? 20 : 18} className="flex-shrink-0">
+              <path d="M13 3h4a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-4" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8 14l4-4-4-4" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 10H3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {!collapsed && 'Sign out'}
+          </button>
         </div>
       </aside>
 

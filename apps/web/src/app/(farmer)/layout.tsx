@@ -1,7 +1,8 @@
 'use client'
 
-import Link          from 'next/link'
-import { usePathname } from 'next/navigation'
+import Link                        from 'next/link'
+import { usePathname, useRouter }  from 'next/navigation'
+import { createClient }            from '@/lib/supabase'
 import {
   HomeIcon, ListProduceIcon, OrdersIcon, WalletIcon, ProfileIcon,
   WeatherIcon, BuyInputsIcon, HarvestPledgeIcon, SettingsIcon,
@@ -21,6 +22,14 @@ const SIDEBAR_ITEMS = [
 
 export default function FarmerLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const router   = useRouter()
+
+  async function handleSignOut() {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
 
   return (
     <div className="flex min-h-screen bg-cream">
@@ -59,14 +68,28 @@ export default function FarmerLayout({ children }: { children: React.ReactNode }
           })}
         </nav>
 
-        {/* Settings */}
-        <div className="p-3 border-t border-border">
+        {/* Settings + sign-out */}
+        <div className="p-3 border-t border-border space-y-0.5">
           <Link href="/settings"
             className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors
               ${pathname === '/settings' ? 'bg-forest text-white' : 'text-muted-foreground hover:text-forest hover:bg-cream'}`}>
             <SettingsIcon size={18} />
             Settings
           </Link>
+
+          <button
+            onClick={handleSignOut}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors w-full
+                       text-muted-foreground hover:bg-red-50 hover:text-red-600"
+          >
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.75"
+                 width="18" height="18" className="flex-shrink-0">
+              <path d="M13 3h4a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-4" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8 14l4-4-4-4" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 10H3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Sign out
+          </button>
         </div>
       </aside>
 
