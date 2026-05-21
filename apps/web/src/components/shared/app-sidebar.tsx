@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { createClient } from '@/lib/supabase'
+import { useAuth } from '@/context/auth-context'
 import { SettingsIcon } from '@/components/shared/icons'
 
 export interface NavItem {
@@ -64,15 +64,9 @@ export function AppSidebar({
   settingsLabel = 'Settings',
   theme         = 'light',
 }: AppSidebarProps) {
-  const pathname = usePathname()
-  const t        = T[theme]
-
-  async function handleSignOut() {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    sessionStorage.clear()
-    window.location.href = '/'
-  }
+  const pathname       = usePathname()
+  const { logout }     = useAuth()
+  const t              = T[theme]
 
   function isActive(href: string, exact?: boolean): boolean {
     if (exact) return pathname === href
@@ -161,7 +155,7 @@ export function AppSidebar({
         </Link>
 
         <button
-          onClick={handleSignOut}
+          onClick={logout}
           title={collapsed ? 'Sign out' : undefined}
           className={`flex items-center rounded-xl text-sm font-semibold transition-colors w-full
                       ${collapsed ? 'justify-center h-11' : 'gap-3 px-3 py-2.5'}

@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import axios from 'axios'
 import type { Profile } from '@/lib/types'
 import { api } from '@/lib/api'
+import { createClient } from '@/lib/supabase'
 
 interface AuthContextValue {
   user:     Profile | null
@@ -54,15 +55,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     refresh()
   }, [refresh])
 
-  function logout() {
+  async function logout() {
+    // 1. Clear Supabase client session (localStorage sb-* keys)
+    const supabase = createClient()
+    await supabase.auth.signOut()
+
+    // 2. Clear platform localStorage + sessionStorage
     localStorage.removeItem('agroconnect_token')
     localStorage.removeItem('agroconnect_profile')
+    sessionStorage.clear()
+
+    // 3. Clear readable cookies
     document.cookie = 'agro_role=; path=/; max-age=0'
+
+    // 4. Zero out local user state immediately
     setUser(null)
-    // Clear HttpOnly cookie via API route, then redirect
-    fetch('/api/auth/logout', { method: 'POST' }).finally(() => {
-      window.location.href = '/login'
-    })
+
+    // 5. Expire the HttpOnly agro_access_token cookie server-side, then hard-navigate
+    await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
+    window.location.href = '/'
   }
 
   return (
