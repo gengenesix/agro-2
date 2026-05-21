@@ -279,8 +279,11 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
         </div>
       )}
 
-      {/* Buyer: confirm delivery */}
-      {isBuyer && ['dispatched', 'in_transit'].includes(order.trackingStatus) && (
+      {/* Buyer: confirm delivery — direct orders use trackingStatus; pledges use pledgeProgress */}
+      {isBuyer && (
+        ['dispatched', 'in_transit'].includes(order.trackingStatus) ||
+        (isPledge && order.pledgeProgress === 'dispatched')
+      ) && (
         <div className="bg-white rounded-2xl border border-forest/20 p-4 space-y-3">
           <p className="text-xs text-muted-foreground">
             Received your order? Confirming releases payment to the seller.
@@ -334,7 +337,9 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
         </div>
       )}
 
-      {['pending', 'confirmed'].includes(order.trackingStatus) && (isBuyer || isSeller) && (
+      {['pending', 'confirmed'].includes(order.trackingStatus) &&
+       (isBuyer || isSeller) &&
+       !(isPledge && ['ready_to_harvest', 'harvested', 'dispatched'].includes(order.pledgeProgress)) && (
         <div>
           {!cancelOpen ? (
             <button onClick={() => setCancelOpen(true)}
