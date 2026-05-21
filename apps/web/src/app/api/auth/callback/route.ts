@@ -115,9 +115,11 @@ export async function GET(request: NextRequest) {
   storeSession(accessToken, profile)
 
   // ── Decide where to send the user ─────────────────────────────────────────
-  // New users or users who haven't set their full name yet go through onboarding.
-  // Existing users with a complete profile go directly to their dashboard.
-  const needsOnboarding = isNewUser || !profileRow.fullName
+  // Only brand-new registrations (isNewUser) need role selection onboarding.
+  // Returning users with an existing profile always go straight to their
+  // role dashboard — never back to /onboarding/role — regardless of whether
+  // their Google account has a display name.
+  const needsOnboarding = isNewUser
   const destination     = needsOnboarding
     ? '/onboarding/role'
     : (ROLE_HOME[profile.role] ?? '/dashboard')
@@ -132,6 +134,15 @@ export async function GET(request: NextRequest) {
   // Apply our platform access token
   response.cookies.set('agro_access_token', accessToken, {
     httpOnly: true,
+    path:     '/',
+    maxAge:   60 * 60 * 24 * 30,
+    sameSite: 'lax',
+    secure:   process.env.NODE_ENV === 'production',
+  })
+
+  // Set readable role cookie so middleware can route /login redirects correctly
+  response.cookies.set('agro_role', profile.role, {
+    httpOnly: false,
     path:     '/',
     maxAge:   60 * 60 * 24 * 30,
     sameSite: 'lax',

@@ -98,6 +98,24 @@ export default function FarmerDashboard() {
         )}
       </div>
 
+      {/* Purchase Farm Inputs CTA */}
+      <Link
+        href="/inputs"
+        className="flex items-center gap-4 p-5 bg-forest rounded-2xl hover:bg-forest-dark
+                   transition-colors group"
+      >
+        <span className="w-12 h-12 rounded-xl bg-lime/20 flex items-center justify-center flex-shrink-0">
+          <BuyInputsIcon size={24} className="text-lime" />
+        </span>
+        <div className="flex-1 min-w-0">
+          <p className="font-bold text-white text-sm">Purchase Farm Inputs</p>
+          <p className="text-[11px] text-white/60 mt-0.5 leading-snug">
+            Browse seeds, fertilizers, and equipment from verified dealers using cash or your BNPL credit lines.
+          </p>
+        </div>
+        <ChevronRightIcon size={18} className="text-white/30 group-hover:text-white/60 flex-shrink-0 transition-colors" />
+      </Link>
+
       {/* Wallet */}
       <WalletCard
         balance={data?.wallet?.balance ?? 0}
