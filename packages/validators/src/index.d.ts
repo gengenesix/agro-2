@@ -198,18 +198,21 @@ export declare const createOrderSchema: z.ZodObject<{
     deliveryOption: z.ZodString;
     deliveryAddress: z.ZodOptional<z.ZodString>;
     buyerNotes: z.ZodOptional<z.ZodString>;
+    useBNPL: z.ZodOptional<z.ZodBoolean>;
 }, "strip", z.ZodTypeAny, {
     listingId: string;
     quantity: number;
     deliveryOption: string;
     deliveryAddress?: string | undefined;
     buyerNotes?: string | undefined;
+    useBNPL?: boolean | undefined;
 }, {
     listingId: string;
     quantity: number;
     deliveryOption: string;
     deliveryAddress?: string | undefined;
     buyerNotes?: string | undefined;
+    useBNPL?: boolean | undefined;
 }>;
 export declare const initPaymentSchema: z.ZodObject<{
     orderId: z.ZodString;

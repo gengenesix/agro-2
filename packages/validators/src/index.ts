@@ -86,6 +86,7 @@ export const createOrderSchema = z.object({
   deliveryOption:  z.string(),
   deliveryAddress: z.string().optional(),
   buyerNotes:      z.string().max(500).optional(),
+  useBNPL:         z.boolean().optional(),
 })
 
 export const initPaymentSchema = z.object({

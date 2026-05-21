@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/context/auth-context'
 import { api } from '@/lib/api'
 import { formatPhoneGhana } from '@/lib/format'
@@ -32,6 +33,9 @@ interface DealerForm {
 
 export default function DealerProfilePage() {
   const { user, refresh } = useAuth()
+  const searchParams      = useSearchParams()
+  const isSetupFlow       = searchParams.get('setup') === '1'
+
   const [form, setForm]   = useState<DealerForm>({
     businessName:       '',
     registrationNumber: '',
@@ -50,21 +54,21 @@ export default function DealerProfilePage() {
     api.get('/users/me/dealer-profile')
       .then(r => {
         const d = r.data?.data
-        if (d) {
-          setForm({
-            businessName:       d.businessName       ?? '',
-            registrationNumber: d.registrationNumber ?? '',
-            physicalAddress:    d.physicalAddress    ?? '',
-            mobileMoneyNumber:  d.mobileMoneyNumber  ?? '',
-            mobileMoneyNetwork: d.mobileMoneyNetwork ?? 'mtn',
-            deliveryRadiusKm:   d.deliveryRadiusKm   ?? 20,
-            sectorsServed:      d.sectorsServed       ?? ['inputs'],
-          })
-        }
+        setForm({
+          businessName:       d?.businessName       || user?.fullName  || '',
+          registrationNumber: d?.registrationNumber ?? '',
+          physicalAddress:    d?.physicalAddress    ?? '',
+          mobileMoneyNumber:  d?.mobileMoneyNumber  ?? '',
+          mobileMoneyNetwork: d?.mobileMoneyNetwork ?? 'mtn',
+          deliveryRadiusKm:   d?.deliveryRadiusKm   ?? 20,
+          sectorsServed:      d?.sectorsServed       ?? ['inputs'],
+        })
       })
-      .catch(() => {})
+      .catch(() => {
+        setForm(f => ({ ...f, businessName: user?.fullName ?? '' }))
+      })
       .finally(() => setLoading(false))
-  }, [])
+  }, [user?.fullName])
 
   function toggleSector(value: string) {
     setForm(f => ({
@@ -82,6 +86,7 @@ export default function DealerProfilePage() {
     try {
       await api.patch('/users/me/dealer-profile', form)
       await refresh()
+      sessionStorage.setItem('dealerProfileStatus', 'complete')
       setSaved(true)
       setTimeout(() => setSaved(false), 2500)
     } catch (err: any) {
@@ -104,11 +109,30 @@ export default function DealerProfilePage() {
       <div className="bg-white border-b border-border sticky top-0 z-20">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 py-4">
           <h1 className="font-bold text-forest text-lg">Dealer Profile</h1>
-          <p className="text-xs text-muted-foreground">
-            {user?.fullName} · {user?.phone ? formatPhoneGhana(user.phone) : ''}
-          </p>
+          <div className="flex items-center gap-2 mt-0.5">
+            {user?.fullName && (
+              <span className="text-xs font-medium text-muted-foreground">{user.fullName}</span>
+            )}
+            {user?.fullName && user?.phone && (
+              <span className="text-muted-foreground/40 text-xs">·</span>
+            )}
+            {user?.phone && (
+              <span className="text-xs text-muted-foreground font-mono">{formatPhoneGhana(user.phone)}</span>
+            )}
+          </div>
         </div>
       </div>
+
+      {isSetupFlow && (
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-4">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+            <p className="text-xs font-semibold text-amber-800">Account activation pending</p>
+            <p className="text-xs text-amber-700 mt-0.5">
+              Please complete your business information profile to unlock dashboard actions.
+            </p>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSave} className="max-w-2xl mx-auto px-4 sm:px-6 py-6 space-y-5">
         {/* Business info */}

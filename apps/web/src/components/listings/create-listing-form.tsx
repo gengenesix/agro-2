@@ -8,6 +8,7 @@ import { z }                   from 'zod'
 import Image                   from 'next/image'
 import { api }                 from '@/lib/api'
 import { GHANA_REGIONS }       from '@/lib/types'
+import { useAuth }             from '@/context/auth-context'
 import { LoadingIcon, PlusIcon, CloseIcon, CalendarIcon } from '@/components/shared/icons'
 
 const schema = z.object({
@@ -47,6 +48,8 @@ interface CreateListingFormProps {
 
 export function CreateListingForm({ initialData, initialPhotos, listingId }: CreateListingFormProps) {
   const router              = useRouter()
+  const { user }            = useAuth()
+  const isDealer            = user?.role === 'dealer'
   const fileRef             = useRef<HTMLInputElement>(null)
   const [photos, setPhotos] = useState<string[]>(initialPhotos ?? [])
   const [uploading, setUploading] = useState(false)
@@ -86,7 +89,7 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
       } else {
         await api.post('/listings', { ...data, photos })
       }
-      router.push('/listings')
+      router.push(isDealer ? '/dealer/listings' : '/listings')
     } catch (err: any) {
       setError(err.response?.data?.error ?? 'Failed to save listing. Try again.')
     }
@@ -170,20 +173,22 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
 
       {/* Pricing & quantity */}
       <Section title="Pricing & quantity">
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className={`grid gap-4 ${!isDealer ? 'sm:grid-cols-2' : ''}`}>
           <Field label="Listing type" error={errors.listingType?.message}>
             <select {...register('listingType')} className={inputCls(!!errors.listingType)}>
               <option value="available_now">Available Now</option>
-              <option value="harvest_pledge">Harvest Pledge</option>
+              {!isDealer && <option value="harvest_pledge">Harvest Pledge</option>}
             </select>
           </Field>
-          <Field label="Farming method" error={errors.farmingMethod?.message}>
-            <select {...register('farmingMethod')} className={inputCls(!!errors.farmingMethod)}>
-              <option value="conventional">Conventional</option>
-              <option value="organic">Organic</option>
-              <option value="certified_organic">Certified Organic</option>
-            </select>
-          </Field>
+          {!isDealer && (
+            <Field label="Farming method" error={errors.farmingMethod?.message}>
+              <select {...register('farmingMethod')} className={inputCls(!!errors.farmingMethod)}>
+                <option value="conventional">Conventional</option>
+                <option value="organic">Organic</option>
+                <option value="certified_organic">Certified Organic</option>
+              </select>
+            </Field>
+          )}
         </div>
 
         <div className="grid sm:grid-cols-3 gap-4">
@@ -245,8 +250,16 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
       {/* Options */}
       <Section title="Options">
         {[
-          { key: 'deliveryAvailable', label: 'Delivery available',   sub: 'I can deliver or arrange pickup' },
-          { key: 'bnplEligible',      label: 'BNPL / Pay at Harvest', sub: 'Allow buyers to pay after delivery' },
+          { key: 'deliveryAvailable', label: 'Delivery available', sub: 'I can deliver or arrange pickup' },
+          {
+            key:   'bnplEligible',
+            label: isDealer
+              ? 'Enable Farmer BNPL'
+              : 'BNPL / Pay at Harvest',
+            sub:   isDealer
+              ? 'Allow farmers to purchase this input using credit backed by their upcoming Harvest Pledges'
+              : 'Allow buyers to pay after delivery',
+          },
         ].map(opt => (
           <label key={opt.key} className="flex items-start gap-3 cursor-pointer group">
             <input type="checkbox" {...register(opt.key as any)}
