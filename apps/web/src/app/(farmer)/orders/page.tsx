@@ -42,8 +42,8 @@ export default function OrdersPage() {
 
   const filtered = orders.filter(o => {
     const status = (o as any).trackingStatus ?? ''
-    if (tab === 'active')    return ['pending', 'confirmed', 'dispatched'].includes(status)
-    if (tab === 'completed') return ['completed', 'delivered', 'cancelled'].includes(status)
+    if (tab === 'active')    return !['cancelled', 'disputed'].includes(status) && !(o as any).completedAt
+    if (tab === 'completed') return !!(o as any).completedAt
     return true
   })
 
@@ -78,7 +78,8 @@ export default function OrdersPage() {
           />
         ) : (
           filtered.map(order => {
-            const cfg = STATUS_CONFIG[(order as any).trackingStatus] ?? STATUS_CONFIG.pending
+            const effectiveStatus = (order as any).completedAt ? 'completed' : ((order as any).trackingStatus ?? 'pending')
+            const cfg = STATUS_CONFIG[effectiveStatus] ?? STATUS_CONFIG.pending
             return (
               <Link key={order.id} href={`/orders/${order.id}`}
                 className="block bg-white rounded-2xl border border-border p-4 hover:shadow-md transition-shadow">
