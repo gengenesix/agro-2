@@ -29,7 +29,12 @@ const MORE_ITEMS = [
   { href: '/settings',     label: 'Settings',       Icon: SettingsIcon      },
 ] as const
 
-export function FarmerBottomNav() {
+interface FarmerBottomNavProps {
+  unreadCount?: number
+  onBellClick?: () => void
+}
+
+export function FarmerBottomNav({ unreadCount = 0, onBellClick }: FarmerBottomNavProps) {
   const pathname          = usePathname()
   const { user, loading, logout } = useAuth()
   const [moreOpen, setMoreOpen] = useState(false)
@@ -133,6 +138,26 @@ export function FarmerBottomNav() {
               </Link>
             )
           })}
+
+          {/* Bell button */}
+          {onBellClick && (
+            <button
+              onClick={onBellClick}
+              className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-colors min-w-0"
+            >
+              <span className="relative text-muted-foreground">
+                <BellIcon size={22} />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold
+                                   rounded-full min-w-[14px] h-3.5 flex items-center justify-center px-0.5
+                                   leading-none">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </span>
+              <span className="text-[10px] font-semibold text-muted-foreground">Alerts</span>
+            </button>
+          )}
 
           {/* More button */}
           <button

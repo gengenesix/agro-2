@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AppSidebar } from '@/components/shared/app-sidebar'
 import { FarmerBottomNav } from '@/components/shared/farmer-bottom-nav'
+import { NotificationPanel } from '@/components/shared/notification-panel'
+import { api } from '@/lib/api'
 import {
   HomeIcon, ListProduceIcon, OrdersIcon, WalletIcon, ProfileIcon,
   WeatherIcon, BuyInputsIcon, HarvestPledgeIcon, InputsIcon,
@@ -22,7 +24,18 @@ const NAV: NavItem[] = [
 ]
 
 export default function FarmerLayout({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed,   setCollapsed]   = useState(false)
+  const [notifOpen,   setNotifOpen]   = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  useEffect(() => {
+    function poll() {
+      api.get('/notifications?page=1').then(r => setUnreadCount(r.data.unreadCount ?? 0)).catch(() => {})
+    }
+    poll()
+    const id = setInterval(poll, 60_000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <div className="flex min-h-screen bg-cream">
@@ -31,12 +44,21 @@ export default function FarmerLayout({ children }: { children: React.ReactNode }
         portalLabel="Farmer Portal"
         collapsed={collapsed}
         onToggleCollapse={() => setCollapsed(c => !c)}
+        unreadNotifications={unreadCount}
+        onNotificationsClick={() => setNotifOpen(true)}
       />
       <div className={`flex-1 transition-all duration-300 ease-in-out
                        ${collapsed ? 'lg:ml-[72px]' : 'lg:ml-64'}`}>
         {children}
       </div>
-      <FarmerBottomNav />
+      <FarmerBottomNav
+        unreadCount={unreadCount}
+        onBellClick={() => setNotifOpen(true)}
+      />
+      <NotificationPanel
+        isOpen={notifOpen}
+        onClose={() => { setNotifOpen(false); setUnreadCount(0) }}
+      />
     </div>
   )
 }

@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       type:      n.type,
       title:     n.title,
       body:      n.body,
-      channel:   n.channel,
+      actionUrl: (n.data as { actionUrl?: string } | null)?.actionUrl ?? null,
       isRead:    n.isRead,
       createdAt: n.createdAt.toISOString(),
     })),

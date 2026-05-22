@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/context/auth-context'
-import { SettingsIcon } from '@/components/shared/icons'
+import { SettingsIcon, BellIcon } from '@/components/shared/icons'
 
 export interface NavItem {
   href:   string
@@ -13,13 +13,15 @@ export interface NavItem {
 }
 
 export interface AppSidebarProps {
-  nav:              NavItem[]
-  portalLabel:      string
-  collapsed:        boolean
-  onToggleCollapse: () => void
-  settingsHref?:    string
-  settingsLabel?:   string
-  theme?:           'light' | 'dark'
+  nav:                     NavItem[]
+  portalLabel:             string
+  collapsed:               boolean
+  onToggleCollapse:        () => void
+  settingsHref?:           string
+  settingsLabel?:          string
+  theme?:                  'light' | 'dark'
+  unreadNotifications?:    number
+  onNotificationsClick?:   () => void
 }
 
 const T = {
@@ -60,9 +62,11 @@ export function AppSidebar({
   portalLabel,
   collapsed,
   onToggleCollapse,
-  settingsHref  = '/settings',
-  settingsLabel = 'Settings',
-  theme         = 'light',
+  settingsHref           = '/settings',
+  settingsLabel          = 'Settings',
+  theme                  = 'light',
+  unreadNotifications    = 0,
+  onNotificationsClick,
 }: AppSidebarProps) {
   const pathname       = usePathname()
   const { logout }     = useAuth()
@@ -141,8 +145,29 @@ export function AppSidebar({
         })}
       </nav>
 
-      {/* Footer: settings link + sign out */}
+      {/* Footer: notifications + settings + sign out */}
       <div className={`border-t ${t.divider} ${collapsed ? 'p-2' : 'p-3'} space-y-0.5`}>
+        {onNotificationsClick && (
+          <button
+            onClick={onNotificationsClick}
+            title={collapsed ? 'Notifications' : undefined}
+            className={`flex items-center rounded-xl text-sm font-semibold transition-colors w-full
+                        ${collapsed ? 'justify-center h-11' : 'gap-3 px-3 py-2.5'}
+                        ${t.footerLink}`}
+          >
+            <span className="relative flex-shrink-0">
+              <BellIcon size={collapsed ? 20 : 18} />
+              {unreadNotifications > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px]
+                                 font-bold rounded-full min-w-[16px] h-4 flex items-center justify-center
+                                 px-1 leading-none">
+                  {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                </span>
+              )}
+            </span>
+            {!collapsed && 'Notifications'}
+          </button>
+        )}
         <Link
           href={settingsHref}
           title={collapsed ? settingsLabel : undefined}

@@ -4,7 +4,7 @@ import Link     from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/context/auth-context'
 import {
-  HomeIcon, MarketIcon, PledgeIcon, WalletIcon, ProfileIcon,
+  HomeIcon, MarketIcon, PledgeIcon, WalletIcon, ProfileIcon, BellIcon,
 } from './icons'
 
 const NAV_ITEMS = [
@@ -15,7 +15,12 @@ const NAV_ITEMS = [
   { href: '/profile',   label: 'Profile', Icon: ProfileIcon },
 ] as const
 
-export function BottomNav() {
+interface BottomNavProps {
+  unreadCount?: number
+  onBellClick?: () => void
+}
+
+export function BottomNav({ unreadCount = 0, onBellClick }: BottomNavProps) {
   const pathname    = usePathname()
   const { user, loading } = useAuth()
 
@@ -41,12 +46,28 @@ export function BottomNav() {
                 ${active ? 'text-forest' : 'text-muted-foreground'}`}>
                 {label}
               </span>
-              {active && (
-                <span className="w-1 h-1 rounded-full bg-lime" />
-              )}
+              {active && <span className="w-1 h-1 rounded-full bg-lime" />}
             </Link>
           )
         })}
+        {onBellClick && (
+          <button
+            onClick={onBellClick}
+            className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-colors min-w-0"
+          >
+            <span className="relative text-muted-foreground">
+              <BellIcon size={22} />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold
+                                 rounded-full min-w-[14px] h-3.5 flex items-center justify-center
+                                 px-0.5 leading-none">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </span>
+            <span className="text-[10px] font-semibold text-muted-foreground">Alerts</span>
+          </button>
+        )}
       </div>
     </nav>
   )

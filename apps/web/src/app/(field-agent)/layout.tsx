@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { AppSidebar } from '@/components/shared/app-sidebar'
-import { HomeIcon, ProfileIcon, WalletIcon, OrdersIcon } from '@/components/shared/icons'
+import { NotificationPanel } from '@/components/shared/notification-panel'
+import { HomeIcon, ProfileIcon, WalletIcon, OrdersIcon, BellIcon } from '@/components/shared/icons'
+import { api } from '@/lib/api'
 import type { NavItem } from '@/components/shared/app-sidebar'
 
 const NAV: NavItem[] = [
@@ -38,8 +40,19 @@ const MOBILE_NAV = [
 ]
 
 export default function FieldAgentLayout({ children }: { children: React.ReactNode }) {
-  const pathname              = usePathname()
-  const [collapsed, setCollapsed] = useState(false)
+  const pathname                  = usePathname()
+  const [collapsed,   setCollapsed]   = useState(false)
+  const [notifOpen,   setNotifOpen]   = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  useEffect(() => {
+    function poll() {
+      api.get('/notifications?page=1').then(r => setUnreadCount(r.data.unreadCount ?? 0)).catch(() => {})
+    }
+    poll()
+    const id = setInterval(poll, 60_000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <div className="flex min-h-screen bg-cream">
@@ -50,6 +63,8 @@ export default function FieldAgentLayout({ children }: { children: React.ReactNo
         onToggleCollapse={() => setCollapsed(c => !c)}
         settingsHref="/field-agent/settings"
         theme="dark"
+        unreadNotifications={unreadCount}
+        onNotificationsClick={() => setNotifOpen(true)}
       />
 
       <main className={`flex-1 pb-20 lg:pb-0 transition-all duration-300 ease-in-out
@@ -75,7 +90,31 @@ export default function FieldAgentLayout({ children }: { children: React.ReactNo
             </Link>
           )
         })}
+
+        {/* Bell button */}
+        <button
+          onClick={() => setNotifOpen(true)}
+          className="flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-[10px]
+                     font-semibold text-muted-foreground transition-colors"
+        >
+          <span className="relative">
+            <BellIcon size={20} />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold
+                               rounded-full min-w-[13px] h-3.5 flex items-center justify-center
+                               px-0.5 leading-none">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </span>
+          Alerts
+        </button>
       </nav>
+
+      <NotificationPanel
+        isOpen={notifOpen}
+        onClose={() => { setNotifOpen(false); setUnreadCount(0) }}
+      />
     </div>
   )
 }
