@@ -147,7 +147,7 @@ export default function FarmerInputsPage() {
                 const regionLabel = item.region?.name ?? ''
                 const sellerLabel = item.seller?.fullName ?? ''
                 return (
-                  <Link key={item.id} href={`/inputs/${item.slug ?? item.id}`}
+                  <Link key={item.id} href={`/farmer/inputs/${item.slug ?? item.id}`}
                     className="bg-white rounded-2xl border border-border overflow-hidden
                                hover:shadow-md transition-shadow group">
                     <div className="relative aspect-[4/3] bg-cream-dark overflow-hidden">
