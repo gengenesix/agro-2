@@ -14,7 +14,7 @@ const TX_TYPE_LABEL: Record<string, string> = {
   credit:         'Payment received',
   debit:          'Deducted',
   escrow_hold:    'Escrow hold',
-  escrow_release: 'Escrow released',
+  escrow_release: 'Payment Unlocked (Escrow Release)',
   withdrawal:     'Withdrawal',
   commission:     'Platform fee',
   refund:         'Refund',
@@ -89,7 +89,7 @@ export default function DealerWalletPage() {
               </p>
             </div>
             <p className="font-mono text-lg font-bold text-sector-inputs">
-              {formatGHS(inEscrow)}
+              {formatGHS(Math.abs(inEscrow))}
             </p>
           </div>
         )}
@@ -100,7 +100,7 @@ export default function DealerWalletPage() {
             <h2 className="font-bold text-forest text-sm">Transaction history</h2>
           </div>
 
-          {txns.length === 0 ? (
+          {txns.filter(tx => Number(tx.amount) > 0).length === 0 ? (
             <div className="py-10">
               <EmptyState
                 icon={<WalletIcon size={28} />}
@@ -110,7 +110,7 @@ export default function DealerWalletPage() {
             </div>
           ) : (
             <div className="divide-y divide-border">
-              {txns.map(tx => {
+              {txns.filter(tx => Number(tx.amount) > 0).map(tx => {
                 const isCredit = ['credit', 'escrow_release', 'refund'].includes(tx.type)
                 return (
                   <div key={tx.id}

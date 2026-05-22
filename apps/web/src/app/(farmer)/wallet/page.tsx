@@ -13,8 +13,8 @@ import type { Wallet, WalletTransaction } from '@/lib/types'
 const TX_TYPE_LABEL: Record<string, string> = {
   credit:          'Received',
   debit:           'Sent',
-  escrow_hold:     'Escrow hold',
-  escrow_release:  'Escrow released',
+  escrow_hold:     'Funds held in escrow',
+  escrow_release:  'Payment settled to seller',
   withdrawal:      'Withdrawal',
   commission:      'Platform fee',
   refund:          'Refund',
@@ -91,7 +91,7 @@ export default function WalletPage() {
               </p>
             </div>
             <p className="font-mono text-lg font-bold text-harvest-gold">
-              {formatGHS(inEscrow)}
+              {formatGHS(Math.abs(inEscrow))}
             </p>
           </div>
         )}
@@ -113,7 +113,8 @@ export default function WalletPage() {
           ) : (
             <div className="divide-y divide-border">
               {txns.map(tx => {
-                const isCredit = ['credit', 'escrow_release', 'refund'].includes(tx.type)
+                // For a buyer/farmer, escrow_release means funds left escrow to pay the seller — debit.
+                const isCredit = ['credit', 'refund'].includes(tx.type)
                 return (
                   <div key={tx.id} className="flex items-center gap-4 px-5 py-3.5 hover:bg-cream/40 transition-colors">
                     {/* Icon */}
