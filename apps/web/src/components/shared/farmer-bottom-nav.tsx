@@ -7,7 +7,7 @@ import { useAuth }  from '@/context/auth-context'
 import {
   HomeIcon, ListProduceIcon, PlusIcon, OrdersIcon,
   WalletIcon, ProfileIcon, HarvestPledgeIcon, BuyInputsIcon,
-  WeatherIcon, BellIcon, SettingsIcon, LogoutIcon, AgroScoreIcon,
+  WeatherIcon, BellIcon, SettingsIcon, LogoutIcon, AgroScoreIcon, InputsIcon,
 } from './icons'
 
 const PRIMARY = [
@@ -18,6 +18,7 @@ const PRIMARY = [
 ] as const
 
 const MORE_ITEMS = [
+  { href: '/farmer/inputs',label: 'Inputs Market', Icon: InputsIcon        },
   { href: '/my-pledges',   label: 'My Pledges',    Icon: HarvestPledgeIcon },
   { href: '/wallet',       label: 'Wallet',         Icon: WalletIcon        },
   { href: '/bnpl',         label: 'BNPL Credit',    Icon: BuyInputsIcon     },

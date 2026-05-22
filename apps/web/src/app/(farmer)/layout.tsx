@@ -5,19 +5,20 @@ import { AppSidebar } from '@/components/shared/app-sidebar'
 import { FarmerBottomNav } from '@/components/shared/farmer-bottom-nav'
 import {
   HomeIcon, ListProduceIcon, OrdersIcon, WalletIcon, ProfileIcon,
-  WeatherIcon, BuyInputsIcon, HarvestPledgeIcon,
+  WeatherIcon, BuyInputsIcon, HarvestPledgeIcon, InputsIcon,
 } from '@/components/shared/icons'
 import type { NavItem } from '@/components/shared/app-sidebar'
 
 const NAV: NavItem[] = [
-  { href: '/dashboard',    label: 'Dashboard',    Icon: HomeIcon,          exact: true },
-  { href: '/listings',     label: 'My Listings',  Icon: ListProduceIcon               },
-  { href: '/orders',       label: 'Orders',       Icon: OrdersIcon                    },
-  { href: '/wallet',       label: 'Wallet',       Icon: WalletIcon                    },
-  { href: '/bnpl',         label: 'BNPL Credit',  Icon: BuyInputsIcon                 },
-  { href: '/my-pledges',   label: 'My Pledges',   Icon: HarvestPledgeIcon             },
-  { href: '/intelligence', label: 'Intelligence', Icon: WeatherIcon                   },
-  { href: '/profile',      label: 'Profile',      Icon: ProfileIcon                   },
+  { href: '/dashboard',     label: 'Dashboard',     Icon: HomeIcon,          exact: true },
+  { href: '/listings',      label: 'My Listings',   Icon: ListProduceIcon               },
+  { href: '/farmer/inputs', label: 'Inputs Market', Icon: InputsIcon,        exact: true },
+  { href: '/orders',        label: 'Orders',        Icon: OrdersIcon                    },
+  { href: '/wallet',        label: 'Wallet',        Icon: WalletIcon                    },
+  { href: '/bnpl',          label: 'BNPL Credit',   Icon: BuyInputsIcon                 },
+  { href: '/my-pledges',    label: 'My Pledges',    Icon: HarvestPledgeIcon             },
+  { href: '/intelligence',  label: 'Intelligence',  Icon: WeatherIcon                   },
+  { href: '/profile',       label: 'Profile',       Icon: ProfileIcon                   },
 ]
 
 export default function FarmerLayout({ children }: { children: React.ReactNode }) {
