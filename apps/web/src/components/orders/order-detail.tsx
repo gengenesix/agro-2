@@ -27,10 +27,13 @@ const PLEDGE_PROGRESS_OPTIONS = [
   { value: 'dispatched',       label: 'Dispatched'        },
 ]
 
+// Single "Mark as Dispatched" covers pending/confirmed/preparing for dealers.
+// The status API accepts these multi-step shortcuts.
 const NEXT_TRACKING: Partial<Record<string, { status: string; label: string }>> = {
-  confirmed:  { status: 'preparing',  label: 'Mark as Preparing'   },
-  preparing:  { status: 'dispatched', label: 'Mark as Dispatched'  },
-  dispatched: { status: 'in_transit', label: 'Mark as In Transit'  },
+  pending:    { status: 'dispatched', label: 'Mark as Dispatched' },
+  confirmed:  { status: 'dispatched', label: 'Mark as Dispatched' },
+  preparing:  { status: 'dispatched', label: 'Mark as Dispatched' },
+  dispatched: { status: 'in_transit', label: 'Mark as In Transit' },
 }
 
 export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProps) {
@@ -246,37 +249,19 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
       </div>
 
       {/* Seller action controls */}
-      {isSeller && !['cancelled', 'completed', 'delivered'].includes(order.trackingStatus) && (
+      {isSeller && !isPledge && NEXT_TRACKING[order.trackingStatus] && (
         <div className="bg-white rounded-2xl border border-border p-4 space-y-3">
           <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Seller actions</p>
-
-          {/* Confirm a pending order */}
-          {order.trackingStatus === 'pending' && (
-            <div className="flex gap-2">
-              <button
-                disabled={acting}
-                onClick={() => advanceStatus('confirmed')}
-                className="flex-1 py-3 bg-forest text-white text-sm font-bold rounded-xl
-                           hover:bg-forest-dark transition-colors disabled:opacity-60
-                           flex items-center justify-center gap-2"
-              >
-                <CheckIcon size={15} />
-                {acting ? 'Processing…' : 'Confirm order'}
-              </button>
-            </div>
-          )}
-
-          {/* Advance tracking status for direct purchase orders */}
-          {!isPledge && NEXT_TRACKING[order.trackingStatus] && (
-            <button
-              disabled={acting}
-              onClick={() => advanceStatus(NEXT_TRACKING[order.trackingStatus]!.status)}
-              className="w-full py-3 bg-forest text-white text-sm font-bold rounded-xl
-                         hover:bg-forest-dark transition-colors disabled:opacity-60"
-            >
-              {acting ? 'Processing…' : NEXT_TRACKING[order.trackingStatus]!.label}
-            </button>
-          )}
+          <button
+            disabled={acting}
+            onClick={() => advanceStatus(NEXT_TRACKING[order.trackingStatus]!.status)}
+            className="w-full py-3 bg-forest text-white text-sm font-bold rounded-xl
+                       hover:bg-forest-dark transition-colors disabled:opacity-60
+                       flex items-center justify-center gap-2"
+          >
+            <CheckIcon size={15} />
+            {acting ? 'Processing…' : NEXT_TRACKING[order.trackingStatus]!.label}
+          </button>
         </div>
       )}
 
@@ -296,7 +281,7 @@ export function OrderDetail({ order, currentUserId, onRefresh }: OrderDetailProp
                        hover:bg-forest-dark transition-colors disabled:opacity-60
                        flex items-center justify-center gap-2">
             <CheckIcon size={16} />
-            {acting ? 'Processing…' : 'Confirm delivery received'}
+            {acting ? 'Processing…' : 'Confirm Safe Delivery'}
           </button>
         </div>
       )}

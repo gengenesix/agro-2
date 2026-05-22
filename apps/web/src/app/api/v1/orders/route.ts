@@ -126,6 +126,15 @@ export async function POST(req: NextRequest) {
       },
     })
 
+    // Lock funds into escrow: hold the order amount in the buyer's pendingBalance
+    // so the wallet reflects the in-flight commitment before Paystack settles.
+    const escrowAmount = isHarvestPledge ? (depositAmount ?? totalAmount) : totalAmount
+    await tx.wallet.upsert({
+      where:  { userId: profile.id },
+      create: { userId: profile.id, balance: 0, pendingBalance: escrowAmount, totalEarned: 0, totalWithdrawn: 0 },
+      update: { pendingBalance: { increment: escrowAmount } },
+    })
+
     return created
   })
 

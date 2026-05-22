@@ -222,7 +222,7 @@ export default async function FarmerInputDetailPage({
           </div>
 
           {/* Right column — order form + seller card */}
-          <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          <div className="space-y-4 lg:sticky lg:top-6 h-fit overflow-y-auto">
             <Suspense fallback={<div className="h-64 bg-white rounded-2xl border border-border animate-pulse" />}>
               <OrderForm listing={listing} />
             </Suspense>

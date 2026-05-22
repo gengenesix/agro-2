@@ -3,12 +3,13 @@ import { z } from 'zod'
 import { getAuthProfile } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 
-// Seller-allowed forward transitions for trackingStatus (enum values only)
-const SELLER_TRANSITIONS: Partial<Record<string, string>> = {
-  pending:    'confirmed',
-  confirmed:  'preparing',
-  preparing:  'dispatched',
-  dispatched: 'in_transit',
+// Seller-allowed forward transitions. Each status maps to a set of valid next states,
+// allowing dealers to skip intermediate steps (e.g. pending → dispatched directly).
+const SELLER_TRANSITIONS: Partial<Record<string, string[]>> = {
+  pending:    ['confirmed', 'dispatched'],
+  confirmed:  ['preparing', 'dispatched'],
+  preparing:  ['dispatched'],
+  dispatched: ['in_transit'],
 }
 
 // 'completed' is a logical state stored via completedAt, not a TrackingStatus enum value
@@ -153,12 +154,12 @@ export async function PATCH(
     })
   }
 
-  const allowedNext = SELLER_TRANSITIONS[order.trackingStatus]
-  if (allowedNext !== status) {
+  const allowedTargets = SELLER_TRANSITIONS[order.trackingStatus]
+  if (!allowedTargets?.includes(status)) {
     return NextResponse.json(
       {
         success: false,
-        error:   `Cannot transition from '${order.trackingStatus}' to '${status}'. Expected next: '${allowedNext ?? 'none'}'.`,
+        error:   `Cannot transition from '${order.trackingStatus}' to '${status}'. Allowed: [${allowedTargets?.join(', ') ?? 'none'}].`,
       },
       { status: 400 },
     )
