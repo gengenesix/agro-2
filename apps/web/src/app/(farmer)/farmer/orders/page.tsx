@@ -2,12 +2,13 @@
 
 import Link              from 'next/link'
 import Image             from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { api }           from '@/lib/api'
+import { useAuth }       from '@/context/auth-context'
 import { EmptyState }    from '@/components/shared/empty-state'
 import { OrderCardSkeleton } from '@/components/shared/skeleton'
 import { SectorChip }    from '@/components/shared/sector-chip'
-import { OrdersIcon, ChevronRightIcon } from '@/components/shared/icons'
+import { OrdersIcon, ChevronRightIcon, CheckIcon } from '@/components/shared/icons'
 import { formatGHS, formatRelative } from '@/lib/format'
 import type { Sector } from '@/lib/types'
 
@@ -24,6 +25,8 @@ interface FarmerOrder {
   id:             string
   orderNumber:    string
   orderType:      string
+  buyerId:        string
+  sellerId:       string
   quantity:       number
   totalAmount:    number
   trackingStatus: string
@@ -37,43 +40,59 @@ function safeSector(s: string): Sector {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; cls: string }> = {
-  pending:    { label: 'Pending',     cls: 'bg-harvest-gold/15 text-harvest-gold' },
-  confirmed:  { label: 'Confirmed',   cls: 'bg-lime/20 text-forest' },
-  preparing:  { label: 'Preparing',   cls: 'bg-lime/20 text-forest' },
-  dispatched: { label: 'Dispatched',  cls: 'bg-sector-fisheries-bg text-sector-fisheries' },
-  in_transit: { label: 'In Transit',  cls: 'bg-sector-fisheries-bg text-sector-fisheries' },
-  delivered:  { label: 'Delivered',   cls: 'bg-lime/30 text-forest' },
-  completed:  { label: 'Completed',   cls: 'bg-cream-dark text-muted-foreground' },
-  cancelled:  { label: 'Cancelled',   cls: 'bg-red-50 text-red-600' },
-  disputed:   { label: 'Disputed',    cls: 'bg-red-50 text-red-600' },
+  pending:    { label: 'Pending',    cls: 'bg-harvest-gold/15 text-harvest-gold' },
+  confirmed:  { label: 'Confirmed',  cls: 'bg-lime/20 text-forest' },
+  preparing:  { label: 'Preparing',  cls: 'bg-lime/20 text-forest' },
+  dispatched: { label: 'Dispatched', cls: 'bg-sector-fisheries-bg text-sector-fisheries' },
+  in_transit: { label: 'In Transit', cls: 'bg-sector-fisheries-bg text-sector-fisheries' },
+  delivered:  { label: 'Delivered',  cls: 'bg-lime/30 text-forest' },
+  completed:  { label: 'Completed',  cls: 'bg-cream-dark text-muted-foreground' },
+  cancelled:  { label: 'Cancelled',  cls: 'bg-red-50 text-red-600' },
+  disputed:   { label: 'Disputed',   cls: 'bg-red-50 text-red-600' },
 }
 
 const TABS = [
-  { value: 'all',       label: 'All'       },
-  { value: 'active',    label: 'Active'    },
-  { value: 'completed', label: 'Completed' },
+  { value: 'purchases', label: 'Input Purchases'      },
+  { value: 'sales',     label: 'Crop Sales & Pledges' },
 ] as const
 
 type Tab = (typeof TABS)[number]['value']
 
 export default function FarmerOrdersPage() {
-  const [orders, setOrders]       = useState<FarmerOrder[]>([])
-  const [loading, setLoading]     = useState(true)
-  const [fetchError, setFetchError] = useState(false)
-  const [tab, setTab]             = useState<Tab>('all')
+  const { user }                          = useAuth()
+  const [orders, setOrders]               = useState<FarmerOrder[]>([])
+  const [loading, setLoading]             = useState(true)
+  const [fetchError, setFetchError]       = useState(false)
+  const [tab, setTab]                     = useState<Tab>('purchases')
+  const [acting, setActing]               = useState<string | null>(null)
 
-  useEffect(() => {
+  const load = useCallback(() => {
+    setLoading(true)
+    setFetchError(false)
     api.get('/orders/mine')
       .then(r => setOrders(r.data?.data?.orders ?? []))
       .catch(() => setFetchError(true))
       .finally(() => setLoading(false))
   }, [])
 
-  const filtered = orders.filter(o => {
-    if (tab === 'active')    return !['cancelled', 'disputed', 'completed'].includes(o.trackingStatus)
-    if (tab === 'completed') return o.trackingStatus === 'completed'
-    return true
-  })
+  useEffect(() => { load() }, [load])
+
+  const userId    = user?.id ?? ''
+  const purchases = orders.filter(o => o.buyerId === userId)
+  const sales     = orders.filter(o => o.sellerId === userId)
+  const displayed = tab === 'purchases' ? purchases : sales
+
+  async function confirmDelivery(orderId: string) {
+    setActing(orderId)
+    try {
+      await api.post(`/orders/${orderId}/confirm-delivery`)
+      load()
+    } catch {
+      // no-op — user can retry via the detail page
+    } finally {
+      setActing(null)
+    }
+  }
 
   return (
     <main className="min-h-screen bg-cream pb-10">
@@ -81,16 +100,28 @@ export default function FarmerOrdersPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
           <h1 className="font-bold text-forest text-lg">My Orders</h1>
         </div>
+
+        {/* Tab switcher */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 flex gap-1 pb-1 overflow-x-auto scrollbar-none">
-          {TABS.map(t => (
-            <button key={t.value} onClick={() => setTab(t.value)}
-              className={`px-4 py-2 text-sm font-semibold rounded-t-xl border-b-2 transition-colors whitespace-nowrap
-                ${tab === t.value
-                  ? 'border-forest text-forest'
-                  : 'border-transparent text-muted-foreground hover:text-forest'}`}>
-              {t.label}
-            </button>
-          ))}
+          {TABS.map(t => {
+            const count = t.value === 'purchases' ? purchases.length : sales.length
+            return (
+              <button key={t.value} onClick={() => setTab(t.value)}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-t-xl
+                            border-b-2 transition-colors whitespace-nowrap
+                  ${tab === t.value
+                    ? 'border-forest text-forest'
+                    : 'border-transparent text-muted-foreground hover:text-forest'}`}>
+                {t.label}
+                {!loading && count > 0 && (
+                  <span className={`px-1.5 py-0.5 text-[10px] font-bold rounded-full
+                    ${tab === t.value ? 'bg-forest/10 text-forest' : 'bg-cream-dark text-muted-foreground'}`}>
+                    {count}
+                  </span>
+                )}
+              </button>
+            )
+          })}
         </div>
       </div>
 
@@ -102,21 +133,30 @@ export default function FarmerOrdersPage() {
             <p className="text-sm font-semibold text-forest">Could not load orders</p>
             <p className="text-xs text-muted-foreground mt-1">Check your connection and refresh.</p>
           </div>
-        ) : filtered.length === 0 ? (
+        ) : displayed.length === 0 ? (
           <EmptyState
             icon={<OrdersIcon size={32} />}
-            title={tab === 'all' ? 'No orders yet' : `No ${tab} orders`}
-            description="Your purchase and sale orders will appear here."
+            title={tab === 'purchases' ? 'No input purchases yet' : 'No crop sales yet'}
+            description={tab === 'purchases'
+              ? 'Inputs you buy from dealers will appear here.'
+              : 'Orders for your listings and harvest pledges will appear here.'}
           />
         ) : (
-          filtered.map(order => {
-            const cfg     = STATUS_CONFIG[order.trackingStatus] ?? STATUS_CONFIG.pending
-            const sector  = order.listing ? safeSector(order.listing.sector) : 'crops'
-            const unitAbbr = order.listing?.unit ?? 'units'
+          displayed.map(order => {
+            const cfg              = STATUS_CONFIG[order.trackingStatus] ?? STATUS_CONFIG.pending
+            const sector           = order.listing ? safeSector(order.listing.sector) : 'inputs'
+            const unitAbbr         = order.listing?.unit ?? 'units'
+            const canConfirmDelivery = tab === 'purchases' &&
+              ['dispatched', 'in_transit'].includes(order.trackingStatus)
+
             return (
-              <Link key={order.id} href={`/orders/${order.id}`}
-                className="block bg-white rounded-2xl border border-border p-4 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-4">
+              <div key={order.id}
+                   className={`bg-white rounded-2xl border overflow-hidden
+                     ${canConfirmDelivery ? 'border-forest/30' : 'border-border'}`}>
+
+                <Link href={`/orders/${order.id}`}
+                  className="flex items-center gap-4 p-4 hover:bg-cream/40 transition-colors">
+                  {/* Thumbnail */}
                   <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-cream-dark flex-shrink-0">
                     {order.listing?.photos?.[0] ? (
                       <Image
@@ -133,6 +173,7 @@ export default function FarmerOrdersPage() {
                     )}
                   </div>
 
+                  {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       {order.listing && (
@@ -163,8 +204,24 @@ export default function FarmerOrdersPage() {
                   </div>
 
                   <ChevronRightIcon size={16} className="text-muted-foreground flex-shrink-0" />
-                </div>
-              </Link>
+                </Link>
+
+                {/* Confirm Delivery CTA — only on dispatched/in_transit input purchases */}
+                {canConfirmDelivery && (
+                  <div className="px-4 pb-4 pt-0">
+                    <button
+                      disabled={acting === order.id}
+                      onClick={() => confirmDelivery(order.id)}
+                      className="w-full py-2.5 bg-forest text-white text-sm font-bold rounded-xl
+                                 hover:bg-forest-dark transition-colors disabled:opacity-60
+                                 flex items-center justify-center gap-2"
+                    >
+                      <CheckIcon size={14} />
+                      {acting === order.id ? 'Confirming…' : 'Confirm Delivery'}
+                    </button>
+                  </div>
+                )}
+              </div>
             )
           })
         )}

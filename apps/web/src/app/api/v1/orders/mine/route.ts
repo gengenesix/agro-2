@@ -12,11 +12,14 @@ export async function GET(req: NextRequest) {
   const page  = Math.max(1, Number(url.searchParams.get('page') ?? 1))
   const limit = Math.min(50, Number(url.searchParams.get('limit') ?? 20))
 
-  const where = profile.role === 'buyer' || profile.role === 'consumer'
-    ? { buyerId: profile.id }
-    : { sellerId: profile.id }
-
-  const isSeller = profile.role !== 'buyer' && profile.role !== 'consumer'
+  // Farmers appear on both sides: they sell crops AND buy inputs.
+  // Buyers/consumers only appear as buyers; dealers/agents only as sellers.
+  const isFarmer = profile.role === 'farmer'
+  const where = isFarmer
+    ? { OR: [{ buyerId: profile.id }, { sellerId: profile.id }] }
+    : (profile.role === 'buyer' || profile.role === 'consumer')
+      ? { buyerId: profile.id }
+      : { sellerId: profile.id }
 
   const orderTypeFilter = url.searchParams.get('orderType')
 
@@ -36,8 +39,8 @@ export async function GET(req: NextRequest) {
             unit:     { select: { abbreviation: true } },
           },
         },
-        buyer:  isSeller ? { select: { id: true, fullName: true, avatarUrl: true } } : false,
-        seller: !isSeller ? { select: { id: true, fullName: true, avatarUrl: true } } : false,
+        buyer:  { select: { id: true, fullName: true, avatarUrl: true } },
+        seller: { select: { id: true, fullName: true, avatarUrl: true } },
       },
     }),
   ])
