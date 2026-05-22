@@ -18,6 +18,7 @@ const STATUS_LABEL: Record<string, { label: string; color: string }> = {
   pending:    { label: 'Pending',    color: 'bg-cream-dark text-muted-foreground' },
   confirmed:  { label: 'Confirmed',  color: 'bg-lime/20 text-forest'             },
   dispatched: { label: 'On the way', color: 'bg-blue-50 text-blue-700'           },
+  in_transit: { label: 'In transit', color: 'bg-blue-50 text-blue-700'           },
   delivered:  { label: 'Delivered',  color: 'bg-lime/30 text-forest font-bold'   },
   cancelled:  { label: 'Cancelled',  color: 'bg-destructive/10 text-destructive' },
 }
@@ -95,7 +96,7 @@ export default function ConsumerOrdersPage() {
                                text-forest flex items-center justify-center">
                     View details
                   </Link>
-                  {order.trackingStatus === 'dispatched' && (
+                  {(order.trackingStatus === 'dispatched' || order.trackingStatus === 'in_transit') && (
                     <button
                       onClick={() => confirmDelivery(order.id)}
                       className="flex-1 h-9 bg-forest text-white rounded-xl text-xs font-bold"

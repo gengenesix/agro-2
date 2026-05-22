@@ -19,11 +19,39 @@ export async function GET(req: NextRequest) {
       },
     })
   } else if (profile.role === 'farmer') {
-    // Input orders the farmer placed that are now dispatched / in transit — needs their attention
+    // Two concurrent signals for farmers:
+    // (a) input orders they placed that are now dispatched / in transit — incoming deliveries
+    // (b) produce orders where they're the seller and a buyer is waiting — pending sales to dispatch
+    const [incomingDeliveries, pendingSales] = await Promise.all([
+      prisma.order.count({
+        where: {
+          buyerId:        profile.id,
+          orderType:      'input_purchase',
+          trackingStatus: { in: ['dispatched', 'in_transit'] },
+        },
+      }),
+      prisma.order.count({
+        where: {
+          sellerId:       profile.id,
+          orderType:      { not: 'input_purchase' },
+          trackingStatus: 'pending',
+        },
+      }),
+    ])
+    badgeCount = incomingDeliveries + pendingSales
+  } else if (profile.role === 'consumer') {
+    // Produce orders that are on the way — consumer needs to confirm receipt
     badgeCount = await prisma.order.count({
       where: {
         buyerId:        profile.id,
-        orderType:      'input_purchase',
+        trackingStatus: { in: ['dispatched', 'in_transit'] },
+      },
+    })
+  } else if (profile.role === 'buyer') {
+    // Same signal for enterprise buyers — active shipments awaiting confirmation
+    badgeCount = await prisma.order.count({
+      where: {
+        buyerId:        profile.id,
         trackingStatus: { in: ['dispatched', 'in_transit'] },
       },
     })

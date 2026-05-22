@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { AppSidebar } from '@/components/shared/app-sidebar'
+import { api } from '@/lib/api'
 import {
   HomeIcon, OrdersIcon, BellIcon, ProfileIcon,
 } from '@/components/shared/icons'
@@ -56,8 +57,18 @@ const MOBILE_NAV = [
 ]
 
 export default function ConsumerLayout({ children }: { children: React.ReactNode }) {
-  const pathname              = usePathname()
-  const [collapsed, setCollapsed] = useState(false)
+  const pathname                  = usePathname()
+  const [collapsed,  setCollapsed]  = useState(false)
+  const [badgeCount, setBadgeCount] = useState(0)
+
+  useEffect(() => {
+    function poll() {
+      api.get('/navigation/badges').then(r => setBadgeCount(r.data.data?.badgeCount ?? 0)).catch(() => {})
+    }
+    poll()
+    const id = setInterval(poll, 60_000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <div className="flex min-h-screen bg-cream">
@@ -67,6 +78,7 @@ export default function ConsumerLayout({ children }: { children: React.ReactNode
         portalLabel="Consumer"
         collapsed={collapsed}
         onToggleCollapse={() => setCollapsed(c => !c)}
+        navBadges={{ '/consumer/orders': badgeCount }}
       />
 
       <div className={`flex-1 pb-20 lg:pb-0 transition-all duration-300 ease-in-out
@@ -100,6 +112,7 @@ export default function ConsumerLayout({ children }: { children: React.ReactNode
           const active = item.href === '/consumer'
             ? pathname === '/consumer'
             : pathname.startsWith(item.href)
+          const isOrders = item.href === '/consumer/orders'
           return (
             <Link
               key={item.href}
@@ -109,7 +122,13 @@ export default function ConsumerLayout({ children }: { children: React.ReactNode
                 active ? 'text-forest' : 'text-muted-foreground'
               }`}
             >
-              {item.icon}
+              <span className="relative">
+                {item.icon}
+                {isOrders && badgeCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full
+                                   bg-red-500 border-2 border-white" />
+                )}
+              </span>
               {item.label}
             </Link>
           )

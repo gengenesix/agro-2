@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AppSidebar } from '@/components/shared/app-sidebar'
 import { BottomNav } from '@/components/shared/navbar'
+import { api } from '@/lib/api'
 import {
   HomeIcon, MarketIcon, PledgeIcon, OrdersIcon,
   WalletIcon, ProfileIcon, BellIcon,
@@ -20,7 +21,17 @@ const NAV: NavItem[] = [
 ]
 
 export default function BuyerLayout({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed,  setCollapsed]  = useState(false)
+  const [badgeCount, setBadgeCount] = useState(0)
+
+  useEffect(() => {
+    function poll() {
+      api.get('/navigation/badges').then(r => setBadgeCount(r.data.data?.badgeCount ?? 0)).catch(() => {})
+    }
+    poll()
+    const id = setInterval(poll, 60_000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <div className="flex min-h-screen bg-cream">
@@ -29,6 +40,7 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
         portalLabel="Buyer Portal"
         collapsed={collapsed}
         onToggleCollapse={() => setCollapsed(c => !c)}
+        navBadges={{ '/buyer/orders': badgeCount }}
       />
       <div className={`flex-1 transition-all duration-300 ease-in-out
                        ${collapsed ? 'lg:ml-[72px]' : 'lg:ml-64'}`}>
