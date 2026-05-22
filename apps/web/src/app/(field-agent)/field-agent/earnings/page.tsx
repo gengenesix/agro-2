@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import { api }                  from '@/lib/api'
 import { formatGHS }            from '@/lib/format'
+import { WithdrawModal }        from '@/components/wallet/withdraw-modal'
+import { WithdrawIcon }         from '@/components/shared/icons'
 
 interface WalletTx {
   id:          string
@@ -21,10 +23,11 @@ interface EarningsData {
 }
 
 export default function FieldAgentEarningsPage() {
-  const [data, setData]     = useState<EarningsData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [page, setPage]     = useState(1)
-  const [pages, setPages]   = useState(1)
+  const [data, setData]         = useState<EarningsData | null>(null)
+  const [loading, setLoading]   = useState(true)
+  const [page, setPage]         = useState(1)
+  const [pages, setPages]       = useState(1)
+  const [showWithdraw, setShowWithdraw] = useState(false)
 
   const load = (p: number) => {
     setLoading(true)
@@ -46,6 +49,7 @@ export default function FieldAgentEarningsPage() {
     .filter(t => t.type === 'credit' && t.reference?.startsWith('verify-')).length
 
   return (
+    <>
     <div className="max-w-xl space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-forest">Earnings</h1>
@@ -71,6 +75,19 @@ export default function FieldAgentEarningsPage() {
           <p className="text-lg font-bold text-forest mt-1">{verifiedCount}</p>
         </div>
       </div>
+
+      {/* Withdraw CTA */}
+      <button
+        onClick={() => setShowWithdraw(true)}
+        disabled={!data || data.walletBalance <= 0}
+        className="w-full h-12 bg-lime text-forest font-bold text-sm rounded-xl
+                   hover:bg-lime-dark active:scale-[0.98] transition-all
+                   disabled:opacity-40 disabled:cursor-not-allowed
+                   flex items-center justify-center gap-2"
+      >
+        <WithdrawIcon size={16} />
+        Withdraw Commissions to Mobile Money
+      </button>
 
       {/* Transaction list */}
       <div className="bg-white rounded-2xl border border-border overflow-hidden">
@@ -149,5 +166,14 @@ export default function FieldAgentEarningsPage() {
         )}
       </div>
     </div>
+
+    {showWithdraw && (
+      <WithdrawModal
+        balance={data?.walletBalance ?? 0}
+        onClose={() => setShowWithdraw(false)}
+        onSuccess={() => load(page)}
+      />
+    )}
+    </>
   )
 }
