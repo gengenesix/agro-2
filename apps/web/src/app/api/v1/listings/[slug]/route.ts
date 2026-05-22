@@ -1,5 +1,48 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+import { getAuthProfile } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
+
+const updateSchema = z.object({
+  title:             z.string().min(5),
+  description:       z.string().max(1000).optional(),
+  sector:            z.enum(['crops', 'livestock', 'poultry', 'fisheries', 'inputs']),
+  category:          z.string().min(1),
+  listingType:       z.enum(['available_now', 'harvest_pledge']),
+  quantity:          z.coerce.number().min(0.1),
+  unit:              z.string().min(1),
+  pricePerUnit:      z.coerce.number().min(0.01),
+  minimumOrder:      z.coerce.number().optional(),
+  farmingMethod:     z.enum(['conventional', 'organic', 'certified_organic']).optional(),
+  harvestDate:       z.string().optional(),
+  depositPercent:    z.coerce.number().min(5).max(50).optional(),
+  regionId:          z.coerce.number().min(1),
+  district:          z.string().min(2),
+  bnplEligible:      z.boolean().optional(),
+  deliveryAvailable: z.boolean().optional(),
+  photos:            z.array(z.string()).optional(),
+})
+
+async function getOrCreateCategory(name: string, sector: string) {
+  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+  let cat = await prisma.productCategory.findUnique({ where: { slug } })
+  if (!cat) {
+    cat = await prisma.productCategory.create({
+      data: { name, sector: sector as 'crops' | 'livestock' | 'poultry' | 'fisheries' | 'inputs', slug },
+    })
+  }
+  return cat
+}
+
+async function getOrCreateUnit(name: string, sector: string) {
+  let unit = await prisma.unitOfMeasure.findFirst({ where: { name } })
+  if (!unit) {
+    unit = await prisma.unitOfMeasure.create({
+      data: { name, abbreviation: name.split(' ')[0] ?? name, applicableSectors: [sector] },
+    })
+  }
+  return unit
+}
 
 export async function GET(
   _req: NextRequest,
@@ -73,5 +116,72 @@ export async function GET(
       region:   listing.region,
       district: listing.district,
     },
+  })
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> },
+) {
+  const profile = await getAuthProfile(req)
+  if (!profile) {
+    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const { slug: id } = await params
+
+  const existing = await prisma.listing.findFirst({
+    where: { id, sellerId: profile.id },
+  })
+  if (!existing) {
+    return NextResponse.json({ success: false, error: 'Listing not found' }, { status: 404 })
+  }
+
+  let body: unknown
+  try { body = await req.json() } catch { body = {} }
+
+  const parsed = updateSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json(
+      { success: false, error: 'Validation failed', details: parsed.error.flatten().fieldErrors },
+      { status: 400 },
+    )
+  }
+
+  const d = parsed.data
+
+  const [category, unit] = await Promise.all([
+    getOrCreateCategory(d.category, d.sector),
+    getOrCreateUnit(d.unit, d.sector),
+  ])
+
+  const regionId = Math.trunc(d.regionId)
+
+  const updated = await prisma.listing.update({
+    where: { id },
+    data: {
+      categoryId:          category.id,
+      unitId:              unit.id,
+      title:               d.title,
+      description:         d.description ?? null,
+      listingType:         d.listingType,
+      quantityAvailable:   d.quantity,
+      pricePerUnit:        d.pricePerUnit,
+      minOrderQuantity:    d.minimumOrder ?? 1,
+      regionId:            regionId > 0 ? regionId : null,
+      community:           d.district,
+      farmingMethod:       d.farmingMethod ?? null,
+      expectedHarvestDate: d.harvestDate ? new Date(d.harvestDate) : null,
+      depositPercentage:   Math.trunc(d.depositPercent ?? existing.depositPercentage ?? 20),
+      photos:              d.photos ?? existing.photos,
+      bnplAvailable:       d.bnplEligible ?? false,
+      deliveryOptions:     d.deliveryAvailable ? ['farmer_delivery', 'pickup'] : ['pickup'],
+      pledgeStatus:        d.listingType === 'harvest_pledge' ? (existing.pledgeStatus ?? 'open') : null,
+    },
+  })
+
+  return NextResponse.json({
+    success: true,
+    data: { id: updated.id, slug: updated.slug, title: updated.title },
   })
 }

@@ -1,15 +1,17 @@
-import { notFound }   from 'next/navigation'
-import { Suspense }   from 'react'
-import Link           from 'next/link'
-import { SectorChip }           from '@/components/shared/sector-chip'
-import { BnplBadge }            from '@/components/listings/bnpl-badge'
-import { PhotoGallery }         from '@/components/listings/photo-gallery'
+import { notFound }  from 'next/navigation'
+import { Suspense }  from 'react'
+import Link          from 'next/link'
+import { SectorChip }   from '@/components/shared/sector-chip'
+import { BnplBadge }    from '@/components/listings/bnpl-badge'
+import { PhotoGallery } from '@/components/listings/photo-gallery'
 import {
-  MapPinIcon, CalendarIcon, TruckIcon, PayAtHarvestIcon, AgroScoreIcon,
-  ChevronRightIcon,
+  MapPinIcon, CalendarIcon, TruckIcon, PayAtHarvestIcon, ChevronRightIcon,
 } from '@/components/shared/icons'
 import { formatGHS, formatDate, formatQuantity } from '@/lib/format'
-import { prisma } from '@/lib/prisma'
+import { prisma }  from '@/lib/prisma'
+import type { Sector } from '@/lib/types'
+
+const VALID_SECTORS = new Set(['crops', 'livestock', 'poultry', 'fisheries', 'inputs'])
 
 async function fetchListing(slug: string) {
   try {
@@ -54,169 +56,239 @@ async function fetchListing(slug: string) {
   }
 }
 
-export default async function ListingPreviewPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id }   = await params
-  const listing  = await fetchListing(id)
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const listing = await fetchListing(id)
+  if (!listing) return { title: 'Listing not found' }
+  return { title: `Preview: ${listing.title} — My Listings` }
+}
+
+export default async function ListingPreviewPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id }  = await params
+  const listing = await fetchListing(id)
   if (!listing) notFound()
 
-  const isPledge = listing.listingType === 'harvest_pledge'
+  const isPledge   = listing.listingType === 'harvest_pledge'
+  const safeSector = VALID_SECTORS.has(listing.category.sector)
+    ? listing.category.sector as Sector
+    : 'crops'
+
+  const qty   = listing.quantityAvailable
+  const price = listing.pricePerUnit
+
+  const details: { label: string; value: string }[] = [
+    { label: 'Category',       value: listing.category.name },
+    { label: 'Farming method', value: listing.farmingMethod?.replace(/_/g, ' ') ?? '' },
+    { label: 'Harvest date',   value: listing.expectedHarvestDate ? formatDate(listing.expectedHarvestDate) : '' },
+    { label: 'Region',         value: listing.region?.name ?? '' },
+    { label: 'District',       value: listing.district?.name ?? '' },
+    { label: 'Listed',         value: formatDate(listing.createdAt) },
+    { label: 'Views',          value: listing.viewsCount.toLocaleString('en-GH') },
+  ].filter(d => Boolean(d.value))
 
   return (
     <main className="min-h-screen bg-cream pb-10">
       {/* Breadcrumb */}
       <div className="bg-white border-b border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Link href="/listings" className="hover:text-forest transition-colors">My Listings</Link>
-          <ChevronRightIcon size={12} />
-          <span className="text-forest font-semibold truncate max-w-[240px]">{listing.title}</span>
-        </div>
-      </div>
-
-      {/* Preview banner */}
-      <div className="bg-harvest-gold/10 border-b border-harvest-gold/30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75"
-                 className="w-3.5 h-3.5 text-harvest-gold flex-shrink-0">
-              <circle cx="8" cy="8" r="6" />
-              <path d="M8 7v4M8 5.5v.5" strokeLinecap="round" />
-            </svg>
-            <p className="text-xs font-semibold text-harvest-gold">
-              Preview — this is how buyers see your listing
-            </p>
-          </div>
-          <Link
-            href={`/listings/${listing.slug}/edit`}
-            className="text-[10px] font-bold text-harvest-gold border border-harvest-gold/40
-                       px-2.5 py-1 rounded-lg hover:bg-harvest-gold/10 transition-colors whitespace-nowrap"
-          >
-            Edit listing
+          <Link href="/listings" className="hover:text-forest transition-colors">
+            My Listings
           </Link>
+          <ChevronRightIcon size={12} />
+          <SectorChip sector={safeSector} label={listing.category.name} size="sm" />
+          <ChevronRightIcon size={12} />
+          <span className="text-forest font-semibold truncate max-w-[200px]">{listing.title}</span>
+          <span className="ml-auto px-2 py-0.5 text-[10px] font-bold rounded-full bg-cream-dark text-muted-foreground uppercase tracking-wide">
+            Preview
+          </span>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-        <div className="space-y-6 max-w-3xl">
-          {/* Photo gallery */}
-          <Suspense fallback={
-            <div className="aspect-video bg-cream-dark rounded-2xl animate-pulse" />
-          }>
-            <PhotoGallery photos={listing.photos ?? []} title={listing.title} />
-          </Suspense>
+        <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
 
-          {/* Title block */}
-          <div>
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <SectorChip sector={listing.category.sector} label={listing.category.name} />
-              {isPledge && (
-                <span className="text-xs font-bold px-2.5 py-1 rounded-full
-                                 bg-harvest-gold/15 text-harvest-gold border border-harvest-gold/25">
-                  Harvest Pledge
-                </span>
-              )}
-              {listing.bnplAvailable && <BnplBadge size="md" />}
-              {listing.farmingMethod && listing.farmingMethod !== 'conventional' && (
-                <span className="text-xs font-bold px-2.5 py-1 rounded-full
-                                 bg-lime/20 text-forest border border-lime/30 capitalize">
-                  {listing.farmingMethod.replace('_', ' ')}
-                </span>
-              )}
-            </div>
-            <h1 className="font-display text-2xl sm:text-3xl font-bold text-forest leading-tight mb-2">
-              {listing.title}
-            </h1>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <MapPinIcon size={13} />
-                {listing.region?.name}
-                {listing.district?.name && `, ${listing.district.name}`}
-              </span>
-              {listing.expectedHarvestDate && (
-                <span className="flex items-center gap-1">
-                  <CalendarIcon size={13} />
-                  Harvest: {formatDate(listing.expectedHarvestDate)}
-                </span>
-              )}
-            </div>
-          </div>
+          {/* ── Left column ───────────────────────────────────────────────── */}
+          <div className="space-y-6">
+            <Suspense fallback={<div className="aspect-video bg-cream-dark rounded-2xl animate-pulse" />}>
+              <PhotoGallery photos={listing.photos ?? []} title={listing.title} />
+            </Suspense>
 
-          {/* Price block */}
-          <div className={`rounded-2xl p-5
-            ${isPledge
-              ? 'bg-harvest-gold/8 border border-harvest-gold/20'
-              : 'bg-white border border-border'}`}>
-            <div className="flex items-end justify-between flex-wrap gap-4">
-              <div>
-                <p className="text-xs text-muted-foreground mb-1">
-                  {isPledge ? 'Pledge price' : 'Price per unit'}
-                </p>
-                <p className="font-mono text-3xl font-bold text-forest">
-                  {formatGHS(listing.pricePerUnit)}
-                </p>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  per {listing.unit.abbreviation}
-                </p>
+            {/* Title block */}
+            <div>
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <SectorChip sector={safeSector} label={listing.category.name} />
+                {isPledge && (
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-full
+                                   bg-harvest-gold/15 text-harvest-gold border border-harvest-gold/25">
+                    Harvest Pledge
+                  </span>
+                )}
+                {listing.bnplAvailable && <BnplBadge size="md" />}
+                {listing.farmingMethod && listing.farmingMethod !== 'conventional' && (
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-full
+                                   bg-lime/20 text-forest border border-lime/30 capitalize">
+                    {listing.farmingMethod.replace(/_/g, ' ')}
+                  </span>
+                )}
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full capitalize
+                  ${listing.status === 'active'
+                    ? 'bg-lime/20 text-forest'
+                    : 'bg-cream-dark text-muted-foreground'}`}>
+                  {listing.status}
+                </span>
               </div>
-              <div className="text-right">
-                <p className="text-xs text-muted-foreground mb-1">Available quantity</p>
-                <p className="font-mono text-xl font-bold text-forest">
-                  {formatQuantity(listing.quantityAvailable, listing.unit.abbreviation)}
-                </p>
-                {listing.minOrderQuantity > 1 && (
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Min. order: {listing.minOrderQuantity} {listing.unit.abbreviation}
-                  </p>
+              <h1 className="font-display text-2xl sm:text-3xl font-bold text-forest leading-tight mb-2">
+                {listing.title}
+              </h1>
+              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                {(listing.region || listing.district) && (
+                  <span className="flex items-center gap-1">
+                    <MapPinIcon size={13} />
+                    {[listing.district?.name, listing.region?.name].filter(Boolean).join(', ')}
+                  </span>
+                )}
+                {listing.expectedHarvestDate && (
+                  <span className="flex items-center gap-1">
+                    <CalendarIcon size={13} />
+                    Harvest: {formatDate(listing.expectedHarvestDate)}
+                  </span>
                 )}
               </div>
             </div>
 
-            <div className="grid sm:grid-cols-3 gap-3 mt-5 pt-5 border-t border-border/60">
-              {[
-                { Icon: TruckIcon,        label: 'Delivery available',       show: true },
-                { Icon: PayAtHarvestIcon, label: 'Pay at Harvest (BNPL)',     show: listing.bnplAvailable },
-                { Icon: AgroScoreIcon,    label: 'AgroScore-verified seller', show: (listing.seller?.agroScore ?? 0) >= 50 },
-              ].filter(a => a.show).map(({ Icon, label }) => (
-                <div key={label} className="flex items-center gap-2 text-xs text-forest font-medium">
-                  <Icon size={14} className="text-forest flex-shrink-0" />
-                  {label}
+            {/* Price + stock */}
+            <div className={`rounded-2xl border p-5
+              ${isPledge ? 'bg-harvest-gold/8 border-harvest-gold/20' : 'bg-white border-border'}`}>
+              <div className="flex items-end justify-between flex-wrap gap-4">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    {isPledge ? 'Pledge price' : 'Price per unit'}
+                  </p>
+                  <p className="font-mono text-3xl font-bold text-forest">{formatGHS(price)}</p>
+                  <p className="text-sm text-muted-foreground mt-0.5">per {listing.unit.abbreviation}</p>
                 </div>
-              ))}
-            </div>
-          </div>
+                <div className="text-right">
+                  <p className="text-xs text-muted-foreground mb-1">
+                    {isPledge ? 'Quantity available' : 'In stock'}
+                  </p>
+                  <p className={`font-mono text-xl font-bold ${qty > 0 ? 'text-forest' : 'text-red-500'}`}>
+                    {qty > 0 ? formatQuantity(qty, listing.unit.abbreviation) : 'Out of stock'}
+                  </p>
+                  {listing.minOrderQuantity > 1 && (
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Min. order: {listing.minOrderQuantity} {listing.unit.abbreviation}
+                    </p>
+                  )}
+                </div>
+              </div>
 
-          {/* Description */}
-          {listing.description && (
+              {(listing.deliveryOptions?.length > 0 || listing.bnplAvailable) && (
+                <div className="flex flex-wrap gap-4 mt-5 pt-5 border-t border-border/60">
+                  {listing.deliveryOptions?.length > 0 && (
+                    <div className="flex items-center gap-2 text-xs text-forest font-medium">
+                      <TruckIcon size={14} className="flex-shrink-0" />
+                      Delivery available
+                    </div>
+                  )}
+                  {listing.bnplAvailable && (
+                    <div className="flex items-center gap-2 text-xs text-forest font-medium">
+                      <PayAtHarvestIcon size={14} className="flex-shrink-0" />
+                      BNPL — Pay at Harvest
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Description */}
+            {listing.description && (
+              <div className="bg-white rounded-2xl border border-border p-5">
+                <h2 className="font-bold text-forest text-sm mb-3">About this listing</h2>
+                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                  {listing.description}
+                </p>
+              </div>
+            )}
+
+            {/* Details table */}
             <div className="bg-white rounded-2xl border border-border p-5">
-              <h2 className="font-bold text-forest text-sm mb-3">About this listing</h2>
-              <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-                {listing.description}
-              </p>
+              <h2 className="font-bold text-forest text-sm mb-4">Listing details</h2>
+              <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
+                {details.map(({ label, value }) => (
+                  <div key={label}
+                       className="flex justify-between items-center py-1 border-b border-border/50 last:border-0">
+                    <dt className="text-xs text-muted-foreground">{label}</dt>
+                    <dd className="text-xs font-semibold text-forest capitalize">{value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
-          )}
-
-          {/* Details table */}
-          <div className="bg-white rounded-2xl border border-border p-5">
-            <h2 className="font-bold text-forest text-sm mb-4">Listing details</h2>
-            <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
-              {[
-                { label: 'Category',       value: listing.category.name },
-                { label: 'Sector',         value: listing.category.sector },
-                { label: 'Farming method', value: listing.farmingMethod?.replace('_', ' ') },
-                { label: 'Region',         value: listing.region?.name },
-                { label: 'District',       value: listing.district?.name },
-                { label: 'Harvest date',   value: listing.expectedHarvestDate ? formatDate(listing.expectedHarvestDate) : null },
-                { label: 'Listed',         value: formatDate(listing.createdAt) },
-                { label: 'Views',          value: listing.viewsCount?.toLocaleString('en-GH') },
-                { label: 'Status',         value: listing.status },
-              ].filter(d => d.value).map(({ label, value }) => (
-                <div key={label}
-                  className="flex justify-between items-center py-1 border-b border-border/50 last:border-0">
-                  <dt className="text-xs text-muted-foreground">{label}</dt>
-                  <dd className="text-xs font-semibold text-forest capitalize">{value}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
+
+          {/* ── Right column — Seller Management Panel ────────────────────── */}
+          <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+            <div className="bg-white rounded-2xl border border-border overflow-hidden">
+              <div className="px-5 py-4 border-b border-border bg-cream/50">
+                <h2 className="font-bold text-forest text-sm">Seller Management View</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  This is how buyers see your listing.
+                </p>
+              </div>
+
+              <div className="p-5 space-y-4">
+                {/* Live stats */}
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { label: 'Views',  value: listing.viewsCount.toLocaleString('en-GH') },
+                    { label: 'Stock',  value: formatQuantity(qty, listing.unit.abbreviation) },
+                    { label: 'Status', value: listing.status },
+                  ].map(({ label, value }) => (
+                    <div key={label} className="text-center p-3 bg-cream rounded-xl">
+                      <p className="font-mono text-xs font-bold text-forest capitalize truncate">{value}</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{label}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <Link
+                  href={`/listings/${listing.slug}/edit`}
+                  className="flex items-center justify-center gap-1.5 w-full py-3 bg-forest text-white
+                             text-sm font-bold rounded-xl hover:bg-forest-dark transition-colors"
+                >
+                  Edit listing <ChevronRightIcon size={14} />
+                </Link>
+
+                <Link
+                  href="/listings"
+                  className="flex items-center justify-center w-full py-2.5 text-sm font-semibold
+                             border border-border text-muted-foreground rounded-xl hover:bg-cream
+                             hover:text-forest transition-colors"
+                >
+                  Back to My Listings
+                </Link>
+              </div>
+            </div>
+
+            {/* Delivery options */}
+            {listing.deliveryOptions?.length > 0 && (
+              <div className="bg-white rounded-2xl border border-border p-5">
+                <h2 className="font-bold text-forest text-sm mb-3">Delivery options</h2>
+                <div className="space-y-2">
+                  {listing.deliveryOptions.map(opt => (
+                    <div key={opt} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full bg-lime flex-shrink-0" />
+                      {opt.replace(/_/g, ' ')}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
         </div>
       </div>
     </main>
