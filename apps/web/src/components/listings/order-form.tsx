@@ -70,7 +70,7 @@ export function OrderForm({ listing }: OrderFormProps) {
           Your {isPledge ? 'pledge' : 'order'} has been confirmed. The seller will be notified.
         </p>
         <button
-          onClick={() => router.push('/orders')}
+          onClick={() => router.push('/farmer/orders')}
           className="w-full py-2.5 bg-forest text-white text-sm font-bold rounded-xl hover:bg-forest-dark transition-colors"
         >
           View orders

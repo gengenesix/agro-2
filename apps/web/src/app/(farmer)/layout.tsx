@@ -13,7 +13,7 @@ const NAV: NavItem[] = [
   { href: '/dashboard',     label: 'Dashboard',     Icon: HomeIcon,          exact: true },
   { href: '/listings',      label: 'My Listings',   Icon: ListProduceIcon               },
   { href: '/farmer/inputs', label: 'Inputs Market', Icon: InputsIcon,        exact: true },
-  { href: '/orders',        label: 'Orders',        Icon: OrdersIcon                    },
+  { href: '/farmer/orders', label: 'Orders',        Icon: OrdersIcon                    },
   { href: '/wallet',        label: 'Wallet',        Icon: WalletIcon                    },
   { href: '/bnpl',          label: 'BNPL Credit',   Icon: BuyInputsIcon                 },
   { href: '/my-pledges',    label: 'My Pledges',    Icon: HarvestPledgeIcon             },

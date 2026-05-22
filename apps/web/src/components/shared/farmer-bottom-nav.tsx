@@ -14,7 +14,7 @@ const PRIMARY = [
   { href: '/dashboard',    label: 'Dashboard', Icon: HomeIcon          },
   { href: '/listings',     label: 'Listings',  Icon: ListProduceIcon   },
   { href: '/listings/new', label: 'New',       Icon: PlusIcon, cta: true },
-  { href: '/orders',       label: 'Orders',    Icon: OrdersIcon        },
+  { href: '/farmer/orders', label: 'Orders',    Icon: OrdersIcon        },
 ] as const
 
 const MORE_ITEMS = [
