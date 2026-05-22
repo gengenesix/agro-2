@@ -64,7 +64,14 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
   }, [])
 
   useEffect(() => {
-    if (isOpen) load()
+    if (!isOpen) return
+    load()
+    // Mark all as read on the server the moment the panel opens.
+    // Items briefly display their unread visual state (bold text) from the
+    // GET response, giving the user feedback about what is new.
+    // The layout's onClose callback zeroes the bell badge locally;
+    // the 60s poll cycle will confirm 0 unread from the server side.
+    api.post('/notifications/read-all').catch(() => {})
   }, [isOpen, load])
 
   async function markOne(id: string) {
