@@ -2,11 +2,10 @@
 
 import { useState }      from 'react'
 import { useRouter }     from 'next/navigation'
-import Link              from 'next/link'
 import { useAuth }       from '@/context/auth-context'
 import { api }           from '@/lib/api'
 import { formatGHS }     from '@/lib/format'
-import { LoadingIcon, InfoIcon, ChevronRightIcon } from '@/components/shared/icons'
+import { LoadingIcon }   from '@/components/shared/icons'
 import { BnplBadge }     from './bnpl-badge'
 import type { ListingDetail } from '@/lib/types'
 
@@ -19,7 +18,6 @@ type Step = 'quantity' | 'confirm' | 'processing' | 'success' | 'error'
 export function OrderForm({ listing }: OrderFormProps) {
   const { user }   = useAuth()
   const router     = useRouter()
-  const isDealer   = user?.role === 'dealer'
   const [step, setStep]           = useState<Step>('quantity')
   const [qty, setQty]             = useState(listing.minOrderQuantity ?? 1)
   const [paymentMethod, setPM]    = useState<'mobile_money' | 'bnpl'>('mobile_money')
@@ -56,36 +54,6 @@ export function OrderForm({ listing }: OrderFormProps) {
       setErrorMsg(err.response?.data?.error ?? 'Failed to place order. Try again.')
       setStep('error')
     }
-  }
-
-  // ── Dealer: information-only view — no order form ────────────────────────
-  if (isDealer) {
-    return (
-      <div className="bg-white rounded-2xl border border-border overflow-hidden">
-        <div className="px-5 py-4 border-b border-border bg-cream/50">
-          <h2 className="font-bold text-forest text-sm">Seller Management View</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            You are viewing your own listed inventory item.
-          </p>
-        </div>
-        <div className="p-5 space-y-4">
-          <div className="flex items-start gap-3 p-4 bg-cream rounded-xl border border-border">
-            <InfoIcon size={15} className="text-muted-foreground flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-muted-foreground leading-snug">
-              Orders are placed by farmers and buyers. Dealers cannot order their own listings.
-              Use the edit view to update stock, price, or delivery options.
-            </p>
-          </div>
-          <Link
-            href={`/dealer/listings/${listing.id}/edit`}
-            className="flex items-center justify-center gap-1.5 w-full py-2.5 text-sm font-bold
-                       border border-border text-forest rounded-xl hover:bg-cream transition-colors"
-          >
-            Edit listing <ChevronRightIcon size={14} />
-          </Link>
-        </div>
-      </div>
-    )
   }
 
   if (step === 'success') {

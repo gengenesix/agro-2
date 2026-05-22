@@ -100,7 +100,7 @@ export default function DealerListingsPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Link href={`/inputs/${l.slug ?? l.id}`}
+                    <Link href={`/dealer/listings/${l.id}/preview`}
                       className="p-2 rounded-xl border border-border text-muted-foreground hover:text-forest hover:bg-cream transition-colors">
                       <EyeIcon size={15} />
                     </Link>
