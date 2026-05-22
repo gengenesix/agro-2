@@ -45,10 +45,12 @@ export default function FieldAgentLayout({ children }: { children: React.ReactNo
   const [collapsed,   setCollapsed]   = useState(false)
   const [notifOpen,   setNotifOpen]   = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
+  const [badgeCount,  setBadgeCount]  = useState(0)
 
   useEffect(() => {
     function poll() {
       api.get('/notifications?page=1').then(r => setUnreadCount(r.data.unreadCount ?? 0)).catch(() => {})
+      api.get('/navigation/badges').then(r => setBadgeCount(r.data.data?.badgeCount ?? 0)).catch(() => {})
     }
     poll()
     const id = setInterval(poll, 60_000)
@@ -66,6 +68,7 @@ export default function FieldAgentLayout({ children }: { children: React.ReactNo
         theme="dark"
         unreadNotifications={unreadCount}
         onNotificationsClick={() => setNotifOpen(true)}
+        navBadges={{ '/field-agent/dashboard': badgeCount }}
       />
 
       <main className={`flex-1 pb-20 lg:pb-0 transition-all duration-300 ease-in-out

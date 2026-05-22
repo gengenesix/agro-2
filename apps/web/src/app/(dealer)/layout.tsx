@@ -25,12 +25,14 @@ export default function DealerLayout({ children }: { children: React.ReactNode }
   const [collapsed,   setCollapsed]   = useState(false)
   const [notifOpen,   setNotifOpen]   = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
+  const [badgeCount,  setBadgeCount]  = useState(0)
   const pathname = usePathname()
   const router   = useRouter()
 
   useEffect(() => {
     function poll() {
       api.get('/notifications?page=1').then(r => setUnreadCount(r.data.unreadCount ?? 0)).catch(() => {})
+      api.get('/navigation/badges').then(r => setBadgeCount(r.data.data?.badgeCount ?? 0)).catch(() => {})
     }
     poll()
     const id = setInterval(poll, 60_000)
@@ -70,6 +72,7 @@ export default function DealerLayout({ children }: { children: React.ReactNode }
         onToggleCollapse={() => setCollapsed(c => !c)}
         unreadNotifications={unreadCount}
         onNotificationsClick={() => setNotifOpen(true)}
+        navBadges={{ '/dealer/orders': badgeCount }}
       />
       <div className={`flex-1 transition-all duration-300 ease-in-out
                        ${collapsed ? 'lg:ml-[72px]' : 'lg:ml-64'}`}>

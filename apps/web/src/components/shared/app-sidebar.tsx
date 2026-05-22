@@ -22,6 +22,7 @@ export interface AppSidebarProps {
   theme?:                  'light' | 'dark'
   unreadNotifications?:    number
   onNotificationsClick?:   () => void
+  navBadges?:              Record<string, number>
 }
 
 const T = {
@@ -67,6 +68,7 @@ export function AppSidebar({
   theme                  = 'light',
   unreadNotifications    = 0,
   onNotificationsClick,
+  navBadges              = {},
 }: AppSidebarProps) {
   const pathname       = usePathname()
   const { logout }     = useAuth()
@@ -129,6 +131,7 @@ export function AppSidebar({
                        ${collapsed ? 'px-2' : 'px-3'}`}>
         {nav.map(({ href, label, Icon, exact }) => {
           const active = isActive(href, exact)
+          const badge  = navBadges[href] ?? 0
           return (
             <Link
               key={href}
@@ -138,8 +141,20 @@ export function AppSidebar({
                           ${collapsed ? 'justify-center w-full h-11' : 'gap-3 px-3 py-2.5'}
                           ${active ? t.activeBg : t.idleBg}`}
             >
-              <Icon size={collapsed ? 20 : 18} className="flex-shrink-0" />
+              <span className={`${collapsed ? 'relative' : 'flex-shrink-0'}`}>
+                <Icon size={collapsed ? 20 : 18} />
+                {collapsed && badge > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500" />
+                )}
+              </span>
               {!collapsed && <span className="text-sm font-semibold truncate">{label}</span>}
+              {!collapsed && badge > 0 && (
+                <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full
+                                 bg-red-500 text-[10px] font-semibold text-white
+                                 ring-2 ring-background animate-pulse flex-shrink-0">
+                  {badge > 99 ? '99+' : badge}
+                </span>
+              )}
             </Link>
           )
         })}
