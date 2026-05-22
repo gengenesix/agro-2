@@ -79,6 +79,9 @@ export default function DealerLayout({ children }: { children: React.ReactNode }
         {children}
       </div>
       <BottomNav unreadCount={unreadCount} onBellClick={() => setNotifOpen(true)} />
+      {/* onClose resets unreadCount (bell badge) only.
+          badgeCount (order nav badge) is sourced from /navigation/badges
+          and only drops when the underlying order status changes. */}
       <NotificationPanel
         isOpen={notifOpen}
         onClose={() => { setNotifOpen(false); setUnreadCount(0) }}

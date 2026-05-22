@@ -123,6 +123,19 @@ export async function POST(
     })
   })
 
+  // Notify the seller that the buyer confirmed receipt and escrow is on the way.
+  // Fire-and-forget: notification failure must never block the delivery confirmation response.
+  prisma.notification.create({
+    data: {
+      userId:  order.sellerId,
+      type:    'ORDER_DELIVERED',
+      title:   'Delivery confirmed',
+      body:    `Your buyer confirmed receipt of order ${order.orderNumber}. Escrow funds are being released to your wallet.`,
+      data:    { actionUrl: '/wallet' },
+      channel: 'in_app',
+    },
+  }).catch(() => {})
+
   return NextResponse.json({
     success: true,
     data: {

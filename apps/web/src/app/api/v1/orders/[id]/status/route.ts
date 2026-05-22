@@ -18,6 +18,36 @@ const schema = z.object({
   sellerNotes: z.string().max(500).optional(),
 })
 
+// Route actionUrl based on order type so the notification deep-links to the right portal
+function buyerActionUrl(orderType: string): string {
+  if (orderType === 'input_purchase') return '/farmer/orders'
+  if (orderType === 'harvest_pledge') return '/buyer/orders'
+  return '/consumer/orders'
+}
+
+// Notification config for each buyer-facing status transition
+const BUYER_NOTIFICATION: Partial<Record<string, {
+  type:  string
+  title: string
+  body:  (listingTitle: string, orderNumber: string) => string
+}>> = {
+  confirmed: {
+    type:  'ORDER_CONFIRMED',
+    title: 'Order confirmed',
+    body:  (t) => `Your order for "${t}" has been confirmed by the seller and is being prepared.`,
+  },
+  dispatched: {
+    type:  'ORDER_SHIPPED',
+    title: 'Order dispatched',
+    body:  (t, n) => `Your order for "${t}" (${n}) has been dispatched and is on its way to you.`,
+  },
+  in_transit: {
+    type:  'ORDER_IN_TRANSIT',
+    title: 'Order in transit',
+    body:  (t, n) => `Your order for "${t}" (${n}) is in transit and will arrive soon.`,
+  },
+}
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -30,7 +60,8 @@ export async function PATCH(
   const { id } = await params
 
   const order = await prisma.order.findFirst({
-    where: { id, sellerId: profile.id },
+    where:   { id, sellerId: profile.id },
+    include: { listing: { select: { title: true } } },
   })
 
   if (!order) {
@@ -50,7 +81,7 @@ export async function PATCH(
 
   const { status, sellerNotes } = parsed.data
 
-  // 'completed' closes the order via completedAt — not a TrackingStatus enum value
+  // ── completed path ────────────────────────────────────────────────────────
   if (status === 'completed') {
     if (order.trackingStatus !== 'delivered') {
       return NextResponse.json(
@@ -142,6 +173,31 @@ export async function PATCH(
       }),
     ])
 
+    // Notify both parties after the financial transaction commits.
+    // Fire-and-forget: a notification failure must never roll back the payment.
+    await Promise.allSettled([
+      prisma.notification.create({
+        data: {
+          userId:  order.buyerId,
+          type:    'ORDER_COMPLETED',
+          title:   'Order complete',
+          body:    `Your order "${order.listing.title}" (${order.orderNumber}) has been completed. Thank you!`,
+          data:    { actionUrl: buyerActionUrl(order.orderType) },
+          channel: 'in_app',
+        },
+      }),
+      prisma.notification.create({
+        data: {
+          userId:  order.sellerId,
+          type:    'PAYMENT_RECEIVED',
+          title:   'Payment received',
+          body:    `Payment for order ${order.orderNumber} has been credited to your wallet.`,
+          data:    { actionUrl: '/wallet' },
+          channel: 'in_app',
+        },
+      }),
+    ])
+
     return NextResponse.json({
       success: true,
       data: {
@@ -154,6 +210,7 @@ export async function PATCH(
     })
   }
 
+  // ── regular status transition path ────────────────────────────────────────
   const allowedTargets = SELLER_TRANSITIONS[order.trackingStatus]
   if (!allowedTargets?.includes(status)) {
     return NextResponse.json(
@@ -172,6 +229,23 @@ export async function PATCH(
       ...(sellerNotes ? { sellerNotes } : {}),
     },
   })
+
+  // Insert a notification row for every buyer-facing transition.
+  // 'preparing' is an internal seller state — no buyer notification.
+  // Fire-and-forget: notification failure must never roll back the status update.
+  const notifConfig = BUYER_NOTIFICATION[status]
+  if (notifConfig) {
+    prisma.notification.create({
+      data: {
+        userId:  order.buyerId,
+        type:    notifConfig.type,
+        title:   notifConfig.title,
+        body:    notifConfig.body(order.listing.title, order.orderNumber),
+        data:    { actionUrl: buyerActionUrl(order.orderType) },
+        channel: 'in_app',
+      },
+    }).catch(() => {})
+  }
 
   return NextResponse.json({
     success: true,

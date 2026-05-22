@@ -115,6 +115,9 @@ export default function FieldAgentLayout({ children }: { children: React.ReactNo
         </button>
       </nav>
 
+      {/* onClose resets unreadCount (bell badge) only.
+          badgeCount (order nav badge) is sourced from /navigation/badges
+          and only drops when the underlying order status changes. */}
       <NotificationPanel
         isOpen={notifOpen}
         onClose={() => { setNotifOpen(false); setUnreadCount(0) }}
