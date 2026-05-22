@@ -5,15 +5,16 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { AppSidebar } from '@/components/shared/app-sidebar'
 import { NotificationPanel } from '@/components/shared/notification-panel'
-import { HomeIcon, ProfileIcon, WalletIcon, OrdersIcon, BellIcon } from '@/components/shared/icons'
+import { HomeIcon, ProfileIcon, WalletIcon, OrdersIcon, BellIcon, MapViewIcon } from '@/components/shared/icons'
 import { api } from '@/lib/api'
 import type { NavItem } from '@/components/shared/app-sidebar'
 
 const NAV: NavItem[] = [
-  { href: '/field-agent/dashboard',       label: 'Dashboard',        Icon: HomeIcon,    exact: true },
-  { href: '/field-agent/register-farmer', label: 'Register Farmer',  Icon: ProfileIcon              },
-  { href: '/field-agent/registrations',   label: 'My Registrations', Icon: OrdersIcon               },
-  { href: '/field-agent/earnings',        label: 'Earnings',         Icon: WalletIcon               },
+  { href: '/field-agent/dashboard',       label: 'Dashboard',        Icon: HomeIcon,     exact: true },
+  { href: '/field-agent/register-farmer', label: 'Register Farmer',  Icon: ProfileIcon               },
+  { href: '/field-agent/map',             label: 'Discovery Map',    Icon: MapViewIcon               },
+  { href: '/field-agent/registrations',   label: 'My Registrations', Icon: OrdersIcon                },
+  { href: '/field-agent/earnings',        label: 'Earnings',         Icon: WalletIcon                },
 ]
 
 const MOBILE_NAV = [
