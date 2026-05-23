@@ -9,10 +9,25 @@ const COMMISSION_RATES: Record<string, number> = {
   input_bnpl:      0,
 }
 
-// Seller-side actionUrl — input_purchase sellers are always dealers; all others are farmers
-function sellerActionUrl(orderType: string): string {
-  if (orderType === 'input_purchase') return '/dealer/wallet'
-  return '/wallet'
+// ── Notification path dictionary ──────────────────────────────────────────────
+// Mirrors the same ROLE_PATHS table in status/route.ts.
+// Kept co-located so this file is self-contained and independently auditable.
+const ROLE_PATHS: Record<string, Record<'orders' | 'wallet', string>> = {
+  farmer:      { orders: '/farmer/orders', wallet: '/wallet'          },
+  dealer:      { orders: '/dealer/orders', wallet: '/dealer/wallet'   },
+  buyer:       { orders: '/buyer/orders',  wallet: '/buyer/wallet'    },
+  consumer:    { orders: '/consumer/orders', wallet: '/consumer/orders' },
+  field_agent: { orders: '/field-agent/dashboard', wallet: '/field-agent/earnings' },
+}
+
+function rolePath(role: string, tab: 'orders' | 'wallet'): string {
+  return ROLE_PATHS[role]?.[tab] ?? '/'
+}
+
+// Seller role is fully determined by order type.
+// input_purchase sellers are always dealers; all other sellers are farmers.
+function orderSellerRole(orderType: string): string {
+  return orderType === 'input_purchase' ? 'dealer' : 'farmer'
 }
 
 // Buyer confirms they received the goods → advances to 'delivered' and releases escrow
@@ -137,7 +152,7 @@ export async function POST(
       type:    'ORDER_DELIVERED',
       title:   'Delivery confirmed',
       body:    `Your buyer confirmed receipt of order ${order.orderNumber}. Escrow funds are being released to your wallet.`,
-      data:    { actionUrl: sellerActionUrl(order.orderType) },
+      data:    { actionUrl: rolePath(orderSellerRole(order.orderType), 'wallet') },
       channel: 'in_app',
     },
   }).catch(() => {})

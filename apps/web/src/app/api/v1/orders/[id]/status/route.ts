@@ -18,17 +18,34 @@ const schema = z.object({
   sellerNotes: z.string().max(500).optional(),
 })
 
-// Route actionUrl based on order type so the notification deep-links to the right portal
-function buyerActionUrl(orderType: string): string {
-  if (orderType === 'input_purchase') return '/farmer/orders'
-  if (orderType === 'harvest_pledge') return '/buyer/orders'
-  return '/consumer/orders'
+// ── Notification path dictionary ──────────────────────────────────────────────
+// Every notification actionUrl flows through this table.
+// Adding a role or a tab here is the single change needed to keep all portals in sync.
+// Physical rule: a dealer CANNOT receive a farmer path; a buyer CANNOT receive
+// a dealer path. The table is the only source of truth — no string building.
+const ROLE_PATHS: Record<string, Record<'orders' | 'wallet', string>> = {
+  farmer:      { orders: '/farmer/orders', wallet: '/wallet'          },
+  dealer:      { orders: '/dealer/orders', wallet: '/dealer/wallet'   },
+  buyer:       { orders: '/buyer/orders',  wallet: '/buyer/wallet'    },
+  consumer:    { orders: '/consumer/orders', wallet: '/consumer/orders' },
+  field_agent: { orders: '/field-agent/dashboard', wallet: '/field-agent/earnings' },
 }
 
-// Seller-side actionUrl — input_purchase sellers are always dealers; all others are farmers
-function sellerActionUrl(orderType: string): string {
-  if (orderType === 'input_purchase') return '/dealer/wallet'
-  return '/wallet'
+function rolePath(role: string, tab: 'orders' | 'wallet'): string {
+  return ROLE_PATHS[role]?.[tab] ?? '/'
+}
+
+// Buyer role is fully determined by order type — no extra DB lookup needed.
+function orderBuyerRole(orderType: string): string {
+  if (orderType === 'input_purchase') return 'farmer'
+  if (orderType === 'harvest_pledge') return 'buyer'
+  return 'consumer'
+}
+
+// Seller role is fully determined by order type.
+// input_purchase sellers are always dealers; all other sellers are farmers.
+function orderSellerRole(orderType: string): string {
+  return orderType === 'input_purchase' ? 'dealer' : 'farmer'
 }
 
 // Notification config for each buyer-facing status transition
@@ -188,7 +205,7 @@ export async function PATCH(
           type:    'ORDER_COMPLETED',
           title:   'Order complete',
           body:    `Your order "${order.listing.title}" (${order.orderNumber}) has been completed. Thank you!`,
-          data:    { actionUrl: buyerActionUrl(order.orderType) },
+          data:    { actionUrl: rolePath(orderBuyerRole(order.orderType), 'orders') },
           channel: 'in_app',
         },
       }),
@@ -198,7 +215,7 @@ export async function PATCH(
           type:    'PAYMENT_RECEIVED',
           title:   'Payment received',
           body:    `Payment for order ${order.orderNumber} has been credited to your wallet.`,
-          data:    { actionUrl: sellerActionUrl(order.orderType) },
+          data:    { actionUrl: rolePath(orderSellerRole(order.orderType), 'wallet') },
           channel: 'in_app',
         },
       }),
@@ -247,7 +264,7 @@ export async function PATCH(
         type:    notifConfig.type,
         title:   notifConfig.title,
         body:    notifConfig.body(order.listing.title, order.orderNumber),
-        data:    { actionUrl: buyerActionUrl(order.orderType) },
+        data:    { actionUrl: rolePath(orderBuyerRole(order.orderType), 'orders') },
         channel: 'in_app',
       },
     }).catch(() => {})
