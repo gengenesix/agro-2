@@ -114,12 +114,13 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
 
   useEffect(() => {
     if (!isOpen) return
-    load()
-    // Mark all as read on the server the moment the panel opens.
-    // Items briefly display their unread visual state (bold text) from the
-    // GET response, giving the user feedback about what is new.
-    // The layout's onClose callback zeroes the bell badge locally;
-    // the 60s poll cycle will confirm 0 unread from the server side.
+    // Fetch first, then immediately force all items to read in local state so
+    // unread styling (bold text, background tint, red dot) clears without
+    // waiting for the next poll cycle or a manual refresh.
+    load().then(() => {
+      setItems(prev => prev.map(n => ({ ...n, isRead: true })))
+      setUnread(0)
+    })
     api.post('/notifications/read-all').catch(() => {})
   }, [isOpen, load])
 
@@ -223,8 +224,8 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
                               ${!n.isRead ? 'bg-cream/30' : 'bg-white'}`}
                 >
                   <div className="flex items-start gap-3">
-                    {/* Type dot */}
-                    <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${dotFor(n.type)}`} />
+                    {/* Type dot — dimmed once read so colour context remains without drawing focus */}
+                    <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${dotFor(n.type)} ${n.isRead ? 'opacity-30' : ''}`} />
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
