@@ -9,25 +9,43 @@ const COMMISSION_RATES: Record<string, number> = {
   input_bnpl:      0,
 }
 
-// ── Notification path dictionary ──────────────────────────────────────────────
-// Mirrors the same ROLE_PATHS table in status/route.ts.
-// Kept co-located so this file is self-contained and independently auditable.
-const ROLE_PATHS: Record<string, Record<'orders' | 'wallet', string>> = {
-  farmer:      { orders: '/farmer/orders', wallet: '/wallet'          },
-  dealer:      { orders: '/dealer/orders', wallet: '/dealer/wallet'   },
-  buyer:       { orders: '/buyer/orders',  wallet: '/buyer/wallet'    },
-  consumer:    { orders: '/consumer/orders', wallet: '/consumer/orders' },
-  field_agent: { orders: '/field-agent/dashboard', wallet: '/field-agent/earnings' },
-}
+// ── Notification URL matrix ────────────────────────────────────────────────────
+//
+// Identical contract to status/route.ts — co-located so this file is fully
+// self-contained and independently auditable without cross-file dependencies.
+//
+// Hard rule: the recipient's role is read from the database Profile row.
+// The switch returns ONLY literal hardcoded strings — no string templates,
+// no dynamic building, no orderType inference for non-farmer roles.
+//
+// 'side' = 'buyer'  → party who placed the order
+// 'side' = 'seller' → party fulfilling / receiving payment
+function recipientActionUrl(
+  role: string,
+  orderType: string,
+  side: 'buyer' | 'seller',
+): string {
+  switch (role) {
+    case 'dealer':
+      return side === 'seller' ? '/dealer/wallet' : '/dealer/orders'
 
-function rolePath(role: string, tab: 'orders' | 'wallet'): string {
-  return ROLE_PATHS[role]?.[tab] ?? '/'
-}
+    case 'buyer':
+      return '/buyer/orders'
 
-// Seller role is fully determined by order type.
-// input_purchase sellers are always dealers; all other sellers are farmers.
-function orderSellerRole(orderType: string): string {
-  return orderType === 'input_purchase' ? 'dealer' : 'farmer'
+    case 'consumer':
+      return '/consumer/orders'
+
+    case 'field_agent':
+      return '/field-agent/dashboard'
+
+    case 'farmer': {
+      if (side === 'buyer' && orderType === 'input_purchase') return '/farmer/orders'
+      return '/orders'
+    }
+
+    default:
+      return '/'
+  }
 }
 
 // Buyer confirms they received the goods → advances to 'delivered' and releases escrow
@@ -42,8 +60,14 @@ export async function POST(
 
   const { id } = await params
 
+  // Include both profile roles so every notification URL is derived from
+  // the actual DB role, not inferred from order metadata.
   const order = await prisma.order.findFirst({
-    where: { id, buyerId: profile.id },
+    where:   { id, buyerId: profile.id },
+    include: {
+      buyer:  { select: { role: true } },
+      seller: { select: { role: true } },
+    },
   })
 
   if (!order) {
@@ -144,18 +168,31 @@ export async function POST(
     })
   })
 
-  // Notify the seller that the buyer confirmed receipt and escrow is on the way.
-  // Fire-and-forget: notification failure must never block the delivery confirmation response.
-  prisma.notification.create({
-    data: {
-      userId:  order.sellerId,
-      type:    'ORDER_DELIVERED',
-      title:   'Delivery confirmed',
-      body:    `Your buyer confirmed receipt of order ${order.orderNumber}. Escrow funds are being released to your wallet.`,
-      data:    { actionUrl: rolePath(orderSellerRole(order.orderType), 'wallet') },
-      channel: 'in_app',
-    },
-  }).catch(() => {})
+  // Notify BOTH parties after escrow is released.
+  // Roles are read from DB — actionUrls are resolved through the switch matrix above.
+  // Fire-and-forget: notification failures must never block the delivery response.
+  await Promise.allSettled([
+    prisma.notification.create({
+      data: {
+        userId:  order.sellerId,
+        type:    'ORDER_DELIVERED',
+        title:   'Delivery confirmed',
+        body:    `Your buyer confirmed receipt of order ${order.orderNumber}. Escrow funds are being released to your wallet.`,
+        data:    { actionUrl: recipientActionUrl(order.seller.role, order.orderType, 'seller') },
+        channel: 'in_app',
+      },
+    }),
+    prisma.notification.create({
+      data: {
+        userId:  order.buyerId,
+        type:    'ORDER_DELIVERED',
+        title:   'Receipt confirmed',
+        body:    `You confirmed receipt of order ${order.orderNumber}. Thank you for your purchase.`,
+        data:    { actionUrl: recipientActionUrl(order.buyer.role, order.orderType, 'buyer') },
+        channel: 'in_app',
+      },
+    }),
+  ])
 
   return NextResponse.json({
     success: true,

@@ -18,37 +18,58 @@ const schema = z.object({
   sellerNotes: z.string().max(500).optional(),
 })
 
-// ── Notification path dictionary ──────────────────────────────────────────────
-// Every notification actionUrl flows through this table.
-// Adding a role or a tab here is the single change needed to keep all portals in sync.
-// Physical rule: a dealer CANNOT receive a farmer path; a buyer CANNOT receive
-// a dealer path. The table is the only source of truth — no string building.
-const ROLE_PATHS: Record<string, Record<'orders' | 'wallet', string>> = {
-  farmer:      { orders: '/farmer/orders', wallet: '/wallet'          },
-  dealer:      { orders: '/dealer/orders', wallet: '/dealer/wallet'   },
-  buyer:       { orders: '/buyer/orders',  wallet: '/buyer/wallet'    },
-  consumer:    { orders: '/consumer/orders', wallet: '/consumer/orders' },
-  field_agent: { orders: '/field-agent/dashboard', wallet: '/field-agent/earnings' },
+// ── Notification URL matrix ────────────────────────────────────────────────────
+//
+// Hard rule: the recipient's role is read from the database Profile row FIRST.
+// The switch maps each role to an absolute, hardcoded path string.
+// There are no string templates, no dynamic concatenation, no inference from
+// orderType for non-farmer roles — only literal return values inside case blocks.
+//
+// Guarantee: a user with role='dealer' can NEVER receive a path containing
+// '/farmer/'. A user with role='buyer' can NEVER receive a path containing
+// '/dealer/'. Each case is independently auditable.
+//
+// 'side' = 'buyer'  → notification is sent to the party who placed the order
+// 'side' = 'seller' → notification is sent to the party fulfilling the order
+function recipientActionUrl(
+  role: string,
+  orderType: string,
+  side: 'buyer' | 'seller',
+): string {
+  switch (role) {
+    case 'dealer':
+      // Dealers are always sellers. On completion they want their wallet;
+      // on mid-state updates they want their orders list.
+      return side === 'seller' ? '/dealer/wallet' : '/dealer/orders'
+
+    case 'buyer':
+      // Corporate/enterprise buyers — always routed to their orders hub.
+      return '/buyer/orders'
+
+    case 'consumer':
+      // Individual consumers — single orders destination.
+      return '/consumer/orders'
+
+    case 'field_agent':
+      // Field agents are never an order party; fallback to their dashboard.
+      return '/field-agent/dashboard'
+
+    case 'farmer': {
+      // Farmers appear on BOTH sides of different order types.
+      // As buyer: they purchased agro-inputs → show their input orders tab.
+      // As seller: they sold produce → show their general orders page.
+      if (side === 'buyer' && orderType === 'input_purchase') return '/farmer/orders'
+      return '/orders'
+    }
+
+    default:
+      return '/'
+  }
 }
 
-function rolePath(role: string, tab: 'orders' | 'wallet'): string {
-  return ROLE_PATHS[role]?.[tab] ?? '/'
-}
+// ── Per-transition notification copy ──────────────────────────────────────────
+// 'preparing' is an internal seller state — no outbound notifications are sent.
 
-// Buyer role is fully determined by order type — no extra DB lookup needed.
-function orderBuyerRole(orderType: string): string {
-  if (orderType === 'input_purchase') return 'farmer'
-  if (orderType === 'harvest_pledge') return 'buyer'
-  return 'consumer'
-}
-
-// Seller role is fully determined by order type.
-// input_purchase sellers are always dealers; all other sellers are farmers.
-function orderSellerRole(orderType: string): string {
-  return orderType === 'input_purchase' ? 'dealer' : 'farmer'
-}
-
-// Notification config for each buyer-facing status transition
 const BUYER_NOTIFICATION: Partial<Record<string, {
   type:  string
   title: string
@@ -71,6 +92,28 @@ const BUYER_NOTIFICATION: Partial<Record<string, {
   },
 }
 
+const SELLER_NOTIFICATION: Partial<Record<string, {
+  type:  string
+  title: string
+  body:  (orderNumber: string) => string
+}>> = {
+  confirmed: {
+    type:  'ORDER_CONFIRMED',
+    title: 'Order confirmed',
+    body:  (n) => `You confirmed order ${n}. Prepare it for dispatch.`,
+  },
+  dispatched: {
+    type:  'ORDER_SHIPPED',
+    title: 'Order dispatched',
+    body:  (n) => `Order ${n} has been marked dispatched. The buyer has been notified.`,
+  },
+  in_transit: {
+    type:  'ORDER_IN_TRANSIT',
+    title: 'Order in transit',
+    body:  (n) => `Order ${n} is now in transit.`,
+  },
+}
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -82,9 +125,15 @@ export async function PATCH(
 
   const { id } = await params
 
+  // Fetch buyer and seller roles from the database so notification URLs are
+  // determined by the actual profile record, not inferred from order metadata.
   const order = await prisma.order.findFirst({
     where:   { id, sellerId: profile.id },
-    include: { listing: { select: { title: true } } },
+    include: {
+      listing: { select: { title: true } },
+      buyer:   { select: { role: true } },
+      seller:  { select: { role: true } },
+    },
   })
 
   if (!order) {
@@ -160,7 +209,7 @@ export async function PATCH(
         data:  { pendingBalance: { decrement: settlementAmount } },
       }),
 
-      // 3. Credit farmer payout into seller's available balance
+      // 3. Credit seller payout into their available balance
       prisma.wallet.update({
         where: { userId: order.sellerId },
         data: {
@@ -196,7 +245,8 @@ export async function PATCH(
       }),
     ])
 
-    // Notify both parties after the financial transaction commits.
+    // Notify BOTH parties after the financial transaction commits.
+    // Buyer role and seller role are read from DB — no orderType inference.
     // Fire-and-forget: a notification failure must never roll back the payment.
     await Promise.allSettled([
       prisma.notification.create({
@@ -205,7 +255,7 @@ export async function PATCH(
           type:    'ORDER_COMPLETED',
           title:   'Order complete',
           body:    `Your order "${order.listing.title}" (${order.orderNumber}) has been completed. Thank you!`,
-          data:    { actionUrl: rolePath(orderBuyerRole(order.orderType), 'orders') },
+          data:    { actionUrl: recipientActionUrl(order.buyer.role, order.orderType, 'buyer') },
           channel: 'in_app',
         },
       }),
@@ -215,7 +265,7 @@ export async function PATCH(
           type:    'PAYMENT_RECEIVED',
           title:   'Payment received',
           body:    `Payment for order ${order.orderNumber} has been credited to your wallet.`,
-          data:    { actionUrl: rolePath(orderSellerRole(order.orderType), 'wallet') },
+          data:    { actionUrl: recipientActionUrl(order.seller.role, order.orderType, 'seller') },
           channel: 'in_app',
         },
       }),
@@ -253,18 +303,34 @@ export async function PATCH(
     },
   })
 
-  // Insert a notification row for every buyer-facing transition.
-  // 'preparing' is an internal seller state — no buyer notification.
-  // Fire-and-forget: notification failure must never roll back the status update.
-  const notifConfig = BUYER_NOTIFICATION[status]
-  if (notifConfig) {
+  // Notify BOTH the buyer and the seller for every visible state change.
+  // 'preparing' is an internal state — neither BUYER_NOTIFICATION nor
+  // SELLER_NOTIFICATION has an entry for it, so no records are written.
+  // Fire-and-forget: notification failures must never roll back the status update.
+  const buyerNotif  = BUYER_NOTIFICATION[status]
+  const sellerNotif = SELLER_NOTIFICATION[status]
+
+  if (buyerNotif) {
     prisma.notification.create({
       data: {
         userId:  order.buyerId,
-        type:    notifConfig.type,
-        title:   notifConfig.title,
-        body:    notifConfig.body(order.listing.title, order.orderNumber),
-        data:    { actionUrl: rolePath(orderBuyerRole(order.orderType), 'orders') },
+        type:    buyerNotif.type,
+        title:   buyerNotif.title,
+        body:    buyerNotif.body(order.listing.title, order.orderNumber),
+        data:    { actionUrl: recipientActionUrl(order.buyer.role, order.orderType, 'buyer') },
+        channel: 'in_app',
+      },
+    }).catch(() => {})
+  }
+
+  if (sellerNotif) {
+    prisma.notification.create({
+      data: {
+        userId:  order.sellerId,
+        type:    sellerNotif.type,
+        title:   sellerNotif.title,
+        body:    sellerNotif.body(order.orderNumber),
+        data:    { actionUrl: recipientActionUrl(order.seller.role, order.orderType, 'seller') },
         channel: 'in_app',
       },
     }).catch(() => {})
