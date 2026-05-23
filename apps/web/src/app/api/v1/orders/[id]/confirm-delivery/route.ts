@@ -9,6 +9,12 @@ const COMMISSION_RATES: Record<string, number> = {
   input_bnpl:      0,
 }
 
+// Seller-side actionUrl — input_purchase sellers are always dealers; all others are farmers
+function sellerActionUrl(orderType: string): string {
+  if (orderType === 'input_purchase') return '/dealer/wallet'
+  return '/wallet'
+}
+
 // Buyer confirms they received the goods → advances to 'delivered' and releases escrow
 export async function POST(
   req: NextRequest,
@@ -131,7 +137,7 @@ export async function POST(
       type:    'ORDER_DELIVERED',
       title:   'Delivery confirmed',
       body:    `Your buyer confirmed receipt of order ${order.orderNumber}. Escrow funds are being released to your wallet.`,
-      data:    { actionUrl: '/wallet' },
+      data:    { actionUrl: sellerActionUrl(order.orderType) },
       channel: 'in_app',
     },
   }).catch(() => {})

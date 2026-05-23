@@ -25,6 +25,12 @@ function buyerActionUrl(orderType: string): string {
   return '/consumer/orders'
 }
 
+// Seller-side actionUrl — input_purchase sellers are always dealers; all others are farmers
+function sellerActionUrl(orderType: string): string {
+  if (orderType === 'input_purchase') return '/dealer/wallet'
+  return '/wallet'
+}
+
 // Notification config for each buyer-facing status transition
 const BUYER_NOTIFICATION: Partial<Record<string, {
   type:  string
@@ -192,7 +198,7 @@ export async function PATCH(
           type:    'PAYMENT_RECEIVED',
           title:   'Payment received',
           body:    `Payment for order ${order.orderNumber} has been credited to your wallet.`,
-          data:    { actionUrl: '/wallet' },
+          data:    { actionUrl: sellerActionUrl(order.orderType) },
           channel: 'in_app',
         },
       }),
