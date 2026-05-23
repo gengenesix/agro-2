@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/context/auth-context'
 import { api } from '@/lib/api'
 import { formatRelative } from '@/lib/format'
 
@@ -46,8 +47,56 @@ function dotFor(type: string): string {
   return 'bg-muted-foreground'
 }
 
+// ── Runtime role-boundary guard ────────────────────────────────────────────────
+//
+// The database may contain notification rows written before the switch-matrix
+// fix (legacy rows with poisoned paths like '/wallet' for dealer accounts).
+// This function intercepts the destination immediately before navigation and
+// rewrites any path that escapes the current user's portal boundary.
+//
+// Farmer paths are intentionally exempt: they use a mixed-prefix convention
+// (/orders, /wallet, /farmer/orders, /dashboard, etc.) that cannot be
+// guarded with a single prefix check without producing false positives.
+// New farmer notifications are written correctly by the switch matrix;
+// old rows pointing to the same paths are also harmless for farmers.
+function safeDestination(url: string, role: string | undefined): string {
+  switch (role) {
+    case 'dealer':
+      if (!url.startsWith('/dealer')) {
+        console.error('[NotificationPanel] Intercepted cross-role path for dealer:', url, '→ /dealer/orders')
+        return '/dealer/orders'
+      }
+      return url
+
+    case 'buyer':
+      if (!url.startsWith('/buyer')) {
+        console.error('[NotificationPanel] Intercepted cross-role path for buyer:', url, '→ /buyer/orders')
+        return '/buyer/orders'
+      }
+      return url
+
+    case 'consumer':
+      if (!url.startsWith('/consumer')) {
+        console.error('[NotificationPanel] Intercepted cross-role path for consumer:', url, '→ /consumer/orders')
+        return '/consumer/orders'
+      }
+      return url
+
+    case 'field_agent':
+      if (!url.startsWith('/field-agent')) {
+        console.error('[NotificationPanel] Intercepted cross-role path for field_agent:', url, '→ /field-agent/dashboard')
+        return '/field-agent/dashboard'
+      }
+      return url
+
+    default:
+      return url
+  }
+}
+
 export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
-  const router = useRouter()
+  const router     = useRouter()
+  const { user }   = useAuth()
   const [items,   setItems]   = useState<NotificationItem[]>([])
   const [unread,  setUnread]  = useState(0)
   const [loading, setLoading] = useState(false)
@@ -90,7 +139,10 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
     if (!n.isRead) await markOne(n.id)
     if (n.actionUrl) {
       onClose()
-      router.push(n.actionUrl)
+      // Sanitize the destination against the current user's portal boundary
+      // before navigating. This catches any legacy DB rows that contain paths
+      // from a previous role (e.g. '/wallet' stored for a dealer account).
+      router.push(safeDestination(n.actionUrl, user?.role))
     }
   }
 

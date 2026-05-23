@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { AppSidebar } from '@/components/shared/app-sidebar'
 import { BottomNav } from '@/components/shared/navbar'
+import { NotificationPanel } from '@/components/shared/notification-panel'
 import { api } from '@/lib/api'
 import {
   HomeIcon, MarketIcon, PledgeIcon, OrdersIcon,
@@ -21,11 +22,14 @@ const NAV: NavItem[] = [
 ]
 
 export default function BuyerLayout({ children }: { children: React.ReactNode }) {
-  const [collapsed,  setCollapsed]  = useState(false)
-  const [badgeCount, setBadgeCount] = useState(0)
+  const [collapsed,   setCollapsed]   = useState(false)
+  const [notifOpen,   setNotifOpen]   = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [badgeCount,  setBadgeCount]  = useState(0)
 
   useEffect(() => {
     function poll() {
+      api.get('/notifications?page=1').then(r => setUnreadCount(r.data.unreadCount ?? 0)).catch(() => {})
       api.get('/navigation/badges').then(r => setBadgeCount(r.data.data?.badgeCount ?? 0)).catch(() => {})
     }
     poll()
@@ -40,13 +44,19 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
         portalLabel="Buyer Portal"
         collapsed={collapsed}
         onToggleCollapse={() => setCollapsed(c => !c)}
+        unreadNotifications={unreadCount}
+        onNotificationsClick={() => setNotifOpen(true)}
         navBadges={{ '/buyer/orders': badgeCount }}
       />
       <div className={`flex-1 transition-all duration-300 ease-in-out
                        ${collapsed ? 'lg:ml-[72px]' : 'lg:ml-64'}`}>
         {children}
       </div>
-      <BottomNav />
+      <BottomNav unreadCount={unreadCount} onBellClick={() => setNotifOpen(true)} />
+      <NotificationPanel
+        isOpen={notifOpen}
+        onClose={() => { setNotifOpen(false); setUnreadCount(0) }}
+      />
     </div>
   )
 }
