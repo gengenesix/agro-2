@@ -64,13 +64,14 @@ export async function POST(req: NextRequest) {
     data:  { status: 'DISPUTED' },
   })
 
-  // Notify admins — fire-and-forget notification record
+  // Notify the farmer-seller that their escrow is under dispute — fire-and-forget
   prisma.notification.create({
     data: {
       userId:  escrow.farmerId,
       type:    'escrow_disputed',
       title:   'Escrow dispute raised',
       body:    `A dispute has been raised on order ${orderId}: ${reason}`,
+      data:    { actionUrl: '/orders' },
       channel: 'in_app',
     },
   }).catch(() => undefined)
