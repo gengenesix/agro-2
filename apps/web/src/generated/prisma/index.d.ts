@@ -9449,6 +9449,7 @@ export namespace Prisma {
     mobileMoneyNetwork: string | null
     bankAccountNumber: string | null
     bankName: string | null
+    verificationRequestedAt: Date | null
     fieldVerifiedAt: Date | null
     fieldAgentId: string | null
     kycFrontPhotoUrl: string | null
@@ -9472,6 +9473,7 @@ export namespace Prisma {
     mobileMoneyNetwork: string | null
     bankAccountNumber: string | null
     bankName: string | null
+    verificationRequestedAt: Date | null
     fieldVerifiedAt: Date | null
     fieldAgentId: string | null
     kycFrontPhotoUrl: string | null
@@ -9499,6 +9501,7 @@ export namespace Prisma {
     mobileMoneyNetwork: number
     bankAccountNumber: number
     bankName: number
+    verificationRequestedAt: number
     fieldVerifiedAt: number
     fieldAgentId: number
     kycFrontPhotoUrl: number
@@ -9536,6 +9539,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: true
     bankAccountNumber?: true
     bankName?: true
+    verificationRequestedAt?: true
     fieldVerifiedAt?: true
     fieldAgentId?: true
     kycFrontPhotoUrl?: true
@@ -9559,6 +9563,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: true
     bankAccountNumber?: true
     bankName?: true
+    verificationRequestedAt?: true
     fieldVerifiedAt?: true
     fieldAgentId?: true
     kycFrontPhotoUrl?: true
@@ -9586,6 +9591,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: true
     bankAccountNumber?: true
     bankName?: true
+    verificationRequestedAt?: true
     fieldVerifiedAt?: true
     fieldAgentId?: true
     kycFrontPhotoUrl?: true
@@ -9700,6 +9706,7 @@ export namespace Prisma {
     mobileMoneyNetwork: string | null
     bankAccountNumber: string | null
     bankName: string | null
+    verificationRequestedAt: Date | null
     fieldVerifiedAt: Date | null
     fieldAgentId: string | null
     kycFrontPhotoUrl: string | null
@@ -9746,6 +9753,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: boolean
     bankAccountNumber?: boolean
     bankName?: boolean
+    verificationRequestedAt?: boolean
     fieldVerifiedAt?: boolean
     fieldAgentId?: boolean
     kycFrontPhotoUrl?: boolean
@@ -9775,6 +9783,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: boolean
     bankAccountNumber?: boolean
     bankName?: boolean
+    verificationRequestedAt?: boolean
     fieldVerifiedAt?: boolean
     fieldAgentId?: boolean
     kycFrontPhotoUrl?: boolean
@@ -9804,6 +9813,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: boolean
     bankAccountNumber?: boolean
     bankName?: boolean
+    verificationRequestedAt?: boolean
     fieldVerifiedAt?: boolean
     fieldAgentId?: boolean
     kycFrontPhotoUrl?: boolean
@@ -9846,6 +9856,7 @@ export namespace Prisma {
       mobileMoneyNetwork: string | null
       bankAccountNumber: string | null
       bankName: string | null
+      verificationRequestedAt: Date | null
       fieldVerifiedAt: Date | null
       fieldAgentId: string | null
       kycFrontPhotoUrl: string | null
@@ -10265,6 +10276,7 @@ export namespace Prisma {
     readonly mobileMoneyNetwork: FieldRef<"FarmerProfile", 'String'>
     readonly bankAccountNumber: FieldRef<"FarmerProfile", 'String'>
     readonly bankName: FieldRef<"FarmerProfile", 'String'>
+    readonly verificationRequestedAt: FieldRef<"FarmerProfile", 'DateTime'>
     readonly fieldVerifiedAt: FieldRef<"FarmerProfile", 'DateTime'>
     readonly fieldAgentId: FieldRef<"FarmerProfile", 'String'>
     readonly kycFrontPhotoUrl: FieldRef<"FarmerProfile", 'String'>
@@ -29348,6 +29360,7 @@ export namespace Prisma {
     mobileMoneyNetwork: 'mobileMoneyNetwork',
     bankAccountNumber: 'bankAccountNumber',
     bankName: 'bankName',
+    verificationRequestedAt: 'verificationRequestedAt',
     fieldVerifiedAt: 'fieldVerifiedAt',
     fieldAgentId: 'fieldAgentId',
     kycFrontPhotoUrl: 'kycFrontPhotoUrl',
@@ -30611,6 +30624,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: StringNullableFilter<"FarmerProfile"> | string | null
     bankAccountNumber?: StringNullableFilter<"FarmerProfile"> | string | null
     bankName?: StringNullableFilter<"FarmerProfile"> | string | null
+    verificationRequestedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
     fieldVerifiedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
     fieldAgentId?: UuidNullableFilter<"FarmerProfile"> | string | null
     kycFrontPhotoUrl?: StringNullableFilter<"FarmerProfile"> | string | null
@@ -30640,6 +30654,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: SortOrderInput | SortOrder
     bankAccountNumber?: SortOrderInput | SortOrder
     bankName?: SortOrderInput | SortOrder
+    verificationRequestedAt?: SortOrderInput | SortOrder
     fieldVerifiedAt?: SortOrderInput | SortOrder
     fieldAgentId?: SortOrderInput | SortOrder
     kycFrontPhotoUrl?: SortOrderInput | SortOrder
@@ -30672,6 +30687,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: StringNullableFilter<"FarmerProfile"> | string | null
     bankAccountNumber?: StringNullableFilter<"FarmerProfile"> | string | null
     bankName?: StringNullableFilter<"FarmerProfile"> | string | null
+    verificationRequestedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
     fieldVerifiedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
     fieldAgentId?: UuidNullableFilter<"FarmerProfile"> | string | null
     kycFrontPhotoUrl?: StringNullableFilter<"FarmerProfile"> | string | null
@@ -30701,6 +30717,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: SortOrderInput | SortOrder
     bankAccountNumber?: SortOrderInput | SortOrder
     bankName?: SortOrderInput | SortOrder
+    verificationRequestedAt?: SortOrderInput | SortOrder
     fieldVerifiedAt?: SortOrderInput | SortOrder
     fieldAgentId?: SortOrderInput | SortOrder
     kycFrontPhotoUrl?: SortOrderInput | SortOrder
@@ -30736,6 +30753,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: StringNullableWithAggregatesFilter<"FarmerProfile"> | string | null
     bankAccountNumber?: StringNullableWithAggregatesFilter<"FarmerProfile"> | string | null
     bankName?: StringNullableWithAggregatesFilter<"FarmerProfile"> | string | null
+    verificationRequestedAt?: DateTimeNullableWithAggregatesFilter<"FarmerProfile"> | Date | string | null
     fieldVerifiedAt?: DateTimeNullableWithAggregatesFilter<"FarmerProfile"> | Date | string | null
     fieldAgentId?: UuidNullableWithAggregatesFilter<"FarmerProfile"> | string | null
     kycFrontPhotoUrl?: StringNullableWithAggregatesFilter<"FarmerProfile"> | string | null
@@ -33037,6 +33055,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: string | null
     bankAccountNumber?: string | null
     bankName?: string | null
+    verificationRequestedAt?: Date | string | null
     fieldVerifiedAt?: Date | string | null
     kycFrontPhotoUrl?: string | null
     kycBackPhotoUrl?: string | null
@@ -33065,6 +33084,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: string | null
     bankAccountNumber?: string | null
     bankName?: string | null
+    verificationRequestedAt?: Date | string | null
     fieldVerifiedAt?: Date | string | null
     fieldAgentId?: string | null
     kycFrontPhotoUrl?: string | null
@@ -33091,6 +33111,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33119,6 +33140,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldAgentId?: NullableStringFieldUpdateOperationsInput | string | null
     kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33146,6 +33168,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: string | null
     bankAccountNumber?: string | null
     bankName?: string | null
+    verificationRequestedAt?: Date | string | null
     fieldVerifiedAt?: Date | string | null
     fieldAgentId?: string | null
     kycFrontPhotoUrl?: string | null
@@ -33172,6 +33195,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33198,6 +33222,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldAgentId?: NullableStringFieldUpdateOperationsInput | string | null
     kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -35894,6 +35919,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: SortOrder
     bankAccountNumber?: SortOrder
     bankName?: SortOrder
+    verificationRequestedAt?: SortOrder
     fieldVerifiedAt?: SortOrder
     fieldAgentId?: SortOrder
     kycFrontPhotoUrl?: SortOrder
@@ -35923,6 +35949,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: SortOrder
     bankAccountNumber?: SortOrder
     bankName?: SortOrder
+    verificationRequestedAt?: SortOrder
     fieldVerifiedAt?: SortOrder
     fieldAgentId?: SortOrder
     kycFrontPhotoUrl?: SortOrder
@@ -35946,6 +35973,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: SortOrder
     bankAccountNumber?: SortOrder
     bankName?: SortOrder
+    verificationRequestedAt?: SortOrder
     fieldVerifiedAt?: SortOrder
     fieldAgentId?: SortOrder
     kycFrontPhotoUrl?: SortOrder
@@ -41978,6 +42006,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: string | null
     bankAccountNumber?: string | null
     bankName?: string | null
+    verificationRequestedAt?: Date | string | null
     fieldVerifiedAt?: Date | string | null
     kycFrontPhotoUrl?: string | null
     kycBackPhotoUrl?: string | null
@@ -42004,6 +42033,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: string | null
     bankAccountNumber?: string | null
     bankName?: string | null
+    verificationRequestedAt?: Date | string | null
     fieldVerifiedAt?: Date | string | null
     fieldAgentId?: string | null
     kycFrontPhotoUrl?: string | null
@@ -42672,6 +42702,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: string | null
     bankAccountNumber?: string | null
     bankName?: string | null
+    verificationRequestedAt?: Date | string | null
     fieldVerifiedAt?: Date | string | null
     kycFrontPhotoUrl?: string | null
     kycBackPhotoUrl?: string | null
@@ -42699,6 +42730,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: string | null
     bankAccountNumber?: string | null
     bankName?: string | null
+    verificationRequestedAt?: Date | string | null
     fieldVerifiedAt?: Date | string | null
     kycFrontPhotoUrl?: string | null
     kycBackPhotoUrl?: string | null
@@ -42813,6 +42845,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42839,6 +42872,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldAgentId?: NullableStringFieldUpdateOperationsInput | string | null
     kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43293,6 +43327,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: StringNullableFilter<"FarmerProfile"> | string | null
     bankAccountNumber?: StringNullableFilter<"FarmerProfile"> | string | null
     bankName?: StringNullableFilter<"FarmerProfile"> | string | null
+    verificationRequestedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
     fieldVerifiedAt?: DateTimeNullableFilter<"FarmerProfile"> | Date | string | null
     fieldAgentId?: UuidNullableFilter<"FarmerProfile"> | string | null
     kycFrontPhotoUrl?: StringNullableFilter<"FarmerProfile"> | string | null
@@ -50211,6 +50246,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: string | null
     bankAccountNumber?: string | null
     bankName?: string | null
+    verificationRequestedAt?: Date | string | null
     fieldVerifiedAt?: Date | string | null
     kycFrontPhotoUrl?: string | null
     kycBackPhotoUrl?: string | null
@@ -50903,6 +50939,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50930,6 +50967,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50956,6 +50994,7 @@ export namespace Prisma {
     mobileMoneyNetwork?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationRequestedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     fieldVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     kycFrontPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     kycBackPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null

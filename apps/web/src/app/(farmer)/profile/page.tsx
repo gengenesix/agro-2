@@ -15,14 +15,15 @@ import { GHANA_REGIONS }      from '@/lib/types'
 import { FarmLocationMap }    from '@/components/shared/farm-location-map'
 
 interface FarmerProfile {
-  farmName:          string | null
-  farmSizeAcres:     number | null
-  gpsLat:            number | null
-  gpsLng:            number | null
-  sectors:           string[]
-  farmPhotos:        string[]
-  mobileMoneyNumber: string | null
-  nationalId:        string | null
+  farmName:                string | null
+  farmSizeAcres:           number | null
+  gpsLat:                  number | null
+  gpsLng:                  number | null
+  sectors:                 string[]
+  farmPhotos:              string[]
+  mobileMoneyNumber:       string | null
+  nationalId:              string | null
+  verificationRequestedAt: string | null
 }
 
 const SECTORS = [
@@ -79,6 +80,10 @@ export default function ProfilePage() {
   const [nationalId, setNationalId]       = useState('')
   const [kycSection, setKycSection]       = useState(false)
 
+  const [verificationRequestedAt, setVerificationRequestedAt] = useState<string | null>(null)
+  const [requestingVerification,  setRequestingVerification]  = useState(false)
+  const [requestVerifError,       setRequestVerifError]       = useState('')
+
   useEffect(() => {
     if (user) {
       setName(user.fullName ?? '')
@@ -100,6 +105,7 @@ export default function ProfilePage() {
         setFarmPhotos(d.farmPhotos ?? [])
         setMobileMoneyNumber(d.mobileMoneyNumber ?? '')
         setNationalId(d.nationalId ?? '')
+        setVerificationRequestedAt(d.verificationRequestedAt ?? null)
       }
     }).catch(() => {})
   }, [])
@@ -196,6 +202,21 @@ export default function ProfilePage() {
     }
   }
 
+  async function requestVerification() {
+    setRequestingVerification(true)
+    setRequestVerifError('')
+    try {
+      const res = await api.patch('/users/me/request-verification')
+      setVerificationRequestedAt(res.data.data.verificationRequestedAt)
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { error?: string } } })
+        ?.response?.data?.error ?? 'Failed to submit request. Please try again.'
+      setRequestVerifError(msg)
+    } finally {
+      setRequestingVerification(false)
+    }
+  }
+
     if (!user) return null
 
     const verificationLevel  = user.verificationLevel ?? 'unverified'
@@ -210,8 +231,11 @@ export default function ProfilePage() {
       { label: 'Mobile Money linked',   done: !!mobileMoneyNumber },
       { label: '2+ farm photos',        done: farmPhotos.length >= 2 },
     ]
-    const completenessScore = completeness.filter(c => c.done).length
+    const completenessScore      = completeness.filter(c => c.done).length
     const allDoneForSelfDeclared = completenessScore >= 4
+
+    // Requirements for requesting a field agent visit
+    const canRequestVerification = !!gps && !!nationalId && farmPhotos.length >= 2
 
   return (
     <main className="min-h-screen bg-cream pb-24">
@@ -625,6 +649,66 @@ export default function ProfilePage() {
                 Submit Ghana Card &amp; selfie for KYC
                 <ChevronRightIcon size={11} />
               </Link>
+            )}
+
+            {/* Request field agent visit */}
+            {currentLevelIndex < 2 && (
+              <div className="mt-3 pt-3 border-t border-current/10">
+                {verificationRequestedAt ? (
+                  <div className="flex items-center gap-2 px-3 py-2.5 bg-amber-50
+                                  border border-amber-200 rounded-xl">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0 animate-pulse" />
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-bold text-amber-800">
+                        Verification requested
+                      </p>
+                      <p className="text-[10px] text-amber-600 mt-0.5">
+                        A field agent in your region will visit your farm soon.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-[11px] text-current/70 mb-2">
+                      Ready for a field agent to visit? Requires GPS, Ghana Card, and 2+ photos.
+                    </p>
+                    {requestVerifError && (
+                      <p className="text-[11px] text-red-500 mb-2">{requestVerifError}</p>
+                    )}
+                    <button
+                      onClick={requestVerification}
+                      disabled={!canRequestVerification || requestingVerification}
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-bold
+                                 transition-colors disabled:opacity-50
+                                 bg-amber-500 text-white hover:bg-amber-600 disabled:cursor-not-allowed"
+                    >
+                      {requestingVerification ? (
+                        <><LoadingIcon size={12} className="animate-spin" /> Submitting…</>
+                      ) : (
+                        <>
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                               strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"
+                               className="w-3.5 h-3.5">
+                            <path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5Z" />
+                            <circle cx="8" cy="6" r="1.5" />
+                          </svg>
+                          Request field agent visit
+                        </>
+                      )}
+                    </button>
+                    {!canRequestVerification && (
+                      <p className="text-[10px] text-current/50 mt-1.5">
+                        Missing:{' '}
+                        {[
+                          !gps          && 'GPS location',
+                          !nationalId   && 'Ghana Card number',
+                          farmPhotos.length < 2 && `${2 - farmPhotos.length} more photo${farmPhotos.length === 1 ? '' : 's'}`,
+                        ].filter(Boolean).join(' · ')}
+                      </p>
+                    )}
+                  </>
+                )}
+              </div>
             )}
           </div>
 

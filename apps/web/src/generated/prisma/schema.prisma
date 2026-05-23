@@ -306,31 +306,32 @@ model Profile {
 }
 
 model FarmerProfile {
-  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId             String    @unique @map("user_id") @db.Uuid
-  farmName           String?   @map("farm_name")
-  farmSizeAcres      Decimal?  @map("farm_size_acres") @db.Decimal(10, 2)
-  gpsLat             Decimal?  @map("gps_lat") @db.Decimal(10, 8)
-  gpsLng             Decimal?  @map("gps_lng") @db.Decimal(11, 8)
-  sectors            String[]  @default([])
-  primaryProducts    String[]  @default([]) @map("primary_products")
-  farmingMethods     String[]  @default([]) @map("farming_methods")
-  farmPhotos         String[]  @default([]) @map("farm_photos")
-  nationalId         String?   @map("national_id")
-  mobileMoneyNumber  String?   @map("mobile_money_number")
-  mobileMoneyNetwork String?   @map("mobile_money_network")
-  bankAccountNumber  String?   @map("bank_account_number")
-  bankName           String?   @map("bank_name")
-  fieldVerifiedAt    DateTime? @map("field_verified_at")
-  fieldAgentId       String?   @map("field_agent_id") @db.Uuid
+  id                      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                  String    @unique @map("user_id") @db.Uuid
+  farmName                String?   @map("farm_name")
+  farmSizeAcres           Decimal?  @map("farm_size_acres") @db.Decimal(10, 2)
+  gpsLat                  Decimal?  @map("gps_lat") @db.Decimal(10, 8)
+  gpsLng                  Decimal?  @map("gps_lng") @db.Decimal(11, 8)
+  sectors                 String[]  @default([])
+  primaryProducts         String[]  @default([]) @map("primary_products")
+  farmingMethods          String[]  @default([]) @map("farming_methods")
+  farmPhotos              String[]  @default([]) @map("farm_photos")
+  nationalId              String?   @map("national_id")
+  mobileMoneyNumber       String?   @map("mobile_money_number")
+  mobileMoneyNetwork      String?   @map("mobile_money_network")
+  bankAccountNumber       String?   @map("bank_account_number")
+  bankName                String?   @map("bank_name")
+  verificationRequestedAt DateTime? @map("verification_requested_at")
+  fieldVerifiedAt         DateTime? @map("field_verified_at")
+  fieldAgentId            String?   @map("field_agent_id") @db.Uuid
   // KYC document uploads
-  kycFrontPhotoUrl   String?   @map("kyc_front_photo_url")
-  kycBackPhotoUrl    String?   @map("kyc_back_photo_url")
-  kycSelfieUrl       String?   @map("kyc_selfie_url")
-  kycStatus          String    @default("not_submitted") @map("kyc_status")
-  kycSubmittedAt     DateTime? @map("kyc_submitted_at")
-  kycRejectedReason  String?   @map("kyc_rejected_reason")
-  createdAt          DateTime  @default(now()) @map("created_at")
+  kycFrontPhotoUrl        String?   @map("kyc_front_photo_url")
+  kycBackPhotoUrl         String?   @map("kyc_back_photo_url")
+  kycSelfieUrl            String?   @map("kyc_selfie_url")
+  kycStatus               String    @default("not_submitted") @map("kyc_status")
+  kycSubmittedAt          DateTime? @map("kyc_submitted_at")
+  kycRejectedReason       String?   @map("kyc_rejected_reason")
+  createdAt               DateTime  @default(now()) @map("created_at")
 
   user       Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
   fieldAgent Profile? @relation("VerifiedByAgent", fields: [fieldAgentId], references: [id])

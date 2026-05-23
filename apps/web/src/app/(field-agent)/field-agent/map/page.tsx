@@ -11,13 +11,14 @@ import type { MapFarmer, AgentLocation } from '@/components/field-agent/farm-map
 const FarmMap = dynamic(() => import('@/components/field-agent/farm-map'), { ssr: false })
 
 interface Farmer {
-  id:              string
-  userId:          string
-  farmName:        string | null
-  gpsLat:          number | null
-  gpsLng:          number | null
-  fieldVerifiedAt: string | null
-  createdAt:       string
+  id:                      string
+  userId:                  string
+  farmName:                string | null
+  gpsLat:                  number | null
+  gpsLng:                  number | null
+  fieldVerifiedAt:         string | null
+  verificationRequestedAt: string | null
+  createdAt:               string
   user: {
     id:                string
     fullName:          string
@@ -77,17 +78,25 @@ function MapPageInner() {
       : null
 
   const mapFarmers: MapFarmer[] = farmers.map(f => ({
-    id:     f.id,
-    gpsLat: f.gpsLat,
-    gpsLng: f.gpsLng,
-    user:   { fullName: f.user.fullName },
+    id:                     f.id,
+    gpsLat:                 f.gpsLat,
+    gpsLng:                 f.gpsLng,
+    user:                   { fullName: f.user.fullName },
+    verificationRequested:  f.verificationRequestedAt != null,
   }))
 
   const selectedMapFarmer: MapFarmer | null = selected
-    ? { id: selected.id, gpsLat: selected.gpsLat, gpsLng: selected.gpsLng, user: { fullName: selected.user.fullName } }
+    ? {
+        id:                    selected.id,
+        gpsLat:                selected.gpsLat,
+        gpsLng:                selected.gpsLng,
+        user:                  { fullName: selected.user.fullName },
+        verificationRequested: selected.verificationRequestedAt != null,
+      }
     : null
 
-  const gpsCount = farmers.filter(f => f.gpsLat != null).length
+  const gpsCount       = farmers.filter(f => f.gpsLat != null).length
+  const requestedCount = farmers.filter(f => f.verificationRequestedAt != null).length
 
   return (
     <div className="space-y-4">
@@ -98,7 +107,7 @@ function MapPageInner() {
           <p className="text-sm text-muted-foreground mt-0.5">
             {loading
               ? 'Loading farmers…'
-              : `${farmers.length} unverified · ${gpsCount} with GPS coordinates`}
+              : `${requestedCount} requested · ${gpsCount} with GPS coordinates`}
           </p>
         </div>
         <button
@@ -130,10 +139,19 @@ function MapPageInner() {
           <div className="absolute bottom-4 right-4 z-[400] pointer-events-none">
             <div className="bg-white/90 backdrop-blur-sm border border-border rounded-xl
                             px-3 py-2 shadow-sm space-y-1">
+              {requestedCount > 0 && (
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full border-2 border-white"
+                       style={{ background: '#d97706' }} />
+                  <span className="text-[10px] font-semibold text-forest">
+                    {requestedCount} verification requested
+                  </span>
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-forest border-2 border-white" />
                 <span className="text-[10px] font-semibold text-forest">
-                  {farmers.length} awaiting verification
+                  {farmers.length} in queue
                 </span>
               </div>
               {agentLoc && (

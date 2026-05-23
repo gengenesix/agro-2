@@ -321,6 +321,7 @@ model FarmerProfile {
   mobileMoneyNetwork  String?  @map("mobile_money_network")
   bankAccountNumber   String?  @map("bank_account_number")
   bankName            String?  @map("bank_name")
+  verificationRequestedAt DateTime? @map("verification_requested_at")
   fieldVerifiedAt     DateTime? @map("field_verified_at")
   fieldAgentId        String?   @map("field_agent_id") @db.Uuid
   // KYC document uploads

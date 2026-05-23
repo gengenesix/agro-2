@@ -6,10 +6,11 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 export interface MapFarmer {
-  id:      string
-  gpsLat:  number | null
-  gpsLng:  number | null
-  user:    { fullName: string }
+  id:                      string
+  gpsLat:                  number | null
+  gpsLng:                  number | null
+  user:                    { fullName: string }
+  verificationRequested?:  boolean
 }
 
 export interface AgentLocation {
@@ -26,6 +27,7 @@ interface FarmMapProps {
 // Ghana geographic center
 const GHANA: L.LatLngTuple = [7.9465, -1.0232]
 
+// Standard solid circle pin
 function pin(color: string, size: number): L.DivIcon {
   return L.divIcon({
     className:  '',
@@ -34,6 +36,29 @@ function pin(color: string, size: number): L.DivIcon {
     html: `<div style="width:${size}px;height:${size}px;border-radius:50%;
       background:${color};border:3px solid #fff;
       box-shadow:0 2px 8px rgba(0,0,0,0.32)"></div>`,
+  })
+}
+
+// Gold pulsing pin for farmers who explicitly requested a visit.
+// The pulse ring is rendered via a CSS animation injected into the document head.
+function goldPulsePin(size: number, isSelected: boolean): L.DivIcon {
+  const ring  = size + 16        // pulse halo extends 8px each side
+  const color = isSelected ? '#f59e0b' : '#d97706'   // amber-400 : amber-600
+  return L.divIcon({
+    className:  '',
+    iconSize:   [ring, ring],
+    iconAnchor: [ring / 2, ring / 2],
+    html: `
+      <div style="width:${ring}px;height:${ring}px;position:relative;
+                  display:flex;align-items:center;justify-content:center">
+        <div style="position:absolute;width:${ring}px;height:${ring}px;border-radius:50%;
+                    background:${color};opacity:0.35;
+                    animation:agro-pulse 1.8s ease-in-out infinite"></div>
+        <div style="width:${size}px;height:${size}px;border-radius:50%;
+                    background:${color};border:3px solid #fff;
+                    box-shadow:0 2px 10px rgba(217,119,6,0.55);
+                    position:relative;z-index:1"></div>
+      </div>`,
   })
 }
 
@@ -71,6 +96,22 @@ function MapController({
 export default function FarmMap({ farmers, selected, agentLoc }: FarmMapProps) {
   const plotted = farmers.filter(f => f.gpsLat != null && f.gpsLng != null)
 
+  // Inject keyframes for the gold pulse animation once per mount
+  useEffect(() => {
+    const id    = 'agro-pulse-keyframes'
+    if (document.getElementById(id)) return
+    const style = document.createElement('style')
+    style.id    = id
+    style.textContent = `
+      @keyframes agro-pulse {
+        0%   { transform: scale(0.85); opacity: 0.55; }
+        50%  { transform: scale(1.4);  opacity: 0;    }
+        100% { transform: scale(0.85); opacity: 0;    }
+      }
+    `
+    document.head.appendChild(style)
+  }, [])
+
   return (
     <MapContainer
       center={GHANA}
@@ -82,21 +123,32 @@ export default function FarmMap({ farmers, selected, agentLoc }: FarmMapProps) {
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <MapController selected={selected} agentLoc={agentLoc} />
 
-      {plotted.map(f => (
-        <Marker
-          key={f.id}
-          position={[f.gpsLat!, f.gpsLng!]}
-          icon={pin(
-            selected?.id === f.id ? '#7ecb20' : '#1a4731',
-            selected?.id === f.id ? 20 : 12,
-          )}
-          zIndexOffset={selected?.id === f.id ? 1000 : 0}
-        >
-          <Tooltip direction="top" offset={[0, -8]} opacity={0.95}>
-            <span style={{ fontSize: 12, fontWeight: 600 }}>{f.user.fullName}</span>
-          </Tooltip>
-        </Marker>
-      ))}
+      {plotted.map(f => {
+        const isSelected  = selected?.id === f.id
+        const isRequested = !!f.verificationRequested
+
+        return (
+          <Marker
+            key={f.id}
+            position={[f.gpsLat!, f.gpsLng!]}
+            icon={
+              isRequested
+                ? goldPulsePin(isSelected ? 20 : 14, isSelected)
+                : pin(isSelected ? '#7ecb20' : '#1a4731', isSelected ? 20 : 12)
+            }
+            zIndexOffset={isSelected ? 1000 : isRequested ? 500 : 0}
+          >
+            <Tooltip direction="top" offset={[0, -8]} opacity={0.95}>
+              <span style={{ fontSize: 12, fontWeight: 600 }}>{f.user.fullName}</span>
+              {isRequested && (
+                <span style={{ fontSize: 10, marginLeft: 6, color: '#d97706', fontWeight: 700 }}>
+                  Requested
+                </span>
+              )}
+            </Tooltip>
+          </Marker>
+        )
+      })}
 
       {agentLoc && (
         <Marker

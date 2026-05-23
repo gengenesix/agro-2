@@ -16,9 +16,12 @@ export async function GET(req: NextRequest) {
   const where =
     filter === 'pending'
       ? {
-          role:              'farmer'      as const,
+          // Only surface farmers who explicitly requested a field agent visit,
+          // are still unverified, and sit in the agent's region.
+          role:              'farmer' as const,
           verificationLevel: 'unverified' as const,
           ...(profile.regionId ? { regionId: profile.regionId } : {}),
+          farmerProfile: { verificationRequestedAt: { not: null } },
         }
       : {
           role:          'farmer' as const,
@@ -35,11 +38,12 @@ export async function GET(req: NextRequest) {
       include: {
         farmerProfile: {
           select: {
-            id:              true,
-            farmName:        true,
-            gpsLat:          true,
-            gpsLng:          true,
-            fieldVerifiedAt: true,
+            id:                      true,
+            farmName:                true,
+            gpsLat:                  true,
+            gpsLng:                  true,
+            fieldVerifiedAt:         true,
+            verificationRequestedAt: true,
           },
         },
       },
@@ -62,13 +66,14 @@ export async function GET(req: NextRequest) {
     success: true,
     data: {
       farmers: farmers.map(f => ({
-        id:              f.farmerProfile?.id ?? f.id,
-        userId:          f.id,
-        farmName:        f.farmerProfile?.farmName      ?? null,
-        gpsLat:          f.farmerProfile?.gpsLat        != null ? Number(f.farmerProfile.gpsLat)  : null,
-        gpsLng:          f.farmerProfile?.gpsLng        != null ? Number(f.farmerProfile.gpsLng)  : null,
-        fieldVerifiedAt: f.farmerProfile?.fieldVerifiedAt?.toISOString() ?? null,
-        createdAt:       f.createdAt.toISOString(),
+        id:                      f.farmerProfile?.id ?? f.id,
+        userId:                  f.id,
+        farmName:                f.farmerProfile?.farmName      ?? null,
+        gpsLat:                  f.farmerProfile?.gpsLat        != null ? Number(f.farmerProfile.gpsLat)  : null,
+        gpsLng:                  f.farmerProfile?.gpsLng        != null ? Number(f.farmerProfile.gpsLng)  : null,
+        fieldVerifiedAt:         f.farmerProfile?.fieldVerifiedAt?.toISOString() ?? null,
+        verificationRequestedAt: f.farmerProfile?.verificationRequestedAt?.toISOString() ?? null,
+        createdAt:               f.createdAt.toISOString(),
         user: {
           id:                f.id,
           fullName:          f.fullName,

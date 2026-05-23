@@ -195,6 +195,7 @@ exports.Prisma.FarmerProfileScalarFieldEnum = {
   mobileMoneyNetwork: 'mobileMoneyNetwork',
   bankAccountNumber: 'bankAccountNumber',
   bankName: 'bankName',
+  verificationRequestedAt: 'verificationRequestedAt',
   fieldVerifiedAt: 'fieldVerifiedAt',
   fieldAgentId: 'fieldAgentId',
   kycFrontPhotoUrl: 'kycFrontPhotoUrl',

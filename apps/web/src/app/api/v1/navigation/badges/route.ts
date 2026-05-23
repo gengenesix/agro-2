@@ -56,12 +56,15 @@ export async function GET(req: NextRequest) {
       },
     })
   } else if (profile.role === 'field_agent') {
-    // Unverified farmers in the agent's region waiting for field verification
-    badgeCount = await prisma.profile.count({
+    // Farmers who explicitly requested a field visit — highest-priority queue for agents
+    badgeCount = await prisma.farmerProfile.count({
       where: {
-        role:              'farmer',
-        verificationLevel: 'unverified',
-        ...(profile.regionId ? { regionId: profile.regionId } : {}),
+        verificationRequestedAt: { not: null },
+        user: {
+          role:              'farmer',
+          verificationLevel: 'unverified',
+          ...(profile.regionId ? { regionId: profile.regionId } : {}),
+        },
       },
     })
   }
