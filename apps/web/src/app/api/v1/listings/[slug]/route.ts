@@ -216,3 +216,69 @@ export async function PUT(
     )
   }
 }
+
+// PATCH is an alias for PUT — both verbs are supported so that any HTTP client
+// sending either method reaches the same update logic without a 405 response.
+export async function PATCH(
+  req: NextRequest,
+  context: { params: Promise<{ slug: string }> },
+) {
+  return PUT(req, context)
+}
+
+// Soft-delete: sets status → 'removed' so the listing is hidden from all buyers
+// while preserving foreign-key references from existing orders and payments.
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> },
+) {
+  const profile = await getAuthProfile(req)
+  if (!profile) {
+    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const { slug: id } = await params
+
+  // Resolve by UUID (dealer flow) or slug (farmer flow).
+  const existing = await prisma.listing.findFirst({
+    where: {
+      OR: [
+        { id,   sellerId: profile.id },
+        { slug: id, sellerId: profile.id },
+      ],
+    },
+  })
+  if (!existing) {
+    return NextResponse.json({ success: false, error: 'Listing not found' }, { status: 404 })
+  }
+
+  // Block deletion when there are orders that have not yet been delivered or cancelled.
+  // Historic delivered/cancelled orders are unaffected — their FK still resolves.
+  const activeOrderCount = await prisma.order.count({
+    where: {
+      listingId:      existing.id,
+      trackingStatus: { notIn: ['delivered', 'cancelled'] },
+    },
+  })
+  if (activeOrderCount > 0) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `Cannot delete: ${activeOrderCount} active order${activeOrderCount > 1 ? 's' : ''} still in progress. Complete or cancel them first.`,
+      },
+      { status: 409 },
+    )
+  }
+
+  try {
+    await prisma.listing.update({
+      where: { id: existing.id },
+      data:  { status: 'removed' },
+    })
+    return NextResponse.json({ success: true })
+  } catch (err) {
+    console.error('[DELETE /listings] soft-delete failed:', err)
+    const message = err instanceof Error ? err.message : 'Database error'
+    return NextResponse.json({ success: false, error: message }, { status: 500 })
+  }
+}

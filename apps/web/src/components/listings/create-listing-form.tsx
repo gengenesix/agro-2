@@ -59,7 +59,9 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
   const fileRef             = useRef<HTMLInputElement>(null)
   const [photos, setPhotos] = useState<string[]>(initialPhotos ?? [])
   const [uploading, setUploading] = useState(false)
-  const [error, setError]   = useState('')
+  const [error, setError]         = useState('')
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleting, setDeleting]           = useState(false)
 
   const {
     register, handleSubmit, watch, setValue,
@@ -84,6 +86,21 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
       setPhotos(p => [...p, ...data.data.urls])
     } finally {
       setUploading(false)
+    }
+  }
+
+  async function handleDelete() {
+    if (!listingId) return
+    setDeleting(true)
+    setError('')
+    try {
+      await api.delete(`/listings/${listingId}`)
+      router.push(isDealer ? '/dealer/listings' : '/listings')
+    } catch (err: any) {
+      setError(err.response?.data?.error ?? 'Failed to delete listing. Try again.')
+      setConfirmDelete(false)
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -287,6 +304,52 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
         <p className="text-xs text-red-600 bg-red-50 border border-red-200 px-4 py-3 rounded-xl">
           {error}
         </p>
+      )}
+
+      {listingId && (
+        <div className="bg-white rounded-2xl border border-red-200 p-5">
+          <h2 className="font-bold text-red-600 text-sm border-b border-red-100 pb-3 mb-4">Danger zone</h2>
+          {confirmDelete ? (
+            <div className="space-y-3">
+              <p className="text-sm text-forest font-semibold">
+                Are you sure? This listing will be removed and hidden from all buyers.
+                Active orders must be completed or cancelled first.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(false)}
+                  disabled={deleting}
+                  className="flex-1 py-2.5 border border-border text-forest text-sm font-bold rounded-xl
+                             hover:bg-cream transition-colors disabled:opacity-50"
+                >
+                  Keep listing
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="flex-1 py-2.5 bg-red-600 text-white text-sm font-bold rounded-xl
+                             hover:bg-red-700 active:scale-[0.98] transition-all
+                             disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {deleting ? (
+                    <><LoadingIcon size={16} className="animate-spin" /> Deleting…</>
+                  ) : 'Yes, delete listing'}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setConfirmDelete(true)}
+              className="w-full py-2.5 border border-red-300 text-red-600 text-sm font-bold rounded-xl
+                         hover:bg-red-50 active:scale-[0.98] transition-all"
+            >
+              Delete listing
+            </button>
+          )}
+        </div>
       )}
 
       <div className="flex gap-3 pb-10">
