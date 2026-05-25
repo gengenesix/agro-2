@@ -12,7 +12,14 @@ interface ListingCardProps {
   basePath?: string
 }
 
-const PLACEHOLDER = 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80&fit=crop'
+const SECTOR_FALLBACK: Record<string, string> = {
+  crops:     'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80&fit=crop',
+  livestock: 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=800&q=80&fit=crop',
+  poultry:   'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=800&q=80&fit=crop',
+  fisheries: 'https://images.unsplash.com/photo-1570367823578-74b3ef1eba96?w=800&q=80&fit=crop',
+  inputs:    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80&fit=crop',
+}
+const DEFAULT_FALLBACK = 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80&fit=crop'
 
 export function ListingCard({ listing, basePath = '/produce' }: ListingCardProps) {
   const isPledge = listing.listingType === 'harvest_pledge'
@@ -30,7 +37,7 @@ export function ListingCard({ listing, basePath = '/produce' }: ListingCardProps
       {/* Photo */}
       <div className="relative aspect-video overflow-hidden bg-cream-dark">
         <Image
-          src={listing.photos[0] ?? PLACEHOLDER}
+          src={listing.photos[0] || SECTOR_FALLBACK[listing.category.sector] || DEFAULT_FALLBACK}
           alt={listing.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
