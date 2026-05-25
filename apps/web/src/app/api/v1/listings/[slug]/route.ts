@@ -138,12 +138,18 @@ export async function PUT(req: NextRequest, context: RouteContext) {
     // Accept both UUID (dealer flow) and slug (farmer flow).
     const { slug: id } = await context.params
 
+    // PostgreSQL UUID columns reject non-UUID strings at the driver level —
+    // passing a slug like 'fresh-tomatoes-abc123' against the `id` column
+    // throws "invalid input syntax for type uuid". Guard the id arm so it
+    // is only included when the param is a well-formed UUID.
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
+
     const existing = await prisma.listing.findFirst({
       where: {
-        OR: [
-          { id,   sellerId: profile.id },
-          { slug: id, sellerId: profile.id },
-        ],
+        sellerId: profile.id,
+        OR: isUuid
+          ? [{ id }, { slug: id }]
+          : [{ slug: id }],
       },
     })
     if (!existing) {
@@ -224,12 +230,14 @@ export async function DELETE(req: NextRequest, context: RouteContext) {
 
     const { slug: id } = await context.params
 
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
+
     const existing = await prisma.listing.findFirst({
       where: {
-        OR: [
-          { id,   sellerId: profile.id },
-          { slug: id, sellerId: profile.id },
-        ],
+        sellerId: profile.id,
+        OR: isUuid
+          ? [{ id }, { slug: id }]
+          : [{ slug: id }],
       },
     })
     if (!existing) {
