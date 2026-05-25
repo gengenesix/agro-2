@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import Image             from 'next/image'
 import Link              from 'next/link'
+import { prisma }        from '@/lib/prisma'
 import { PortalTabs }    from './_components/portal-tabs'
 import {
   FadeUp, FadeIn, SlideLeft, SlideRight,
   StaggerGrid, StaggerItem,
+  Card3D, FloatUp,
 }                        from './_components/animate-in'
 
 export const metadata: Metadata = {
@@ -12,28 +14,7 @@ export const metadata: Metadata = {
   description: 'Escrow-backed produce trading, harvest pledge contracts, and certified field verification across all 16 regions of Ghana.',
 }
 
-// ─── Service cards ────────────────────────────────────────────────────────────
-
-const SERVICES = [
-  {
-    label:  'Fresh Tomatoes',
-    region: 'Ashanti Region',
-    price:  'GHS 2.50 / kg',
-    img:    'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400&q=80&fit=crop',
-  },
-  {
-    label:  'Volta Lake Tilapia',
-    region: 'Volta Region',
-    price:  'GHS 22.00 / kg',
-    img:    'https://images.unsplash.com/photo-1570367823578-74b3ef1eba96?w=400&q=80&fit=crop',
-  },
-  {
-    label:  'NPK 15-15-15 Fertiliser',
-    region: 'Greater Accra',
-    price:  'GHS 180.00 / bag',
-    img:    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80&fit=crop',
-  },
-]
+// ─── Static marketing stats (real copy, not mock data) ────────────────────────
 
 const STATS = [
   { value: '24,000+',  label: 'Registered Farmers' },
@@ -42,7 +23,7 @@ const STATS = [
   { value: '18,500+',  label: 'Live Listings'       },
 ]
 
-// ─── Pledge cards — updated images per mandate ───────────────────────────────
+// ─── Pledge framework cards ───────────────────────────────────────────────────
 
 const PLEDGE_CARDS = [
   {
@@ -61,77 +42,142 @@ const PLEDGE_CARDS = [
   },
 ]
 
-export default function LandingPage() {
+// ─── Sector fallback images (used when a listing has no photos) ───────────────
+
+const SECTOR_FALLBACK: Record<string, string> = {
+  crops:     'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80&fit=crop',
+  livestock: 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400&q=80&fit=crop',
+  poultry:   'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400&q=80&fit=crop',
+  fisheries: 'https://images.unsplash.com/photo-1570367823578-74b3ef1eba96?w=400&q=80&fit=crop',
+  inputs:    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80&fit=crop',
+}
+const DEFAULT_FALLBACK = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop'
+
+export default async function LandingPage() {
+
+  // Live listings — top 3 most-recently-created active listings
+  // Wrapped in try/catch so a cold DB never breaks the marketing page.
+  type LiveListing = {
+    id:          string
+    title:       string
+    slug:        string
+    pricePerUnit: number
+    photos:      string[]
+    category:    { name: string; sector: string }
+    unit:        { symbol: string }
+    region:      { name: string } | null
+  }
+
+  let liveListings: LiveListing[] = []
+  try {
+    const rows = await prisma.listing.findMany({
+      where:   { status: 'active' },
+      take:    3,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        category: { select: { name: true, sector: true } },
+        unit:     { select: { abbreviation: true } },
+        region:   { select: { name: true } },
+      },
+    })
+    liveListings = rows.map(r => ({
+      id:          r.id,
+      title:       r.title,
+      slug:        r.slug,
+      pricePerUnit: Number(r.pricePerUnit),
+      photos:      r.photos,
+      category:    { name: r.category.name, sector: String(r.category.sector) },
+      unit:        { symbol: r.unit.abbreviation },
+      region:      r.region ? { name: r.region.name } : null,
+    }))
+  } catch {
+    // DB unavailable (build-time / cold start) — fall through to CTA block
+  }
+
   return (
     <main className="overflow-x-hidden">
 
-      {/* ── 1. HERO — 55/45 split ─────────────────────────────────────── */}
+      {/* ── 1. HERO — 55/45 split with floating image card ─────────────── */}
       <section className="grid lg:grid-cols-[55%_45%] min-h-[88vh]">
 
         {/* Left — forest green text panel */}
         <div className="bg-forest flex items-center px-8 sm:px-12 lg:px-16 py-20 lg:py-0">
           <div className="max-w-lg">
-            <span className="inline-block text-lime text-xs font-bold uppercase tracking-widest
-                             bg-white/10 px-3 py-1.5 rounded-full mb-8">
-              All 16 Regions of Ghana
-            </span>
+            <FadeIn>
+              <span className="inline-block text-lime text-xs font-bold uppercase tracking-widest
+                               bg-white/10 px-3 py-1.5 rounded-full mb-8">
+                All 16 Regions of Ghana
+              </span>
+            </FadeIn>
 
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold
-                           text-white leading-[1.08] tracking-tight mb-6">
-              Ghanaian Agriculture.
-              <br />
-              <span className="text-lime">Secure Markets.</span>
-              <br />
-              Real Prosperity.
-            </h1>
+            <FadeUp delay={0.08}>
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold
+                             text-white leading-[1.08] tracking-tight mb-6">
+                Ghanaian Agriculture.
+                <br />
+                <span className="text-lime">Secure Markets.</span>
+                <br />
+                Real Prosperity.
+              </h1>
+            </FadeUp>
 
-            <p className="text-white/65 text-base sm:text-lg leading-relaxed mb-10">
-              Escrow-backed input distribution, crop pledge milestone tracking, seasonal
-              forward contracts, and certified regional field mapping — Bono East,
-              Techiman, Sunyani, Tamale, Makola.
-            </p>
+            <FadeUp delay={0.18}>
+              <p className="text-white/65 text-base sm:text-lg leading-relaxed mb-10">
+                Escrow-backed input distribution, crop pledge milestone tracking, seasonal
+                forward contracts, and certified regional field mapping — Bono East,
+                Techiman, Sunyani, Tamale, Makola.
+              </p>
+            </FadeUp>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/login"
-                className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-lime
-                           text-forest font-bold text-sm rounded-xl hover:bg-lime-dark
-                           transition-colors">
-                Get Started Free
-                <svg viewBox="0 0 16 16" width="14" height="14" fill="none"
-                     stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 8h10M9 4l4 4-4 4"/>
-                </svg>
-              </Link>
-              <Link href="/produce"
-                className="inline-flex items-center justify-center px-7 py-4 bg-white/10
-                           text-white font-bold text-sm rounded-xl hover:bg-white/20 transition-colors">
-                Browse Marketplace
-              </Link>
-            </div>
+            <FadeUp delay={0.26}>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/login"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-lime
+                             text-forest font-bold text-sm rounded-xl hover:bg-lime-dark
+                             transition-colors">
+                  Get Started Free
+                  <svg viewBox="0 0 16 16" width="14" height="14" fill="none"
+                       stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 8h10M9 4l4 4-4 4"/>
+                  </svg>
+                </Link>
+                <Link href="/produce"
+                  className="inline-flex items-center justify-center px-7 py-4 bg-white/10
+                             text-white font-bold text-sm rounded-xl hover:bg-white/20 transition-colors">
+                  Browse Marketplace
+                </Link>
+              </div>
+            </FadeUp>
 
-            <div className="flex flex-wrap gap-8 mt-12 pt-8 border-t border-white/10">
-              {STATS.map(s => (
-                <div key={s.label}>
-                  <p className="font-mono font-extrabold text-xl text-white">{s.value}</p>
-                  <p className="text-white/45 text-xs mt-0.5">{s.label}</p>
-                </div>
-              ))}
-            </div>
+            <FadeIn delay={0.38}>
+              <div className="flex flex-wrap gap-8 mt-12 pt-8 border-t border-white/10">
+                {STATS.map(s => (
+                  <div key={s.label}>
+                    <p className="font-mono font-extrabold text-xl text-white">{s.value}</p>
+                    <p className="text-white/45 text-xs mt-0.5">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
           </div>
         </div>
 
-        {/* Right — panoramic crop production photo (updated per mandate) */}
-        <div className="relative hidden lg:block bg-cream-dark">
-          <Image
-            src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=1200"
-            alt="Rich West African crop production panorama"
-            fill
-            priority
-            sizes="45vw"
-            className="object-cover object-center"
-            draggable={false}
-          />
-          <div className="absolute inset-y-0 left-0 w-14 bg-gradient-to-r from-forest to-transparent" />
+        {/* Right — floating crop panorama card */}
+        <div className="relative hidden lg:flex items-center justify-center bg-cream-dark px-8 py-12">
+          <FloatUp className="relative w-full h-full max-h-[72vh]">
+            <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
+              <Image
+                src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=1200"
+                alt="Rich West African crop production panorama"
+                fill
+                priority
+                sizes="45vw"
+                className="object-cover object-center"
+                draggable={false}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-forest/30 to-transparent" />
+            </div>
+          </FloatUp>
         </div>
       </section>
 
@@ -147,7 +193,7 @@ export default function LandingPage() {
         />
       </div>
 
-      {/* ── 2. SERVICES — left big photo + right listing cards ────────── */}
+      {/* ── 2. SERVICES — live listings or premium CTA ───────────────────── */}
       <section className="bg-white py-20 lg:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
@@ -163,7 +209,7 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-[420px_1fr] gap-10 items-start">
 
             <SlideLeft>
-              <div className="relative rounded-3xl overflow-hidden h-80 lg:h-[480px]">
+              <Card3D className="relative rounded-3xl overflow-hidden h-80 lg:h-[480px]">
                 <Image
                   src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop"
                   alt="Ghana produce market — verified farms"
@@ -177,64 +223,103 @@ export default function LandingPage() {
                     Verified produce from certified farms across all regions.
                   </p>
                 </div>
-              </div>
+              </Card3D>
             </SlideLeft>
 
             <SlideRight>
-              <div className="mb-6">
-                <h3 className="font-bold text-forest text-xl mb-2">Today&apos;s Listings</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
-                  Field-verified produce updated daily. Prices are confirmed at listing —
-                  no hidden markups at checkout.
-                </p>
-              </div>
+              {liveListings.length > 0 ? (
+                <>
+                  <div className="mb-6">
+                    <h3 className="font-bold text-forest text-xl mb-2">Today&apos;s Listings</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
+                      Field-verified produce updated daily. Prices confirmed at listing —
+                      no hidden markups at checkout.
+                    </p>
+                  </div>
 
-              <StaggerGrid className="grid sm:grid-cols-3 gap-4" stagger={0.1}>
-                {SERVICES.map(s => (
-                  <StaggerItem key={s.label}>
+                  <StaggerGrid className="grid sm:grid-cols-3 gap-4" stagger={0.1} style={{ perspective: '1000px' }}>
+                    {liveListings.map(listing => {
+                      const photo = listing.photos[0]
+                        ?? SECTOR_FALLBACK[listing.category.sector]
+                        ?? DEFAULT_FALLBACK
+                      return (
+                        <StaggerItem key={listing.id}>
+                          <Card3D>
+                            <Link href={`/produce/${listing.slug}`}
+                              className="group rounded-2xl border border-border overflow-hidden
+                                         hover:shadow-xl transition-shadow bg-white block">
+                              <div className="relative h-40 overflow-hidden">
+                                <Image
+                                  src={photo}
+                                  alt={listing.title}
+                                  fill
+                                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 200px"
+                                  className="object-cover group-hover:scale-[1.06] transition-transform duration-500"
+                                />
+                              </div>
+                              <div className="p-4">
+                                <p className="font-display font-bold text-forest text-sm leading-snug mb-0.5 line-clamp-2">
+                                  {listing.title}
+                                </p>
+                                <p className="text-muted-foreground text-xs">
+                                  {listing.region?.name ?? 'Ghana'}
+                                </p>
+                                <p className="font-mono font-bold text-forest text-sm mt-2">
+                                  GHS {listing.pricePerUnit.toFixed(2)} / {listing.unit.symbol}
+                                </p>
+                              </div>
+                            </Link>
+                          </Card3D>
+                        </StaggerItem>
+                      )
+                    })}
+                  </StaggerGrid>
+
+                  <FadeIn delay={0.35}>
                     <Link href="/produce"
-                      className="group rounded-2xl border border-border overflow-hidden
-                                 hover:shadow-md transition-shadow bg-white block">
-                      <div className="relative h-40 overflow-hidden">
-                        <Image
-                          src={s.img}
-                          alt={s.label}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 200px"
-                          className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <p className="font-bold text-forest text-sm leading-snug mb-0.5">
-                          {s.label}
-                        </p>
-                        <p className="text-muted-foreground text-xs">{s.region}</p>
-                        <p className="font-mono font-bold text-forest text-sm mt-2">
-                          {s.price}
-                        </p>
-                      </div>
+                      className="inline-flex items-center gap-2 mt-6 text-sm font-bold text-forest
+                                 hover:text-forest-dark transition-colors">
+                      View all live listings
+                      <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
+                           stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 8h10M9 4l4 4-4 4"/>
+                      </svg>
                     </Link>
-                  </StaggerItem>
-                ))}
-              </StaggerGrid>
-
-              <FadeIn delay={0.35}>
-                <Link href="/produce"
-                  className="inline-flex items-center gap-2 mt-6 text-sm font-bold text-forest
-                             hover:text-forest-dark transition-colors">
-                  View all live listings
-                  <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
-                       stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 8h10M9 4l4 4-4 4"/>
-                  </svg>
-                </Link>
-              </FadeIn>
+                  </FadeIn>
+                </>
+              ) : (
+                /* CTA block shown when no active listings exist yet */
+                <FadeUp delay={0.1}>
+                  <div className="flex flex-col justify-center h-full py-8">
+                    <p className="text-xs font-bold text-forest uppercase tracking-widest mb-4">
+                      Explore Real-Time Agricultural Markets
+                    </p>
+                    <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-forest leading-snug mb-5">
+                      Connect directly with field-verified producers and trusted input dealers across Ghana.
+                    </h3>
+                    <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-md">
+                      Transparent pricing, escrow-secured deposits, and absolute transaction visibility —
+                      from smallholder farms in Bono East to commercial operations in Greater Accra.
+                    </p>
+                    <Link href="/produce"
+                      className="inline-flex items-center gap-2.5 self-start px-7 py-4 bg-forest
+                                 text-white font-bold text-sm rounded-2xl hover:bg-forest-dark
+                                 transition-colors shadow-lg shadow-forest/20">
+                      Browse Live Marketplace
+                      <svg viewBox="0 0 16 16" width="14" height="14" fill="none"
+                           stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 8h10M9 4l4 4-4 4"/>
+                      </svg>
+                    </Link>
+                  </div>
+                </FadeUp>
+              )}
             </SlideRight>
           </div>
         </div>
       </section>
 
-      {/* ── 3. PORTAL TABS ────────────────────────────────────────────── */}
+      {/* ── 3. PORTAL TABS ────────────────────────────────────────────────── */}
       <section className="bg-cream py-20 lg:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <FadeUp className="mb-12">
@@ -251,10 +336,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── 4. PLEDGE FRAMEWORK ───────────────────────────────────────── */}
-      {/*   • No orange/harvest-gold accents — section tag uses text-forest   */}
-      {/*   • Card borders: neutral rounded frame (border-border), no accent   */}
-      {/*   • Images updated to specified bright agriculture / fintech assets   */}
+      {/* ── 4. PLEDGE FRAMEWORK ───────────────────────────────────────────── */}
       <section className="bg-white py-20 lg:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
@@ -267,39 +349,40 @@ export default function LandingPage() {
             </h2>
           </FadeUp>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8" style={{ perspective: '1200px' }}>
             {PLEDGE_CARDS.map((card, i) => (
               <FadeUp key={card.step} delay={i * 0.15}>
-                <div className="rounded-3xl overflow-hidden border border-border group
-                                hover:shadow-lg transition-shadow h-full flex flex-col">
-                  <div className="relative h-64 overflow-hidden shrink-0">
-                    <Image
-                      src={card.img}
-                      alt={card.alt}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover group-hover:scale-[1.04] transition-transform duration-700"
-                    />
-                    {/* Forest green overlay — on-brand, no orange */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-forest/65 via-forest/10 to-transparent" />
-                    <div className="absolute bottom-5 left-6">
-                      <span className="font-mono text-lime/80 text-xs font-bold block mb-1">
-                        Step {card.step}
-                      </span>
-                      <span className="font-bold text-white text-xl">{card.title}</span>
+                <Card3D className="h-full">
+                  <div className="rounded-3xl overflow-hidden border border-border
+                                  hover:shadow-2xl transition-shadow h-full flex flex-col">
+                    <div className="relative h-64 overflow-hidden shrink-0">
+                      <Image
+                        src={card.img}
+                        alt={card.alt}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-forest/65 via-forest/10 to-transparent" />
+                      <div className="absolute bottom-5 left-6">
+                        <span className="font-mono text-lime/80 text-xs font-bold block mb-1">
+                          Step {card.step}
+                        </span>
+                        <span className="font-bold text-white text-xl">{card.title}</span>
+                      </div>
+                    </div>
+                    <div className="p-7 bg-cream flex-1">
+                      <p className="text-muted-foreground text-sm leading-relaxed">{card.body}</p>
                     </div>
                   </div>
-                  <div className="p-7 bg-cream flex-1">
-                    <p className="text-muted-foreground text-sm leading-relaxed">{card.body}</p>
-                  </div>
-                </div>
+                </Card3D>
               </FadeUp>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 5. BOTTOM CTA ─────────────────────────────────────────────── */}
+      {/* ── 5. BOTTOM CTA ─────────────────────────────────────────────────── */}
       <section className="relative bg-forest py-24 overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1600&q=80&fit=crop"
