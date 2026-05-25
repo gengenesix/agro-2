@@ -1,78 +1,72 @@
 'use client'
 
-import { useState } from 'react'
-import Image        from 'next/image'
+import { useState }                    from 'react'
+import Link                            from 'next/link'
+import { motion, AnimatePresence }     from 'framer-motion'
+
+const ease = [0.22, 1, 0.36, 1] as const
 
 const TABS = [
   {
-    id:    'farmers',
-    label: 'Farmers',
-    // img1: farmers bending over green crops (matches user reference)
-    img1:  'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=500&q=80&fit=crop',
-    // img2: farmer portrait — human face of the platform
-    img2:  'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80&fit=crop',
-    // tall: aerial communal farm panorama (matches user reference image 1)
-    tall:  'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80&fit=crop',
+    id:       'farmers',
+    label:    'Farmers',
+    headline: 'Built for every farmer across all 16 regions of Ghana.',
+    sub:      'From smallholders in Northern Region to commercial operations in Ashanti — one platform for produce listing, escrow credit, and certified field verification.',
+    cta:      { label: 'Start as a Farmer', href: '/login' },
     features: [
       {
         title: 'Harvest Pledge Contracts',
-        body:  'Lock in buyers before planting season. Receive a deposit into escrow at signing — you plant with confirmed payment.',
+        body:  'Lock in buyers before planting season. Receive a verified deposit into escrow at signing — you plant with confirmed, guaranteed payment already secured.',
       },
       {
         title: 'BNPL Input Credit',
-        body:  'AgroScore above 50 unlocks Buy Now Pay Later credit for seeds, fertilisers, and chemicals. Repayment aligns with harvest.',
+        body:  'AgroScore above 50 unlocks Buy Now Pay Later credit for seeds, fertilisers, and chemicals. Repayment is aligned with your harvest cycle, not a bank calendar.',
       },
       {
         title: 'Field Agent Verification',
-        body:  'A certified agent GPS-stamps your farm and produce. Verified listings attract premium buyers across all 16 regions.',
+        body:  'A certified agent GPS-stamps your farm and produce. Verified listings carry a trust badge that attracts premium buyers and higher contract prices across all regions.',
       },
     ],
   },
   {
-    id:    'dealers',
-    label: 'Input Dealers',
-    // img1: agro-input store / supply chain (matches user reference image 8 feel)
-    img1:  'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&q=80&w=500',
-    // img2: fertilizer bags — the product dealers move
-    img2:  'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80&fit=crop',
-    // tall: lush maize rows — the crop output dealers support (matches user image 7)
-    tall:  'https://images.unsplash.com/photo-1568219557405-376e23e4f7cf?w=600&q=80&fit=crop',
+    id:       'dealers',
+    label:    'Input Dealers',
+    headline: 'A distribution channel backed by guaranteed payment infrastructure.',
+    sub:      'No more chasing payments after dispatch. Farmer funds are held in escrow before your stock leaves the warehouse — release is automatic on delivery confirmation.',
+    cta:      { label: 'Register Your Business', href: '/login' },
     features: [
       {
         title: 'Escrow-Secured Orders',
-        body:  'Farmer payment is collected and held at order creation. Your stock ships only against confirmed payment in escrow.',
+        body:  'Farmer payment is collected and held at order creation. Your stock ships only against confirmed payment in escrow — zero cash-flow risk on every order.',
       },
       {
         title: 'Regional Demand Forecasting',
-        body:  'See aggregate demand for NPK, urea, and pesticides in Techiman, Tamale, and Sunyani before stocking.',
+        body:  'See aggregate demand for NPK, urea, and pesticides in Techiman, Tamale, and Sunyani weeks ahead of the selling season so you stock exactly what sells.',
       },
       {
         title: 'BNPL Distribution Network',
-        body:  'Extend credit-backed sales to farmers without carrying the credit risk yourself — AgroConnect manages the BNPL ledger.',
+        body:  'Extend credit-backed sales to farmers without carrying the credit risk yourself. AgroConnect manages the full BNPL ledger, collections, and default protection.',
       },
     ],
   },
   {
-    id:    'buyers',
-    label: 'Buyers & Consumers',
-    // img1: vibrant colorful produce market (matches user reference image 4)
-    img1:  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80&fit=crop',
-    // img2: fresh food retail scene
-    img2:  'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&q=80&w=600',
-    // tall: market stall packed with produce (matches user image 4 style)
-    tall:  'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600',
+    id:       'buyers',
+    label:    'Buyers & Consumers',
+    headline: 'Source direct from verified farms — no middlemen, transparent pricing.',
+    sub:      'Reserve unharvested maize from Bono East, procure certified tilapia from Volta Lake, or order broilers from Eastern Region with escrow-backed delivery guarantees.',
+    cta:      { label: 'Browse Live Produce', href: '/produce' },
     features: [
       {
         title: 'Forward Contract Reservations',
-        body:  'Reserve unharvested produce months before the season ends. Deposit holds your price — balance paid on confirmed delivery.',
+        body:  'Reserve unharvested produce months before the season ends. Your deposit locks the agreed price — the balance is charged only on confirmed delivery at your gate.',
       },
       {
         title: 'Field-Verified Provenance',
-        body:  'Every listing carries a verification tier. Blue badge = GPS-confirmed farm. Green star = lab-tested quality.',
+        body:  'Every listing carries a verification tier. Blue badge = GPS-confirmed farm location. Green star = lab-tested quality score. Full supply chain visibility on every item.',
       },
       {
         title: 'Direct Farm Ordering',
-        body:  'Source tilapia from Volta Lake, maize from Bono East, or broilers from Eastern Region — no middlemen, clear pricing.',
+        body:  'Source tilapia from Volta Lake, maize from Bono East, or broilers from Eastern Region — direct from the producer, with clear pricing and no hidden commission markups.',
       },
     ],
   },
@@ -84,61 +78,84 @@ export function PortalTabs() {
 
   return (
     <div>
-      {/* Tab selector */}
+      {/* ── Tab selector ──────────────────────────────────────────────────── */}
       <div className="flex gap-2 mb-10 flex-wrap">
         {TABS.map(t => (
-          <button key={t.id} type="button" onClick={() => setActive(t.id)}
-            className={`px-5 py-2 rounded-xl text-sm font-bold transition-colors
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => setActive(t.id)}
+            className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all
               ${active === t.id
-                ? 'bg-forest text-white'
-                : 'bg-cream border border-border text-muted-foreground hover:text-forest hover:bg-cream-dark'}`}>
+                ? 'bg-forest text-white shadow-lg shadow-forest/20'
+                : 'bg-white border border-border text-muted-foreground hover:text-forest hover:border-forest/30'}`}
+          >
             {t.label}
           </button>
         ))}
       </div>
 
-      {/* Content grid */}
-      <div className="grid md:grid-cols-2 gap-8 items-start">
-
-        {/* Left: photo mosaic */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="relative rounded-2xl overflow-hidden aspect-[4/5]">
-            <Image src={tab.img1} alt={tab.label} fill
-              sizes="(max-width: 768px) 50vw, 25vw"
-              className="object-cover" />
+      {/* ── Tab content — smooth crossfade between tabs ───────────────────── */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={active}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.38, ease }}
+        >
+          {/* Headline + subtext */}
+          <div className="mb-10 max-w-2xl">
+            <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-forest mb-3 leading-snug">
+              {tab.headline}
+            </h3>
+            <p className="text-muted-foreground text-base leading-relaxed">
+              {tab.sub}
+            </p>
           </div>
-          <div className="space-y-4">
-            <div className="relative rounded-2xl overflow-hidden aspect-square">
-              <Image src={tab.img2} alt={tab.label} fill
-                sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover" />
-            </div>
-            <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-              <Image src={tab.tall} alt={tab.label} fill
-                sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover" />
-            </div>
-          </div>
-        </div>
 
-        {/* Right: feature bullets */}
-        <div className="space-y-6 py-2">
-          {tab.features.map((f, i) => (
-            <div key={f.title} className="flex gap-4">
-              <div className="w-8 h-8 rounded-full bg-lime/20 border border-lime-dark/20
-                              flex items-center justify-center shrink-0 mt-0.5">
-                <span className="font-mono text-xs font-bold text-lime-dark">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
+          {/* Feature cards — 3-column clean grid, no images */}
+          <div className="grid sm:grid-cols-3 gap-5">
+            {tab.features.map((f, i) => (
+              <div
+                key={f.title}
+                className="bg-white rounded-2xl border border-border p-6
+                           hover:shadow-lg hover:border-forest/20 transition-all group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-lime/20 border border-lime-dark/20
+                                flex items-center justify-center mb-5 group-hover:bg-lime/30
+                                transition-colors">
+                  <span className="font-mono text-sm font-bold text-lime-dark">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <h4 className="font-bold text-forest text-base mb-2 leading-snug">
+                  {f.title}
+                </h4>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {f.body}
+                </p>
               </div>
-              <div>
-                <p className="font-bold text-forest text-base mb-1">{f.title}</p>
-                <p className="text-muted-foreground text-sm leading-relaxed">{f.body}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="mt-8">
+            <Link
+              href={tab.cta.href}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-forest text-white
+                         font-bold text-sm rounded-xl hover:bg-forest-dark transition-colors
+                         shadow-lg shadow-forest/15"
+            >
+              {tab.cta.label}
+              <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
+                   stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 8h10M9 4l4 4-4 4"/>
+              </svg>
+            </Link>
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }
