@@ -98,14 +98,36 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-            <div className="relative rounded-2xl overflow-hidden h-80 lg:h-full min-h-[340px]">
-              <Image
-                src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=800"
-                alt="Ghanaian farmer inspecting crop"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
+            <div className="bg-[#1b4332] rounded-2xl p-8 md:p-10 h-full min-h-[340px]
+                            flex flex-col justify-between border border-emerald-800/30">
+              <div>
+                <p className="text-[#99d98c] font-semibold text-xs tracking-wider uppercase mb-6">
+                  Core Infrastructure
+                </p>
+                <blockquote className="font-display text-white text-xl sm:text-2xl font-bold leading-snug">
+                  &ldquo;Every transaction is protected from the moment a contract is signed
+                  to the instant payment clears — no cash changes hands without verified
+                  delivery confirmation.&rdquo;
+                </blockquote>
+              </div>
+              <div className="mt-8 pt-6 border-t border-white/15 grid grid-cols-2 gap-5">
+                <div>
+                  <p className="font-mono font-extrabold text-[#99d98c] text-2xl leading-none">GHS 4.2M</p>
+                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">BNPL Disbursed</p>
+                </div>
+                <div>
+                  <p className="font-mono font-extrabold text-[#99d98c] text-2xl leading-none">2.5%</p>
+                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">Commission Rate</p>
+                </div>
+                <div>
+                  <p className="font-mono font-extrabold text-[#99d98c] text-2xl leading-none">0 GHS</p>
+                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">Escrow Defaults</p>
+                </div>
+                <div>
+                  <p className="font-mono font-extrabold text-[#99d98c] text-2xl leading-none">16 / 16</p>
+                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">Regions Active</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

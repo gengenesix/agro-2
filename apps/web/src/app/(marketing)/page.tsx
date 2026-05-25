@@ -9,6 +9,9 @@ import {
   Card3D, FloatUp,
 }                        from './_components/animate-in'
 
+export const dynamic   = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata: Metadata = {
   title:       'AgroConnect — Ghana Agricultural Trading Platform',
   description: 'Escrow-backed produce trading, harvest pledge contracts, and certified field verification across all 16 regions of Ghana.',
@@ -23,28 +26,28 @@ const heroDisplayAsset: string =
 const ctaBackgroundAsset: string =
   'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80&fit=crop'
 
-// ─── Pitch-deck economic metrics ─────────────────────────────────────────────
+// ─── Platform utility metrics ─────────────────────────────────────────────────
 
 const METRICS = [
   {
-    value:  '$14.7B',
-    label:  'GHANA AGRICULTURAL GDP',
-    source: 'World Bank, 2023 · 18.7% of national GDP',
+    value:  '24,000+',
+    label:  'REGISTERED FARMERS',
+    source: 'Securing guaranteed forward off-take contracts before harvest',
   },
   {
-    value:  '6.2M',
-    label:  'SMALLHOLDER FARMERS',
-    source: 'Ghana Statistical Service, Census 2021',
+    value:  '16 / 16',
+    label:  'REGIONS COVERED',
+    source: 'Active certified field agents verifying crop provenance on the ground',
   },
   {
-    value:  '~2%',
-    label:  'CURRENTLY TRANSACTING DIGITALLY',
-    source: 'GSMA AgriTech Africa Report, 2023',
+    value:  'GHS 4.2M',
+    label:  'BNPL DISBURSED',
+    source: 'Low-interest input financing for verified inputs and crop seeds',
   },
   {
-    value:  '$3.4T',
-    label:  'AfCFTA CONTINENTAL MARKET',
-    source: 'AfCFTA Secretariat · 1.4B consumers',
+    value:  '18,500+',
+    label:  'LIVE LISTINGS',
+    source: 'On-demand access to verified produce and vetted commercial dealers',
   },
 ]
 
@@ -191,9 +194,8 @@ export default async function LandingPage() {
             {/* ── Value proposition subtext ── */}
             <FadeUp delay={0.18}>
               <p className="text-white/65 text-base sm:text-lg leading-relaxed mb-10 max-w-lg">
-                A three-sided platform connecting verified Ghanaian farmers,
-                agro-input dealers, and international buyers — with a proprietary
-                payment and escrow engine at its core.
+                The three-sided marketplace driving transparency, efficiency,
+                and scale across Ghanaian agriculture.
               </p>
             </FadeUp>
 

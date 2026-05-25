@@ -105,31 +105,24 @@ export function ListingCard({ listing, basePath = '/produce' }: ListingCardProps
           )}
         </div>
 
-        {/* Wholesale price block */}
-        <div className="rounded-xl bg-cream px-3 py-2.5 mb-3">
+        {/* Price + quantity — flat, no background */}
+        <div className="mt-2 mb-3 space-y-1">
           <div className="flex items-baseline justify-between gap-2">
-            <div>
-              <PriceDisplay amount={listing.pricePerUnit} unit={listing.unit.abbreviation} size="lg" />
-              <p className="text-[10px] text-muted-foreground mt-0.5">
-                per {listing.unit.name ?? listing.unit.abbreviation}
-              </p>
-            </div>
-            <div className="text-right flex-shrink-0">
-              <p className="font-mono text-xs font-bold text-forest">
-                {Number(listing.quantityAvailable).toLocaleString()} {listing.unit.abbreviation}
-              </p>
-              <p className="text-[10px] text-muted-foreground">available</p>
-            </div>
+            <PriceDisplay amount={listing.pricePerUnit} unit={listing.unit.abbreviation} size="lg" />
+            <p className="font-mono text-xs font-bold text-forest flex-shrink-0">
+              {Number(listing.quantityAvailable).toLocaleString()} {listing.unit.abbreviation}
+            </p>
           </div>
-
-          {/* MOQ row */}
+          <div className="flex items-baseline justify-between gap-2">
+            <p className="text-[10px] text-muted-foreground">
+              per {listing.unit.name ?? listing.unit.abbreviation}
+            </p>
+            <p className="text-[10px] text-muted-foreground">available</p>
+          </div>
           {moq > 1 && (
-            <div className="flex items-center justify-between mt-2 pt-2 border-t border-border/60">
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Min. order</span>
-              <span className="font-mono text-xs font-bold text-forest">
-                {moq.toLocaleString()} {listing.unit.abbreviation}
-              </span>
-            </div>
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+              Min. order: {moq.toLocaleString()} {listing.unit.abbreviation}
+            </p>
           )}
         </div>
 
