@@ -106,20 +106,38 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
 
   async function onSubmit(data: FormData) {
     setError('')
+    // Explicit boolean fields — send both naming conventions so the server
+    // resolves via its alias map regardless of which key it reads first.
+    const payload = {
+      ...data,
+      photos,
+      isBnplAvailable:     data.bnplEligible     ?? false,
+      isDeliveryAvailable: data.deliveryAvailable ?? false,
+    }
     try {
-      if (listingId) {
-        await api.put(`/listings/${listingId}`, { ...data, photos })
+      // validateStatus: () => true — axios never throws on 4xx/5xx so we can
+      // inspect response.data.error directly instead of reading it off the
+      // caught AxiosError (which can be undefined if the response body isn't JSON).
+      const response = listingId
+        ? await api.put(`/listings/${listingId}`, payload, { validateStatus: () => true })
+        : await api.post('/listings', payload, { validateStatus: () => true })
+
+      if (response.data?.success) {
+        router.push(isDealer ? '/dealer/listings' : '/listings')
+        router.refresh()
       } else {
-        await api.post('/listings', { ...data, photos })
+        setError(response.data?.error ?? `Server returned status ${response.status} — try again.`)
       }
-      router.push(isDealer ? '/dealer/listings' : '/listings')
     } catch (err: any) {
-      setError(err.response?.data?.error ?? 'Failed to save listing. Try again.')
+      // Only reached for actual network failures (no response at all).
+      setError(err.response?.data?.error ?? 'Network error — request did not reach the server.')
     }
   }
 
-  function onValidationError(errors: Record<string, unknown>) {
-    console.error('[CreateListingForm] client-side validation failed:', errors)
+  function onValidationError(errs: Record<string, unknown>) {
+    const fields = Object.keys(errs).join(', ')
+    setError(`Check the following fields: ${fields}`)
+    console.error('[CreateListingForm] client-side validation failed:', errs)
   }
 
   return (
@@ -306,8 +324,24 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
         </p>
       )}
 
+      <div className="flex gap-3">
+        <button type="button" onClick={() => router.back()}
+          className="flex-1 py-3.5 border border-border text-forest text-sm font-bold rounded-2xl
+                     hover:bg-cream transition-colors">
+          Cancel
+        </button>
+        <button type="submit" disabled={isSubmitting}
+          className="flex-1 py-3.5 bg-forest text-white text-sm font-bold rounded-2xl
+                     hover:bg-forest-dark active:scale-[0.98] transition-all
+                     disabled:opacity-50 flex items-center justify-center gap-2">
+          {isSubmitting ? (
+            <><LoadingIcon size={16} className="animate-spin" /> Saving…</>
+          ) : listingId ? 'Update listing' : 'Publish listing'}
+        </button>
+      </div>
+
       {listingId && (
-        <div className="bg-white rounded-2xl border border-red-200 p-5">
+        <div className="bg-white rounded-2xl border border-red-200 p-5 pb-10">
           <h2 className="font-bold text-red-600 text-sm border-b border-red-100 pb-3 mb-4">Danger zone</h2>
           {confirmDelete ? (
             <div className="space-y-3">
@@ -351,22 +385,6 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
           )}
         </div>
       )}
-
-      <div className="flex gap-3 pb-10">
-        <button type="button" onClick={() => router.back()}
-          className="flex-1 py-3.5 border border-border text-forest text-sm font-bold rounded-2xl
-                     hover:bg-cream transition-colors">
-          Cancel
-        </button>
-        <button type="submit" disabled={isSubmitting}
-          className="flex-1 py-3.5 bg-forest text-white text-sm font-bold rounded-2xl
-                     hover:bg-forest-dark active:scale-[0.98] transition-all
-                     disabled:opacity-50 flex items-center justify-center gap-2">
-          {isSubmitting ? (
-            <><LoadingIcon size={16} className="animate-spin" /> Saving…</>
-          ) : listingId ? 'Update listing' : 'Publish listing'}
-        </button>
-      </div>
     </form>
   )
 }
