@@ -55,15 +55,11 @@ const PLEDGE_CARDS = [
     step:  '01',
     title: 'Contract Execution',
     body:  'Buyer deposits 5–50% at signing, held in escrow. Farmer plants with confirmed payment. Field agents in Sunyani and Tamale log GPS-verified progress milestones.',
-    img:   'https://images.unsplash.com/photo-1568219557405-376e23e4f7cf?w=600&q=80&fit=crop',
-    alt:   'Lush maize rows — crop pledge foundation',
   },
   {
     step:  '02',
     title: 'Delivery & Settlement',
     body:  'Buyer confirms receipt. Escrow unlocks automatically — deposit released net of 2.5% commission and the remaining balance is charged simultaneously. Every ledger entry is timestamped in real time.',
-    img:   'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&fit=crop',
-    alt:   'Fresh market produce — delivery and settlement',
   },
 ]
 
@@ -514,27 +510,17 @@ export default async function LandingPage() {
             {PLEDGE_CARDS.map((card, i) => (
               <FadeUp key={card.step} delay={i * 0.15}>
                 <Card3D className="h-full">
-                  <div className="rounded-3xl overflow-hidden border border-border
-                                  hover:shadow-2xl transition-shadow h-full flex flex-col">
-                    <div className="relative h-64 overflow-hidden shrink-0">
-                      <Image
-                        src={card.img}
-                        alt={card.alt}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-forest/65 via-forest/10 to-transparent" />
-                      <div className="absolute bottom-5 left-6">
-                        <span className="font-mono text-lime/80 text-xs font-bold block mb-1">
-                          Step {card.step}
-                        </span>
-                        <span className="font-bold text-white text-xl">{card.title}</span>
-                      </div>
-                    </div>
-                    <div className="p-7 bg-white flex-1">
-                      <p className="text-muted-foreground text-sm leading-relaxed">{card.body}</p>
-                    </div>
+                  <div className="bg-[#1b4332] rounded-2xl border border-emerald-800/30 shadow-sm
+                                  p-8 md:p-10 h-full hover:shadow-lg transition-shadow">
+                    <span className="text-[#99d98c] font-semibold text-xs tracking-wider uppercase block mb-2">
+                      Step {card.step}
+                    </span>
+                    <h3 className="text-white text-2xl font-bold tracking-tight mb-4">
+                      {card.title}
+                    </h3>
+                    <p className="text-stone-200 text-sm leading-relaxed">
+                      {card.body}
+                    </p>
                   </div>
                 </Card3D>
               </FadeUp>
