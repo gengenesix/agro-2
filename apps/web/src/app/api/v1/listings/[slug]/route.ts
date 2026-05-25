@@ -4,23 +4,27 @@ import { getAuthProfile } from '@/lib/api-auth'
 import { prisma } from '@/lib/prisma'
 
 const updateSchema = z.object({
-  title:             z.string().min(5),
-  description:       z.string().max(1000).optional(),
-  sector:            z.enum(['crops', 'livestock', 'poultry', 'fisheries', 'inputs']),
-  category:          z.string().min(1),
-  listingType:       z.enum(['available_now', 'harvest_pledge']),
-  quantity:          z.coerce.number().min(0.1),
-  unit:              z.string().min(1),
-  pricePerUnit:      z.coerce.number().min(0.01),
-  minimumOrder:      z.coerce.number().optional(),
-  farmingMethod:     z.enum(['conventional', 'organic', 'certified_organic']).optional(),
-  harvestDate:       z.string().optional(),
-  depositPercent:    z.coerce.number().min(5).max(50).optional(),
-  regionId:          z.coerce.number().min(1),
-  district:          z.string().min(2),
-  bnplEligible:      z.boolean().optional(),
-  deliveryAvailable: z.boolean().optional(),
-  photos:            z.array(z.string()).optional(),
+  title:                z.string().min(5),
+  description:          z.string().max(1000).optional(),
+  sector:               z.enum(['crops', 'livestock', 'poultry', 'fisheries', 'inputs']),
+  category:             z.string().min(1),
+  listingType:          z.enum(['available_now', 'harvest_pledge']),
+  quantity:             z.coerce.number().min(0.1),
+  unit:                 z.string().min(1),
+  pricePerUnit:         z.coerce.number().min(0.01),
+  minimumOrder:         z.coerce.number().optional(),
+  farmingMethod:        z.enum(['conventional', 'organic', 'certified_organic']).optional(),
+  harvestDate:          z.string().optional(),
+  depositPercent:       z.coerce.number().min(5).max(50).optional(),
+  regionId:             z.coerce.number().min(1),
+  district:             z.string().min(1),
+  // Primary field names used by CreateListingForm
+  bnplEligible:         z.boolean().optional(),
+  deliveryAvailable:    z.boolean().optional(),
+  // Alternate prefixed names — accepted so either naming convention works
+  isBnplAvailable:      z.boolean().optional(),
+  isDeliveryAvailable:  z.boolean().optional(),
+  photos:               z.array(z.string()).optional(),
 })
 
 async function getOrCreateCategory(name: string, sector: string) {
@@ -130,8 +134,16 @@ export async function PUT(
 
   const { slug: id } = await params
 
+  // Accept both UUID (dealer flow) and slug (farmer flow) — the route parameter
+  // carries a slug when navigated from the farmer listings page, and a UUID when
+  // navigated from the dealer listings page.
   const existing = await prisma.listing.findFirst({
-    where: { id, sellerId: profile.id },
+    where: {
+      OR: [
+        { id,   sellerId: profile.id },
+        { slug: id, sellerId: profile.id },
+      ],
+    },
   })
   if (!existing) {
     return NextResponse.json({ success: false, error: 'Listing not found' }, { status: 404 })
@@ -157,8 +169,15 @@ export async function PUT(
 
   const regionId = Math.trunc(d.regionId)
 
+  // Resolve boolean toggles — accept both the primary field name and the
+  // is-prefixed alias so either naming convention from the client works.
+  const bnplEnabled     = d.isBnplAvailable     ?? d.bnplEligible     ?? false
+  const deliveryEnabled = d.isDeliveryAvailable  ?? d.deliveryAvailable ?? false
+
+  // Always update by the UUID primary key regardless of what the route
+  // parameter contained (slug vs UUID). existing.id is always the UUID.
   const updated = await prisma.listing.update({
-    where: { id },
+    where: { id: existing.id },
     data: {
       categoryId:          category.id,
       unitId:              unit.id,
@@ -174,8 +193,8 @@ export async function PUT(
       expectedHarvestDate: d.harvestDate ? new Date(d.harvestDate) : null,
       depositPercentage:   Math.trunc(d.depositPercent ?? existing.depositPercentage ?? 20),
       photos:              d.photos ?? existing.photos,
-      bnplAvailable:       d.bnplEligible ?? false,
-      deliveryOptions:     d.deliveryAvailable ? ['farmer_delivery', 'pickup'] : ['pickup'],
+      bnplAvailable:       bnplEnabled,
+      deliveryOptions:     deliveryEnabled ? ['farmer_delivery', 'pickup'] : ['pickup'],
       pledgeStatus:        d.listingType === 'harvest_pledge' ? (existing.pledgeStatus ?? 'open') : null,
     },
   })
