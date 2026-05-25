@@ -123,60 +123,58 @@ export async function GET(
   })
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
-) {
-  const profile = await getAuthProfile(req)
-  if (!profile) {
-    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
-  }
+// Explicit context type satisfying Next.js 15 App Router's async params contract.
+// All mutating handlers destructure params through this type so the shape is
+// declared once and any future segment rename is caught at compile time.
+type RouteContext = { params: Promise<{ slug: string }> }
 
-  const { slug: id } = await params
-
-  // Accept both UUID (dealer flow) and slug (farmer flow) — the route parameter
-  // carries a slug when navigated from the farmer listings page, and a UUID when
-  // navigated from the dealer listings page.
-  const existing = await prisma.listing.findFirst({
-    where: {
-      OR: [
-        { id,   sellerId: profile.id },
-        { slug: id, sellerId: profile.id },
-      ],
-    },
-  })
-  if (!existing) {
-    return NextResponse.json({ success: false, error: 'Listing not found' }, { status: 404 })
-  }
-
-  let body: unknown
-  try { body = await req.json() } catch { body = {} }
-
-  const parsed = updateSchema.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json(
-      { success: false, error: 'Validation failed', details: parsed.error.flatten().fieldErrors },
-      { status: 400 },
-    )
-  }
-
-  const d = parsed.data
-
-  // Resolve boolean toggles — accept both the primary field name and the
-  // is-prefixed alias so either naming convention from the client works.
-  const bnplEnabled     = d.isBnplAvailable    ?? d.bnplEligible     ?? false
-  const deliveryEnabled = d.isDeliveryAvailable ?? d.deliveryAvailable ?? false
-
-  const regionId = Math.trunc(d.regionId)
-
+export async function PUT(req: NextRequest, context: RouteContext) {
   try {
+    const profile = await getAuthProfile(req)
+    if (!profile) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Accept both UUID (dealer flow) and slug (farmer flow).
+    const { slug: id } = await context.params
+
+    const existing = await prisma.listing.findFirst({
+      where: {
+        OR: [
+          { id,   sellerId: profile.id },
+          { slug: id, sellerId: profile.id },
+        ],
+      },
+    })
+    if (!existing) {
+      return NextResponse.json({ success: false, error: 'Listing not found' }, { status: 404 })
+    }
+
+    let body: unknown
+    try { body = await req.json() } catch { body = {} }
+
+    const parsed = updateSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json(
+        { success: false, error: 'Validation failed', details: parsed.error.flatten().fieldErrors },
+        { status: 400 },
+      )
+    }
+
+    const d = parsed.data
+
+    // Accept both naming conventions from the client.
+    const bnplEnabled     = d.isBnplAvailable    ?? d.bnplEligible     ?? false
+    const deliveryEnabled = d.isDeliveryAvailable ?? d.deliveryAvailable ?? false
+    const regionId        = Math.trunc(d.regionId)
+
     const [category, unit] = await Promise.all([
       getOrCreateCategory(d.category, d.sector),
       getOrCreateUnit(d.unit, d.sector),
     ])
 
-    // Always update by the UUID primary key regardless of what the route
-    // parameter contained (slug vs UUID). existing.id is always the UUID.
+    // Always update by UUID — existing.id is always the UUID regardless of
+    // whether the route param contained a slug or a UUID.
     const updated = await prisma.listing.update({
       where: { id: existing.id },
       data: {
@@ -188,10 +186,7 @@ export async function PUT(
         quantityAvailable:   d.quantity,
         pricePerUnit:        d.pricePerUnit,
         minOrderQuantity:    d.minimumOrder ?? 1,
-        // regionId is a nullable FK — null-out if the value is not a positive
-        // integer so a missing or zero regionId never triggers an FK violation.
         regionId:            regionId > 0 ? regionId : null,
-        // community stores the free-text district; no FK constraint, any string is safe.
         community:           d.district || null,
         farmingMethod:       d.farmingMethod ?? null,
         expectedHarvestDate: d.harvestDate ? new Date(d.harvestDate) : null,
@@ -208,76 +203,63 @@ export async function PUT(
       data: { id: updated.id, slug: updated.slug, title: updated.title },
     })
   } catch (err) {
-    console.error('[PUT /listings] update failed:', err)
+    console.error('[PUT /listings] failed:', err)
     const message = err instanceof Error ? err.message : 'Database error'
-    return NextResponse.json(
-      { success: false, error: message },
-      { status: 500 },
-    )
+    return NextResponse.json({ success: false, error: message }, { status: 500 })
   }
 }
 
-// PATCH is an alias for PUT — both verbs are supported so that any HTTP client
-// sending either method reaches the same update logic without a 405 response.
-export async function PATCH(
-  req: NextRequest,
-  context: { params: Promise<{ slug: string }> },
-) {
+// PATCH is an alias for PUT — both verbs reach identical update logic.
+export async function PATCH(req: NextRequest, context: RouteContext) {
   return PUT(req, context)
 }
 
-// Soft-delete: sets status → 'removed' so the listing is hidden from all buyers
-// while preserving foreign-key references from existing orders and payments.
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
-) {
-  const profile = await getAuthProfile(req)
-  if (!profile) {
-    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
-  }
-
-  const { slug: id } = await params
-
-  // Resolve by UUID (dealer flow) or slug (farmer flow).
-  const existing = await prisma.listing.findFirst({
-    where: {
-      OR: [
-        { id,   sellerId: profile.id },
-        { slug: id, sellerId: profile.id },
-      ],
-    },
-  })
-  if (!existing) {
-    return NextResponse.json({ success: false, error: 'Listing not found' }, { status: 404 })
-  }
-
-  // Block deletion when there are orders that have not yet been delivered or cancelled.
-  // Historic delivered/cancelled orders are unaffected — their FK still resolves.
-  const activeOrderCount = await prisma.order.count({
-    where: {
-      listingId:      existing.id,
-      trackingStatus: { notIn: ['delivered', 'cancelled'] },
-    },
-  })
-  if (activeOrderCount > 0) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Cannot delete: ${activeOrderCount} active order${activeOrderCount > 1 ? 's' : ''} still in progress. Complete or cancel them first.`,
-      },
-      { status: 409 },
-    )
-  }
-
+// Soft-delete: sets status → 'removed', preserving FK references from orders.
+export async function DELETE(req: NextRequest, context: RouteContext) {
   try {
+    const profile = await getAuthProfile(req)
+    if (!profile) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { slug: id } = await context.params
+
+    const existing = await prisma.listing.findFirst({
+      where: {
+        OR: [
+          { id,   sellerId: profile.id },
+          { slug: id, sellerId: profile.id },
+        ],
+      },
+    })
+    if (!existing) {
+      return NextResponse.json({ success: false, error: 'Listing not found' }, { status: 404 })
+    }
+
+    // Block deletion while any order is still in progress.
+    const activeOrderCount = await prisma.order.count({
+      where: {
+        listingId:      existing.id,
+        trackingStatus: { notIn: ['delivered', 'cancelled'] },
+      },
+    })
+    if (activeOrderCount > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Cannot delete: ${activeOrderCount} active order${activeOrderCount > 1 ? 's' : ''} still in progress. Complete or cancel them first.`,
+        },
+        { status: 409 },
+      )
+    }
+
     await prisma.listing.update({
       where: { id: existing.id },
       data:  { status: 'removed' },
     })
     return NextResponse.json({ success: true })
   } catch (err) {
-    console.error('[DELETE /listings] soft-delete failed:', err)
+    console.error('[DELETE /listings] failed:', err)
     const message = err instanceof Error ? err.message : 'Database error'
     return NextResponse.json({ success: false, error: message }, { status: 500 })
   }
