@@ -17,15 +17,21 @@ const schema = z.object({
   sector:            z.enum(['crops', 'livestock', 'poultry', 'fisheries', 'inputs']),
   category:          z.string().min(1, 'Select a category'),
   listingType:       z.enum(['available_now', 'harvest_pledge']),
-  quantity:          z.coerce.number().min(1),
+  quantity:          z.coerce.number().min(0.1),
   unit:              z.string().min(1, 'Enter a unit'),
   pricePerUnit:      z.coerce.number().min(0.01),
   minimumOrder:      z.coerce.number().min(1).optional(),
-  farmingMethod:     z.enum(['conventional', 'organic', 'certified_organic']).optional(),
+  // A registered <select> with no matching default value submits "" (empty string),
+  // not undefined. Preprocess coerces "" → undefined before the enum check so a
+  // listing with farmingMethod=null in the DB never triggers an invalid-enum error.
+  farmingMethod:     z.preprocess(
+    v => (v === '' ? undefined : v),
+    z.enum(['conventional', 'organic', 'certified_organic']).optional(),
+  ),
   harvestDate:       z.string().optional(),
   depositPercent:    z.coerce.number().min(5).max(50).optional(),
   regionId:          z.coerce.number().min(1),
-  district:          z.string().min(2),
+  district:          z.string().min(1),
   bnplEligible:      z.boolean().optional(),
   deliveryAvailable: z.boolean().optional(),
 })
@@ -95,8 +101,12 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
     }
   }
 
+  function onValidationError(errors: Record<string, unknown>) {
+    console.error('[CreateListingForm] client-side validation failed:', errors)
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit, onValidationError)} className="space-y-6">
       {/* Photos */}
       <Section title="Photos">
         <div className="flex flex-wrap gap-3">
@@ -183,6 +193,7 @@ export function CreateListingForm({ initialData, initialPhotos, listingId }: Cre
           {!isDealer && (
             <Field label="Farming method" error={errors.farmingMethod?.message}>
               <select {...register('farmingMethod')} className={inputCls(!!errors.farmingMethod)}>
+                <option value="">Not specified</option>
                 <option value="conventional">Conventional</option>
                 <option value="organic">Organic</option>
                 <option value="certified_organic">Certified Organic</option>
