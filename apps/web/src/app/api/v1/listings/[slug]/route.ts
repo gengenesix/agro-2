@@ -162,45 +162,57 @@ export async function PUT(
 
   const d = parsed.data
 
-  const [category, unit] = await Promise.all([
-    getOrCreateCategory(d.category, d.sector),
-    getOrCreateUnit(d.unit, d.sector),
-  ])
+  // Resolve boolean toggles — accept both the primary field name and the
+  // is-prefixed alias so either naming convention from the client works.
+  const bnplEnabled     = d.isBnplAvailable    ?? d.bnplEligible     ?? false
+  const deliveryEnabled = d.isDeliveryAvailable ?? d.deliveryAvailable ?? false
 
   const regionId = Math.trunc(d.regionId)
 
-  // Resolve boolean toggles — accept both the primary field name and the
-  // is-prefixed alias so either naming convention from the client works.
-  const bnplEnabled     = d.isBnplAvailable     ?? d.bnplEligible     ?? false
-  const deliveryEnabled = d.isDeliveryAvailable  ?? d.deliveryAvailable ?? false
+  try {
+    const [category, unit] = await Promise.all([
+      getOrCreateCategory(d.category, d.sector),
+      getOrCreateUnit(d.unit, d.sector),
+    ])
 
-  // Always update by the UUID primary key regardless of what the route
-  // parameter contained (slug vs UUID). existing.id is always the UUID.
-  const updated = await prisma.listing.update({
-    where: { id: existing.id },
-    data: {
-      categoryId:          category.id,
-      unitId:              unit.id,
-      title:               d.title,
-      description:         d.description ?? null,
-      listingType:         d.listingType,
-      quantityAvailable:   d.quantity,
-      pricePerUnit:        d.pricePerUnit,
-      minOrderQuantity:    d.minimumOrder ?? 1,
-      regionId:            regionId > 0 ? regionId : null,
-      community:           d.district,
-      farmingMethod:       d.farmingMethod ?? null,
-      expectedHarvestDate: d.harvestDate ? new Date(d.harvestDate) : null,
-      depositPercentage:   Math.trunc(d.depositPercent ?? existing.depositPercentage ?? 20),
-      photos:              d.photos ?? existing.photos,
-      bnplAvailable:       bnplEnabled,
-      deliveryOptions:     deliveryEnabled ? ['farmer_delivery', 'pickup'] : ['pickup'],
-      pledgeStatus:        d.listingType === 'harvest_pledge' ? (existing.pledgeStatus ?? 'open') : null,
-    },
-  })
+    // Always update by the UUID primary key regardless of what the route
+    // parameter contained (slug vs UUID). existing.id is always the UUID.
+    const updated = await prisma.listing.update({
+      where: { id: existing.id },
+      data: {
+        categoryId:          category.id,
+        unitId:              unit.id,
+        title:               d.title,
+        description:         d.description ?? null,
+        listingType:         d.listingType,
+        quantityAvailable:   d.quantity,
+        pricePerUnit:        d.pricePerUnit,
+        minOrderQuantity:    d.minimumOrder ?? 1,
+        // regionId is a nullable FK — null-out if the value is not a positive
+        // integer so a missing or zero regionId never triggers an FK violation.
+        regionId:            regionId > 0 ? regionId : null,
+        // community stores the free-text district; no FK constraint, any string is safe.
+        community:           d.district || null,
+        farmingMethod:       d.farmingMethod ?? null,
+        expectedHarvestDate: d.harvestDate ? new Date(d.harvestDate) : null,
+        depositPercentage:   Math.trunc(d.depositPercent ?? existing.depositPercentage ?? 20),
+        photos:              d.photos ?? existing.photos,
+        bnplAvailable:       bnplEnabled,
+        deliveryOptions:     deliveryEnabled ? ['farmer_delivery', 'pickup'] : ['pickup'],
+        pledgeStatus:        d.listingType === 'harvest_pledge' ? (existing.pledgeStatus ?? 'open') : null,
+      },
+    })
 
-  return NextResponse.json({
-    success: true,
-    data: { id: updated.id, slug: updated.slug, title: updated.title },
-  })
+    return NextResponse.json({
+      success: true,
+      data: { id: updated.id, slug: updated.slug, title: updated.title },
+    })
+  } catch (err) {
+    console.error('[PUT /listings] update failed:', err)
+    const message = err instanceof Error ? err.message : 'Database error'
+    return NextResponse.json(
+      { success: false, error: message },
+      { status: 500 },
+    )
+  }
 }
