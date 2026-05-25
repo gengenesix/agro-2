@@ -7,9 +7,12 @@ const TABS = [
   {
     id:    'farmers',
     label: 'Farmers',
-    img1:  'https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&q=80&w=500',
+    // img1: farmers bending over green crops (matches user reference)
+    img1:  'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=500&q=80&fit=crop',
+    // img2: farmer portrait — human face of the platform
     img2:  'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80&fit=crop',
-    tall:  'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=600',
+    // tall: aerial communal farm panorama (matches user reference image 1)
+    tall:  'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80&fit=crop',
     features: [
       {
         title: 'Harvest Pledge Contracts',
@@ -28,9 +31,12 @@ const TABS = [
   {
     id:    'dealers',
     label: 'Input Dealers',
+    // img1: agro-input store / supply chain (matches user reference image 8 feel)
     img1:  'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&q=80&w=500',
+    // img2: fertilizer bags — the product dealers move
     img2:  'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80&fit=crop',
-    tall:  'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600',
+    // tall: lush maize rows — the crop output dealers support (matches user image 7)
+    tall:  'https://images.unsplash.com/photo-1568219557405-376e23e4f7cf?w=600&q=80&fit=crop',
     features: [
       {
         title: 'Escrow-Secured Orders',
@@ -49,9 +55,12 @@ const TABS = [
   {
     id:    'buyers',
     label: 'Buyers & Consumers',
-    img1:  'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=500',
+    // img1: vibrant colorful produce market (matches user reference image 4)
+    img1:  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80&fit=crop',
+    // img2: fresh food retail scene
     img2:  'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&q=80&w=600',
-    tall:  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&fit=crop',
+    // tall: market stall packed with produce (matches user image 4 style)
+    tall:  'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600',
     features: [
       {
         title: 'Forward Contract Reservations',
@@ -91,7 +100,7 @@ export function PortalTabs() {
       {/* Content grid */}
       <div className="grid md:grid-cols-2 gap-8 items-start">
 
-        {/* Left: two stacked photos */}
+        {/* Left: photo mosaic */}
         <div className="grid grid-cols-2 gap-4">
           <div className="relative rounded-2xl overflow-hidden aspect-[4/5]">
             <Image src={tab.img1} alt={tab.label} fill

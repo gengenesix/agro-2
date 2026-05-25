@@ -30,28 +30,28 @@ const PLEDGE_CARDS = [
     step:  '01',
     title: 'Contract Execution',
     body:  'Buyer deposits 5–50% at signing, held in escrow. Farmer plants with confirmed payment. Field agents in Sunyani and Tamale log GPS-verified progress milestones.',
-    img:   'https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&q=80&w=600',
-    alt:   'Bright West African farm field — crop pledge foundation',
+    img:   'https://images.unsplash.com/photo-1568219557405-376e23e4f7cf?w=600&q=80&fit=crop',
+    alt:   'Lush maize rows — crop pledge foundation',
   },
   {
     step:  '02',
     title: 'Delivery & Settlement',
     body:  'Buyer confirms receipt. Escrow unlocks automatically — deposit released net of 2.5% commission and the remaining balance is charged simultaneously. Every ledger entry is timestamped in real time.',
-    img:   'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=600',
-    alt:   'Secure digital transaction — delivery & settlement',
+    img:   'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600',
+    alt:   'Fresh market produce — delivery and settlement',
   },
 ]
 
 // ─── Sector fallback images (used when a listing has no photos) ───────────────
 
 const SECTOR_FALLBACK: Record<string, string> = {
-  crops:     'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80&fit=crop',
+  crops:     'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400&q=80&fit=crop',
   livestock: 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400&q=80&fit=crop',
   poultry:   'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400&q=80&fit=crop',
   fisheries: 'https://images.unsplash.com/photo-1570367823578-74b3ef1eba96?w=400&q=80&fit=crop',
   inputs:    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80&fit=crop',
 }
-const DEFAULT_FALLBACK = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop'
+const DEFAULT_FALLBACK = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80&fit=crop'
 
 export default async function LandingPage() {
 
@@ -162,13 +162,13 @@ export default async function LandingPage() {
           </div>
         </div>
 
-        {/* Right — floating crop panorama card */}
+        {/* Right — floating communal farming panorama */}
         <div className="relative hidden lg:flex items-center justify-center bg-cream-dark px-8 py-12">
           <FloatUp className="relative w-full h-full max-h-[72vh]">
             <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
               <Image
-                src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=1200"
-                alt="Rich West African crop production panorama"
+                src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200&q=85&fit=crop"
+                alt="Communal farm landscape — West African agricultural production"
                 fill
                 priority
                 sizes="45vw"
@@ -184,7 +184,7 @@ export default async function LandingPage() {
       {/* Mobile hero image */}
       <div className="lg:hidden relative h-64 sm:h-80 w-full">
         <Image
-          src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=1200"
+          src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200&q=85&fit=crop"
           alt="West African agricultural production"
           fill
           priority
@@ -211,8 +211,8 @@ export default async function LandingPage() {
             <SlideLeft>
               <Card3D className="relative rounded-3xl overflow-hidden h-80 lg:h-[480px]">
                 <Image
-                  src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop"
-                  alt="Ghana produce market — verified farms"
+                  src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=800&q=80&fit=crop"
+                  alt="Farmers tending crops in West African field"
                   fill
                   sizes="(max-width: 1024px) 100vw, 420px"
                   className="object-cover"
@@ -385,7 +385,7 @@ export default async function LandingPage() {
       {/* ── 5. BOTTOM CTA ─────────────────────────────────────────────────── */}
       <section className="relative bg-forest py-24 overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1600&q=80&fit=crop"
+          src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80&fit=crop"
           alt=""
           fill
           aria-hidden="true"
