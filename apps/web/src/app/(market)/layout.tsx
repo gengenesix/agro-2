@@ -1,9 +1,10 @@
-import { TopNav, BottomNav } from '@/components/shared/navbar'
+import { LandingNav }  from '@/components/landing/landing-nav'
+import { BottomNav }   from '@/components/shared/navbar'
 
 export default function MarketLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <TopNav />
+      <LandingNav />
       <div className="pb-20 lg:pb-0">
         {children}
       </div>

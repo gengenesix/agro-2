@@ -10,6 +10,7 @@ const withPWA = withPWAInit({
 })
 
 const config: NextConfig = {
+  generateBuildId: async () => `agroconnect-${Date.now()}`,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },

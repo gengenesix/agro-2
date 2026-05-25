@@ -32,7 +32,7 @@ const METRICS = [
   {
     value:  '24,000+',
     label:  'REGISTERED FARMERS',
-    source: 'Securing guaranteed forward off-take contracts before harvest',
+    source: 'Verified agricultural producers securing forward off-take contracts.',
   },
   {
     value:  '16 / 16',
@@ -42,7 +42,7 @@ const METRICS = [
   {
     value:  'GHS 4.2M',
     label:  'BNPL DISBURSED',
-    source: 'Low-interest input financing for verified inputs and crop seeds',
+    source: 'Secured input credit lines distributed directly to verified field networks.',
   },
   {
     value:  '18,500+',
