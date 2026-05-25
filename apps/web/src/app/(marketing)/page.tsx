@@ -1,124 +1,71 @@
 import type { Metadata } from 'next'
 import Image             from 'next/image'
 import Link              from 'next/link'
+import { PortalTabs }    from './_components/portal-tabs'
+import { SubscribeForm } from './_components/subscribe-form'
 
 export const metadata: Metadata = {
-  title: 'AgroConnect — Ghana Agricultural Trading Platform',
-  description:
-    "Escrow-backed produce trading, harvest pledge contracts, and certified field verification across all 16 regions of Ghana.",
+  title:       'AgroConnect — Ghana Agricultural Trading Platform',
+  description: 'Escrow-backed produce trading, harvest pledge contracts, and certified field verification across all 16 regions of Ghana.',
 }
 
-// ─── Role cards ───────────────────────────────────────────────────────────────
+// ─── Service cards (sector highlights) ───────────────────────────────────────
 
-const ROLES = [
+const SERVICES = [
   {
-    title:  'Input Dealers',
-    body:   'Distribute seeds, fertilisers, and agro-chemicals through escrow-secured purchase orders. Real-time inventory tracking across Tamale, Kumasi, and Techiman distribution corridors.',
-    img:    'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&q=80&w=600',
-    alt:    'Agro-input distribution warehouse',
-    href:   '/login',
-    cta:    'Open Dealer Account',
+    label:  'Fresh Tomatoes',
+    region: 'Ashanti Region',
+    price:  'GHS 2.50 / kg',
+    img:    'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400&q=80&fit=crop',
   },
   {
-    title:  'Wholesale Buyers',
-    body:   'Source certified regional produce at scale. Lock in seasonal forward contracts through our Harvest Pledge system — backed by deposit escrow and milestone tracking from Bono East to Makola.',
-    img:    'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600',
-    alt:    'Wholesale produce buyer inspecting stock',
-    href:   '/produce',
-    cta:    'Browse Produce',
+    label:  'Volta Lake Tilapia',
+    region: 'Volta Region',
+    price:  'GHS 22.00 / kg',
+    img:    'https://images.unsplash.com/photo-1570367823578-74b3ef1eba96?w=400&q=80&fit=crop',
   },
   {
-    title:  'Retail Consumers',
-    body:   'Order direct from field-verified farms in your region. Farm-to-door delivery or pickup, with every listing price-confirmed and produce quality graded at dispatch.',
-    img:    'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&q=80&w=600',
-    alt:    'Consumer purchasing fresh produce',
-    href:   '/produce',
-    cta:    'Shop Now',
-  },
-]
-
-// ─── Pledge legs ──────────────────────────────────────────────────────────────
-
-const PLEDGE_LEGS = [
-  {
-    step:   '01',
-    label:  'Contract Execution',
-    body:   'Buyer deposits a pre-agreed percentage (5–50%) directly into escrow at contract signing. The farmer receives confirmation and begins production with guaranteed payment visibility. Regional field agents in Sunyani and Tamale log GPS-verified progress milestones.',
-    img:    'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=600',
-    alt:    'Signing agricultural forward contract',
-  },
-  {
-    step:   '02',
-    label:  'Delivery & Settlement',
-    body:   "On buyer confirmation of receipt, the escrow unlocks automatically. The platform releases the deposit net of our 2.5% commission and simultaneously charges the remaining contract balance. Every transaction is ledger-stamped in the farmer's and buyer's wallets in real time.",
-    img:    'https://images.unsplash.com/photo-1563013544-824ae1d704d3?auto=format&fit=crop&q=80&w=600',
-    alt:    'Digital payment settlement screen',
+    label:  'NPK 15-15-15 Fertiliser',
+    region: 'Greater Accra',
+    price:  'GHS 180.00 / bag',
+    img:    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80&fit=crop',
   },
 ]
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
 
 const STATS = [
-  { value: '24,000+', label: 'Registered Farmers' },
-  { value: '16 / 16', label: 'Regions Covered'    },
-  { value: 'GHS 4.2M', label: 'BNPL Disbursed'   },
-  { value: '18,500+', label: 'Live Listings'       },
+  { value: '24,000+',  label: 'Registered Farmers' },
+  { value: '16 / 16',  label: 'Regions Covered'    },
+  { value: 'GHS 4.2M', label: 'BNPL Disbursed'     },
+  { value: '18,500+',  label: 'Live Listings'       },
 ]
-
-// ─── Impact profiles ──────────────────────────────────────────────────────────
-
-const PROFILES = [
-  {
-    name:   'Abena Owusu',
-    role:   'Maize Farmer · Eastern Region',
-    quote:  '"Before AgroConnect I had no way to guarantee my buyer would pay after harvest. Now the deposit is locked at signing and I plant with full confidence."',
-    img:    'https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&q=80&w=500',
-  },
-  {
-    name:   'Kwame Asante',
-    role:   'Agro-Input Dealer · Ashanti Region',
-    quote:  '"The escrow system means my NPK stock moves faster. Farmers in Kumasi book directly on the platform — no more chasing payments at the end of the season."',
-    img:    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500',
-  },
-]
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function LandingPage() {
   return (
-    <main>
+    <main className="overflow-x-hidden">
 
-      {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-forest">
-        <Image
-          src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=1200"
-          alt="Active Ghanaian agricultural production"
-          fill
-          priority
-          className="object-cover opacity-25"
-          sizes="100vw"
-          draggable={false}
-        />
-        {/* gradient overlay — ensures text legibility across screen widths */}
-        <div className="absolute inset-0 bg-gradient-to-r from-forest/90 via-forest/60 to-transparent" />
+      {/* ── 1. HERO — split layout ─────────────────────────────────────── */}
+      <section className="grid lg:grid-cols-[55%_45%] min-h-[88vh]">
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-24 lg:py-32">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 text-lime text-xs font-bold uppercase
-                             tracking-widest mb-7 bg-white/10 px-3 py-1.5 rounded-full">
-              <svg viewBox="0 0 16 16" width="10" height="10" fill="currentColor">
-                <path d="M8 1a5 5 0 1 0 0 10A5 5 0 0 0 8 1zm0 1.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7z"/>
-              </svg>
+        {/* Left panel — forest green, text + CTAs */}
+        <div className="bg-forest flex items-center px-8 sm:px-12 lg:px-16 py-20 lg:py-0">
+          <div className="max-w-lg">
+            <span className="inline-block text-lime text-xs font-bold uppercase tracking-widest
+                             bg-white/10 px-3 py-1.5 rounded-full mb-8">
               All 16 Regions of Ghana
             </span>
 
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white
-                           leading-[1.08] tracking-tight mb-6">
-              Ghana&apos;s Agricultural{' '}
-              <span className="text-lime">Trading Platform.</span>
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold
+                           text-white leading-[1.08] tracking-tight mb-6">
+              Ghanaian Agriculture.
+              <br />
+              <span className="text-lime">Secure Markets.</span>
+              <br />
+              Real Prosperity.
             </h1>
 
-            <p className="text-white/70 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl">
+            <p className="text-white/65 text-base sm:text-lg leading-relaxed mb-10">
               Escrow-backed input distribution, crop pledge milestone tracking, seasonal
               forward contracts, and certified regional field mapping — Bono East,
               Techiman, Sunyani, Tamale, Makola.
@@ -126,7 +73,7 @@ export default function LandingPage() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/login"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-lime
+                className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-lime
                            text-forest font-bold text-sm rounded-xl hover:bg-lime-dark
                            transition-colors">
                 Get Started Free
@@ -136,198 +83,294 @@ export default function LandingPage() {
                 </svg>
               </Link>
               <Link href="/produce"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white/10
-                           text-white font-bold text-sm rounded-xl hover:bg-white/20
-                           transition-colors">
+                className="inline-flex items-center justify-center px-7 py-4 bg-white/10
+                           text-white font-bold text-sm rounded-xl hover:bg-white/20 transition-colors">
                 Browse Marketplace
+              </Link>
+            </div>
+
+            {/* Inline stats */}
+            <div className="flex flex-wrap gap-8 mt-12 pt-8 border-t border-white/10">
+              {STATS.map(s => (
+                <div key={s.label}>
+                  <p className="font-mono font-extrabold text-xl text-white">{s.value}</p>
+                  <p className="text-white/45 text-xs mt-0.5">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right panel — farmer photo */}
+        <div className="relative hidden lg:block bg-cream-dark">
+          <Image
+            src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=85&fit=crop"
+            alt="Ghanaian farmer reviewing harvest"
+            fill
+            priority
+            sizes="45vw"
+            className="object-cover object-top"
+            draggable={false}
+          />
+          {/* Subtle overlay that bleeds the forest color inward */}
+          <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-forest to-transparent" />
+        </div>
+      </section>
+
+      {/* Mobile hero image — visible below the text on small screens */}
+      <div className="lg:hidden relative h-64 sm:h-80 w-full">
+        <Image
+          src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=85&fit=crop"
+          alt="Ghanaian farmer"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-top"
+        />
+      </div>
+
+      {/* ── 2. SERVICES — left big photo + right cards ────────────────── */}
+      <section className="bg-white py-20 lg:py-28">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+
+          <div className="text-center mb-14">
+            <p className="text-xs font-bold text-forest uppercase tracking-widest mb-3">
+              Live on the platform
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-forest">
+              Produce, inputs, and pledges — all in one place.
+            </h2>
+          </div>
+
+          <div className="grid lg:grid-cols-[420px_1fr] gap-10 items-start">
+
+            {/* Left: large farm photo */}
+            <div className="relative rounded-3xl overflow-hidden h-80 lg:h-[480px]">
+              <Image
+                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop"
+                alt="Ghana farm market"
+                fill
+                sizes="(max-width: 1024px) 100vw, 420px"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-forest/60 to-transparent" />
+              <div className="absolute bottom-5 left-6 right-6">
+                <p className="text-white font-bold text-lg leading-snug">
+                  Verified produce from certified farms across all regions.
+                </p>
+              </div>
+            </div>
+
+            {/* Right: section heading + 3 service cards */}
+            <div>
+              <div className="mb-6">
+                <h3 className="font-bold text-forest text-xl mb-2">Today&apos;s Listings</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
+                  Field-verified produce updated daily. Prices are confirmed at listing — no
+                  hidden markups at checkout.
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-3 gap-4">
+                {SERVICES.map(s => (
+                  <Link key={s.label} href="/produce"
+                    className="group rounded-2xl border border-border overflow-hidden
+                               hover:shadow-md transition-shadow bg-white">
+                    <div className="relative h-40 overflow-hidden">
+                      <Image
+                        src={s.img}
+                        alt={s.label}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 200px"
+                        className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <p className="font-bold text-forest text-sm leading-snug mb-0.5">
+                        {s.label}
+                      </p>
+                      <p className="text-muted-foreground text-xs">{s.region}</p>
+                      <p className="font-mono font-bold text-forest text-sm mt-2">
+                        {s.price}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <Link href="/produce"
+                className="inline-flex items-center gap-2 mt-6 text-sm font-bold text-forest
+                           hover:text-forest-dark transition-colors">
+                View all live listings
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
+                     stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 8h10M9 4l4 4-4 4"/>
+                </svg>
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Stats bar ─────────────────────────────────────────────────────── */}
-      <section className="bg-white border-y border-border">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-border">
-            {STATS.map((s) => (
-              <div key={s.label} className="px-6 py-8 text-center">
-                <p className="font-mono font-extrabold text-2xl sm:text-3xl text-forest">
-                  {s.value}
-                </p>
-                <p className="text-muted-foreground text-xs font-semibold mt-1 uppercase tracking-wider">
-                  {s.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── What AgroConnect Does ─────────────────────────────────────────── */}
-      <section className="py-20 lg:py-28 bg-cream">
+      {/* ── 3. PORTAL TABS — role-based features ──────────────────────── */}
+      <section className="bg-cream py-20 lg:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="mb-12">
             <p className="text-xs font-bold text-forest uppercase tracking-widest mb-3">
-              Three portals. One platform.
+              Purpose-built portals
             </p>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-forest
-                           leading-snug max-w-xl">
-              Built for every actor in Ghana&apos;s agricultural chain.
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-forest max-w-xl">
+              Every role has its own dedicated workspace.
             </h2>
           </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ROLES.map((r) => (
-              <div key={r.title}
-                className="bg-white rounded-2xl overflow-hidden border border-border
-                           flex flex-col group hover:shadow-md transition-shadow">
-                <div className="relative h-52 overflow-hidden">
-                  <Image
-                    src={r.img}
-                    alt={r.alt}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="font-bold text-forest text-lg mb-2">{r.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed flex-1">{r.body}</p>
-                  <Link href={r.href}
-                    className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-forest
-                               hover:text-forest-dark transition-colors group/link">
-                    {r.cta}
-                    <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
-                         stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                         className="group-hover/link:translate-x-0.5 transition-transform">
-                      <path d="M3 8h10M9 4l4 4-4 4"/>
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+          <PortalTabs />
         </div>
       </section>
 
-      {/* ── Crop Pledge Framework ─────────────────────────────────────────── */}
-      <section className="py-20 lg:py-28 bg-white">
+      {/* ── 4. PLEDGE FRAMEWORK — two media cards ─────────────────────── */}
+      <section className="bg-white py-20 lg:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="mb-12 max-w-2xl">
+          <div className="text-center mb-14 max-w-2xl mx-auto">
             <p className="text-xs font-bold text-harvest-gold uppercase tracking-widest mb-3">
               Harvest Pledge System
             </p>
             <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-forest leading-snug">
               A dual-stage financial escrow framework for seasonal forward contracts.
             </h2>
-            <p className="text-muted-foreground text-base mt-4 leading-relaxed">
-              Buyers commit before the growing season. Farmers plant with payment certainty.
-              Settlement is automatic on confirmed delivery — no manual reconciliation.
-            </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {PLEDGE_LEGS.map((leg) => (
-              <div key={leg.step}
-                className="border-l-4 border-harvest-gold bg-cream rounded-2xl overflow-hidden">
-                <div className="relative h-56">
+            {[
+              {
+                step:  '01',
+                title: 'Contract Execution',
+                body:  'Buyer deposits 5–50% at signing, held in escrow. Farmer plants with confirmed payment. Field agents in Sunyani and Tamale log GPS-verified milestones.',
+                img:   'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=600',
+                alt:   'Agricultural contract signing',
+              },
+              {
+                step:  '02',
+                title: 'Delivery & Settlement',
+                body:  'Buyer confirms receipt. Escrow unlocks automatically — deposit released net of 2.5% commission and remaining balance charged simultaneously. Full ledger stamp in real time.',
+                img:   'https://images.unsplash.com/photo-1563013544-824ae1d704d3?auto=format&fit=crop&q=80&w=600',
+                alt:   'Digital payment settlement',
+              },
+            ].map(card => (
+              <div key={card.step}
+                className="rounded-3xl overflow-hidden border border-border group
+                           hover:shadow-lg transition-shadow">
+                <div className="relative h-60 overflow-hidden">
                   <Image
-                    src={leg.img}
-                    alt={leg.alt}
+                    src={card.img}
+                    alt={card.alt}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
+                    className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <div className="absolute bottom-4 left-5">
-                    <span className="font-mono text-xs font-bold text-white/60 block mb-0.5">
-                      Step {leg.step}
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest/70 to-transparent" />
+                  <div className="absolute bottom-5 left-6">
+                    <span className="font-mono text-white/50 text-xs font-bold block mb-0.5">
+                      Step {card.step}
                     </span>
-                    <span className="font-bold text-white text-base">{leg.label}</span>
+                    <span className="font-bold text-white text-lg">{card.title}</span>
                   </div>
                 </div>
-                <div className="p-6">
-                  <p className="text-muted-foreground text-sm leading-relaxed">{leg.body}</p>
+                <div className="p-7 bg-cream">
+                  <p className="text-muted-foreground text-sm leading-relaxed">{card.body}</p>
                 </div>
               </div>
             ))}
           </div>
-
-          <div className="mt-8 text-center">
-            <Link href="/features#pledges"
-              className="inline-flex items-center gap-2 text-sm font-bold text-forest
-                         hover:text-forest-dark transition-colors">
-              Read the full pledge mechanics
-              <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
-                   stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 8h10M9 4l4 4-4 4"/>
-              </svg>
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* ── Local Impact ──────────────────────────────────────────────────── */}
-      <section className="py-20 lg:py-28 bg-cream">
+      {/* ── 5. IMPACT — profiles + newsletter ─────────────────────────── */}
+      <section className="bg-cream py-20 lg:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="mb-12">
-            <p className="text-xs font-bold text-forest uppercase tracking-widest mb-3">
-              On the ground
-            </p>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-forest">
-              Real operators. Real transactions.
-            </h2>
-          </div>
+          <div className="grid lg:grid-cols-2 gap-14 items-center">
 
-          <div className="grid sm:grid-cols-2 gap-8">
-            {PROFILES.map((p) => (
-              <div key={p.name}
-                className="bg-white rounded-2xl border border-border p-6 flex flex-col
-                           sm:flex-row gap-5">
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden shrink-0">
-                  <Image
-                    src={p.img}
-                    alt={p.name}
-                    fill
-                    sizes="96px"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-sm text-muted-foreground leading-relaxed italic mb-3">
-                    {p.quote}
-                  </p>
-                  <p className="font-bold text-forest text-sm">{p.name}</p>
-                  <p className="text-xs text-muted-foreground">{p.role}</p>
-                </div>
+            {/* Left: heading + profiles + email form */}
+            <div>
+              <p className="text-xs font-bold text-forest uppercase tracking-widest mb-4">
+                On the ground
+              </p>
+              <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-forest
+                             leading-snug mb-5">
+                Farmers tracking field updates in real time.
+              </h2>
+              <p className="text-muted-foreground text-base leading-relaxed mb-8">
+                From Abena in Eastern Region pledging her maize harvest four months before
+                collection, to Kwame in Ashanti dispatching NPK across Kumasi — the platform
+                moves with every actor in the chain.
+              </p>
+
+              {/* Two profile cards */}
+              <div className="space-y-4 mb-10">
+                {[
+                  {
+                    name:  'Abena Owusu',
+                    role:  'Maize Farmer · Eastern Region',
+                    quote: '"The deposit is locked at signing. I plant with full confidence the buyer cannot back out."',
+                    img:   'https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&q=80&w=500',
+                  },
+                  {
+                    name:  'Kwame Asante',
+                    role:  'Agro-Input Dealer · Ashanti',
+                    quote: '"No more chasing payments at season-end. Every NPK order is escrow-confirmed before it ships."',
+                    img:   'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500',
+                  },
+                ].map(p => (
+                  <div key={p.name}
+                    className="flex gap-4 bg-white rounded-2xl border border-border p-5">
+                    <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0">
+                      <Image src={p.img} alt={p.name} fill sizes="56px" className="object-cover" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground italic mb-2">{p.quote}</p>
+                      <p className="font-bold text-forest text-xs">{p.name}</p>
+                      <p className="text-muted-foreground text-xs">{p.role}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+
+              {/* Email subscribe */}
+              <SubscribeForm />
+            </div>
+
+            {/* Right: tall portrait photo */}
+            <div className="hidden lg:block relative rounded-3xl overflow-hidden h-[640px]">
+              <Image
+                src="https://images.unsplash.com/photo-1568219557405-376e23e4f7cf?w=700&q=80&fit=crop"
+                alt="Maize field in Ghana"
+                fill
+                sizes="50vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-forest/40 to-transparent" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Bottom CTA ────────────────────────────────────────────────────── */}
+      {/* ── 6. BOTTOM CTA ──────────────────────────────────────────────── */}
       <section className="relative bg-forest py-24 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <Image
-            src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1600&q=80&fit=crop"
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-            aria-hidden="true"
-          />
-        </div>
+        <Image
+          src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1600&q=80&fit=crop"
+          alt=""
+          fill
+          aria-hidden="true"
+          className="object-cover opacity-[0.12]"
+          sizes="100vw"
+        />
         <div className="relative z-10 max-w-2xl mx-auto text-center px-4">
           <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-white
                          leading-tight mb-5">
             Ready to trade with confidence?
           </h2>
-          <p className="text-white/65 text-lg mb-10 leading-relaxed">
+          <p className="text-white/60 text-lg mb-10 leading-relaxed">
             Join 24,000+ farmers, dealers, and buyers across Ghana.
-            Escrow-protected payments. Field-verified listings.
-            BNPL credit for every season.
+            Escrow-protected payments. Field-verified listings. BNPL credit every season.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/login"
