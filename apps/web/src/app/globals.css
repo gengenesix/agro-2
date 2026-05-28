@@ -20,11 +20,11 @@
   --destructive-foreground: oklch(0.985 0 0);
   --border:                oklch(0.90 0.02 100);
   --input:                 oklch(0.90 0.02 100);
-  --ring:                  oklch(0.88 0.22 120);
+  --ring:                  oklch(0.28 0.07 145);  /* forest green focus ring */
   --radius:                1rem;
 
-  --lime:                  oklch(0.88 0.22 120);
-  --lime-dark:             oklch(0.78 0.20 120);
+  --lime:                  oklch(0.76 0.17 75);   /* warm amber gold */
+  --lime-dark:             oklch(0.63 0.16 72);   /* deep amber */
   --forest:                oklch(0.28 0.07 145);
   --forest-dark:           oklch(0.20 0.06 145);
   --cream:                 oklch(0.97 0.015 100);

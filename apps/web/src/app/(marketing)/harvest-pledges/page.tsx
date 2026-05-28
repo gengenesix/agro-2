@@ -17,8 +17,11 @@ const TIMELINE = [
     body: 'Crop type, quantity, expected harvest date, GPS location. Accessible on any phone. Listed to international buyers worldwide.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22V12M12 12C12 7 8 4 4 4c0 4 3 8 8 8zM12 12c0-5 4-8 8-8 0 4-3 8-8 8"/>
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 21v-9"/>
+        <path d="M12 12C11 8 8 6 4 6c0 3.5 2.5 6.5 8 6Z" fill="currentColor" fillOpacity="0.2"/>
+        <path d="M12 12c1-4 4-6 8-6 0 3.5-2.5 6.5-8 6Z" fill="currentColor" fillOpacity="0.12"/>
+        <path d="M12 12C11 8 8 6 4 6c0 3.5 2.5 6.5 8 6ZM12 12c1-4 4-6 8-6 0 3.5-2.5 6.5-8 6Z"/>
       </svg>
     ),
   },
@@ -27,7 +30,8 @@ const TIMELINE = [
     body: 'Buyer anywhere in the world deposits 20–50% into our secure escrow engine. Funds are locked — the farmer never touches them until delivery.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" fill="currentColor" fillOpacity="0.10"/>
         <rect x="3" y="11" width="18" height="11" rx="2"/>
         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
       </svg>
@@ -38,7 +42,7 @@ const TIMELINE = [
     body: 'Pledge confirmation unlocks AgroScore input credit. Farmer grows knowing the crop is sold. Field agents GPS-log progress milestones at every key stage.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M5 12h14"/>
         <path d="M12 5l7 7-7 7"/>
       </svg>
@@ -49,7 +53,7 @@ const TIMELINE = [
     body: 'Our field agent GPS-stamps the delivery. Escrow releases automatically. Full audit trail for customs compliance. Net of 2.5% commission.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
         <polyline points="22 4 12 14.01 9 11.01"/>
       </svg>
@@ -115,16 +119,16 @@ export default function HarvestPledgesPage() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section
-        className="relative min-h-[86vh] grid lg:grid-cols-[52%_48%] pt-16"
+        className="relative min-h-[86vh] grid lg:grid-cols-[52%_48%]"
         style={{ backgroundColor: 'var(--cream)' }}
       >
-        <div className="flex items-center px-8 sm:px-12 lg:px-16 py-20 lg:py-0">
+        <div className="flex items-center px-6 sm:px-10 lg:px-16 py-20 lg:py-0">
           <div className="max-w-2xl">
 
             <FadeIn>
               <span
                 className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest
-                           px-3 py-1.5 rounded-full mb-10"
+                           px-3 py-1.5 mb-10"
                 style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}
               >
                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
@@ -138,23 +142,17 @@ export default function HarvestPledgesPage() {
 
             <FadeUp delay={0.07}>
               <h1
-                className="font-display font-bold leading-[1.02] mb-6"
+                className="font-display font-bold leading-[0.95] mb-6"
                 style={{
                   fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                  letterSpacing: '-0.03em',
+                  letterSpacing: '-0.04em',
                   color: 'var(--forest)',
                 }}
               >
                 Forward contracts
                 <br />
                 for farmers,{' '}
-                <em
-                  className="not-italic"
-                  style={{
-                    color: 'var(--lime)',
-                    WebkitTextStroke: '1.5px var(--forest)',
-                  }}
-                >
+                <em className="not-italic" style={{ color: 'var(--lime)' }}>
                   globally.
                 </em>
               </h1>
@@ -172,9 +170,14 @@ export default function HarvestPledgesPage() {
             <FadeUp delay={0.22}>
               <div className="flex flex-wrap gap-3 mb-14">
                 <Link href="/pledges"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-sm rounded-full
+                  className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-sm
                              transition-all hover:opacity-90 active:scale-[0.97]"
-                  style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
+                  style={{
+                    backgroundColor: 'var(--forest)',
+                    color: 'white',
+                    clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                  }}
+                >
                   Browse Pledges
                   <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -182,13 +185,13 @@ export default function HarvestPledgesPage() {
                   </svg>
                 </Link>
                 <Link href="/login"
-                  className="inline-flex items-center px-7 py-3.5 font-bold text-sm rounded-full
+                  className="inline-flex items-center px-7 py-3.5 font-bold text-sm
                              transition-all hover:opacity-80"
                   style={{
-                    backgroundColor: 'transparent',
                     color: 'var(--forest)',
-                    border: '1.5px solid var(--forest)',
-                  }}>
+                    border: '1.5px solid rgba(25,60,30,0.30)',
+                  }}
+                >
                   Create a Pledge Listing
                 </Link>
               </div>
@@ -196,14 +199,20 @@ export default function HarvestPledgesPage() {
 
             <FadeIn delay={0.30}>
               <div
-                className="inline-flex items-center gap-4 px-6 py-4 rounded-2xl"
+                className="inline-flex items-center gap-4 px-6 py-4"
                 style={{
                   backgroundColor: 'white',
                   border: '1.5px solid rgba(25,60,30,0.10)',
                 }}
               >
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                     style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
+                <div
+                  className="w-11 h-11 flex items-center justify-center flex-shrink-0"
+                  style={{
+                    backgroundColor: 'var(--lime)',
+                    color: 'var(--forest)',
+                    clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                  }}
+                >
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
                        strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="11" width="18" height="11" rx="2"/>
@@ -240,22 +249,24 @@ export default function HarvestPledgesPage() {
           {/* Field agent badge */}
           <div className="absolute top-16 left-10 z-10">
             <div
-              className="flex items-center gap-3 px-5 py-4 rounded-2xl"
+              className="flex items-center gap-3 px-5 py-4"
               style={{
                 backgroundColor: 'var(--forest)',
                 boxShadow: '0 8px 32px rgba(10,34,16,0.30)',
               }}
             >
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                   style={{ backgroundColor: 'rgba(255,255,255,0.10)' }}>
+              <div
+                className="w-9 h-9 flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: 'rgba(255,255,255,0.10)' }}
+              >
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--lime)"
-                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                     strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
                   <circle cx="12" cy="10" r="3"/>
                 </svg>
               </div>
               <div>
-                <p className="font-display font-bold text-sm text-white">GPS Verified</p>
+                <p className="font-bold text-sm text-white">GPS Verified</p>
                 <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.50)' }}>
                   Every milestone logged
                 </p>
@@ -278,67 +289,72 @@ export default function HarvestPledgesPage() {
 
       {/* ── TIMELINE ──────────────────────────────────────────────── */}
       <section className="py-24 lg:py-32" style={{ backgroundColor: 'white' }}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="max-w-xl mb-14">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
                style={{ color: 'rgba(25,60,30,0.40)' }}>
               The Process
             </p>
             <h2
-              className="font-display font-bold leading-[1.06]"
+              className="font-display font-bold leading-[0.95]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.03em',
+                letterSpacing: '-0.04em',
                 color: 'var(--forest)',
               }}
             >
-              Five milestones. Fully automated.
+              Four milestones. Fully automated.
             </h2>
           </FadeUp>
 
           <div className="space-y-4">
             {TIMELINE.map((t, i) => (
               <FadeUp key={t.step} delay={i * 0.09}>
-                <Card3D>
-                  <div
-                    className="rounded-2xl p-6 grid sm:grid-cols-[64px_1fr_auto] gap-4 items-start"
-                    style={{
-                      backgroundColor: 'var(--cream)',
-                      border: '1.5px solid rgba(25,60,30,0.10)',
-                    }}
-                  >
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center"
-                           style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}>
-                        {t.icon}
-                      </div>
-                      <p className="font-mono font-extrabold text-xs"
-                         style={{ color: 'rgba(25,60,30,0.30)' }}>
-                        {t.step}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="font-display font-bold text-base mb-1.5"
-                         style={{ color: 'var(--forest)', letterSpacing: '-0.02em' }}>
-                        {t.phase}
-                      </p>
-                      <p className="text-sm leading-relaxed"
-                         style={{ color: 'rgba(25,60,30,0.60)' }}>
-                        {t.body}
-                      </p>
-                    </div>
-                    <span
-                      className="inline-block text-[10px] font-bold uppercase tracking-widest px-3 py-1.5
-                                 rounded-full whitespace-nowrap self-start mt-1"
+                <div
+                  className="p-6 grid sm:grid-cols-[64px_1fr_auto] gap-4 items-start"
+                  style={{
+                    backgroundColor: 'var(--cream)',
+                    border: '1.5px solid rgba(25,60,30,0.08)',
+                    borderLeft: '4px solid var(--lime)',
+                  }}
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <div
+                      className="w-12 h-12 flex items-center justify-center"
                       style={{
                         backgroundColor: 'var(--forest)',
                         color: 'var(--lime)',
+                        clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
                       }}
                     >
-                      {t.who}
-                    </span>
+                      {t.icon}
+                    </div>
+                    <p className="font-mono font-extrabold text-xs"
+                       style={{ color: 'rgba(25,60,30,0.30)' }}>
+                      {t.step}
+                    </p>
                   </div>
-                </Card3D>
+                  <div>
+                    <p className="font-bold text-base mb-1.5"
+                       style={{ color: 'var(--forest)', letterSpacing: '-0.02em' }}>
+                      {t.phase}
+                    </p>
+                    <p className="text-sm leading-relaxed"
+                       style={{ color: 'rgba(25,60,30,0.60)' }}>
+                      {t.body}
+                    </p>
+                  </div>
+                  <span
+                    className="inline-block text-[10px] font-bold uppercase tracking-widest px-3 py-1.5
+                               whitespace-nowrap self-start mt-1"
+                    style={{
+                      backgroundColor: 'var(--forest)',
+                      color: 'var(--lime)',
+                    }}
+                  >
+                    {t.who}
+                  </span>
+                </div>
               </FadeUp>
             ))}
           </div>
@@ -347,17 +363,17 @@ export default function HarvestPledgesPage() {
 
       {/* ── PROTECTION ────────────────────────────────────────────── */}
       <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--cream)' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="text-center mb-16 max-w-xl mx-auto">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
                style={{ color: 'rgba(25,60,30,0.40)' }}>
               Protection
             </p>
             <h2
-              className="font-display font-bold leading-[1.06]"
+              className="font-display font-bold leading-[0.95]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.03em',
+                letterSpacing: '-0.04em',
                 color: 'var(--forest)',
               }}
             >
@@ -365,15 +381,15 @@ export default function HarvestPledgesPage() {
             </h2>
           </FadeUp>
 
-          <div className="grid md:grid-cols-2 gap-5">
+          <div className="grid md:grid-cols-2 gap-4">
             {PROTECTION.map((p, i) => (
               <FadeUp key={p.who} delay={i * 0.10}>
                 <div
-                  className="rounded-3xl p-8 h-full"
+                  className="p-8 h-full"
                   style={{ backgroundColor: p.bg }}
                 >
                   <p
-                    className="font-display font-bold text-lg mb-6"
+                    className="font-bold text-lg mb-6"
                     style={{ color: p.textColor, letterSpacing: '-0.02em' }}
                   >
                     {p.who}
@@ -383,7 +399,7 @@ export default function HarvestPledgesPage() {
                       <li key={item} className="flex items-start gap-3 text-sm"
                           style={{ color: p.mutedColor }}>
                         <svg viewBox="0 0 16 16" width="15" height="15" fill="none"
-                             stroke={p.checkColor} strokeWidth="2.2"
+                             stroke={p.checkColor} strokeWidth="2.5"
                              strokeLinecap="round" strokeLinejoin="round"
                              className="shrink-0 mt-0.5">
                           <path d="M3 8l3.5 3.5L13 4.5"/>
@@ -401,13 +417,13 @@ export default function HarvestPledgesPage() {
 
       {/* ── FAQ ───────────────────────────────────────────────────── */}
       <section className="py-24 lg:py-32" style={{ backgroundColor: 'white' }}>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="mb-12">
             <h2
               className="font-display font-bold"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.03em',
+                letterSpacing: '-0.04em',
                 color: 'var(--forest)',
               }}
             >
@@ -418,13 +434,14 @@ export default function HarvestPledgesPage() {
             {FAQ.map((f, i) => (
               <FadeUp key={f.q} delay={i * 0.07}>
                 <div
-                  className="rounded-2xl p-6"
+                  className="p-6"
                   style={{
                     backgroundColor: 'var(--cream)',
-                    border: '1.5px solid rgba(25,60,30,0.10)',
+                    border: '1.5px solid rgba(25,60,30,0.08)',
+                    borderLeft: '4px solid rgba(25,60,30,0.12)',
                   }}
                 >
-                  <p className="font-display font-bold text-sm mb-2"
+                  <p className="font-bold text-sm mb-2"
                      style={{ color: 'var(--forest)', letterSpacing: '-0.01em' }}>
                     {f.q}
                   </p>
@@ -440,7 +457,11 @@ export default function HarvestPledgesPage() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────── */}
-      <section className="py-24 text-center px-4" style={{ backgroundColor: 'var(--forest)' }}>
+      <section
+        className="py-24 text-center px-4 relative overflow-hidden"
+        style={{ backgroundColor: 'var(--forest)' }}
+      >
+        <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ backgroundColor: 'var(--lime)', opacity: 0.4 }} />
         <FadeUp>
           <h2
             className="font-display font-bold text-white mb-4"
@@ -458,17 +479,19 @@ export default function HarvestPledgesPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/login"
-              className="px-8 py-4 font-bold text-sm rounded-full transition-all hover:opacity-90"
-              style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
+              className="px-8 py-4 font-bold text-sm transition-all hover:opacity-90"
+              style={{
+                backgroundColor: 'var(--lime)',
+                color: 'var(--forest)',
+                clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+              }}
+            >
               Get Started
             </Link>
             <Link href="/pledges"
-              className="px-8 py-4 font-bold text-sm rounded-full transition-all hover:opacity-80"
-              style={{
-                backgroundColor: 'transparent',
-                color: 'white',
-                border: '1.5px solid rgba(255,255,255,0.30)',
-              }}>
+              className="px-8 py-4 font-bold text-sm text-white transition-all hover:bg-white/10"
+              style={{ border: '1.5px solid rgba(255,255,255,0.25)' }}
+            >
               Browse Pledges
             </Link>
           </div>

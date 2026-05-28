@@ -18,7 +18,7 @@ const INTEL_FEATURES = [
     body:  'Price feeds for maize, tomato, cocoa, tilapia, yam, and 40+ more commodities — updated every morning from regional market data sources across our pilot regions.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
       </svg>
     ),
@@ -29,7 +29,8 @@ const INTEL_FEATURES = [
     body:  'Hyperlocal forecasts for all 16 regions. Critical weather alerts trigger automatic SMS broadcast to all farmers in the affected region.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" fill="currentColor" fillOpacity="0.12"/>
         <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
       </svg>
     ),
@@ -40,7 +41,9 @@ const INTEL_FEATURES = [
     body:  'Regional pest advisories pushed to all registered farmers in an affected area. Outbreak maps, severity levels, and expert-sourced treatment recommendations.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+              fill="currentColor" fillOpacity="0.10"/>
         <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
         <line x1="12" y1="9" x2="12" y2="13"/>
         <line x1="12" y1="17" x2="12.01" y2="17"/>
@@ -53,7 +56,8 @@ const INTEL_FEATURES = [
     body:  'No smartphone or internet required. Access prices, weather, and alerts via USSD or SMS from any basic mobile phone — essential for rural farmers.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="5" y="2" width="14" height="20" rx="2" fill="currentColor" fillOpacity="0.10"/>
         <rect x="5" y="2" width="14" height="20" rx="2"/>
         <path d="M12 18h.01"/>
         <path d="M9 7h6M9 11h6M9 15h4"/>
@@ -63,32 +67,32 @@ const INTEL_FEATURES = [
 ]
 
 const PRICE_SNAPSHOT = [
-  { crop: 'White Maize',    region: 'Ashanti',       price: 'GHS 320',   unit: 'per bag',  trend: 'up'   },
+  { crop: 'White Maize',    region: 'Ashanti',       price: 'GHS 320',   unit: 'per bag',   trend: 'up'   },
   { crop: 'Roma Tomatoes',  region: 'Greater Accra', price: 'GHS 180',   unit: 'per crate', trend: 'down' },
-  { crop: 'Dried Tilapia',  region: 'Volta',         price: 'GHS 95',    unit: 'per kg',   trend: 'up'   },
-  { crop: 'Cocoa Beans',    region: 'Western',       price: 'GHS 1,200', unit: 'per bag',  trend: 'flat' },
-  { crop: 'Cassava',        region: 'Eastern',       price: 'GHS 55',    unit: 'per bag',  trend: 'up'   },
-  { crop: 'Broiler Chicken',region: 'Greater Accra', price: 'GHS 85',    unit: 'per bird', trend: 'down' },
+  { crop: 'Dried Tilapia',  region: 'Volta',         price: 'GHS 95',    unit: 'per kg',    trend: 'up'   },
+  { crop: 'Cocoa Beans',    region: 'Western',       price: 'GHS 1,200', unit: 'per bag',   trend: 'flat' },
+  { crop: 'Cassava',        region: 'Eastern',       price: 'GHS 55',    unit: 'per bag',   trend: 'up'   },
+  { crop: 'Broiler Chicken',region: 'Greater Accra', price: 'GHS 85',    unit: 'per bird',  trend: 'down' },
 ]
 
 function TrendIcon({ dir }: { dir: string }) {
   if (dir === 'up') return (
     <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor"
-         strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
-         style={{ color: 'hsl(140,50%,35%)' }}>
+         strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+         style={{ color: 'var(--sector-crops)' }}>
       <path d="M3 11l5-6 5 6"/>
     </svg>
   )
   if (dir === 'down') return (
     <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor"
-         strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
-         style={{ color: 'hsl(0,65%,52%)' }}>
+         strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+         style={{ color: 'var(--destructive)' }}>
       <path d="M3 5l5 6 5-6"/>
     </svg>
   )
   return (
     <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor"
-         strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+         strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
          style={{ color: 'rgba(25,60,30,0.35)' }}>
       <path d="M3 8h10"/>
     </svg>
@@ -101,16 +105,16 @@ export default function MarketIntelligencePage() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section
-        className="relative min-h-[86vh] grid lg:grid-cols-[52%_48%] pt-16"
+        className="relative min-h-[86vh] grid lg:grid-cols-[52%_48%]"
         style={{ backgroundColor: 'var(--cream)' }}
       >
-        <div className="flex items-center px-8 sm:px-12 lg:px-16 py-20 lg:py-0">
+        <div className="flex items-center px-6 sm:px-10 lg:px-16 py-20 lg:py-0">
           <div className="max-w-2xl">
 
             <FadeIn>
               <span
                 className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest
-                           px-3 py-1.5 rounded-full mb-10"
+                           px-3 py-1.5 mb-10"
                 style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}
               >
                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
@@ -123,21 +127,15 @@ export default function MarketIntelligencePage() {
 
             <FadeUp delay={0.07}>
               <h1
-                className="font-display font-bold leading-[1.02] mb-6"
+                className="font-display font-bold leading-[0.95] mb-6"
                 style={{
                   fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                  letterSpacing: '-0.03em',
+                  letterSpacing: '-0.04em',
                   color: 'var(--forest)',
                 }}
               >
                 Prices, weather &amp;{' '}
-                <em
-                  className="not-italic"
-                  style={{
-                    color: 'var(--lime)',
-                    WebkitTextStroke: '1.5px var(--forest)',
-                  }}
-                >
+                <em className="not-italic" style={{ color: 'var(--lime)' }}>
                   alerts
                 </em>
                 <br />
@@ -157,9 +155,14 @@ export default function MarketIntelligencePage() {
             <FadeUp delay={0.22}>
               <div className="flex flex-wrap gap-3 mb-14">
                 <Link href="/login"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-sm rounded-full
+                  className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-sm
                              transition-all hover:opacity-90 active:scale-[0.97]"
-                  style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
+                  style={{
+                    backgroundColor: 'var(--forest)',
+                    color: 'white',
+                    clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                  }}
+                >
                   Access Intelligence
                   <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -167,7 +170,7 @@ export default function MarketIntelligencePage() {
                   </svg>
                 </Link>
                 <div
-                  className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full text-sm font-bold"
+                  className="inline-flex items-center gap-2 px-5 py-3.5 text-sm font-bold"
                   style={{
                     backgroundColor: 'white',
                     color: 'var(--forest)',
@@ -175,7 +178,7 @@ export default function MarketIntelligencePage() {
                   }}
                 >
                   <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                       strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="5" y="2" width="14" height="20" rx="2"/>
                     <path d="M12 18h.01"/>
                   </svg>
@@ -185,11 +188,11 @@ export default function MarketIntelligencePage() {
             </FadeUp>
 
             <FadeIn delay={0.30}>
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-6 flex-wrap">
                 {[
-                  { v: '40+', l: 'Commodities Tracked' },
-                  { v: '6+', l: 'Regions Active' },
-                  { v: 'Every 6 hrs', l: 'Price Updates' },
+                  { v: '40+',       l: 'Commodities Tracked' },
+                  { v: '6+',        l: 'Regions Active'      },
+                  { v: 'Every 6 hrs', l: 'Price Updates'     },
                 ].map((s, i) => (
                   <div key={s.l} className="flex items-center gap-6">
                     {i > 0 && (
@@ -227,7 +230,7 @@ export default function MarketIntelligencePage() {
           {/* Weather card */}
           <div className="absolute top-16 left-10 z-10">
             <div
-              className="rounded-2xl px-5 py-4 min-w-[190px]"
+              className="px-5 py-4 min-w-[190px]"
               style={{
                 backgroundColor: 'white',
                 boxShadow: '0 8px 32px rgba(10,34,16,0.15)',
@@ -250,7 +253,7 @@ export default function MarketIntelligencePage() {
           {/* USSD card */}
           <div className="absolute bottom-16 left-10 z-10">
             <div
-              className="rounded-2xl px-5 py-4"
+              className="px-5 py-4"
               style={{
                 backgroundColor: 'var(--forest)',
                 boxShadow: '0 8px 32px rgba(10,34,16,0.30)',
@@ -260,7 +263,7 @@ export default function MarketIntelligencePage() {
                  style={{ color: 'rgba(255,255,255,0.45)' }}>
                 No Smartphone
               </p>
-              <p className="font-display font-extrabold text-lg"
+              <p className="font-bold text-lg"
                  style={{ color: 'var(--lime)' }}>
                 Any Basic Phone
               </p>
@@ -282,7 +285,7 @@ export default function MarketIntelligencePage() {
 
       {/* ── LIVE PRICE TABLE ──────────────────────────────────────── */}
       <section className="py-24 lg:py-32" style={{ backgroundColor: 'white' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_340px] gap-14 items-start">
 
             <SlideLeft>
@@ -292,10 +295,10 @@ export default function MarketIntelligencePage() {
                   Today&apos;s Prices
                 </p>
                 <h2
-                  className="font-display font-bold leading-[1.06] mb-8"
+                  className="font-display font-bold leading-[0.95] mb-8"
                   style={{
                     fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                    letterSpacing: '-0.03em',
+                    letterSpacing: '-0.04em',
                     color: 'var(--forest)',
                   }}
                 >
@@ -303,7 +306,7 @@ export default function MarketIntelligencePage() {
                 </h2>
 
                 <div
-                  className="rounded-2xl overflow-hidden"
+                  className="overflow-hidden"
                   style={{ border: '1.5px solid rgba(25,60,30,0.10)' }}
                 >
                   <div
@@ -347,69 +350,71 @@ export default function MarketIntelligencePage() {
             <SlideRight>
               <div className="space-y-4 lg:sticky lg:top-24">
                 {/* Weather card */}
-                <Card3D>
-                  <div
-                    className="rounded-2xl p-6"
-                    style={{
-                      backgroundColor: 'var(--cream)',
-                      border: '1.5px solid rgba(25,60,30,0.10)',
-                    }}
-                  >
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                           style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
-                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="font-bold text-sm" style={{ color: 'var(--forest)' }}>Ashanti Region</p>
-                        <p className="text-[11px]" style={{ color: 'rgba(25,60,30,0.45)' }}>Updated 2 hours ago</p>
-                      </div>
+                <div
+                  className="p-6"
+                  style={{
+                    backgroundColor: 'var(--cream)',
+                    border: '1.5px solid rgba(25,60,30,0.10)',
+                  }}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className="w-10 h-10 flex items-center justify-center"
+                      style={{
+                        backgroundColor: 'var(--forest)',
+                        color: 'var(--lime)',
+                        clipPath: 'polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))',
+                      }}
+                    >
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                      </svg>
                     </div>
-                    <div className="flex items-end gap-3 mb-4">
-                      <p className="font-mono font-extrabold text-4xl leading-none"
-                         style={{ color: 'var(--forest)' }}>28°C</p>
-                      <p className="text-sm mb-0.5" style={{ color: 'rgba(25,60,30,0.55)' }}>
-                        Partly cloudy · 62% humidity
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((d, i) => (
-                        <div
-                          key={d}
-                          className="flex-1 rounded-xl px-1 py-2 text-center"
-                          style={{ backgroundColor: 'white' }}
-                        >
-                          <p className="text-[9px] font-bold uppercase"
-                             style={{ color: 'rgba(25,60,30,0.40)' }}>{d}</p>
-                          <p className="font-mono font-bold text-sm mt-0.5"
-                             style={{ color: 'var(--forest)' }}>
-                            {[28, 27, 29, 30, 26][i]}°
-                          </p>
-                        </div>
-                      ))}
+                    <div>
+                      <p className="font-bold text-sm" style={{ color: 'var(--forest)' }}>Ashanti Region</p>
+                      <p className="text-[11px]" style={{ color: 'rgba(25,60,30,0.45)' }}>Updated 2 hours ago</p>
                     </div>
                   </div>
-                </Card3D>
+                  <div className="flex items-end gap-3 mb-4">
+                    <p className="font-mono font-extrabold text-4xl leading-none"
+                       style={{ color: 'var(--forest)' }}>28°C</p>
+                    <p className="text-sm mb-0.5" style={{ color: 'rgba(25,60,30,0.55)' }}>
+                      Partly cloudy · 62% humidity
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((d, i) => (
+                      <div
+                        key={d}
+                        className="flex-1 px-1 py-2 text-center"
+                        style={{ backgroundColor: 'white' }}
+                      >
+                        <p className="text-[9px] font-bold uppercase"
+                           style={{ color: 'rgba(25,60,30,0.40)' }}>{d}</p>
+                        <p className="font-mono font-bold text-sm mt-0.5"
+                           style={{ color: 'var(--forest)' }}>
+                          {[28, 27, 29, 30, 26][i]}°
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 {/* Offline access card */}
-                <Card3D>
-                  <div
-                    className="rounded-2xl p-6"
-                    style={{ backgroundColor: 'var(--forest)' }}
-                  >
-                    <p className="text-[11px] font-bold uppercase tracking-widest mb-2"
-                       style={{ color: 'var(--lime)' }}>
-                      No Smartphone? No Problem.
-                    </p>
-                    <p className="font-display font-extrabold text-xl text-white mt-1">Offline Access</p>
-                    <p className="text-sm mt-2.5" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                      Check prices and weather on any basic mobile — all active regions covered via USSD and SMS.
-                    </p>
-                  </div>
-                </Card3D>
+                <div
+                  className="p-6"
+                  style={{ backgroundColor: 'var(--forest)' }}
+                >
+                  <p className="text-[11px] font-bold uppercase tracking-widest mb-2"
+                     style={{ color: 'var(--lime)' }}>
+                    No Smartphone? No Problem.
+                  </p>
+                  <p className="font-bold text-xl text-white mt-1">Offline Access</p>
+                  <p className="text-sm mt-2.5" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                    Check prices and weather on any basic mobile — all active regions covered via USSD and SMS.
+                  </p>
+                </div>
               </div>
             </SlideRight>
           </div>
@@ -418,17 +423,17 @@ export default function MarketIntelligencePage() {
 
       {/* ── FEATURES ──────────────────────────────────────────────── */}
       <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--forest)' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="max-w-xl mb-16">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
                style={{ color: 'var(--lime)' }}>
               Intelligence Tools
             </p>
             <h2
-              className="font-display font-bold text-white leading-[1.06]"
+              className="font-display font-bold text-white leading-[0.95]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.03em',
+                letterSpacing: '-0.04em',
               }}
             >
               Everything you need to trade smarter.
@@ -439,14 +444,20 @@ export default function MarketIntelligencePage() {
             {INTEL_FEATURES.map(f => (
               <StaggerItem key={f.title}>
                 <div
-                  className="rounded-2xl p-6 h-full flex flex-col"
+                  className="p-6 h-full flex flex-col"
                   style={{
                     backgroundColor: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.10)',
                   }}
                 >
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 flex-shrink-0"
-                       style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
+                  <div
+                    className="w-11 h-11 flex items-center justify-center mb-5 flex-shrink-0"
+                    style={{
+                      backgroundColor: 'var(--lime)',
+                      color: 'var(--forest)',
+                      clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                    }}
+                  >
                     {f.icon}
                   </div>
                   <p className="font-mono text-xs font-bold mb-2"
@@ -469,13 +480,16 @@ export default function MarketIntelligencePage() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────── */}
-      <section className="py-24 text-center px-4" style={{ backgroundColor: 'var(--cream)' }}>
+      <section
+        className="py-24 text-center px-4"
+        style={{ backgroundColor: 'var(--cream)' }}
+      >
         <FadeUp>
           <h2
-            className="font-bold mb-4"
+            className="font-display font-bold mb-4"
             style={{
               fontSize: 'clamp(1.9rem, 4vw, 3rem)',
-              letterSpacing: '-0.05em',
+              letterSpacing: '-0.04em',
               color: 'var(--forest)',
             }}
           >
@@ -488,12 +502,17 @@ export default function MarketIntelligencePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/login"
-              className="px-8 py-4 font-bold text-sm rounded-full transition-all hover:opacity-90"
-              style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
+              className="px-8 py-4 font-bold text-sm transition-all hover:opacity-90"
+              style={{
+                backgroundColor: 'var(--forest)',
+                color: 'white',
+                clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+              }}
+            >
               Access Intelligence
             </Link>
             <Link href="/features#intelligence"
-              className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full text-sm font-bold
+              className="inline-flex items-center justify-center gap-2 px-6 py-4 text-sm font-bold
                          transition-all hover:opacity-80"
               style={{
                 backgroundColor: 'white',

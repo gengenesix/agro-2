@@ -59,15 +59,26 @@ export default function ContactPage() {
     <main>
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="bg-forest py-20 text-center px-4">
-        <p className="text-lime text-xs font-bold uppercase tracking-widest mb-5">
+      <section className="relative py-20 text-center px-4 overflow-hidden"
+               style={{ backgroundColor: 'var(--forest)' }}>
+        <div className="absolute top-0 right-0 bottom-0 w-1.5" style={{ backgroundColor: 'var(--lime)', opacity: 0.5 }} />
+        <span
+          className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em]
+                     px-3 py-1.5 mb-8 inline-block"
+          style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}
+        >
           Get in Touch
-        </p>
-        <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-white
-                       leading-tight mb-4">
+        </span>
+        <h1
+          className="font-display font-bold text-white leading-[0.93] mb-4"
+          style={{
+            fontSize: 'clamp(2.4rem, 5vw, 4rem)',
+            letterSpacing: '-0.04em',
+          }}
+        >
           Contact AgroConnect
         </h1>
-        <p className="text-white/60 text-lg max-w-xl mx-auto">
+        <p className="text-lg max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.55)' }}>
           Reach our team for account support, partnership inquiries, field agent
           recruitment, or press. We respond within one business day.
         </p>
@@ -168,9 +179,13 @@ export default function ContactPage() {
                     )}
 
                     <button type="submit" disabled={status === 'sending'}
-                      className="w-full py-3.5 bg-forest text-white text-sm font-bold rounded-2xl
-                                 hover:bg-forest-dark active:scale-[0.98] transition-all
-                                 disabled:opacity-50 flex items-center justify-center gap-2">
+                      className="w-full py-3.5 text-white text-sm font-bold
+                                 active:scale-[0.98] transition-all
+                                 disabled:opacity-50 flex items-center justify-center gap-2"
+                      style={{
+                        backgroundColor: 'var(--forest)',
+                        clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                      }}>
                       {status === 'sending' ? (
                         <>
                           <svg className="animate-spin" viewBox="0 0 24 24" width="16" height="16"

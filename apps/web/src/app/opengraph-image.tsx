@@ -38,14 +38,14 @@ export default function Image() {
         }}>
           <div style={{
             width: 36, height: 36, borderRadius: 10,
-            background: '#c8f542',
+            background: '#D97706',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#1a3a24">
               <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-13 6.5S11.5 20 11.5 20"/>
             </svg>
           </div>
-          <span style={{ color: '#c8f542', fontSize: 14, fontWeight: 700, letterSpacing: '0.1em' }}>
+          <span style={{ color: '#D97706', fontSize: 14, fontWeight: 700, letterSpacing: '0.1em' }}>
             AGROCONNECT
           </span>
         </div>
@@ -79,7 +79,7 @@ export default function Image() {
               borderRadius: 12, padding: '12px 20px',
               display: 'flex', flexDirection: 'column', gap: 2,
             }}>
-              <span style={{ fontSize: 28, fontWeight: 700, color: '#c8f542', fontFamily: 'monospace' }}>
+              <span style={{ fontSize: 28, fontWeight: 700, color: '#D97706', fontFamily: 'monospace' }}>
                 {stat.value}
               </span>
               <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>

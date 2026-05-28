@@ -30,57 +30,57 @@ export function LandingNav() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center"
-      style={{ backgroundColor: 'var(--forest)' }}
+      className="fixed top-0 left-0 right-0 z-50 h-16"
+      style={{
+        backgroundColor: 'var(--forest)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+      }}
     >
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 lg:px-8">
+      <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {/* Logo */}
-        <Link href="/" style={{ textDecoration: 'none' }}>
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
           <div
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl"
+            className="w-8 h-8 flex items-center justify-center"
             style={{
-              backgroundColor: 'white',
-              border: '1.5px solid rgba(255,255,255,0.20)',
-              boxShadow: '0 2px 16px rgba(0,0,0,0.28)',
+              backgroundColor: 'var(--lime)',
+              clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
             }}
           >
-            {/* Leaf mark */}
-            <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
-              <path d="M14 3C9 3 5 7.5 5 12c0 6 9 16 9 16s9-10 9-16c0-4.5-4-9-9-9Z"
-                    fill="var(--forest)" />
-              <path d="M14 13v5" stroke="var(--lime)" strokeWidth="2" strokeLinecap="round"/>
-              <circle cx="14" cy="11" r="2" fill="var(--lime)" />
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
+              <path d="M12 21v-9" stroke="var(--forest)" strokeWidth="2.5" strokeLinecap="round"/>
+              <path d="M12 12C11 8 8 6 4 6c0 3.5 2.5 6.5 8 6Z" fill="var(--forest)"/>
+              <path d="M12 12c1-4 4-6 8-6 0 3.5-2.5 6.5-8 6Z" fill="var(--forest)" fillOpacity="0.7"/>
             </svg>
-            <div className="leading-none">
-              <span
-                className="font-extrabold tracking-tight block"
-                style={{ fontSize: '0.9rem', color: 'var(--forest)', letterSpacing: '-0.035em' }}
-              >
-                Agro<span style={{ color: 'hsl(140,45%,30%)' }}>Connect</span>
-              </span>
-              <span
-                className="block font-semibold uppercase"
-                style={{ fontSize: '0.55rem', color: 'hsl(140,15%,55%)', letterSpacing: '0.08em' }}
-              >
-                Seed to Sale · Ghana
-              </span>
-            </div>
+          </div>
+          <div>
+            <span
+              className="font-display font-extrabold block"
+              style={{ fontSize: '0.95rem', color: 'white', letterSpacing: '-0.03em', lineHeight: 1.1 }}
+            >
+              AgroConnect
+            </span>
+            <span
+              className="block font-mono"
+              style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em' }}
+            >
+              agroconnect.io
+            </span>
           </div>
         </Link>
 
         {/* Desktop links */}
-        <nav className="hidden md:flex items-center gap-7">
+        <nav className="hidden md:flex items-center gap-1">
           {NAV_LINKS.map(({ href, label }) => {
             const active = pathname === href || pathname.startsWith(href + '/')
             return (
               <Link
                 key={href}
                 href={href}
-                className="text-sm font-semibold transition-opacity hover:opacity-100"
+                className="px-3 py-2 text-[13px] font-semibold transition-colors"
                 style={{
-                  color: active ? 'var(--lime)' : 'rgba(255,255,255,0.58)',
-                  textDecoration: 'none',
+                  color: active ? 'var(--lime)' : 'rgba(255,255,255,0.55)',
+                  borderBottom: active ? '2px solid var(--lime)' : '2px solid transparent',
                 }}
               >
                 {label}
@@ -90,16 +90,21 @@ export function LandingNav() {
         </nav>
 
         {/* CTAs */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {!loading && (
             dashboardPath ? (
               <Link
                 href={dashboardPath}
-                className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold transition-all hover:opacity-90 active:scale-[0.97]"
-                style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)', textDecoration: 'none' }}
+                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-[13px] font-bold
+                           transition-all hover:opacity-90 active:scale-[0.97]"
+                style={{
+                  backgroundColor: 'var(--lime)',
+                  color: 'var(--forest)',
+                  clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+                }}
               >
                 Dashboard
-                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor"
+                <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor"
                      strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 8h10M9 4l4 4-4 4"/>
                 </svg>
@@ -108,15 +113,20 @@ export function LandingNav() {
               <>
                 <Link
                   href="/login"
-                  className="hidden sm:block text-sm font-semibold transition-opacity hover:opacity-70"
-                  style={{ color: 'rgba(255,255,255,0.65)', textDecoration: 'none' }}
+                  className="hidden sm:block text-[13px] font-semibold transition-colors
+                             hover:text-white"
+                  style={{ color: 'rgba(255,255,255,0.55)' }}
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/login"
-                  className="px-5 py-2 rounded-full text-sm font-bold transition-all hover:opacity-90 active:scale-[0.97]"
-                  style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)', textDecoration: 'none' }}
+                  className="px-4 py-2 text-[13px] font-bold transition-all hover:opacity-90 active:scale-[0.97]"
+                  style={{
+                    backgroundColor: 'var(--lime)',
+                    color: 'var(--forest)',
+                    clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+                  }}
                 >
                   Get Started
                 </Link>
@@ -129,11 +139,11 @@ export function LandingNav() {
             type="button"
             onClick={() => setOpen(o => !o)}
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="md:hidden p-2 rounded-lg transition-colors"
+            className="md:hidden p-2 transition-colors cursor-pointer"
             style={{ color: 'rgba(255,255,255,0.7)' }}
           >
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
-                 stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+                 stroke="currentColor" strokeWidth="2.25" strokeLinecap="round">
               {open
                 ? <><path d="M18 6L6 18"/><path d="M6 6l12 12"/></>
                 : <><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></>
@@ -146,53 +156,83 @@ export function LandingNav() {
       {/* Mobile drawer */}
       {open && (
         <div
-          className="md:hidden absolute top-16 left-0 right-0 px-5 py-4 space-y-1 border-t"
-          style={{ backgroundColor: 'var(--forest-dark)', borderColor: 'rgba(255,255,255,0.08)' }}
+          className="md:hidden absolute top-16 left-0 right-0 border-t"
+          style={{
+            backgroundColor: 'var(--forest-dark)',
+            borderColor: 'rgba(255,255,255,0.08)',
+          }}
         >
-          {NAV_LINKS.map(({ href, label }) => {
-            const active = pathname === href || pathname.startsWith(href + '/')
-            return (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold"
-                style={{
-                  color: active ? 'var(--lime)' : 'rgba(255,255,255,0.70)',
-                  backgroundColor: active ? 'rgba(255,255,255,0.06)' : 'transparent',
-                  textDecoration: 'none',
-                }}
-              >
-                {label}
-                {active && (
-                  <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="var(--lime)"
-                       strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 8h10M9 4l4 4-4 4"/>
-                  </svg>
-                )}
-              </Link>
-            )
-          })}
-          <div className="pt-3 mt-2 space-y-2" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="px-4 py-3 space-y-0.5">
+            {NAV_LINKS.map(({ href, label }) => {
+              const active = pathname === href || pathname.startsWith(href + '/')
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between px-4 py-3 text-sm font-semibold
+                             transition-colors cursor-pointer"
+                  style={{
+                    color: active ? 'var(--lime)' : 'rgba(255,255,255,0.65)',
+                    backgroundColor: active ? 'rgba(255,255,255,0.05)' : 'transparent',
+                    borderLeft: active ? '3px solid var(--lime)' : '3px solid transparent',
+                  }}
+                >
+                  {label}
+                  {active && (
+                    <svg viewBox="0 0 16 16" width="12" height="12" fill="none"
+                         stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 8h10M9 4l4 4-4 4"/>
+                    </svg>
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+          <div
+            className="px-4 pb-4 pt-2 space-y-2"
+            style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
+          >
             {!loading && (dashboardPath ? (
               <Link
                 href={dashboardPath}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center px-4 py-3 rounded-full text-sm font-bold"
-                style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)', textDecoration: 'none' }}
+                className="flex items-center justify-center w-full py-3 text-sm font-bold
+                           transition-all hover:opacity-90"
+                style={{
+                  backgroundColor: 'var(--lime)',
+                  color: 'var(--forest)',
+                  clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                }}
               >
                 Go to Dashboard
               </Link>
             ) : (
               <>
-                <Link href="/login" onClick={() => setOpen(false)}
-                  className="flex items-center justify-center px-4 py-2.5 rounded-full text-sm font-semibold"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.80)', textDecoration: 'none' }}>
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-center w-full py-3 text-sm font-semibold
+                             transition-colors"
+                  style={{
+                    backgroundColor: 'rgba(255,255,255,0.07)',
+                    color: 'rgba(255,255,255,0.75)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                  }}
+                >
                   Sign In
                 </Link>
-                <Link href="/login" onClick={() => setOpen(false)}
-                  className="flex items-center justify-center px-4 py-3 rounded-full text-sm font-bold"
-                  style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)', textDecoration: 'none' }}>
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-center w-full py-3 text-sm font-bold
+                             transition-all hover:opacity-90"
+                  style={{
+                    backgroundColor: 'var(--lime)',
+                    color: 'var(--forest)',
+                    clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                  }}
+                >
                   Get Started Free
                 </Link>
               </>

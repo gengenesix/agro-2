@@ -17,8 +17,11 @@ const CATEGORIES = [
     desc: 'Certified maize, rice, sorghum, cowpea, and vegetable seed varieties',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22V12M12 12C12 7 8 4 4 4c0 4 3 8 8 8zM12 12c0-5 4-8 8-8 0 4-3 8-8 8"/>
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 21v-9"/>
+        <path d="M12 12C11 8 8 6 4 6c0 3.5 2.5 6.5 8 6Z" fill="currentColor" fillOpacity="0.2"/>
+        <path d="M12 12c1-4 4-6 8-6 0 3.5-2.5 6.5-8 6Z" fill="currentColor" fillOpacity="0.12"/>
+        <path d="M12 12C11 8 8 6 4 6c0 3.5 2.5 6.5 8 6ZM12 12c1-4 4-6 8-6 0 3.5-2.5 6.5-8 6Z"/>
       </svg>
     ),
   },
@@ -27,7 +30,9 @@ const CATEGORIES = [
     desc: 'NPK, urea, compost, and micronutrient blends for all crop types',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+              fill="currentColor" fillOpacity="0.12"/>
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
         <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
         <line x1="12" y1="22.08" x2="12" y2="12"/>
@@ -39,7 +44,9 @@ const CATEGORIES = [
     desc: 'EPA-approved herbicides, fungicides, and insecticides',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2a9 9 0 0 1 9 9c0 4-2.5 7-5 9l-4 2-4-2c-2.5-2-5-5-5-9a9 9 0 0 1 9-9z"
+              fill="currentColor" fillOpacity="0.10"/>
         <path d="M12 2a9 9 0 0 1 9 9c0 4-2.5 7-5 9l-4 2-4-2c-2.5-2-5-5-5-9a9 9 0 0 1 9-9z"/>
         <path d="M12 7v5l3 3"/>
       </svg>
@@ -50,7 +57,8 @@ const CATEGORIES = [
     desc: 'Irrigation kits, sprayers, seeders, and post-harvest handling tools',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="3" fill="currentColor" fillOpacity="0.15"/>
         <circle cx="12" cy="12" r="3"/>
         <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
       </svg>
@@ -65,12 +73,12 @@ const BNPL_TIERS = [
     highlight: false,
   },
   {
-    tier: 'Grower',     score: '≥ 50', limit: '$600',  rate: '6% flat',
+    tier: 'Grower',     score: '≥ 50', limit: '$600',    rate: '6% flat',
     desc: 'Harvest Pledge listing enabled. For verified farmers with a growing trade record.',
     highlight: false,
   },
   {
-    tier: 'Established',score: '≥ 70', limit: '$3,000', rate: '5% flat',
+    tier: 'Established',score: '≥ 70', limit: '$3,000',  rate: '5% flat',
     desc: 'International buyer access. For field-verified farmers with strong order history.',
     highlight: true,
   },
@@ -87,8 +95,9 @@ const PROCESS = [
     body: 'Log in and view your AgroScore. It is calculated from your verification level, order history, and repayment record.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4" fill="currentColor" fillOpacity="0.12"/>
         <circle cx="12" cy="7" r="4"/>
       </svg>
     ),
@@ -98,7 +107,7 @@ const PROCESS = [
     body: 'Browse certified input dealers. Add seeds, fertilizers, or equipment to your cart. BNPL is shown automatically if your score qualifies.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
         <line x1="3" y1="6" x2="21" y2="6"/>
         <path d="M16 10a4 4 0 0 1-8 0"/>
@@ -110,7 +119,8 @@ const PROCESS = [
     body: 'Choose BNPL at checkout. Inputs are dispatched immediately. Your repayment is scheduled to align with your harvest cycle — no penalty for early payment.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="1" y="4" width="22" height="16" rx="2" fill="currentColor" fillOpacity="0.10"/>
         <rect x="1" y="4" width="22" height="16" rx="2"/>
         <line x1="1" y1="10" x2="23" y2="10"/>
       </svg>
@@ -124,21 +134,22 @@ export default function AgroInputsPage() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section
-        className="relative min-h-[86vh] grid lg:grid-cols-[52%_48%] pt-16"
+        className="relative min-h-[86vh] grid lg:grid-cols-[52%_48%]"
         style={{ backgroundColor: 'var(--cream)' }}
       >
-        <div className="flex items-center px-8 sm:px-12 lg:px-16 py-20 lg:py-0">
+        <div className="flex items-center px-6 sm:px-10 lg:px-16 py-20 lg:py-0">
           <div className="max-w-2xl">
 
             <FadeIn>
               <span
                 className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest
-                           px-3 py-1.5 rounded-full mb-10"
+                           px-3 py-1.5 mb-10"
                 style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}
               >
                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
                      strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22V12M12 12C12 7 8 4 4 4c0 4 3 8 8 8zM12 12c0-5 4-8 8-8 0 4-3 8-8 8"/>
+                  <path d="M12 21v-9"/>
+                  <path d="M12 12C11 8 8 6 4 6c0 3.5 2.5 6.5 8 6ZM12 12c1-4 4-6 8-6 0 3.5-2.5 6.5-8 6Z"/>
                 </svg>
                 Agro Inputs
               </span>
@@ -146,22 +157,16 @@ export default function AgroInputsPage() {
 
             <FadeUp delay={0.07}>
               <h1
-                className="font-display font-bold leading-[1.02] mb-6"
+                className="font-display font-bold leading-[0.95] mb-6"
                 style={{
                   fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                  letterSpacing: '-0.03em',
+                  letterSpacing: '-0.04em',
                   color: 'var(--forest)',
                 }}
               >
                 Quality inputs.{' '}
                 <br />
-                <em
-                  className="not-italic"
-                  style={{
-                    color: 'var(--lime)',
-                    WebkitTextStroke: '1.5px var(--forest)',
-                  }}
-                >
+                <em className="not-italic" style={{ color: 'var(--lime)' }}>
                   Pay after
                 </em>{' '}
                 harvest.
@@ -180,9 +185,14 @@ export default function AgroInputsPage() {
             <FadeUp delay={0.22}>
               <div className="flex flex-wrap gap-3 mb-14">
                 <Link href="/farmer/inputs"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-sm rounded-full
+                  className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-sm
                              transition-all hover:opacity-90 active:scale-[0.97]"
-                  style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
+                  style={{
+                    backgroundColor: 'var(--forest)',
+                    color: 'white',
+                    clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                  }}
+                >
                   Browse Inputs
                   <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -190,13 +200,13 @@ export default function AgroInputsPage() {
                   </svg>
                 </Link>
                 <Link href="/login"
-                  className="inline-flex items-center px-7 py-3.5 font-bold text-sm rounded-full
+                  className="inline-flex items-center px-7 py-3.5 font-bold text-sm
                              transition-all hover:opacity-80"
                   style={{
-                    backgroundColor: 'transparent',
                     color: 'var(--forest)',
-                    border: '1.5px solid var(--forest)',
-                  }}>
+                    border: '1.5px solid rgba(25,60,30,0.30)',
+                  }}
+                >
                   Check My AgroScore
                 </Link>
               </div>
@@ -204,14 +214,20 @@ export default function AgroInputsPage() {
 
             <FadeIn delay={0.30}>
               <div
-                className="inline-flex items-center gap-5 px-6 py-4 rounded-2xl"
+                className="inline-flex items-center gap-5 px-6 py-4"
                 style={{
                   backgroundColor: 'white',
                   border: '1.5px solid rgba(25,60,30,0.10)',
                 }}
               >
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                     style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
+                <div
+                  className="w-11 h-11 flex items-center justify-center flex-shrink-0"
+                  style={{
+                    backgroundColor: 'var(--lime)',
+                    color: 'var(--forest)',
+                    clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                  }}
+                >
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
                        strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="1" y="4" width="22" height="16" rx="2"/>
@@ -248,16 +264,18 @@ export default function AgroInputsPage() {
           {/* BNPL badge */}
           <div className="absolute bottom-16 left-10 z-10">
             <div
-              className="flex items-center gap-3 px-5 py-4 rounded-2xl"
+              className="flex items-center gap-3 px-5 py-4"
               style={{
                 backgroundColor: 'var(--forest)',
                 boxShadow: '0 8px 32px rgba(10,34,16,0.30)',
               }}
             >
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                   style={{ backgroundColor: 'rgba(255,255,255,0.10)' }}>
+              <div
+                className="w-9 h-9 flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: 'rgba(255,255,255,0.10)' }}
+              >
                 <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--lime)"
-                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                     strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="1" y="4" width="22" height="16" rx="2"/>
                   <line x1="1" y1="10" x2="23" y2="10"/>
                 </svg>
@@ -286,17 +304,17 @@ export default function AgroInputsPage() {
 
       {/* ── CATEGORIES ────────────────────────────────────────────── */}
       <section className="py-24 lg:py-32" style={{ backgroundColor: 'white' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="max-w-lg mb-14">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
                style={{ color: 'rgba(25,60,30,0.40)' }}>
               Categories
             </p>
             <h2
-              className="font-display font-bold leading-[1.06]"
+              className="font-display font-bold leading-[0.95]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.03em',
+                letterSpacing: '-0.04em',
                 color: 'var(--forest)',
               }}
             >
@@ -307,36 +325,39 @@ export default function AgroInputsPage() {
           <StaggerGrid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" stagger={0.08}>
             {CATEGORIES.map(c => (
               <StaggerItem key={c.label}>
-                <Card3D className="h-full">
-                  <Link
-                    href={`/farmer/inputs?category=${c.label.toLowerCase()}`}
-                    className="group flex flex-col rounded-2xl p-6 h-full transition-all"
+                <Link
+                  href={`/farmer/inputs?category=${c.label.toLowerCase()}`}
+                  className="group flex flex-col p-6 h-full transition-all hover:-translate-y-0.5 cursor-pointer"
+                  style={{
+                    backgroundColor: 'var(--cream)',
+                    border: '1.5px solid rgba(25,60,30,0.08)',
+                    borderBottom: '4px solid var(--sector-inputs)',
+                  }}
+                >
+                  <div
+                    className="w-12 h-12 flex items-center justify-center mb-5 flex-shrink-0
+                               transition-transform duration-200 group-hover:scale-110"
                     style={{
-                      backgroundColor: 'var(--cream)',
-                      border: '1.5px solid rgba(25,60,30,0.10)',
+                      backgroundColor: 'var(--sector-inputs-bg)',
+                      color: 'var(--sector-inputs)',
+                      clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
                     }}
                   >
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 flex-shrink-0
-                                 transition-transform duration-200 group-hover:scale-110"
-                      style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}
-                    >
-                      {c.icon}
-                    </div>
-                    <p className="font-bold text-base mb-1.5"
-                       style={{ color: 'var(--forest)', letterSpacing: '-0.02em' }}>
-                      {c.label}
-                    </p>
-                    <p className="text-sm leading-relaxed flex-1 mb-3"
-                       style={{ color: 'rgba(25,60,30,0.58)' }}>
-                      {c.desc}
-                    </p>
-                    <p className="font-mono text-xs font-bold"
-                       style={{ color: 'hsl(86,50%,35%)' }}>
-                      {c.count} listings
-                    </p>
-                  </Link>
-                </Card3D>
+                    {c.icon}
+                  </div>
+                  <p className="font-bold text-base mb-1.5"
+                     style={{ color: 'var(--forest)', letterSpacing: '-0.02em' }}>
+                    {c.label}
+                  </p>
+                  <p className="text-sm leading-relaxed flex-1 mb-3"
+                     style={{ color: 'rgba(25,60,30,0.58)' }}>
+                    {c.desc}
+                  </p>
+                  <p className="font-mono text-xs font-bold"
+                     style={{ color: 'var(--sector-inputs)' }}>
+                    {c.count} listings
+                  </p>
+                </Link>
               </StaggerItem>
             ))}
           </StaggerGrid>
@@ -345,17 +366,17 @@ export default function AgroInputsPage() {
 
       {/* ── BNPL TIERS ────────────────────────────────────────────── */}
       <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--forest)' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="text-center mb-16 max-w-2xl mx-auto">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
                style={{ color: 'var(--lime)' }}>
               BNPL Credit Tiers
             </p>
             <h2
-              className="font-display font-bold text-white leading-[1.06]"
+              className="font-display font-bold text-white leading-[0.95]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.03em',
+                letterSpacing: '-0.04em',
               }}
             >
               Your AgroScore unlocks your credit line.
@@ -369,7 +390,7 @@ export default function AgroInputsPage() {
             {BNPL_TIERS.map((t, i) => (
               <FadeUp key={t.tier} delay={i * 0.09}>
                 <div
-                  className="rounded-2xl p-6 h-full flex flex-col"
+                  className="p-6 h-full flex flex-col"
                   style={
                     t.highlight
                       ? {
@@ -422,17 +443,17 @@ export default function AgroInputsPage() {
 
       {/* ── HOW BNPL WORKS ────────────────────────────────────────── */}
       <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--cream)' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="text-center mb-16 max-w-xl mx-auto">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
                style={{ color: 'rgba(25,60,30,0.40)' }}>
               How BNPL Works
             </p>
             <h2
-              className="font-display font-bold leading-[1.06]"
+              className="font-display font-bold leading-[0.95]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.03em',
+                letterSpacing: '-0.04em',
                 color: 'var(--forest)',
               }}
             >
@@ -440,19 +461,26 @@ export default function AgroInputsPage() {
             </h2>
           </FadeUp>
 
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-3 gap-4">
             {PROCESS.map((p, i) => (
               <FadeUp key={p.step} delay={i * 0.09}>
                 <div
-                  className="rounded-2xl p-7 h-full"
+                  className="p-7 h-full"
                   style={{
                     backgroundColor: 'white',
-                    border: '1.5px solid rgba(25,60,30,0.10)',
+                    border: '1.5px solid rgba(25,60,30,0.08)',
+                    borderTop: '4px solid var(--forest)',
                   }}
                 >
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                         style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}>
+                    <div
+                      className="w-11 h-11 flex items-center justify-center flex-shrink-0"
+                      style={{
+                        backgroundColor: 'var(--forest)',
+                        color: 'var(--lime)',
+                        clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                      }}
+                    >
                       {p.icon}
                     </div>
                     <p className="font-mono font-extrabold text-3xl"
@@ -476,7 +504,11 @@ export default function AgroInputsPage() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────── */}
-      <section className="py-24 text-center px-4" style={{ backgroundColor: 'var(--forest)' }}>
+      <section
+        className="py-24 text-center px-4 relative overflow-hidden"
+        style={{ backgroundColor: 'var(--forest)' }}
+      >
+        <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ backgroundColor: 'var(--lime)', opacity: 0.4 }} />
         <FadeUp>
           <h2
             className="font-display font-bold text-white mb-4"
@@ -493,17 +525,19 @@ export default function AgroInputsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/login"
-              className="px-8 py-4 font-bold text-sm rounded-full transition-all hover:opacity-90"
-              style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
+              className="px-8 py-4 font-bold text-sm transition-all hover:opacity-90"
+              style={{
+                backgroundColor: 'var(--lime)',
+                color: 'var(--forest)',
+                clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+              }}
+            >
               Check My Eligibility
             </Link>
             <Link href="/farmer/inputs"
-              className="px-8 py-4 font-bold text-sm rounded-full transition-all hover:opacity-80"
-              style={{
-                backgroundColor: 'transparent',
-                color: 'white',
-                border: '1.5px solid rgba(255,255,255,0.30)',
-              }}>
+              className="px-8 py-4 font-bold text-sm text-white transition-all hover:bg-white/10"
+              style={{ border: '1.5px solid rgba(255,255,255,0.25)' }}
+            >
               Browse Inputs
             </Link>
           </div>

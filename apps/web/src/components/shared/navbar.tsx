@@ -103,9 +103,9 @@ export function TopNav() {
           >
             <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
               <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z"
-                fill="oklch(0.88 0.22 120)"/>
-              <path d="M16 15v7" stroke="oklch(0.88 0.22 120)" strokeWidth="2.5" strokeLinecap="round"/>
-              <path d="M12 25h8" stroke="oklch(0.88 0.22 120)" strokeWidth="2.5" strokeLinecap="round"/>
+                fill="oklch(0.76 0.17 75)"/>
+              <path d="M16 15v7" stroke="oklch(0.76 0.17 75)" strokeWidth="2.5" strokeLinecap="round"/>
+              <path d="M12 25h8" stroke="oklch(0.76 0.17 75)" strokeWidth="2.5" strokeLinecap="round"/>
             </svg>
           </div>
           <div>
