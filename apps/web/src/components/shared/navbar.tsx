@@ -89,25 +89,39 @@ export function TopNav() {
   const dashboardHref = user ? (ROLE_HOME[user.role] ?? '/dashboard') : '/dashboard'
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-border">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-40 bg-white/96 backdrop-blur-md"
+            style={{ borderBottom: '1px solid rgba(25,60,30,0.10)' }}>
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-lg bg-forest flex items-center justify-center">
-            <svg viewBox="0 0 32 32" width="20" height="20" fill="none">
-              <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z" fill="oklch(0.88 0.22 120)"/>
-              <path d="M16 15v7" stroke="oklch(0.88 0.22 120)" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M12 25h8" stroke="oklch(0.88 0.22 120)" strokeWidth="2" strokeLinecap="round"/>
+        <Link href="/" className="flex items-center gap-3">
+          <div
+            className="w-9 h-9 flex items-center justify-center flex-shrink-0"
+            style={{
+              backgroundColor: 'var(--forest)',
+              clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+            }}
+          >
+            <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
+              <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z"
+                fill="oklch(0.88 0.22 120)"/>
+              <path d="M16 15v7" stroke="oklch(0.88 0.22 120)" strokeWidth="2.5" strokeLinecap="round"/>
+              <path d="M12 25h8" stroke="oklch(0.88 0.22 120)" strokeWidth="2.5" strokeLinecap="round"/>
             </svg>
           </div>
           <div>
-            <span className="font-bold text-forest text-base leading-none block">AgroConnect</span>
-            <span className="text-[10px] text-muted-foreground">agroconnect.io</span>
+            <span className="font-display font-bold text-forest text-[15px] leading-none block"
+                  style={{ letterSpacing: '-0.02em' }}>
+              AgroConnect
+            </span>
+            <span className="text-[9px] font-semibold uppercase tracking-widest"
+                  style={{ color: 'rgba(25,60,30,0.35)' }}>
+              agroconnect.io
+            </span>
           </div>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-0.5">
           {[
             { href: '/produce',       label: 'Marketplace' },
             { href: '/pledges',       label: 'Pledges'     },
@@ -119,8 +133,12 @@ export function TopNav() {
               <Link
                 key={href}
                 href={href}
-                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors
-                  ${active ? 'bg-cream text-forest' : 'text-muted-foreground hover:text-forest hover:bg-cream'}`}
+                className="px-4 py-2 text-sm font-bold transition-colors"
+                style={{
+                  color: active ? 'var(--forest)' : 'rgba(25,60,30,0.45)',
+                  backgroundColor: active ? 'var(--cream)' : 'transparent',
+                  borderBottom: active ? '2px solid var(--forest)' : '2px solid transparent',
+                }}
               >
                 {label}
               </Link>
@@ -134,15 +152,16 @@ export function TopNav() {
             <>
               <Link
                 href={dashboardHref}
-                className="hidden sm:block px-4 py-2 text-sm font-semibold text-forest
-                           hover:bg-cream rounded-xl transition-colors truncate max-w-[140px]"
+                className="hidden sm:block px-4 py-2 text-sm font-bold transition-colors
+                           truncate max-w-[140px]"
+                style={{ color: 'var(--forest)' }}
               >
                 {user.fullName || user.phone?.replace('+233', '0') || 'Dashboard'}
               </Link>
               <button
                 onClick={logout}
-                className="px-4 py-2 text-sm font-semibold text-muted-foreground
-                           hover:bg-cream hover:text-forest rounded-xl transition-colors"
+                className="px-4 py-2 text-sm font-semibold transition-colors"
+                style={{ color: 'rgba(25,60,30,0.50)' }}
               >
                 Sign out
               </button>
@@ -151,15 +170,19 @@ export function TopNav() {
             <>
               <Link
                 href="/login"
-                className="hidden sm:block px-4 py-2 text-sm font-semibold text-forest
-                           hover:bg-cream rounded-xl transition-colors"
+                className="hidden sm:block px-4 py-2 text-sm font-bold transition-colors"
+                style={{ color: 'var(--forest)' }}
               >
                 Sign in
               </Link>
               <Link
                 href="/login"
-                className="px-4 py-2 bg-forest text-white text-sm font-bold rounded-xl
-                           hover:bg-forest-dark transition-colors"
+                className="px-5 py-2.5 text-sm font-bold transition-all hover:scale-[1.03]"
+                style={{
+                  backgroundColor: 'var(--forest)',
+                  color: 'white',
+                  clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+                }}
               >
                 Get Started
               </Link>

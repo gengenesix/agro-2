@@ -157,3 +157,15 @@
   .ring-lime                    { --tw-ring-color: var(--lime); }
   .focus-forest:focus           { outline: 2px solid var(--forest); outline-offset: 2px; }
 }
+
+/* ── Ticker animation ── */
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Pulse dot ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
