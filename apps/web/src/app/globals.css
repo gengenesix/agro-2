@@ -52,9 +52,9 @@
 }
 
 @theme inline {
-  --font-sans:    var(--font-plus-jakarta);
-  --font-display: var(--font-playfair);
-  --font-serif:   var(--font-playfair);
+  --font-sans:    var(--font-dm-sans);
+  --font-display: var(--font-bricolage);
+  --font-serif:   var(--font-bricolage);
   --font-mono:    var(--font-geist-mono), 'Geist Mono', 'Courier New', monospace;
 
   --color-background:         var(--background);
@@ -103,7 +103,7 @@
 @layer utilities {
   .scrollbar-hide               { -ms-overflow-style: none; scrollbar-width: none; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
-  .font-display                 { font-family: var(--font-playfair), Georgia, serif; }
+  .font-display                 { font-family: var(--font-bricolage), sans-serif; }
 
   /* ── Brand backgrounds ── */
   .bg-forest                    { background-color: var(--forest); }

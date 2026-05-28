@@ -24,19 +24,20 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                   </svg>
                 </div>
                 <div className="leading-none">
-                  <p className="font-extrabold text-base tracking-tight">
+                  <p className="font-display font-extrabold text-base tracking-tight">
                     Agro<span style={{ color: 'var(--lime)' }}>Connect</span>
                   </p>
                   <p className="text-[9px] font-medium uppercase tracking-wide"
                      style={{ color: 'rgba(255,255,255,0.40)' }}>
-                    Ghana · Seed to Sale
+                    Global Agricultural Trade
                   </p>
                 </div>
               </div>
               <p className="text-sm leading-relaxed max-w-xs"
                  style={{ color: 'rgba(255,255,255,0.50)' }}>
-                Ghana&apos;s agricultural trading infrastructure. Escrow-backed payments,
-                harvest forward contracts, and field-verified produce — every region, every sector.
+                Trusted infrastructure for cross-border agricultural trade —
+                escrow-backed payments, harvest forward contracts, and farmer
+                credit built for the world.
               </p>
             </div>
 
@@ -95,11 +96,10 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                 Reach Us
               </p>
               <ul className="space-y-3 text-sm" style={{ color: 'rgba(255,255,255,0.50)' }}>
-                <li>Accra, Greater Accra Region</li>
-                <li>info@agroconnect.com.gh</li>
-                <li className="font-mono font-bold" style={{ color: 'var(--lime)' }}>*800*456#</li>
+                <li>Accra, Ghana · Global HQ</li>
+                <li>info@agroconnect.io</li>
                 <li className="text-xs" style={{ color: 'rgba(255,255,255,0.30)' }}>
-                  All 16 regions · GHS only
+                  54 AfCFTA Nations · Multi-currency
                 </li>
               </ul>
             </div>
@@ -109,10 +109,10 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
           <div className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
                style={{ borderColor: 'rgba(255,255,255,0.10)' }}>
             <p className="text-xs" style={{ color: 'rgba(255,255,255,0.30)' }}>
-              &copy; {new Date().getFullYear()} AgroConnect Ghana Ltd. All rights reserved.
+              &copy; {new Date().getFullYear()} AgroConnect Ltd. All rights reserved.
             </p>
             <p className="text-xs" style={{ color: 'rgba(255,255,255,0.30)' }}>
-              Registered in Ghana · Ghana Data Protection Act 2012 compliant
+              agroconnect.io · Pilot market: Ghana
             </p>
           </div>
 

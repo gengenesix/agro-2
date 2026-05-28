@@ -5,22 +5,22 @@ import Link          from 'next/link'
 
 const OFFICES = [
   {
-    region: 'Greater Accra (HQ)',
+    region: 'Global HQ · Accra, Ghana',
     address: 'Airport Residential Area, Accra',
     phone:   '+233 30 000 0000',
-    email:   'info@agroconnect.com.gh',
+    email:   'info@agroconnect.io',
   },
   {
-    region: 'Ashanti Regional Office',
+    region: 'Pilot Operations · Kumasi',
     address: 'Adum Commercial District, Kumasi',
     phone:   '+233 32 000 0000',
-    email:   'ashanti@agroconnect.com.gh',
+    email:   'operations@agroconnect.io',
   },
   {
-    region: 'Northern Regional Office',
+    region: 'Field Network · Northern Ghana',
     address: 'Tamale Central Market District',
     phone:   '+233 37 000 0000',
-    email:   'northern@agroconnect.com.gh',
+    email:   'agents@agroconnect.io',
   },
 ]
 
@@ -163,7 +163,7 @@ export default function ContactPage() {
                     {status === 'error' && (
                       <p className="text-xs text-red-600 bg-red-50 border border-red-200
                                     px-4 py-3 rounded-xl">
-                        Something went wrong. Please email us directly at info@agroconnect.com.gh.
+                        Something went wrong. Please email us directly at info@agroconnect.io.
                       </p>
                     )}
 
@@ -189,10 +189,10 @@ export default function ContactPage() {
             {/* Offices */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="font-bold text-forest text-xl mb-2">Regional offices</h2>
+                <h2 className="font-display font-bold text-forest text-xl mb-2">Our offices</h2>
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   Walk-in support is available at our Accra and Kumasi offices during business hours
-                  (Mon–Fri 8:00–17:00 GMT).
+                  (Mon–Fri 8:00–17:00 GMT). Global HQ based in Accra, Ghana.
                 </p>
               </div>
 
@@ -214,11 +214,11 @@ export default function ContactPage() {
               ))}
 
               <div className="bg-forest rounded-2xl p-5">
-                <p className="font-bold text-white text-sm mb-1">USSD Helpline</p>
-                <p className="font-mono text-lime text-lg font-bold">*800*456#</p>
+                <p className="font-bold text-white text-sm mb-1">International Inquiries</p>
+                <p className="font-display font-extrabold text-lime text-lg">trade@agroconnect.io</p>
                 <p className="text-white/50 text-xs mt-1">
-                  Works on any mobile network — no smartphone required.
-                  Available 24/7 for price checks, weather, and order status.
+                  For cross-border trade partnerships, institutional buyers,
+                  and export contract inquiries — response within one business day.
                 </p>
               </div>
             </div>

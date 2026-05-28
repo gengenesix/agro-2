@@ -16,7 +16,7 @@ export default function MarketLayout({ children }: { children: React.ReactNode }
             <p className="text-white/50 text-sm mt-0.5">From seed to sale. Every farmer. Every region.</p>
           </div>
           <p className="text-white/40 text-xs">
-            &copy; {new Date().getFullYear()} AgroConnect Ghana Ltd. All rights reserved.
+            &copy; {new Date().getFullYear()} AgroConnect Ltd. All rights reserved.
           </p>
         </div>
       </footer>

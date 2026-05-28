@@ -11,15 +11,16 @@ export const dynamic   = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title:       'AgroConnect — Ghana Agricultural Trading Platform',
-  description: "Ghana's agricultural operating system. Buy produce, pledge harvests, access BNPL credit, and get real-time market intelligence across all 16 regions.",
+  title:       'AgroConnect — The Global Agricultural Trade Platform',
+  description: 'Trusted infrastructure for cross-border agricultural trade. Escrow-backed payments, harvest forward contracts, and farmer credit — built for the world.',
 }
 
+// Market opportunity stats — source: FAO 2023, GSMA 2023, AfCFTA Secretariat
 const STATS = [
-  { value: '24,000+',  label: 'Verified Farmers'   },
-  { value: '18,500+',  label: 'Live Listings'       },
-  { value: 'GHS 4.2M', label: 'Pledges in Escrow'  },
-  { value: '16 / 16',  label: 'Regions Active'      },
+  { value: '500M+',  label: 'Smallholder Farms Globally' },
+  { value: '54',     label: 'Nations in AfCFTA'          },
+  { value: '<2%',    label: 'Farm Trade Digitized'       },
+  { value: '$3.5T',  label: 'Agricultural Market'        },
 ]
 
 const FEATURES = [
@@ -41,7 +42,7 @@ const FEATURES = [
     href:  '/harvest-pledges',
     label: 'Harvest Pledges',
     title: 'Forward contracts. Escrow-locked deposits.',
-    body:  'Buyers commit 5–50% before planting season. Farmers grow with guaranteed off-take. Field agents verify every milestone.',
+    body:  'International buyers commit 20–50% before planting season. Farmers grow with guaranteed off-take. Field agents GPS-verify every milestone.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -54,8 +55,8 @@ const FEATURES = [
   {
     href:  '/market-intelligence',
     label: 'Market Intelligence',
-    title: 'Daily prices, weather & pest alerts.',
-    body:  'Regional price benchmarks updated daily. 7-day forecasts. Critical alerts delivered via SMS and USSD to offline farmers in all 16 regions.',
+    title: 'Live prices, weather & pest alerts.',
+    body:  'Regional price benchmarks updated daily. 7-day forecasts. Critical alerts delivered directly to farmers — including offline access for rural coverage.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -67,13 +68,31 @@ const FEATURES = [
     href:  '/agro-inputs',
     label: 'Agro Inputs',
     title: 'Seeds & fertilizers. Pay after harvest.',
-    body:  'BNPL credit tiers up to GHS 50,000 anchored to your AgroScore. Certified inputs from verified dealers. Repay when your crop is sold.',
+    body:  'AgroScore credit tiers up to $15,000 — no bank account, no collateral. Certified inputs from verified dealers. Repay when your crop is sold.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22V12M12 12C12 7 8 4 4 4c0 4 3 8 8 8zM12 12c0-5 4-8 8-8 0 4-3 8-8 8"/>
       </svg>
     ),
+  },
+]
+
+const RAILS = [
+  {
+    tag:   'RAIL 01',
+    label: 'Mobile Money Rail',
+    body:  'Instant settlement for local transactions. Works on any basic phone.',
+  },
+  {
+    tag:   'RAIL 02',
+    label: 'Multi-Currency Escrow',
+    body:  'Holds USD, EUR, GBP, and local currency. Auto-releases on verified delivery.',
+  },
+  {
+    tag:   'RAIL 03',
+    label: 'Credit Rail',
+    body:  'Farmer credit based on transaction score. No bank account. No collateral.',
   },
 ]
 
@@ -93,7 +112,7 @@ const HOW = [
   {
     step: '02',
     title: 'List or Browse',
-    body: 'Farmers list produce and pledge contracts. Buyers browse verified listings by region, sector, and price. Dealers manage inventory and bulk orders.',
+    body: 'Farmers list produce and pledge contracts. International buyers browse verified listings by region, sector, and price. Dealers manage inventory and bulk orders.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -105,7 +124,7 @@ const HOW = [
   {
     step: '03',
     title: 'Trade with Confidence',
-    body: 'Every payment is held in escrow and released only on delivery confirmation. BNPL credit lets farmers access inputs before the harvest.',
+    body: 'Every payment held in escrow, released only on delivery confirmation. Multi-currency settlement. BNPL credit lets farmers access inputs before the harvest.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -173,21 +192,21 @@ export default async function LandingPage() {
                   <svg viewBox="0 0 10 10" width="7" height="7" fill="currentColor">
                     <circle cx="5" cy="5" r="5"/>
                   </svg>
-                  Live · All 16 Regions
+                  Live · Piloting in Ghana
                 </span>
               </div>
             </FadeIn>
 
             <FadeUp delay={0.06}>
               <h1
-                className="font-bold leading-[1.04] mb-6"
+                className="font-display font-bold leading-[1.0] mb-6"
                 style={{
-                  fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                  letterSpacing: '-0.055em',
+                  fontSize: 'clamp(2.9rem, 6.5vw, 5.4rem)',
+                  letterSpacing: '-0.03em',
                   color: 'var(--forest)',
                 }}
               >
-                Ghana&apos;s{' '}
+                The Global{' '}
                 <em
                   className="not-italic"
                   style={{
@@ -198,7 +217,7 @@ export default async function LandingPage() {
                   Agricultural
                 </em>
                 <br />
-                Operating System.
+                Trade Platform.
               </h1>
             </FadeUp>
 
@@ -207,9 +226,8 @@ export default async function LandingPage() {
                 className="text-lg leading-relaxed mb-10 max-w-lg"
                 style={{ color: 'rgba(25,60,30,0.62)' }}
               >
-                The three-sided marketplace connecting farmers, dealers, and buyers with
-                escrow-backed payments, harvest pledges, BNPL credit, and real-time
-                market intelligence.
+                Trusted infrastructure for cross-border agricultural trade —
+                escrow, payments, and farmer credit built for the world.
               </p>
             </FadeUp>
 
@@ -242,7 +260,7 @@ export default async function LandingPage() {
               </div>
             </FadeUp>
 
-            {/* Horizontal stat row */}
+            {/* Market opportunity stats */}
             <FadeIn delay={0.34}>
               <div
                 className="grid grid-cols-2 sm:grid-cols-4 gap-0 rounded-2xl overflow-hidden"
@@ -274,7 +292,7 @@ export default async function LandingPage() {
           <div className="relative w-full h-full">
             <Image
               src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=1000&q=90&fit=crop"
-              alt="Premium West African agricultural produce"
+              alt="Premium agricultural produce"
               fill priority sizes="46vw"
               className="object-cover object-center"
               draggable={false}
@@ -328,14 +346,14 @@ export default async function LandingPage() {
               >
                 <p className="text-[11px] font-bold uppercase tracking-widest mb-2"
                    style={{ color: 'rgba(255,255,255,0.45)' }}>
-                  In Escrow
+                  Active Escrow
                 </p>
                 <p className="font-mono font-extrabold text-2xl leading-none"
                    style={{ color: 'var(--lime)' }}>
                   GHS 4.2M
                 </p>
                 <p className="text-[11px] mt-1" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                  secured this season
+                  secured this season · Ghana pilot
                 </p>
               </div>
             </div>
@@ -346,7 +364,7 @@ export default async function LandingPage() {
         <div className="lg:hidden relative h-72 w-full">
           <Image
             src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=900&q=85&fit=crop"
-            alt="West African agricultural production"
+            alt="Agricultural produce"
             fill priority sizes="100vw"
             className="object-cover object-center"
           />
@@ -365,10 +383,10 @@ export default async function LandingPage() {
               The Platform
             </p>
             <h2
-              className="font-bold leading-[1.08]"
+              className="font-display font-bold leading-[1.06]"
               style={{
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                letterSpacing: '-0.04em',
+                fontSize: 'clamp(2rem, 4vw, 3.2rem)',
+                letterSpacing: '-0.03em',
                 color: 'var(--forest)',
               }}
             >
@@ -401,7 +419,7 @@ export default async function LandingPage() {
                         {f.label}
                       </p>
                       <h3
-                        className="font-bold text-base leading-snug mb-2"
+                        className="font-display font-bold text-base leading-snug mb-2"
                         style={{ color: 'var(--forest)', letterSpacing: '-0.02em' }}
                       >
                         {f.title}
@@ -426,7 +444,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* ── LIVE LISTINGS ─────────────────────────────────────────── */}
+      {/* ── PAYMENT ENGINE ────────────────────────────────────────── */}
       <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--forest)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-[380px_1fr] gap-14 items-start">
@@ -435,29 +453,29 @@ export default async function LandingPage() {
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
                    style={{ color: 'var(--lime)' }}>
-                  Live on the platform
+                  The Engine
                 </p>
                 <h2
-                  className="font-bold text-white leading-[1.08] mb-5"
+                  className="font-display font-bold text-white leading-[1.06] mb-5"
                   style={{
-                    fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                    letterSpacing: '-0.04em',
+                    fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
+                    letterSpacing: '-0.03em',
                   }}
                 >
-                  Verified produce, priced at the farm gate.
+                  We built the payment engine. We don&apos;t just plug into one.
                 </h2>
                 <p className="text-sm leading-relaxed mb-8"
                    style={{ color: 'rgba(255,255,255,0.55)' }}>
-                  Every listing is field-verified. Prices set by farmers —
-                  no middlemen, no markups. Escrow holds payment until you confirm delivery.
+                  Purpose-built for agricultural contract law — milestone-triggered escrow,
+                  multi-currency settlement, and field-agent verified dispute resolution.
                 </p>
                 <Link
-                  href="/marketplace"
+                  href="/features"
                   className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full
                              transition-all hover:opacity-90"
                   style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}
                 >
-                  Browse All Listings
+                  See All Features
                   <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 8h10M9 4l4 4-4 4"/>
@@ -467,88 +485,123 @@ export default async function LandingPage() {
             </SlideLeft>
 
             <SlideRight>
-              {liveListings.length > 0 ? (
-                <StaggerGrid className="grid sm:grid-cols-3 gap-4" stagger={0.1}>
-                  {liveListings.map(listing => {
-                    const photo = listing.photos[0] ?? SECTOR_FALLBACK[listing.category.sector] ?? DEFAULT_FALLBACK
-                    return (
-                      <StaggerItem key={listing.id}>
-                        <Card3D>
-                          <Link href={`/produce/${listing.slug}`}
-                            className="group block rounded-2xl overflow-hidden"
-                            style={{ backgroundColor: 'white' }}>
-                            <div className="relative h-40 overflow-hidden">
-                              <Image src={photo} alt={listing.title} fill
-                                sizes="200px"
-                                className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-                              />
-                              <div className="absolute top-2 left-2">
-                                <span
-                                  className="text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
-                                  style={{
-                                    backgroundColor: 'var(--forest)',
-                                    color: 'var(--lime)',
-                                  }}
-                                >
-                                  {listing.category.name}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="p-4">
-                              <p className="font-bold text-sm leading-snug line-clamp-2 mb-1"
-                                 style={{ color: 'var(--forest)' }}>
-                                {listing.title}
-                              </p>
-                              <p className="text-[11px] mb-2.5" style={{ color: 'rgba(25,60,30,0.50)' }}>
-                                {listing.region?.name ?? 'Ghana'}
-                              </p>
-                              <p className="font-mono font-extrabold text-base" style={{ color: 'var(--forest)' }}>
-                                GHS {listing.pricePerUnit.toFixed(2)}
-                                <span className="text-xs font-normal ml-1" style={{ color: 'rgba(25,60,30,0.45)' }}>
-                                  / {listing.unit.symbol}
-                                </span>
-                              </p>
-                            </div>
-                          </Link>
-                        </Card3D>
-                      </StaggerItem>
-                    )
-                  })}
-                </StaggerGrid>
-              ) : (
-                <FadeUp>
-                  <div className="rounded-3xl p-10 text-center"
-                       style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}>
-                    <div className="w-14 h-14 rounded-2xl mx-auto mb-5 flex items-center justify-center"
-                         style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
-                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-                           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 5v14M5 12h14"/>
-                      </svg>
+              <div className="space-y-3">
+                {RAILS.map((rail) => (
+                  <div
+                    key={rail.tag}
+                    className="grid sm:grid-cols-[80px_1fr] gap-4 items-start rounded-2xl p-5"
+                    style={{
+                      backgroundColor: 'rgba(255,255,255,0.06)',
+                      border: '1px solid rgba(255,255,255,0.10)',
+                    }}
+                  >
+                    <div
+                      className="inline-flex items-center justify-center px-3 py-1.5 rounded-lg
+                                 text-[10px] font-bold tracking-widest uppercase"
+                      style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}
+                    >
+                      {rail.tag}
                     </div>
-                    <h3 className="font-bold text-xl text-white mb-2"
-                        style={{ letterSpacing: '-0.03em' }}>
-                      Be the first to list.
-                    </h3>
-                    <p className="text-sm leading-relaxed mb-6"
-                       style={{ color: 'rgba(255,255,255,0.55)' }}>
-                      The marketplace is open. List your produce, inputs, or harvest pledge today.
-                    </p>
-                    <Link href="/login"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold"
-                      style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
-                      Create a Listing
-                    </Link>
+                    <div>
+                      <p className="font-display font-bold text-sm text-white mb-1"
+                         style={{ letterSpacing: '-0.01em' }}>
+                        {rail.label}
+                      </p>
+                      <p className="text-sm leading-relaxed"
+                         style={{ color: 'rgba(255,255,255,0.55)' }}>
+                        {rail.body}
+                      </p>
+                    </div>
                   </div>
-                </FadeUp>
-              )}
+                ))}
+              </div>
             </SlideRight>
           </div>
         </div>
       </section>
 
+      {/* ── LIVE LISTINGS ─────────────────────────────────────────── */}
+      {liveListings.length > 0 && (
+        <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--cream)' }}>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <FadeUp className="max-w-xl mb-14">
+              <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
+                 style={{ color: 'rgba(25,60,30,0.40)' }}>
+                Live on the platform
+              </p>
+              <h2
+                className="font-display font-bold leading-[1.06]"
+                style={{
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+                  letterSpacing: '-0.03em',
+                  color: 'var(--forest)',
+                }}
+              >
+                Verified produce, priced at the farm gate.
+              </h2>
+            </FadeUp>
+            <StaggerGrid className="grid sm:grid-cols-3 gap-4" stagger={0.1}>
+              {liveListings.map(listing => {
+                const photo = listing.photos[0] ?? SECTOR_FALLBACK[listing.category.sector] ?? DEFAULT_FALLBACK
+                return (
+                  <StaggerItem key={listing.id}>
+                    <Card3D>
+                      <Link href={`/produce/${listing.slug}`}
+                        className="group block rounded-2xl overflow-hidden"
+                        style={{ backgroundColor: 'white' }}>
+                        <div className="relative h-44 overflow-hidden">
+                          <Image src={photo} alt={listing.title} fill
+                            sizes="300px"
+                            className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+                          />
+                          <div className="absolute top-2 left-2">
+                            <span
+                              className="text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
+                              style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}
+                            >
+                              {listing.category.name}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="p-4">
+                          <p className="font-display font-bold text-sm leading-snug line-clamp-2 mb-1"
+                             style={{ color: 'var(--forest)' }}>
+                            {listing.title}
+                          </p>
+                          <p className="text-[11px] mb-2.5" style={{ color: 'rgba(25,60,30,0.50)' }}>
+                            {listing.region?.name ?? 'Ghana'}
+                          </p>
+                          <p className="font-mono font-extrabold text-base" style={{ color: 'var(--forest)' }}>
+                            GHS {listing.pricePerUnit.toFixed(2)}
+                            <span className="text-xs font-normal ml-1" style={{ color: 'rgba(25,60,30,0.45)' }}>
+                              / {listing.unit.symbol}
+                            </span>
+                          </p>
+                        </div>
+                      </Link>
+                    </Card3D>
+                  </StaggerItem>
+                )
+              })}
+            </StaggerGrid>
+            <FadeIn delay={0.3} className="mt-8 text-center">
+              <Link href="/produce"
+                className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full
+                           transition-all hover:opacity-90"
+                style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
+                Browse All Listings
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
+                     stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 8h10M9 4l4 4-4 4"/>
+                </svg>
+              </Link>
+            </FadeIn>
+          </div>
+        </section>
+      )}
+
       {/* ── HOW IT WORKS ──────────────────────────────────────────── */}
-      <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--cream)' }}>
+      <section className="py-24 lg:py-32" style={{ backgroundColor: 'white' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
           <FadeUp className="text-center mb-16 max-w-xl mx-auto">
@@ -557,10 +610,10 @@ export default async function LandingPage() {
               How it works
             </p>
             <h2
-              className="font-bold leading-[1.08]"
+              className="font-display font-bold leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.9rem, 3.5vw, 2.8rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
                 color: 'var(--forest)',
               }}
             >
@@ -573,7 +626,7 @@ export default async function LandingPage() {
               <FadeUp key={h.step} delay={i * 0.10}>
                 <div
                   className="relative rounded-2xl p-7 h-full"
-                  style={{ backgroundColor: 'white', border: '1.5px solid rgba(25,60,30,0.10)' }}
+                  style={{ backgroundColor: 'var(--cream)', border: '1.5px solid rgba(25,60,30,0.10)' }}
                 >
                   <div className="flex items-start gap-4 mb-5">
                     <div
@@ -590,7 +643,7 @@ export default async function LandingPage() {
                     </p>
                   </div>
                   <h3
-                    className="font-bold text-base mb-2"
+                    className="font-display font-bold text-base mb-2"
                     style={{ color: 'var(--forest)', letterSpacing: '-0.02em' }}
                   >
                     {h.title}
@@ -616,10 +669,10 @@ export default async function LandingPage() {
 
         <FadeUp className="relative z-10 max-w-2xl mx-auto text-center px-4">
           <h2
-            className="font-bold text-white leading-[1.06] mb-5"
+            className="font-display font-bold text-white leading-[1.04] mb-5"
             style={{
               fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
-              letterSpacing: '-0.05em',
+              letterSpacing: '-0.04em',
             }}
           >
             Ready to trade with{' '}
@@ -628,8 +681,8 @@ export default async function LandingPage() {
             </em>
           </h2>
           <p className="text-lg mb-10 leading-relaxed" style={{ color: 'rgba(255,255,255,0.60)' }}>
-            Join 24,000+ farmers, dealers, and buyers across Ghana.
-            Escrow-protected. Field-verified. BNPL credit every season.
+            Join farmers, dealers, and international buyers on a platform built
+            for trust — escrow-protected, field-verified, and credit-enabled.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/login"

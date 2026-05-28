@@ -8,14 +8,14 @@ import {
 
 export const metadata: Metadata = {
   title:       'Market Intelligence — AgroConnect',
-  description: 'Daily market prices, 7-day weather forecasts, and pest advisories for all 16 regions of Ghana. Access via app or USSD.',
+  description: 'Daily commodity prices, 7-day weather forecasts, and pest advisories across all regions. Access via app or offline channels — built for farmers everywhere.',
 }
 
 const INTEL_FEATURES = [
   {
     title: 'Daily Market Prices',
     stat:  '40+ Commodities',
-    body:  'Price feeds for maize, tomato, cocoa, tilapia, yam, and 40+ more commodities — updated every morning from Ghana Statistical Service and regional market sources.',
+    body:  'Price feeds for maize, tomato, cocoa, tilapia, yam, and 40+ more commodities — updated every morning from regional market data sources across our pilot regions.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -36,8 +36,8 @@ const INTEL_FEATURES = [
   },
   {
     title: 'Pest & Disease Alerts',
-    stat:  'All 16 Regions',
-    body:  'Regional pest advisories pushed to all registered farmers in an affected area. Outbreak maps, severity levels, and MoFA-sourced treatment recommendations.',
+    stat:  'All Active Regions',
+    body:  'Regional pest advisories pushed to all registered farmers in an affected area. Outbreak maps, severity levels, and expert-sourced treatment recommendations.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -48,9 +48,9 @@ const INTEL_FEATURES = [
     ),
   },
   {
-    title: 'USSD & SMS Access',
-    stat:  'Dial *800*456#',
-    body:  'No smartphone or internet required. Dial *800*456# from any mobile phone to check prices, weather, and receive alerts — essential for rural farmers.',
+    title: 'Offline & SMS Access',
+    stat:  'Any Basic Phone',
+    body:  'No smartphone or internet required. Access prices, weather, and alerts via USSD or SMS from any basic mobile phone — essential for rural farmers.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -123,10 +123,10 @@ export default function MarketIntelligencePage() {
 
             <FadeUp delay={0.07}>
               <h1
-                className="font-bold leading-[1.04] mb-6"
+                className="font-display font-bold leading-[1.02] mb-6"
                 style={{
                   fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                  letterSpacing: '-0.055em',
+                  letterSpacing: '-0.03em',
                   color: 'var(--forest)',
                 }}
               >
@@ -148,9 +148,9 @@ export default function MarketIntelligencePage() {
             <FadeUp delay={0.15}>
               <p className="text-lg leading-relaxed mb-10 max-w-lg"
                  style={{ color: 'rgba(25,60,30,0.62)' }}>
-                Real-time commodity prices from the Ghana Statistical Service, 7-day
-                weather forecasts, and pest advisories — all 16 regions. Access via app
-                or USSD from any phone.
+                Real-time commodity prices, 7-day weather forecasts, and pest advisories —
+                across all active regions. Access via app or offline channels
+                from any phone, including basic handsets.
               </p>
             </FadeUp>
 
@@ -179,7 +179,7 @@ export default function MarketIntelligencePage() {
                     <rect x="5" y="2" width="14" height="20" rx="2"/>
                     <path d="M12 18h.01"/>
                   </svg>
-                  USSD: *800*456#
+                  Works Offline Too
                 </div>
               </div>
             </FadeUp>
@@ -188,7 +188,7 @@ export default function MarketIntelligencePage() {
               <div className="flex items-center gap-6">
                 {[
                   { v: '40+', l: 'Commodities Tracked' },
-                  { v: '16', l: 'Regions' },
+                  { v: '6+', l: 'Regions Active' },
                   { v: 'Every 6 hrs', l: 'Price Updates' },
                 ].map((s, i) => (
                   <div key={s.l} className="flex items-center gap-6">
@@ -260,9 +260,9 @@ export default function MarketIntelligencePage() {
                  style={{ color: 'rgba(255,255,255,0.45)' }}>
                 No Smartphone
               </p>
-              <p className="font-mono font-extrabold text-xl"
+              <p className="font-display font-extrabold text-lg"
                  style={{ color: 'var(--lime)' }}>
-                *800*456#
+                Any Basic Phone
               </p>
             </div>
           </div>
@@ -292,10 +292,10 @@ export default function MarketIntelligencePage() {
                   Today&apos;s Prices
                 </p>
                 <h2
-                  className="font-bold leading-[1.08] mb-8"
+                  className="font-display font-bold leading-[1.06] mb-8"
                   style={{
                     fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                    letterSpacing: '-0.04em',
+                    letterSpacing: '-0.03em',
                     color: 'var(--forest)',
                   }}
                 >
@@ -394,7 +394,7 @@ export default function MarketIntelligencePage() {
                   </div>
                 </Card3D>
 
-                {/* USSD card */}
+                {/* Offline access card */}
                 <Card3D>
                   <div
                     className="rounded-2xl p-6"
@@ -404,9 +404,9 @@ export default function MarketIntelligencePage() {
                        style={{ color: 'var(--lime)' }}>
                       No Smartphone? No Problem.
                     </p>
-                    <p className="font-mono font-extrabold text-2xl text-white mt-1">*800*456#</p>
+                    <p className="font-display font-extrabold text-xl text-white mt-1">Offline Access</p>
                     <p className="text-sm mt-2.5" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                      Check prices and weather on any basic mobile — all 16 regions covered.
+                      Check prices and weather on any basic mobile — all active regions covered via USSD and SMS.
                     </p>
                   </div>
                 </Card3D>
@@ -425,13 +425,13 @@ export default function MarketIntelligencePage() {
               Intelligence Tools
             </p>
             <h2
-              className="font-bold text-white leading-[1.08]"
+              className="font-display font-bold text-white leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
               }}
             >
-              Everything you need to farm smarter.
+              Everything you need to trade smarter.
             </h2>
           </FadeUp>
 
@@ -492,21 +492,17 @@ export default function MarketIntelligencePage() {
               style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
               Access Intelligence
             </Link>
-            <div
-              className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full text-sm font-bold"
+            <Link href="/features#intelligence"
+              className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full text-sm font-bold
+                         transition-all hover:opacity-80"
               style={{
                 backgroundColor: 'white',
                 color: 'var(--forest)',
                 border: '1.5px solid rgba(25,60,30,0.15)',
               }}
             >
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                   strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="5" y="2" width="14" height="20" rx="2"/>
-                <path d="M12 18h.01"/>
-              </svg>
-              USSD: *800*456#
-            </div>
+              See All Features
+            </Link>
           </div>
         </FadeUp>
       </section>

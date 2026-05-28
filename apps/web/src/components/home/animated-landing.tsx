@@ -111,7 +111,7 @@ export default function AnimatedLanding({ featuredSection }: Props) {
                          tracking-widest mb-6 bg-white/10 px-3 py-1.5 rounded-full"
             >
               <MapPinIcon size={12} className="text-lime" />
-              All 16 Regions of Ghana
+              Global Platform · Piloting in Ghana
             </motion.p>
 
             <motion.h1

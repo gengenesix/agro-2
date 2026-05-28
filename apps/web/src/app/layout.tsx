@@ -1,20 +1,20 @@
 import type { Metadata, Viewport } from 'next'
-import { Plus_Jakarta_Sans, Playfair_Display, Geist_Mono } from 'next/font/google'
+import { Bricolage_Grotesque, DM_Sans, Geist_Mono } from 'next/font/google'
 import { Toaster }     from 'sonner'
 import { AuthProvider } from '@/context/auth-context'
 import './globals.css'
 
-const plusJakarta = Plus_Jakarta_Sans({
+const bricolage = Bricolage_Grotesque({
   subsets:  ['latin'],
-  variable: '--font-plus-jakarta',
+  variable: '--font-bricolage',
   weight:   ['400', '500', '600', '700', '800'],
   display:  'swap',
 })
 
-const playfair = Playfair_Display({
+const dmSans = DM_Sans({
   subsets:  ['latin'],
-  variable: '--font-playfair',
-  weight:   ['700', '800'],
+  variable: '--font-dm-sans',
+  weight:   ['400', '500', '600', '700'],
   display:  'swap',
 })
 
@@ -26,20 +26,20 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title:       { template: '%s | AgroConnect', default: 'AgroConnect — From Seed to Sale' },
-  description: "Ghana's agricultural marketplace. Buy produce, sell harvests, access credit. Every farmer. Every region.",
-  metadataBase: new URL('https://agroconnect.com.gh'),
-  keywords: ['ghana agriculture', 'farm produce', 'buy maize ghana', 'harvest pledge', 'agro inputs ghana'],
-  authors:  [{ name: 'AgroConnect Ghana' }],
+  title:       { template: '%s | AgroConnect', default: 'AgroConnect — The Global Agricultural Trade Platform' },
+  description: 'Trusted infrastructure for cross-border agricultural trade. Escrow-backed payments, harvest forward contracts, and farmer credit — built for the world.',
+  metadataBase: new URL('https://agroconnect.io'),
+  keywords: ['agricultural trade platform', 'farm produce marketplace', 'harvest pledge', 'agro-inputs', 'farmer credit', 'escrow agricultural', 'AfCFTA trade'],
+  authors:  [{ name: 'AgroConnect' }],
   openGraph: {
     siteName: 'AgroConnect',
     type:     'website',
-    locale:   'en_GH',
+    locale:   'en_US',
   },
   twitter: {
     card:  'summary_large_image',
-    site:  '@agroconnectgh',
-    title: 'AgroConnect Ghana',
+    site:  '@agroconnect',
+    title: 'AgroConnect — Global Agricultural Trade',
   },
   manifest: '/manifest.json',
   icons:    { apple: '/icons/pwa/icon.svg' },
@@ -56,7 +56,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${plusJakarta.variable} ${playfair.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${bricolage.variable} ${dmSans.variable} ${geistMono.variable}`}>
       <body className="font-sans antialiased bg-background text-foreground">
         <AuthProvider>
           {children}
@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           position="top-right"
           toastOptions={{
             style: {
-              fontFamily:   'var(--font-plus-jakarta)',
+              fontFamily:   'var(--font-dm-sans)',
               borderRadius: '0.75rem',
             },
           }}

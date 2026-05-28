@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const BASE_URL = 'https://agroconnect.com.gh'
+const BASE_URL = 'https://agroconnect.io'
 
 async function getActiveListingSlugs(): Promise<string[]> {
   try {

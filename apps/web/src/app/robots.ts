@@ -26,7 +26,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: 'https://agroconnect.com.gh/sitemap.xml',
-    host:    'https://agroconnect.com.gh',
+    sitemap: 'https://agroconnect.io/sitemap.xml',
+    host:    'https://agroconnect.io',
   }
 }

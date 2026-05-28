@@ -8,7 +8,7 @@ import {
 
 export const metadata: Metadata = {
   title:       'Marketplace — AgroConnect',
-  description: "Ghana's largest verified agricultural marketplace. Buy and sell crops, livestock, poultry, fisheries, and agro-inputs with escrow-backed payments.",
+  description: 'The global verified agricultural marketplace. Buy and sell crops, livestock, poultry, fisheries, and agro-inputs with escrow-backed payments and field-verified listings.',
 }
 
 const SECTORS = [
@@ -89,7 +89,7 @@ const TRUST = [
   },
   {
     title: 'Escrow-Backed Payments',
-    body:  'Payment is collected at order and held in escrow. Released to the seller only after you confirm delivery. No risk, no surprises.',
+    body:  'Payment is collected at order and held in escrow. Released to the seller only after you confirm delivery. Multi-currency settlement included.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -109,13 +109,13 @@ const TRUST = [
     ),
   },
   {
-    title: 'USSD Access',
-    body:  'No smartphone required. Farmers and buyers in rural areas can access listings and place orders via *800*456# from any mobile phone.',
+    title: 'Accessible Anywhere',
+    body:  'Mobile-first experience for buyers worldwide. Offline access channels ensure rural farmers can list and receive orders without a smartphone.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="5" y="2" width="14" height="20" rx="2"/>
-        <path d="M12 18h.01"/>
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
       </svg>
     ),
   },
@@ -135,7 +135,7 @@ const STEPS = [
   },
   {
     step: '02', title: 'Place Your Order',
-    body: 'Select quantity. Pay via MTN MoMo, Vodafone Cash, AirtelTigo, or card. Your payment is held in escrow — not released until delivery.',
+    body: 'Select quantity. Pay via mobile money, card, or bank transfer. Your payment is held in escrow — not released until delivery.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -188,14 +188,14 @@ export default function MarketplacePage() {
 
             <FadeUp delay={0.07}>
               <h1
-                className="font-bold leading-[1.04] mb-6"
+                className="font-display font-bold leading-[1.02] mb-6"
                 style={{
                   fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                  letterSpacing: '-0.055em',
+                  letterSpacing: '-0.03em',
                   color: 'var(--forest)',
                 }}
               >
-                Ghana&apos;s largest{' '}
+                Verified produce,{' '}
                 <em
                   className="not-italic"
                   style={{
@@ -203,17 +203,17 @@ export default function MarketplacePage() {
                     WebkitTextStroke: '1.5px var(--forest)',
                   }}
                 >
-                  verified
+                  direct
                 </em>
                 <br />
-                produce marketplace.
+                from the farm gate.
               </h1>
             </FadeUp>
 
             <FadeUp delay={0.15}>
               <p className="text-lg leading-relaxed mb-10 max-w-lg"
                  style={{ color: 'rgba(25,60,30,0.62)' }}>
-                Buy directly from verified farmers. Every listing is field-inspected,
+                Buy directly from verified farmers anywhere. Every listing is field-inspected,
                 priced at source, and backed by escrow so your money is safe until delivery.
               </p>
             </FadeUp>
@@ -248,7 +248,7 @@ export default function MarketplacePage() {
                 {[
                   { v: '18,500+', l: 'Live Listings' },
                   { v: '24,000+', l: 'Verified Farmers' },
-                  { v: '2.5%', l: 'Commission Only' },
+                  { v: '2.5%',    l: 'Commission Only' },
                 ].map((s, i) => (
                   <div key={s.l} className="flex items-center gap-6">
                     {i > 0 && (
@@ -275,7 +275,7 @@ export default function MarketplacePage() {
         <div className="relative hidden lg:block">
           <Image
             src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=900&q=85&fit=crop"
-            alt="Fresh Ghanaian produce at market"
+            alt="Fresh produce at market"
             fill sizes="48vw"
             className="object-cover object-center"
             draggable={false}
@@ -301,7 +301,7 @@ export default function MarketplacePage() {
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-sm" style={{ color: 'var(--forest)' }}>
+                <p className="font-display font-bold text-sm" style={{ color: 'var(--forest)' }}>
                   Field-Verified
                 </p>
                 <p className="text-[11px]" style={{ color: 'rgba(25,60,30,0.50)' }}>
@@ -316,7 +316,7 @@ export default function MarketplacePage() {
         <div className="lg:hidden relative h-64 w-full">
           <Image
             src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=900&q=85&fit=crop"
-            alt="Ghanaian produce market" fill sizes="100vw"
+            alt="Produce marketplace" fill sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0"
@@ -333,10 +333,10 @@ export default function MarketplacePage() {
               Browse by Sector
             </p>
             <h2
-              className="font-bold leading-[1.08]"
+              className="font-display font-bold leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
                 color: 'var(--forest)',
               }}
             >
@@ -361,7 +361,7 @@ export default function MarketplacePage() {
                     >
                       {s.icon}
                     </div>
-                    <p className="font-bold text-sm mb-1" style={{ color: 'var(--forest)' }}>{s.label}</p>
+                    <p className="font-display font-bold text-sm mb-1" style={{ color: 'var(--forest)' }}>{s.label}</p>
                     <p className="text-[11px] leading-snug mb-3 flex-1"
                        style={{ color: 'rgba(25,60,30,0.55)' }}>
                       {s.desc}
@@ -386,10 +386,10 @@ export default function MarketplacePage() {
               How it works
             </p>
             <h2
-              className="font-bold text-white leading-[1.08]"
+              className="font-display font-bold text-white leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
               }}
             >
               From browse to delivery in three steps.
@@ -416,7 +416,7 @@ export default function MarketplacePage() {
                       {h.step}
                     </p>
                   </div>
-                  <h3 className="font-bold text-base text-white mb-2"
+                  <h3 className="font-display font-bold text-base text-white mb-2"
                       style={{ letterSpacing: '-0.02em' }}>
                     {h.title}
                   </h3>
@@ -435,10 +435,10 @@ export default function MarketplacePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <FadeUp className="max-w-lg mb-14">
             <h2
-              className="font-bold leading-[1.08]"
+              className="font-display font-bold leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
                 color: 'var(--forest)',
               }}
             >
@@ -457,7 +457,7 @@ export default function MarketplacePage() {
                     {t.icon}
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm mb-2"
+                    <h3 className="font-display font-bold text-sm mb-2"
                         style={{ color: 'var(--forest)', letterSpacing: '-0.01em' }}>
                       {t.title}
                     </h3>
@@ -476,10 +476,10 @@ export default function MarketplacePage() {
       <section className="py-24 text-center px-4" style={{ backgroundColor: 'var(--forest)' }}>
         <FadeUp>
           <h2
-            className="font-bold text-white mb-4"
+            className="font-display font-bold text-white mb-4"
             style={{
               fontSize: 'clamp(1.9rem, 4vw, 3rem)',
-              letterSpacing: '-0.05em',
+              letterSpacing: '-0.04em',
             }}
           >
             Start buying or selling today.

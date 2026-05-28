@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-export const alt     = 'AgroConnect Ghana — From seed to sale. Every farmer. Every region.'
+export const alt     = 'AgroConnect — The Global Agricultural Trade Platform. Escrow, payments, and farmer credit.'
 export const size    = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -55,7 +55,7 @@ export default function Image() {
           fontSize: 64, fontWeight: 800, color: '#ffffff',
           lineHeight: 1.1, marginBottom: 20, maxWidth: 720,
         }}>
-          Ghana&apos;s Agricultural Network
+          The Global Agricultural Trade Platform
         </div>
 
         {/* Tagline */}
@@ -63,15 +63,15 @@ export default function Image() {
           fontSize: 24, color: 'rgba(255,255,255,0.7)',
           marginBottom: 40,
         }}>
-          From seed to sale. Every farmer. Every region.
+          Trusted infrastructure for cross-border agricultural trade.
         </div>
 
         {/* Stats row */}
         <div style={{ display: 'flex', gap: 24 }}>
           {[
-            { label: 'Regions covered', value: '16' },
-            { label: 'Sectors',         value: '5'  },
-            { label: 'Currency',        value: 'GHS'},
+            { label: 'Global Market',   value: '$3.5T'},
+            { label: 'AfCFTA Nations',  value: '54'  },
+            { label: 'Settlement',      value: 'Multi-FX'},
           ].map(stat => (
             <div key={stat.label} style={{
               background: 'rgba(255,255,255,0.08)',
@@ -94,7 +94,7 @@ export default function Image() {
           position: 'absolute', top: 64, right: 64,
           fontSize: 16, color: 'rgba(255,255,255,0.4)', fontWeight: 600,
         }}>
-          agroconnect.com.gh
+          agroconnect.io
         </div>
       </div>
     ),

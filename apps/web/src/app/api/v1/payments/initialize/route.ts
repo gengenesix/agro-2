@@ -90,8 +90,8 @@ export async function POST(req: NextRequest) {
     : Number(order.totalAmount)
 
   const reference  = `AGR-${order.id.split('-')[0]!}-${Date.now().toString(36).toUpperCase()}`
-  const email      = `${profile.phone.replace(/\D/g, '')}@pay.agroconnect.com.gh`
-  const appUrl     = process.env.NEXT_PUBLIC_APP_URL ?? 'https://agroconnect.com.gh'
+  const email      = `${profile.phone.replace(/\D/g, '')}@pay.agroconnect.io`
+  const appUrl     = process.env.NEXT_PUBLIC_APP_URL ?? 'https://agroconnect.io'
   const callbackUrl = `${appUrl}/payment/verify?reference=${reference}`
 
   // Persist the payment record before calling Paystack so we have idempotency on retry

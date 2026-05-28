@@ -8,27 +8,13 @@ import {
 
 export const metadata: Metadata = {
   title:       'Harvest Pledges — AgroConnect',
-  description: 'Lock in seasonal forward contracts with escrow-backed deposits. Buyers commit before planting. Farmers plant with payment certainty.',
+  description: 'The first platform to let international buyers pre-book a farmer\'s crop before it is even grown — with full escrow protection and GPS-verified milestones.',
 }
 
 const TIMELINE = [
   {
-    step: '01', phase: 'Contract Signing', who: 'Buyer + Farmer',
-    body: 'Buyer selects a pledge listing and deposits 5–50% of the total contract value. Funds are locked in escrow immediately — the farmer never touches them until delivery.',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
-        <polyline points="10 9 9 9 8 9"/>
-      </svg>
-    ),
-  },
-  {
-    step: '02', phase: 'Planting & Growth', who: 'Farmer + Field Agent',
-    body: 'Farmer plants with payment certainty. Certified field agents GPS-log progress milestones — quantity estimates, crop health, and farm location — at every key stage.',
+    step: '01', phase: 'Farmer Lists Harvest', who: 'Farmer',
+    body: 'Crop type, quantity, expected harvest date, GPS location. Accessible on any phone. Listed to international buyers worldwide.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -37,8 +23,19 @@ const TIMELINE = [
     ),
   },
   {
-    step: '03', phase: 'Harvest & Dispatch', who: 'Farmer',
-    body: 'Farmer logs the harvest, updates final quantity, and marks the pledge as dispatched. Photos and weight records are submitted for buyer review.',
+    step: '02', phase: 'Buyer Deposits Into Escrow', who: 'International Buyer',
+    body: 'Buyer anywhere in the world deposits 20–50% into our secure escrow engine. Funds are locked — the farmer never touches them until delivery.',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    ),
+  },
+  {
+    step: '03', phase: 'Farmer Grows With Certainty', who: 'Farmer + Field Agent',
+    body: 'Pledge confirmation unlocks AgroScore input credit. Farmer grows knowing the crop is sold. Field agents GPS-log progress milestones at every key stage.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -48,13 +45,13 @@ const TIMELINE = [
     ),
   },
   {
-    step: '04', phase: 'Delivery & Settlement', who: 'Buyer',
-    body: 'Buyer confirms receipt. Escrow releases automatically — deposit net of 2.5% commission. Remaining balance is charged. Full ledger entry timestamped in real time.',
+    step: '04', phase: 'Agent Confirms Delivery', who: 'Field Agent + Buyer',
+    body: 'Our field agent GPS-stamps the delivery. Escrow releases automatically. Full audit trail for customs compliance. Net of 2.5% commission.',
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2"/>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
       </svg>
     ),
   },
@@ -62,7 +59,7 @@ const TIMELINE = [
 
 const PROTECTION = [
   {
-    who: 'For Buyers',
+    who: 'For International Buyers',
     bg: 'var(--forest)',
     textColor: 'white',
     mutedColor: 'rgba(255,255,255,0.65)',
@@ -71,7 +68,7 @@ const PROTECTION = [
       'Price locked at contract signing — no seasonal inflation surprises',
       'GPS-verified crop progress before every milestone payment',
       'Farmer default: 100% of deposit refunded immediately',
-      'Dispute resolution with an independent field agent review',
+      'Full audit trail and documentation for customs compliance',
     ],
   },
   {
@@ -92,7 +89,7 @@ const PROTECTION = [
 const FAQ = [
   {
     q: 'What percentage deposit is required?',
-    a: 'Buyer and farmer agree on a deposit between 5% and 50% of the total contract value at signing. The remaining balance is collected at delivery confirmation.',
+    a: 'Buyer and farmer agree on a deposit between 20% and 50% of the total contract value at signing. The remaining balance is collected at delivery confirmation.',
   },
   {
     q: 'What happens if the farmer defaults?',
@@ -104,7 +101,11 @@ const FAQ = [
   },
   {
     q: 'How is crop quality verified?',
-    a: 'Certified field agents visit the farm at key milestones and submit GPS-stamped photo evidence, moisture readings, and quantity estimates through the AgroConnect app.',
+    a: 'Certified field agents visit the farm at key milestones and submit GPS-stamped photo evidence, quantity estimates, and quality assessments through the AgroConnect app.',
+  },
+  {
+    q: 'Can international buyers pay in their own currency?',
+    a: 'Yes. AgroConnect supports USD, EUR, GBP, and local currency. FX conversion is handled automatically — buyers pay in their preferred currency and farmers receive in local currency.',
   },
 ]
 
@@ -137,14 +138,16 @@ export default function HarvestPledgesPage() {
 
             <FadeUp delay={0.07}>
               <h1
-                className="font-bold leading-[1.04] mb-6"
+                className="font-display font-bold leading-[1.02] mb-6"
                 style={{
                   fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                  letterSpacing: '-0.055em',
+                  letterSpacing: '-0.03em',
                   color: 'var(--forest)',
                 }}
               >
-                Lock in your harvest{' '}
+                Forward contracts
+                <br />
+                for farmers,{' '}
                 <em
                   className="not-italic"
                   style={{
@@ -152,19 +155,17 @@ export default function HarvestPledgesPage() {
                     WebkitTextStroke: '1.5px var(--forest)',
                   }}
                 >
-                  before
+                  globally.
                 </em>
-                <br />
-                planting season.
               </h1>
             </FadeUp>
 
             <FadeUp delay={0.15}>
               <p className="text-lg leading-relaxed mb-10 max-w-lg"
                  style={{ color: 'rgba(25,60,30,0.62)' }}>
-                Dual-stage financial escrow for seasonal forward contracts.
-                Buyers commit deposits before planting. Farmers grow with certainty.
-                Field agents verify every milestone.
+                The first platform to let international buyers pre-book a farmer&apos;s
+                crop before it is even grown — with full escrow protection and
+                GPS-verified milestones.
               </p>
             </FadeUp>
 
@@ -216,7 +217,7 @@ export default function HarvestPledgesPage() {
                   </p>
                   <p className="text-[11px] font-semibold mt-1"
                      style={{ color: 'rgba(25,60,30,0.50)' }}>
-                    currently held in escrow
+                    currently held in escrow · Ghana pilot
                   </p>
                 </div>
               </div>
@@ -228,7 +229,7 @@ export default function HarvestPledgesPage() {
         <div className="relative hidden lg:block">
           <Image
             src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=900&q=85&fit=crop"
-            alt="Ghana farmland at harvest"
+            alt="Farmland at harvest"
             fill sizes="48vw"
             className="object-cover object-center"
             draggable={false}
@@ -254,9 +255,9 @@ export default function HarvestPledgesPage() {
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-sm text-white">4 Milestones</p>
+                <p className="font-display font-bold text-sm text-white">GPS Verified</p>
                 <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.50)' }}>
-                  GPS-verified progress
+                  Every milestone logged
                 </p>
               </div>
             </div>
@@ -267,7 +268,7 @@ export default function HarvestPledgesPage() {
         <div className="lg:hidden relative h-64 w-full">
           <Image
             src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=900&q=85&fit=crop"
-            alt="Ghana farmland" fill sizes="100vw"
+            alt="Farmland at harvest" fill sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0"
@@ -284,14 +285,14 @@ export default function HarvestPledgesPage() {
               The Process
             </p>
             <h2
-              className="font-bold leading-[1.08]"
+              className="font-display font-bold leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
                 color: 'var(--forest)',
               }}
             >
-              Four milestones. Fully automated.
+              Five milestones. Fully automated.
             </h2>
           </FadeUp>
 
@@ -317,7 +318,7 @@ export default function HarvestPledgesPage() {
                       </p>
                     </div>
                     <div>
-                      <p className="font-bold text-base mb-1.5"
+                      <p className="font-display font-bold text-base mb-1.5"
                          style={{ color: 'var(--forest)', letterSpacing: '-0.02em' }}>
                         {t.phase}
                       </p>
@@ -353,10 +354,10 @@ export default function HarvestPledgesPage() {
               Protection
             </p>
             <h2
-              className="font-bold leading-[1.08]"
+              className="font-display font-bold leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
                 color: 'var(--forest)',
               }}
             >
@@ -372,7 +373,7 @@ export default function HarvestPledgesPage() {
                   style={{ backgroundColor: p.bg }}
                 >
                   <p
-                    className="font-bold text-lg mb-6"
+                    className="font-display font-bold text-lg mb-6"
                     style={{ color: p.textColor, letterSpacing: '-0.02em' }}
                   >
                     {p.who}
@@ -403,10 +404,10 @@ export default function HarvestPledgesPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <FadeUp className="mb-12">
             <h2
-              className="font-bold"
+              className="font-display font-bold"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
                 color: 'var(--forest)',
               }}
             >
@@ -423,7 +424,7 @@ export default function HarvestPledgesPage() {
                     border: '1.5px solid rgba(25,60,30,0.10)',
                   }}
                 >
-                  <p className="font-bold text-sm mb-2"
+                  <p className="font-display font-bold text-sm mb-2"
                      style={{ color: 'var(--forest)', letterSpacing: '-0.01em' }}>
                     {f.q}
                   </p>
@@ -442,17 +443,17 @@ export default function HarvestPledgesPage() {
       <section className="py-24 text-center px-4" style={{ backgroundColor: 'var(--forest)' }}>
         <FadeUp>
           <h2
-            className="font-bold text-white mb-4"
+            className="font-display font-bold text-white mb-4"
             style={{
               fontSize: 'clamp(1.9rem, 4vw, 3rem)',
-              letterSpacing: '-0.05em',
+              letterSpacing: '-0.04em',
             }}
           >
             Secure your harvest today.
           </h2>
           <p className="text-base mb-10 max-w-md mx-auto"
              style={{ color: 'rgba(255,255,255,0.55)' }}>
-            Farmers: list a pledge. Buyers: browse available contracts.
+            Farmers: list a pledge. International buyers: browse available contracts.
             Escrow does the rest.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

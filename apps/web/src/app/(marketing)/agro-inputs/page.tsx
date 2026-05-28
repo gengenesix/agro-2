@@ -60,23 +60,23 @@ const CATEGORIES = [
 
 const BNPL_TIERS = [
   {
-    tier: 'Starter',    score: '≥ 20', limit: 'GHS 500',    rate: '8% flat',
-    desc: 'For new farmers building their credit history',
+    tier: 'Starter',    score: '≥ 20', limit: '$150',    rate: '8% flat',
+    desc: 'Input credit unlocked. For new farmers building their credit history.',
     highlight: false,
   },
   {
-    tier: 'Grower',     score: '≥ 50', limit: 'GHS 2,000',  rate: '6% flat',
-    desc: 'For verified farmers with a growing trade record',
+    tier: 'Grower',     score: '≥ 50', limit: '$600',  rate: '6% flat',
+    desc: 'Harvest Pledge listing enabled. For verified farmers with a growing trade record.',
     highlight: false,
   },
   {
-    tier: 'Established',score: '≥ 70', limit: 'GHS 10,000', rate: '5% flat',
-    desc: 'For field-verified farmers with strong order history',
+    tier: 'Established',score: '≥ 70', limit: '$3,000', rate: '5% flat',
+    desc: 'International buyer access. For field-verified farmers with strong order history.',
     highlight: true,
   },
   {
-    tier: 'Commercial', score: '≥ 90', limit: 'GHS 50,000', rate: '4% flat',
-    desc: 'For top-tier producers with completed harvest pledges',
+    tier: 'Commercial', score: '≥ 90', limit: '$15,000', rate: '4% flat',
+    desc: 'Export contracts eligible. For top-tier producers with completed harvest pledges.',
     highlight: false,
   },
 ]
@@ -146,10 +146,10 @@ export default function AgroInputsPage() {
 
             <FadeUp delay={0.07}>
               <h1
-                className="font-bold leading-[1.04] mb-6"
+                className="font-display font-bold leading-[1.02] mb-6"
                 style={{
                   fontSize: 'clamp(2.8rem, 6vw, 5rem)',
-                  letterSpacing: '-0.055em',
+                  letterSpacing: '-0.03em',
                   color: 'var(--forest)',
                 }}
               >
@@ -172,8 +172,8 @@ export default function AgroInputsPage() {
               <p className="text-lg leading-relaxed mb-10 max-w-lg"
                  style={{ color: 'rgba(25,60,30,0.62)' }}>
                 Buy certified seeds, fertilizers, pesticides, and equipment today.
-                Pay after your harvest with BNPL credit lines up to GHS&nbsp;50,000 —
-                anchored to your AgroScore.
+                Pay after your harvest with AgroScore credit lines up to $15,000 —
+                no bank account, no collateral required.
               </p>
             </FadeUp>
 
@@ -221,7 +221,7 @@ export default function AgroInputsPage() {
                 <div>
                   <p className="font-mono font-extrabold text-xl leading-none"
                      style={{ color: 'var(--forest)' }}>
-                    Up to GHS 50,000
+                    Up to $15,000
                   </p>
                   <p className="text-[11px] font-semibold mt-1"
                      style={{ color: 'rgba(25,60,30,0.50)' }}>
@@ -293,10 +293,10 @@ export default function AgroInputsPage() {
               Categories
             </p>
             <h2
-              className="font-bold leading-[1.08]"
+              className="font-display font-bold leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
                 color: 'var(--forest)',
               }}
             >
@@ -352,10 +352,10 @@ export default function AgroInputsPage() {
               BNPL Credit Tiers
             </p>
             <h2
-              className="font-bold text-white leading-[1.08]"
+              className="font-display font-bold text-white leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
               }}
             >
               Your AgroScore unlocks your credit line.
@@ -429,10 +429,10 @@ export default function AgroInputsPage() {
               How BNPL Works
             </p>
             <h2
-              className="font-bold leading-[1.08]"
+              className="font-display font-bold leading-[1.06]"
               style={{
                 fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                letterSpacing: '-0.04em',
+                letterSpacing: '-0.03em',
                 color: 'var(--forest)',
               }}
             >
@@ -479,10 +479,10 @@ export default function AgroInputsPage() {
       <section className="py-24 text-center px-4" style={{ backgroundColor: 'var(--forest)' }}>
         <FadeUp>
           <h2
-            className="font-bold text-white mb-4"
+            className="font-display font-bold text-white mb-4"
             style={{
               fontSize: 'clamp(1.9rem, 4vw, 3rem)',
-              letterSpacing: '-0.05em',
+              letterSpacing: '-0.04em',
             }}
           >
             Start farming with credit confidence.

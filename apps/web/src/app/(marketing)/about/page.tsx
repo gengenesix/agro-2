@@ -5,7 +5,7 @@ import Link              from 'next/link'
 export const metadata: Metadata = {
   title: 'About AgroConnect — Our Mission',
   description:
-    "How AgroConnect is building the financial and logistical backbone for Ghanaian agriculture — from the smallholder farmer in Bono East to the wholesale buyer in Makola.",
+    'AgroConnect is building trusted infrastructure for cross-border agricultural trade — escrow, payments, and farmer credit for the world. Piloting in Ghana.',
 }
 
 const PILLARS = [
@@ -14,34 +14,47 @@ const PILLARS = [
     body:  'Every listing is either field-agent GPS-stamped or escrow-backed. No listing ships without payment certainty. No payment clears without delivery confirmation.',
   },
   {
-    title: 'BNPL Input Credit',
-    body:  'Farmers with an AgroScore above 50 unlock Buy Now Pay Later credit for seeds, fertiliser, and agro-chemicals. Repayment is structured against the next harvest cycle.',
+    title: 'AgroScore Credit',
+    body:  'Farmers build a portable credit profile with every transaction. No bank account required. No collateral. Credit eligibility grows with every successful trade.',
   },
   {
-    title: 'All-Region Reach',
-    body:  'Our field agents operate in all 16 regions — from the coastal fisheries of Volta and Western to the dry-season markets of Savannah and Upper East.',
+    title: 'International Buyer Access',
+    body:  'Buyers anywhere in the world can book verified supply months before harvest, pay into secure escrow, and receive a full audit trail for customs compliance.',
   },
   {
-    title: 'Open-Channel Intelligence',
-    body:  'Daily market prices from the Ghana Statistical Service, 6-hourly Open-Meteo weather alerts, and regional pest advisories — available to every registered user, including USSD on *800*456#.',
+    title: 'Multi-Currency Settlement',
+    body:  'Holds USD, EUR, GBP, and local currency. Escrow auto-releases on verified delivery. FX conversion built in — no manual reconciliation.',
   },
 ]
 
-const REGIONS = [
-  'Greater Accra', 'Ashanti', 'Eastern', 'Western', 'Central', 'Volta',
-  'Northern', 'Savannah', 'North East', 'Upper East', 'Upper West',
-  'Bono', 'Bono East', 'Ahafo', 'Oti', 'Western North',
+const WHY_GHANA = [
+  {
+    title: 'Highest Need',
+    body:  "Ghana's smallholder farmers earn well below fair market prices with no access to credit or digital buyers. Proving the model here validates it globally.",
+  },
+  {
+    title: 'Ready Infrastructure',
+    body:  'Ghana has 18.7M+ active mobile money accounts. The payment infrastructure already reaches rural farmers — we built the marketplace on top, not from scratch.',
+  },
+  {
+    title: 'Explosive Demand',
+    body:  'Ghana is the world\'s 2nd largest cocoa producer and a top exporter of shea, cashew, and pineapple. International buyers are actively searching for verified direct sourcing.',
+  },
+  {
+    title: 'Continental Gateway',
+    body:  'Ghana hosts the AfCFTA Secretariat — the 54-nation continental free trade agreement covering 1.4 billion people and a $3.4 trillion economy.',
+  },
 ]
 
 export default function AboutPage() {
   return (
     <main>
 
-      {/* ── Mission hero ──────────────────────────────────────────────────── */}
+      {/* ── Mission hero ────────────────────────────────────────────────── */}
       <section className="relative bg-forest py-24 lg:py-32 overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1600&q=80&fit=crop"
-          alt="Ghana farmland at dusk"
+          alt="Farmland at dusk"
           fill
           priority
           className="object-cover opacity-20"
@@ -54,18 +67,18 @@ export default function AboutPage() {
           </p>
           <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-white
                          leading-tight mb-6">
-            Agricultural infrastructure built for Ghana.
+            Global platform. Piloting in Ghana.
           </h1>
           <p className="text-white/65 text-lg leading-relaxed">
             AgroConnect is not a simple marketplace. It is the financial and logistical
-            backbone of Ghanaian agriculture — the platform through which inputs are
-            distributed, harvests are pledged, payments are settled via Mobile Money,
-            and market intelligence flows to every actor in the chain.
+            infrastructure of agricultural trade — the platform through which inputs are
+            distributed, harvests are pledged, payments are settled, and market intelligence
+            flows to every actor in the chain. Built for the world.
           </p>
         </div>
       </section>
 
-      {/* ── Story ─────────────────────────────────────────────────────────── */}
+      {/* ── Story ───────────────────────────────────────────────────────── */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -79,29 +92,30 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-4 text-muted-foreground text-base leading-relaxed">
                 <p>
-                  Ghana produces 8+ million tonnes of food crops each year, yet smallholder
-                  farmers routinely sell below cost because they have no way to confirm buyer
-                  commitment before planting. Buyers overpay middlemen because direct farm
-                  provenance is unverifiable. Dealers extend dangerous informal credit because
-                  no credit score exists for agricultural operators.
+                  Globally, farmers earn 60–80% below final market prices because intermediaries
+                  capture the value in unorganised supply chains. Over 450 million smallholder
+                  farmers lack access to formal financial services — no digital transaction record,
+                  no path to financing inputs.
                 </p>
                 <p>
-                  AgroConnect closes these gaps with three tools: a field-agent verification
-                  network that geo-stamps every farm and listing, an escrow settlement engine
-                  that holds and releases payments on delivery confirmation, and an
-                  AgroScore credit profile that converts repayment history into BNPL
-                  eligibility.
+                  Cross-border agricultural payments have no escrow, no milestone triggers, and
+                  no dispute resolution. Default risk sits entirely on the exporter. $400B+ in
+                  post-harvest food loss happens every year because buyers and farmers cannot
+                  coordinate reliably across borders.
                 </p>
                 <p>
-                  We are piloting in Eastern, Greater Accra, and Ashanti, with active field
-                  agent coverage in Bono East, Techiman, Sunyani, Tamale, and Makola.
+                  AgroConnect closes these gaps: a field-agent verification network that
+                  geo-stamps every farm, an escrow settlement engine that holds and releases
+                  payments on delivery confirmation, and an AgroScore credit profile that
+                  converts repayment history into input credit eligibility.
                 </p>
               </div>
             </div>
-            <div className="bg-[#1b4332] rounded-2xl p-8 md:p-10 h-full min-h-[340px]
-                            flex flex-col justify-between border border-emerald-800/30">
+            <div className="bg-forest rounded-2xl p-8 md:p-10 h-full min-h-[340px]
+                            flex flex-col justify-between"
+                 style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
               <div>
-                <p className="text-[#99d98c] font-semibold text-xs tracking-wider uppercase mb-6">
+                <p className="text-lime font-semibold text-xs tracking-wider uppercase mb-6">
                   Core Infrastructure
                 </p>
                 <blockquote className="font-display text-white text-xl sm:text-2xl font-bold leading-snug">
@@ -112,20 +126,20 @@ export default function AboutPage() {
               </div>
               <div className="mt-8 pt-6 border-t border-white/15 grid grid-cols-2 gap-5">
                 <div>
-                  <p className="font-mono font-extrabold text-[#99d98c] text-2xl leading-none">GHS 4.2M</p>
-                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">BNPL Disbursed</p>
+                  <p className="font-mono font-extrabold text-lime text-2xl leading-none">500M+</p>
+                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">Smallholder Farms</p>
                 </div>
                 <div>
-                  <p className="font-mono font-extrabold text-[#99d98c] text-2xl leading-none">2.5%</p>
-                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">Commission Rate</p>
+                  <p className="font-mono font-extrabold text-lime text-2xl leading-none">54</p>
+                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">AfCFTA Nations</p>
                 </div>
                 <div>
-                  <p className="font-mono font-extrabold text-[#99d98c] text-2xl leading-none">0 GHS</p>
-                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">Escrow Defaults</p>
+                  <p className="font-mono font-extrabold text-lime text-2xl leading-none">$3.5T</p>
+                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">Agricultural Market</p>
                 </div>
                 <div>
-                  <p className="font-mono font-extrabold text-[#99d98c] text-2xl leading-none">16 / 16</p>
-                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">Regions Active</p>
+                  <p className="font-mono font-extrabold text-lime text-2xl leading-none">&lt;2%</p>
+                  <p className="text-white/55 text-[11px] font-semibold uppercase tracking-wider mt-1.5">Digitized Today</p>
                 </div>
               </div>
             </div>
@@ -133,7 +147,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Pillars ───────────────────────────────────────────────────────── */}
+      {/* ── Pillars ─────────────────────────────────────────────────────── */}
       <section className="py-20 bg-cream">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="font-display text-3xl font-extrabold text-forest mb-10">
@@ -143,7 +157,7 @@ export default function AboutPage() {
             {PILLARS.map((p) => (
               <div key={p.title}
                 className="bg-white rounded-2xl border border-border p-7">
-                <h3 className="font-bold text-forest text-base mb-2">{p.title}</h3>
+                <h3 className="font-display font-bold text-forest text-base mb-2">{p.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{p.body}</p>
               </div>
             ))}
@@ -151,31 +165,43 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Regional coverage ─────────────────────────────────────────────── */}
+      {/* ── Why Ghana First ─────────────────────────────────────────────── */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="mb-8">
-            <h2 className="font-display text-3xl font-extrabold text-forest mb-2">
-              All 16 regions. No exceptions.
+          <div className="mb-10">
+            <p className="text-xs font-bold uppercase tracking-widest mb-3"
+               style={{ color: 'var(--lime-dark, hsl(86,55%,40%))' }}>
+              Pilot Strategy
+            </p>
+            <h2 className="font-display text-3xl font-extrabold text-forest mb-3">
+              Global platform. Why Ghana first.
             </h2>
-            <p className="text-muted-foreground text-sm max-w-xl">
-              Our USSD channel (*800*456#) ensures coverage extends beyond smartphone users
-              to feature-phone farmers in Northern and Upper West regions.
+            <p className="text-muted-foreground text-sm max-w-2xl leading-relaxed">
+              We are building for the world. We chose Ghana as our first pilot market for four
+              specific reasons — and the model is designed to replicate into Southeast Asia,
+              Latin America, and South Asia next.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {REGIONS.map((r) => (
-              <span key={r}
-                className="px-3 py-1.5 bg-cream border border-border rounded-full
-                           text-xs font-semibold text-forest">
-                {r}
-              </span>
+          <div className="grid sm:grid-cols-2 gap-5">
+            {WHY_GHANA.map((w, i) => (
+              <div key={w.title}
+                className="rounded-2xl p-7"
+                style={{
+                  backgroundColor: i % 2 === 0 ? 'var(--cream)' : 'white',
+                  border: '1.5px solid rgba(25,60,30,0.10)',
+                }}>
+                <h3 className="font-display font-bold text-forest text-base mb-2"
+                    style={{ color: 'var(--lime-dark, hsl(86,55%,40%))' }}>
+                  {w.title}
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{w.body}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── CTA ───────────────────────────────────────────────────────────── */}
+      {/* ── CTA ─────────────────────────────────────────────────────────── */}
       <section className="bg-forest py-20 text-center px-4">
         <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white mb-5">
           Join the network.
@@ -184,8 +210,9 @@ export default function AboutPage() {
           Register as a farmer, dealer, buyer, or field agent in under two minutes.
         </p>
         <Link href="/login"
-          className="inline-flex px-8 py-4 bg-lime text-forest font-bold text-sm
-                     rounded-2xl hover:bg-lime-dark transition-colors">
+          className="inline-flex px-8 py-4 font-bold text-sm rounded-full
+                     transition-all hover:opacity-90"
+          style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
           Get Started Free
         </Link>
       </section>

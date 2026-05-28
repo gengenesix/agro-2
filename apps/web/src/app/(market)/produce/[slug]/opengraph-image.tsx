@@ -108,7 +108,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
               <span>{seller}</span>
               <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
-              <span>agroconnect.com.gh</span>
+              <span>agroconnect.io</span>
             </div>
           </div>
         </div>

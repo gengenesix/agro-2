@@ -102,7 +102,7 @@ export function TopNav() {
           </div>
           <div>
             <span className="font-bold text-forest text-base leading-none block">AgroConnect</span>
-            <span className="text-[10px] text-muted-foreground">agroconnect.com.gh</span>
+            <span className="text-[10px] text-muted-foreground">agroconnect.io</span>
           </div>
         </Link>
 
