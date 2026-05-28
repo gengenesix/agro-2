@@ -1,37 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { randomUUID } from 'crypto'
-import { checkOTP, storeSession, signToken } from '@/lib/otp-store'
-import { prisma } from '@/lib/prisma'
+import { checkOTP, signToken } from '@/lib/otp-store'
 import type { Profile, Role } from '@/lib/types'
 
 const schema = z.object({
   phone: z.string(),
   otp:   z.string().length(6).regex(/^\d{6}$/),
 })
-
-function toProfile(row: {
-  id: string; phone: string; fullName: string; role: string;
-  language: string; regionId: number | null; districtId: number | null;
-  community: string | null; avatarUrl: string | null; isActive: boolean;
-  agroScore: number; verificationLevel: string; createdAt: Date
-}): Profile {
-  return {
-    id:                row.id,
-    phone:             row.phone,
-    fullName:          row.fullName,
-    role:              row.role as Role,
-    language:          row.language as Profile['language'],
-    regionId:          row.regionId,
-    districtId:        row.districtId,
-    community:         row.community,
-    avatarUrl:         row.avatarUrl,
-    isActive:          row.isActive,
-    agroScore:         row.agroScore,
-    verificationLevel: row.verificationLevel as Profile['verificationLevel'],
-    createdAt:         row.createdAt.toISOString(),
-  }
-}
 
 export async function POST(req: NextRequest) {
   let body: unknown
@@ -52,39 +28,41 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // Find or create profile in DB
-  let profileRow = await prisma.profile.findUnique({ where: { phone } })
-  let isNewUser = false
-
-  if (!profileRow) {
-    isNewUser = true
-    profileRow = await prisma.profile.create({
-      data: {
-        id:    randomUUID(),
-        phone,
-        fullName: '',
-        role:  role as Role,
-      },
-    })
-    // Create wallet for the new user
-    await prisma.wallet.create({ data: { userId: profileRow.id } })
+  const profile: Profile = {
+    id:                randomUUID(),
+    phone,
+    email:             null,
+    fullName:          '',
+    role:              role as Role,
+    language:          'en',
+    regionId:          null,
+    districtId:        null,
+    community:         null,
+    avatarUrl:         null,
+    isActive:          true,
+    agroScore:         20,
+    verificationLevel: 'unverified',
+    createdAt:         new Date().toISOString(),
   }
 
-  const profile = toProfile(profileRow)
-
   const iat = Math.floor(Date.now() / 1000)
-  const exp = iat + 60 * 60 * 24 * 30 // 30 days
-  const accessToken = signToken({ id: profile.id, phone, role: profile.role, iat, exp })
-
-  storeSession(accessToken, profile)
+  const exp = iat + 60 * 60 * 24 * 30
+  const accessToken = signToken({ ...profile, iat, exp })
 
   const res = NextResponse.json({
     success: true,
-    data: { access_token: accessToken, profile, isNewUser },
+    data: { access_token: accessToken, profile, isNewUser: true },
   })
 
   res.cookies.set('agro_access_token', accessToken, {
     httpOnly: true,
+    path:     '/',
+    maxAge:   60 * 60 * 24 * 30,
+    sameSite: 'lax',
+    secure:   process.env.NODE_ENV === 'production',
+  })
+  res.cookies.set('agro_role', role, {
+    httpOnly: false,
     path:     '/',
     maxAge:   60 * 60 * 24 * 30,
     sameSite: 'lax',

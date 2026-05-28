@@ -6,7 +6,6 @@ import { ListingFilters }   from '@/components/listings/listing-filters'
 import { ListingGrid }      from '@/components/listings/listing-grid'
 import { ListingGridSkeleton } from '@/components/shared/skeleton'
 import { MapViewToggle }    from '@/components/listings/map-view-toggle'
-import { prisma }           from '@/lib/prisma'
 import type { ListingSummary } from '@/lib/types'
 import type { ListingFilters as Filters } from '@/lib/validators'
 
@@ -14,90 +13,27 @@ interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
+const MOCK_LISTINGS: ListingSummary[] = [
+  { id: 'lst-001', title: 'Fresh Organic Tomatoes — Kumasi Farm', slug: 'fresh-organic-tomatoes-kumasi-farm', listingType: 'available_now', status: 'active', quantityAvailable: 500, pricePerUnit: 2.50, minOrderQuantity: 10, photos: ['https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=600&q=80'], farmingMethod: 'organic', expectedHarvestDate: null, depositPercentage: 20, pledgeStatus: null, bnplAvailable: false, viewsCount: 142, createdAt: '2025-06-01T08:00:00.000Z', unit: { name: 'Kilogram', abbreviation: 'kg' }, category: { name: 'Tomato', sector: 'crops', slug: 'tomato' }, region: { name: 'Ashanti', code: 'AH' }, district: { name: 'Kumasi Metropolitan' }, seller: { id: 'usr-001', fullName: 'Kwame Asante Boateng', avatarUrl: null, verificationLevel: 'field_verified', agroScore: 82 } },
+  { id: 'lst-002', title: '2-Month Maize Harvest — 5 Tonnes Reserved', slug: 'maize-harvest-5-tonnes-eastern', listingType: 'harvest_pledge', status: 'active', quantityAvailable: 5000, pricePerUnit: 1.80, minOrderQuantity: 500, photos: ['https://images.unsplash.com/photo-1568219557405-376e23e4f7cf?w=600&q=80'], farmingMethod: 'conventional', expectedHarvestDate: '2025-09-15T00:00:00.000Z', depositPercentage: 20, pledgeStatus: 'open', bnplAvailable: false, viewsCount: 89, createdAt: '2025-05-28T10:00:00.000Z', unit: { name: 'Kilogram', abbreviation: 'kg' }, category: { name: 'Maize', sector: 'crops', slug: 'maize' }, region: { name: 'Eastern', code: 'ER' }, district: { name: 'Asuogyaman' }, seller: { id: 'usr-002', fullName: 'Abena Owusu Mensah', avatarUrl: null, verificationLevel: 'premium', agroScore: 95 } },
+  { id: 'lst-003', title: 'NPK 15-15-15 Fertilizer — 50kg Bags', slug: 'npk-fertilizer-50kg-bags', listingType: 'available_now', status: 'active', quantityAvailable: 200, pricePerUnit: 180.00, minOrderQuantity: 1, photos: ['https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80'], farmingMethod: null, expectedHarvestDate: null, depositPercentage: 0, pledgeStatus: null, bnplAvailable: true, viewsCount: 231, createdAt: '2025-05-20T09:00:00.000Z', unit: { name: 'Bag (50kg)', abbreviation: 'bag' }, category: { name: 'Fertilizer', sector: 'inputs', slug: 'fertilizer' }, region: { name: 'Greater Accra', code: 'GA' }, district: { name: 'Accra Metropolitan' }, seller: { id: 'usr-003', fullName: 'Agro Solutions Ltd', avatarUrl: null, verificationLevel: 'premium', agroScore: 98 } },
+  { id: 'lst-004', title: 'Live Broiler Chickens — Farm Gate', slug: 'live-broiler-chickens-eastern', listingType: 'available_now', status: 'active', quantityAvailable: 300, pricePerUnit: 35.00, minOrderQuantity: 10, photos: ['https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=600&q=80'], farmingMethod: 'conventional', expectedHarvestDate: null, depositPercentage: 0, pledgeStatus: null, bnplAvailable: false, viewsCount: 67, createdAt: '2025-06-02T07:00:00.000Z', unit: { name: 'Head', abbreviation: 'hd' }, category: { name: 'Broiler Chicken', sector: 'poultry', slug: 'broiler-chicken' }, region: { name: 'Eastern', code: 'ER' }, district: { name: 'Lower Manya Krobo' }, seller: { id: 'usr-004', fullName: 'Emmanuel Tetteh', avatarUrl: null, verificationLevel: 'field_verified', agroScore: 74 } },
+  { id: 'lst-005', title: 'Live Tilapia — Volta Lake Farm', slug: 'live-tilapia-volta-lake', listingType: 'available_now', status: 'active', quantityAvailable: 800, pricePerUnit: 22.00, minOrderQuantity: 20, photos: ['https://images.unsplash.com/photo-1570367823578-74b3ef1eba96?w=600&q=80'], farmingMethod: 'conventional', expectedHarvestDate: null, depositPercentage: 0, pledgeStatus: null, bnplAvailable: false, viewsCount: 115, createdAt: '2025-05-30T06:00:00.000Z', unit: { name: 'Kilogram', abbreviation: 'kg' }, category: { name: 'Tilapia', sector: 'fisheries', slug: 'tilapia' }, region: { name: 'Volta', code: 'VO' }, district: { name: 'South Tongu' }, seller: { id: 'usr-005', fullName: 'Yaw Darko Asante', avatarUrl: null, verificationLevel: 'self_declared', agroScore: 58 } },
+  { id: 'lst-006', title: 'Cocoa Beans — Certified Fine Flavour', slug: 'cocoa-beans-certified-western', listingType: 'harvest_pledge', status: 'active', quantityAvailable: 3000, pricePerUnit: 12.50, minOrderQuantity: 100, photos: ['https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80'], farmingMethod: 'certified_organic', expectedHarvestDate: '2025-11-01T00:00:00.000Z', depositPercentage: 25, pledgeStatus: 'partially_pledged', bnplAvailable: false, viewsCount: 203, createdAt: '2025-05-15T10:00:00.000Z', unit: { name: 'Kilogram', abbreviation: 'kg' }, category: { name: 'Cocoa', sector: 'crops', slug: 'cocoa' }, region: { name: 'Western', code: 'WE' }, district: { name: 'Juaboso' }, seller: { id: 'usr-006', fullName: 'Akosua Frimpong', avatarUrl: null, verificationLevel: 'premium', agroScore: 101 } },
+]
+
 async function fetchListings(filters: Filters) {
-  try {
-    const where = {
-      status: 'active' as const,
-      ...(filters.sector
-        ? { category: { sector: filters.sector as 'crops' | 'livestock' | 'poultry' | 'fisheries' | 'inputs' } }
-        : {}),
-      ...(filters.listingType
-        ? { listingType: filters.listingType as 'available_now' | 'harvest_pledge' }
-        : {}),
-      ...(filters.regionId
-        ? { regionId: Number(filters.regionId) }
-        : {}),
-      ...(filters.farmingMethod
-        ? { farmingMethod: filters.farmingMethod as 'conventional' | 'organic' | 'certified_organic' }
-        : {}),
-      ...(filters.bnplOnly     ? { bnplAvailable: true } : {}),
-      ...(filters.verifiedOnly
-        ? { seller: { verificationLevel: { in: ['field_verified', 'premium'] as ('field_verified' | 'premium')[] } } }
-        : {}),
-      ...(filters.search
-        ? { title: { contains: filters.search, mode: 'insensitive' as const } }
-        : {}),
-    }
-
-    const ORDER_MAP: Record<string, { [col: string]: 'asc' | 'desc' }> = {
-      newest:          { createdAt:           'desc' },
-      price_low:       { pricePerUnit:        'asc'  },
-      price_high:      { pricePerUnit:        'desc' },
-      most_viewed:     { viewsCount:          'desc' },
-      harvest_soonest: { expectedHarvestDate: 'asc'  },
-      top_rated:       { viewsCount:          'desc' },
-    }
-    const orderBy = ORDER_MAP[filters.sortBy ?? 'newest'] ?? ORDER_MAP['newest']
-
-    const page  = Math.max(1, filters.page  ?? 1)
-    const limit = Math.min(50, filters.limit ?? 24)
-
-    const [total, rows] = await Promise.all([
-      prisma.listing.count({ where }),
-      prisma.listing.findMany({
-        where,
-        orderBy,
-        skip:  (page - 1) * limit,
-        take:  limit,
-        include: {
-          category: { select: { name: true, sector: true, slug: true } },
-          unit:     { select: { name: true, abbreviation: true } },
-          seller:   { select: { id: true, fullName: true, avatarUrl: true, verificationLevel: true, agroScore: true } },
-          region:   { select: { name: true, code: true } },
-          district: { select: { name: true } },
-        },
-      }),
-    ])
-
-    return {
-      listings: rows.map(l => ({
-        id:                  l.id,
-        title:               l.title,
-        slug:                l.slug,
-        listingType:         l.listingType,
-        status:              l.status,
-        quantityAvailable:   Number(l.quantityAvailable),
-        pricePerUnit:        Number(l.pricePerUnit),
-        minOrderQuantity:    Number(l.minOrderQuantity),
-        photos:              l.photos,
-        farmingMethod:       l.farmingMethod ?? null,
-        expectedHarvestDate: l.expectedHarvestDate?.toISOString() ?? null,
-        depositPercentage:   l.depositPercentage,
-        pledgeStatus:        l.pledgeStatus ?? null,
-        bnplAvailable:       l.bnplAvailable,
-        viewsCount:          l.viewsCount,
-        createdAt:           l.createdAt.toISOString(),
-        unit:                l.unit,
-        category:            l.category,
-        region:              l.region,
-        district:            l.district,
-        seller:              l.seller,
-      })) as ListingSummary[],
-      total,
-      totalPages: Math.ceil(total / limit),
-    }
-  } catch {
-    return { listings: [], totalPages: 1, total: 0 }
+  let results = MOCK_LISTINGS
+  if (filters.sector)      results = results.filter(l => l.category.sector === filters.sector)
+  if (filters.listingType) results = results.filter(l => l.listingType === filters.listingType)
+  if (filters.search)      results = results.filter(l => l.title.toLowerCase().includes(filters.search!.toLowerCase()))
+  const page  = Math.max(1, filters.page ?? 1)
+  const limit = Math.min(50, filters.limit ?? 24)
+  const total = results.length
+  return {
+    listings:   results.slice((page - 1) * limit, page * limit),
+    total,
+    totalPages: Math.ceil(total / limit),
   }
 }
 

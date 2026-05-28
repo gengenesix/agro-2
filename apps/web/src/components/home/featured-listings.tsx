@@ -1,23 +1,21 @@
 import Image          from 'next/image'
 import Link           from 'next/link'
-import { prisma }     from '@/lib/prisma'
 import { SectorChip } from '@/components/shared/sector-chip'
 import { PriceDisplay } from '@/components/shared/price-display'
 import { MapPinIcon, ChevronRightIcon, HarvestPledgeIcon } from '@/components/shared/icons'
 import type { Sector } from '@/lib/types'
 
+const MOCK_ROWS = [
+  { id: 'lst-001', title: 'Fresh Organic Tomatoes — Kumasi Farm', slug: 'fresh-organic-tomatoes-kumasi-farm', listingType: 'available_now', pricePerUnit: 2.50, quantityAvailable: 500, photos: ['https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=600&q=80'], seller: { fullName: 'Kwame Asante Boateng', verificationLevel: 'field_verified' }, category: { name: 'Tomato', sector: 'crops' }, unit: { abbreviation: 'kg' }, region: { name: 'Ashanti' } },
+  { id: 'lst-002', title: '2-Month Maize Harvest — 5 Tonnes Reserved', slug: 'maize-harvest-5-tonnes-eastern', listingType: 'harvest_pledge', pricePerUnit: 1.80, quantityAvailable: 5000, photos: ['https://images.unsplash.com/photo-1568219557405-376e23e4f7cf?w=600&q=80'], seller: { fullName: 'Abena Owusu Mensah', verificationLevel: 'premium' }, category: { name: 'Maize', sector: 'crops' }, unit: { abbreviation: 'kg' }, region: { name: 'Eastern' } },
+  { id: 'lst-003', title: 'NPK 15-15-15 Fertilizer — 50kg Bags', slug: 'npk-fertilizer-50kg-bags', listingType: 'available_now', pricePerUnit: 180.00, quantityAvailable: 200, photos: ['https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80'], seller: { fullName: 'Agro Solutions Ltd', verificationLevel: 'premium' }, category: { name: 'Fertilizer', sector: 'inputs' }, unit: { abbreviation: 'bag' }, region: { name: 'Greater Accra' } },
+  { id: 'lst-004', title: 'Live Broiler Chickens — Farm Gate', slug: 'live-broiler-chickens-eastern', listingType: 'available_now', pricePerUnit: 35.00, quantityAvailable: 300, photos: ['https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=600&q=80'], seller: { fullName: 'Emmanuel Tetteh', verificationLevel: 'field_verified' }, category: { name: 'Broiler Chicken', sector: 'poultry' }, unit: { abbreviation: 'hd' }, region: { name: 'Eastern' } },
+  { id: 'lst-005', title: 'Live Tilapia — Volta Lake Farm', slug: 'live-tilapia-volta-lake', listingType: 'available_now', pricePerUnit: 22.00, quantityAvailable: 800, photos: ['https://images.unsplash.com/photo-1570367823578-74b3ef1eba96?w=600&q=80'], seller: { fullName: 'Yaw Darko Asante', verificationLevel: 'self_declared' }, category: { name: 'Tilapia', sector: 'fisheries' }, unit: { abbreviation: 'kg' }, region: { name: 'Volta' } },
+  { id: 'lst-006', title: 'Cocoa Beans — Certified Fine Flavour', slug: 'cocoa-beans-certified-western', listingType: 'harvest_pledge', pricePerUnit: 12.50, quantityAvailable: 3000, photos: ['https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80'], seller: { fullName: 'Akosua Frimpong', verificationLevel: 'premium' }, category: { name: 'Cocoa', sector: 'crops' }, unit: { abbreviation: 'kg' }, region: { name: 'Western' } },
+]
+
 export default async function FeaturedListings() {
-  const rows = await prisma.listing.findMany({
-    where:   { status: 'active' },
-    take:    6,
-    orderBy: { createdAt: 'desc' },
-    include: {
-      seller:   { select: { fullName: true, verificationLevel: true } },
-      category: { select: { name: true, sector: true } },
-      unit:     { select: { abbreviation: true } },
-      region:   { select: { name: true } },
-    },
-  })
+  const rows = MOCK_ROWS
 
   if (rows.length === 0) {
     return (

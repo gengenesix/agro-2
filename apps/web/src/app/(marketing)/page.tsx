@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Image             from 'next/image'
 import Link              from 'next/link'
-import { prisma }        from '@/lib/prisma'
 import {
   FadeUp, FadeIn, SlideLeft, SlideRight,
   StaggerGrid, StaggerItem, Card3D,
@@ -49,24 +48,11 @@ export default async function LandingPage() {
   }
   const DEFAULT_FALLBACK = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80&fit=crop'
 
-  let liveListings: LiveListing[] = []
-  try {
-    const rows = await prisma.listing.findMany({
-      where: { status: 'active' }, take: 3, orderBy: { createdAt: 'desc' },
-      include: {
-        category: { select: { name: true, sector: true } },
-        unit:     { select: { abbreviation: true } },
-        region:   { select: { name: true } },
-      },
-    })
-    liveListings = rows.map(r => ({
-      id: r.id, title: r.title, slug: r.slug, pricePerUnit: Number(r.pricePerUnit),
-      photos: r.photos,
-      category: { name: r.category.name, sector: String(r.category.sector) },
-      unit: { symbol: r.unit.abbreviation },
-      region: r.region ? { name: r.region.name } : null,
-    }))
-  } catch { /* DB cold start */ }
+  const liveListings: LiveListing[] = [
+    { id: 'lst-001', title: 'Fresh Organic Tomatoes — Kumasi Farm', slug: 'fresh-organic-tomatoes-kumasi-farm', pricePerUnit: 2.50, photos: ['https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=600&q=80&fit=crop'], category: { name: 'Tomato', sector: 'crops' }, unit: { symbol: 'kg' }, region: { name: 'Ashanti' } },
+    { id: 'lst-002', title: 'Live Tilapia — Volta Lake Farm', slug: 'live-tilapia-volta-lake', pricePerUnit: 22.00, photos: ['https://images.unsplash.com/photo-1570367823578-74b3ef1eba96?w=600&q=80&fit=crop'], category: { name: 'Tilapia', sector: 'fisheries' }, unit: { symbol: 'kg' }, region: { name: 'Volta' } },
+    { id: 'lst-003', title: 'Cocoa Beans — Certified Fine Flavour', slug: 'cocoa-beans-certified-western', pricePerUnit: 12.50, photos: ['https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80&fit=crop'], category: { name: 'Cocoa', sector: 'crops' }, unit: { symbol: 'kg' }, region: { name: 'Western' } },
+  ]
 
   return (
     <main className="overflow-x-hidden">

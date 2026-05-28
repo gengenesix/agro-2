@@ -1,38 +1,46 @@
 import { cookies } from 'next/headers'
 import { verifyToken } from '@/lib/otp-store'
-import { prisma } from '@/lib/prisma'
 import type { NextRequest } from 'next/server'
+import type { Profile } from '@/lib/types'
 
-export async function getAuthProfile(req?: NextRequest) {
+export async function getAuthProfile(req?: NextRequest): Promise<Profile | null> {
   let token: string | undefined
 
-  // ── 1. Route Handler context: read directly from the request object ────────
-  // req.cookies is the authoritative source inside Route Handlers (Next.js 15).
-  // cookies() from next/headers is designed for Server Components / Actions and
-  // is not reliably populated in the Route Handler execution context.
   if (req) {
     token =
       req.cookies.get('agro_access_token')?.value ??
       req.headers.get('authorization')?.replace(/^Bearer\s+/, '')
   }
 
-  // ── 2. Server Component / Server Action fallback ────────────────────────────
   if (!token) {
     try {
       const cookieStore = await cookies()
       token = cookieStore.get('agro_access_token')?.value
     } catch {
-      // cookies() throws when called outside a supported async context.
-      // Silently swallow so Route Handlers that already found a token don't fail.
+      // Silent — cookies() not available outside async context
     }
   }
 
   if (!token) return null
 
-  // ── 3. Verify HMAC signature and expiry ────────────────────────────────────
   const payload = verifyToken(token)
   if (!payload || typeof payload.id !== 'string') return null
 
-  // ── 4. Load live profile from DB (single source of truth) ──────────────────
-  return prisma.profile.findUnique({ where: { id: payload.id } })
+  // Profile is embedded in the JWT payload (no DB required)
+  return {
+    id:                payload.id,
+    phone:             (payload.phone as string) ?? '',
+    email:             (payload.email as string | null) ?? null,
+    fullName:          (payload.fullName as string) ?? 'Demo User',
+    role:              (payload.role as Profile['role']) ?? 'farmer',
+    language:          (payload.language as Profile['language']) ?? 'en',
+    regionId:          (payload.regionId as number | null) ?? null,
+    districtId:        (payload.districtId as number | null) ?? null,
+    community:         (payload.community as string | null) ?? null,
+    avatarUrl:         (payload.avatarUrl as string | null) ?? null,
+    isActive:          (payload.isActive as boolean) ?? true,
+    agroScore:         (payload.agroScore as number) ?? 45,
+    verificationLevel: (payload.verificationLevel as Profile['verificationLevel']) ?? 'unverified',
+    createdAt:         (payload.createdAt as string) ?? new Date().toISOString(),
+  }
 }

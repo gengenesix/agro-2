@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getAuthProfile } from '@/lib/api-auth'
-import { prisma } from '@/lib/prisma'
+import { signToken } from '@/lib/otp-store'
 
 const updateSchema = z.object({
   fullName:  z.string().min(2).max(100).optional(),
@@ -38,19 +38,38 @@ async function handleUpdate(req: NextRequest) {
   }
 
   const d = parsed.data
-  const updated = await prisma.profile.update({
-    where: { id: profile.id },
-    data: {
-      ...(d.fullName  !== undefined && { fullName:  d.fullName  }),
-      ...(d.avatarUrl !== undefined && { avatarUrl: d.avatarUrl }),
-      ...(d.regionId  !== undefined && { regionId:  d.regionId  }),
-      ...(d.community !== undefined && { community: d.community }),
-      ...(d.language  !== undefined && { language:  d.language  }),
-      ...(d.role      !== undefined && { role:      d.role      }),
-    },
-  })
+  const updated = {
+    ...profile,
+    ...(d.fullName  !== undefined && { fullName:  d.fullName  }),
+    ...(d.avatarUrl !== undefined && { avatarUrl: d.avatarUrl }),
+    ...(d.regionId  !== undefined && { regionId:  d.regionId  }),
+    ...(d.community !== undefined && { community: d.community }),
+    ...(d.language  !== undefined && { language:  d.language  }),
+    ...(d.role      !== undefined && { role:      d.role      }),
+  }
 
-  return NextResponse.json({ success: true, data: updated })
+  const iat = Math.floor(Date.now() / 1000)
+  const exp = iat + 60 * 60 * 24 * 30
+  const newToken = signToken({ ...updated, iat, exp })
+
+  const res = NextResponse.json({ success: true, data: updated })
+  res.cookies.set('agro_access_token', newToken, {
+    httpOnly: true,
+    path:     '/',
+    maxAge:   60 * 60 * 24 * 30,
+    sameSite: 'lax',
+    secure:   process.env.NODE_ENV === 'production',
+  })
+  if (d.role) {
+    res.cookies.set('agro_role', d.role, {
+      httpOnly: false,
+      path:     '/',
+      maxAge:   60 * 60 * 24 * 30,
+      sameSite: 'lax',
+      secure:   process.env.NODE_ENV === 'production',
+    })
+  }
+  return res
 }
 
 export async function PUT(req: NextRequest)   { return handleUpdate(req) }
