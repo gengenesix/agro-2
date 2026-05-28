@@ -36,11 +36,20 @@ export default function MyListingsPage() {
       {/* Header */}
       <div className="bg-white border-b border-border sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <h1 className="font-bold text-forest text-lg">My Listings</h1>
+          <h1
+            className="font-display font-bold text-forest text-lg"
+            style={{ letterSpacing: '-0.02em' }}
+          >
+            My Listings
+          </h1>
           <Link
             href="/listings/new"
-            className="flex items-center gap-1.5 px-4 py-2 bg-forest text-white text-xs font-bold
-                       rounded-xl hover:bg-forest-dark transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-white text-xs font-bold
+                       transition-all hover:opacity-90 active:scale-[0.97]"
+            style={{
+              backgroundColor: 'var(--forest)',
+              clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))',
+            }}
           >
             <PlusIcon size={14} />
             New listing
@@ -57,9 +66,15 @@ export default function MyListingsPage() {
             title="No listings yet"
             description="Create your first listing to start selling your produce on AgroConnect."
             action={
-              <Link href="/listings/new"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-forest text-white
-                           text-sm font-bold rounded-xl hover:bg-forest-dark transition-colors">
+              <Link
+                href="/listings/new"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white
+                           text-sm font-bold transition-all hover:opacity-90 active:scale-[0.97]"
+                style={{
+                  backgroundColor: 'var(--forest)',
+                  clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                }}
+              >
                 <PlusIcon size={15} />
                 Create listing
               </Link>

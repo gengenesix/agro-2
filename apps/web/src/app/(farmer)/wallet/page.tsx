@@ -67,7 +67,12 @@ export default function WalletPage() {
     <main className="min-h-screen bg-cream pb-10">
       <div className="bg-white border-b border-border sticky top-0 z-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
-          <h1 className="font-bold text-forest text-lg">Wallet</h1>
+          <h1
+            className="font-display font-bold text-forest text-lg"
+            style={{ letterSpacing: '-0.02em' }}
+          >
+            Wallet
+          </h1>
         </div>
       </div>
 
@@ -83,14 +88,24 @@ export default function WalletPage() {
 
         {/* Pending / escrow banner */}
         {inEscrow > 0 && (
-          <div className="bg-harvest-gold/10 border border-harvest-gold/30 rounded-2xl px-5 py-4 flex justify-between items-center">
+          <div
+            className="px-5 py-4 flex justify-between items-center rounded-2xl border-l-[3px]"
+            style={{
+              backgroundColor: 'var(--harvest-gold-bg)',
+              borderLeftColor: 'var(--harvest-gold)',
+              border: '1px solid',
+              borderColor: 'color-mix(in oklch, var(--harvest-gold) 30%, transparent)',
+              borderLeftWidth: '3px',
+            }}
+          >
             <div>
-              <p className="text-xs font-bold text-harvest-gold uppercase tracking-wider">In Escrow</p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Held until your pledges are fulfilled
+              <p className="text-xs font-bold uppercase tracking-[0.13em]"
+                 style={{ color: 'var(--harvest-gold)' }}>
+                In Escrow
               </p>
+              <p className="text-xs text-muted-foreground mt-0.5">Held until pledges are fulfilled</p>
             </div>
-            <p className="font-mono text-lg font-bold text-harvest-gold">
+            <p className="font-mono text-lg font-bold" style={{ color: 'var(--harvest-gold)' }}>
               {formatGHS(Math.abs(inEscrow))}
             </p>
           </div>
@@ -99,7 +114,12 @@ export default function WalletPage() {
         {/* Transactions */}
         <div className="bg-white rounded-2xl border border-border overflow-hidden">
           <div className="px-5 py-4 border-b border-border">
-            <h2 className="font-bold text-forest text-sm">Transaction history</h2>
+            <h2
+              className="font-display font-bold text-forest text-sm"
+              style={{ letterSpacing: '-0.01em' }}
+            >
+              Transaction History
+            </h2>
           </div>
 
           {txns.length === 0 ? (

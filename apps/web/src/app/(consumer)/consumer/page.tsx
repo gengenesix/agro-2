@@ -63,22 +63,27 @@ export default function ConsumerHomePage() {
           onChange={e => setSearch(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && setQuery(search)}
           placeholder="Search produce, fish, eggs…"
-          className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-white
-                     focus:outline-none focus:ring-2 focus:ring-lime text-sm"
+          className="w-full h-12 pl-10 pr-4 border border-border bg-white
+                     focus:outline-none focus:ring-2 focus:ring-forest text-sm"
+          style={{ borderRadius: '0.75rem' }}
         />
       </div>
 
       {/* Category chips */}
-      <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4">
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-hide">
         {CATEGORIES.map(c => (
           <button
             key={c.value}
             onClick={() => setCategory(c.value)}
-            className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold border transition-colors ${
-              category === c.value
-                ? 'bg-forest text-white border-forest'
-                : 'bg-white text-muted-foreground border-border hover:border-forest/30'
-            }`}
+            className={`flex-shrink-0 px-4 py-2 text-xs font-bold border transition-all
+                        ${category === c.value
+                          ? 'text-white border-transparent'
+                          : 'bg-white text-muted-foreground border-border hover:border-forest/30 rounded-xl'
+                        }`}
+            style={category === c.value ? {
+              backgroundColor: 'var(--forest)',
+              clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+            } : {}}
           >
             {c.label}
           </button>
@@ -88,16 +93,28 @@ export default function ConsumerHomePage() {
       {/* Hero banner */}
       {!category && !query && (
         <Link href="/produce"
-          className="block rounded-2xl overflow-hidden relative h-36 bg-forest">
+          className="block overflow-hidden relative h-40 bg-forest"
+          style={{ borderRadius: '1rem' }}>
           <Image
             src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80&fit=crop"
             alt="Fresh farm produce"
-            fill className="object-cover opacity-60"
+            fill className="object-cover opacity-50"
             sizes="(max-width:512px)100vw,512px"
           />
-          <div className="absolute inset-0 flex flex-col justify-end p-4">
-            <p className="text-lime text-xs font-bold tracking-widest uppercase">Direct from farms</p>
-            <p className="text-white font-display text-lg font-bold leading-tight">
+          <div className="absolute inset-0" style={{
+            background: 'linear-gradient(to right, rgba(18,52,34,0.9) 0%, rgba(18,52,34,0.4) 100%)',
+          }} />
+          <div className="absolute inset-0 flex flex-col justify-end p-5">
+            <p
+              className="text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5"
+              style={{ color: 'var(--lime)' }}
+            >
+              Direct from farms
+            </p>
+            <p
+              className="text-white font-display font-bold leading-tight"
+              style={{ fontSize: 'clamp(1.1rem, 4vw, 1.35rem)', letterSpacing: '-0.025em' }}
+            >
               Fresh produce from<br/>Ghana's best farmers
             </p>
           </div>
@@ -106,7 +123,10 @@ export default function ConsumerHomePage() {
 
       {/* Listings grid */}
       <div>
-        <h2 className="font-semibold text-sm text-forest mb-3">
+        <h2
+          className="font-display font-bold text-forest text-sm mb-3"
+          style={{ letterSpacing: '-0.01em' }}
+        >
           {query ? `Results for "${query}"` : category ? CATEGORIES.find(c => c.value === category)?.label : 'All produce'}
         </h2>
 
@@ -135,7 +155,7 @@ export default function ConsumerHomePage() {
                 key={listing.id}
                 href={`/produce/${listing.slug}`}
                 className="bg-white rounded-2xl border border-border overflow-hidden
-                           hover:border-forest/30 transition-colors active:scale-[0.98]"
+                           hover:shadow-sm transition-shadow active:scale-[0.98]"
               >
                 <div className="relative h-32 bg-cream-dark">
                   {listing.photos[0] ? (
@@ -175,9 +195,15 @@ export default function ConsumerHomePage() {
       </div>
 
       {listings.length > 0 && (
-        <Link href="/produce"
-          className="block text-center py-3.5 bg-white border border-border rounded-2xl
-                     text-sm font-bold text-forest hover:border-forest/30 transition-colors">
+        <Link
+          href="/produce"
+          className="block text-center py-3.5 text-white text-sm font-bold
+                     transition-all hover:opacity-90 active:scale-[0.98]"
+          style={{
+            backgroundColor: 'var(--forest)',
+            clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+          }}
+        >
           View all listings
         </Link>
       )}

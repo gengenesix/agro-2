@@ -29,7 +29,7 @@ const T = {
   light: {
     aside:          'bg-white border-r border-border',
     logo:           'bg-forest',
-    logoFill:       'oklch(0.88 0.22 120)',
+    logoFill:       'oklch(0.76 0.17 75)',
     brandLabel:     'text-forest',
     portalSub:      'text-muted-foreground',
     activeBg:       'bg-forest text-white',
@@ -47,11 +47,11 @@ const T = {
     logoFill:       'oklch(0.28 0.07 145)',
     brandLabel:     'text-white',
     portalSub:      'text-white/40',
-    activeBg:       'bg-white/20 text-white',
-    idleBg:         'text-white/60 hover:text-white hover:bg-white/10',
+    activeBg:       'bg-white/15 text-white',
+    idleBg:         'text-white/55 hover:text-white hover:bg-white/10',
     divider:        'border-white/10',
     footerLink:     'text-white/40 hover:text-white hover:bg-white/10',
-    footerActive:   'bg-white/20 text-white',
+    footerActive:   'bg-white/15 text-white',
     signout:        'text-white/40 hover:bg-red-500/20 hover:text-red-300',
     toggleBase:     'text-white/40 hover:text-white hover:bg-white/10',
     togglePopped:   'bg-forest-dark border border-white/20 shadow-sm',
@@ -92,21 +92,28 @@ export function AppSidebar({
       >
         {!collapsed ? (
           <Link href="/" className="flex items-center gap-2.5 min-w-0">
-            <div className={`w-9 h-9 rounded-lg ${t.logo} flex-shrink-0 flex items-center justify-center`}>
-              <svg viewBox="0 0 32 32" width="20" height="20" fill="none">
+            <div
+              className={`w-9 h-9 ${t.logo} flex-shrink-0 flex items-center justify-center`}
+              style={{ clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))' }}
+            >
+              <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
                 <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z" fill={t.logoFill} />
-                <path d="M16 15v7" stroke={t.logoFill} strokeWidth="2" strokeLinecap="round" />
+                <path d="M16 15v7" stroke={t.logoFill} strokeWidth="2.5" strokeLinecap="round" />
               </svg>
             </div>
             <div className="min-w-0">
-              <span className={`font-bold text-sm leading-none block ${t.brandLabel}`}>AgroConnect</span>
-              <span className={`text-[10px] ${t.portalSub}`}>{portalLabel}</span>
+              <span className={`font-display font-bold text-sm leading-none block ${t.brandLabel}`}
+                    style={{ letterSpacing: '-0.02em' }}>
+                AgroConnect
+              </span>
+              <span className={`text-[10px] font-medium ${t.portalSub}`}>{portalLabel}</span>
             </div>
           </Link>
         ) : (
           <Link href="/"
-            className={`w-9 h-9 rounded-lg ${t.logo} flex items-center justify-center flex-shrink-0`}>
-            <svg viewBox="0 0 32 32" width="20" height="20" fill="none">
+            className={`w-9 h-9 ${t.logo} flex items-center justify-center flex-shrink-0`}
+            style={{ clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))' }}>
+            <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
               <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z" fill={t.logoFill} />
             </svg>
           </Link>
@@ -137,7 +144,7 @@ export function AppSidebar({
               key={href}
               href={href}
               title={collapsed ? label : undefined}
-              className={`flex items-center rounded-xl transition-colors
+              className={`flex items-center rounded-xl transition-all duration-150
                           ${collapsed ? 'justify-center w-full h-11' : 'gap-3 px-3 py-2.5'}
                           ${active ? t.activeBg : t.idleBg}`}
             >
@@ -147,10 +154,12 @@ export function AppSidebar({
                   <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500" />
                 )}
               </span>
-              {!collapsed && <span className="text-sm font-semibold truncate">{label}</span>}
+              {!collapsed && (
+                <span className="text-sm font-semibold truncate flex-1">{label}</span>
+              )}
               {!collapsed && badge > 0 && (
-                <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full
-                                 bg-red-500 text-[10px] font-semibold text-white
+                <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full
+                                 bg-red-500 text-[10px] font-bold text-white px-1
                                  ring-2 ring-background animate-pulse flex-shrink-0">
                   {badge > 99 ? '99+' : badge}
                 </span>
