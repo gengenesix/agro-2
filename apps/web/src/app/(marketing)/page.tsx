@@ -15,91 +15,104 @@ export const metadata: Metadata = {
   description: "Ghana's agricultural operating system. Buy produce, pledge harvests, access BNPL credit, and get real-time market intelligence across all 16 regions.",
 }
 
-const METRICS = [
-  { value: '24,000+',  label: 'Registered Farmers'  },
-  { value: '16 / 16',  label: 'Regions Covered'     },
-  { value: 'GHS 4.2M', label: 'BNPL Disbursed'      },
-  { value: '18,500+',  label: 'Live Listings'        },
+const STATS = [
+  { value: '24,000+',  label: 'Verified Farmers'   },
+  { value: '18,500+',  label: 'Live Listings'       },
+  { value: 'GHS 4.2M', label: 'Pledges in Escrow'  },
+  { value: '16 / 16',  label: 'Regions Active'      },
 ]
 
-const PILLARS = [
+const FEATURES = [
   {
-    href:   '/marketplace',
-    tag:    'Marketplace',
-    title:  'Buy & sell verified produce',
-    body:   'Field-verified listings across crops, livestock, poultry, fisheries, and inputs. Escrow-backed payments. No hidden markups.',
+    href:  '/marketplace',
+    label: 'Marketplace',
+    title: 'Buy & sell field-verified produce.',
+    body:  'Escrow-backed payments. Farmer-set prices. No brokers, no markups. Every listing GPS-stamped by a certified field agent.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
         <line x1="3" y1="6" x2="21" y2="6"/>
         <path d="M16 10a4 4 0 0 1-8 0"/>
       </svg>
     ),
-    accent: 'var(--sector-crops)',
-    bg:     'var(--sector-crops-bg)',
   },
   {
-    href:   '/harvest-pledges',
-    tag:    'Harvest Pledges',
-    title:  'Forward contracts with escrow',
-    body:   'Lock in off-take agreements before planting. Buyers deposit 5–50% in escrow. Farmers plant with payment certainty.',
+    href:  '/harvest-pledges',
+    label: 'Harvest Pledges',
+    title: 'Forward contracts. Escrow-locked deposits.',
+    body:  'Buyers commit 5–50% before planting season. Farmers grow with guaranteed off-take. Field agents verify every milestone.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
-        <circle cx="12" cy="10" r="3"/>
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <path d="M16 2v4M8 2v4M3 10h18"/>
+        <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
       </svg>
     ),
-    accent: 'var(--harvest-gold)',
-    bg:     'var(--harvest-gold-bg)',
   },
   {
-    href:   '/market-intelligence',
-    tag:    'Intelligence',
-    title:  'Prices, weather & pest alerts',
-    body:   'Daily market prices from all 16 regions. 7-day weather forecasts. Critical alerts via SMS and USSD for offline farmers.',
+    href:  '/market-intelligence',
+    label: 'Market Intelligence',
+    title: 'Daily prices, weather & pest alerts.',
+    body:  'Regional price benchmarks updated daily. 7-day forecasts. Critical alerts delivered via SMS and USSD to offline farmers in all 16 regions.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
       </svg>
     ),
-    accent: 'var(--sector-fisheries)',
-    bg:     'var(--sector-fisheries-bg)',
   },
   {
-    href:   '/agro-inputs',
-    tag:    'Agro Inputs',
-    title:  'Seeds & fertilizers on credit',
-    body:   'Buy quality inputs now, pay after harvest. BNPL credit tiers up to GHS 50,000 anchored to your AgroScore.',
+    href:  '/agro-inputs',
+    label: 'Agro Inputs',
+    title: 'Seeds & fertilizers. Pay after harvest.',
+    body:  'BNPL credit tiers up to GHS 50,000 anchored to your AgroScore. Certified inputs from verified dealers. Repay when your crop is sold.',
     icon: (
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-           strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2a9 9 0 0 1 9 9c0 4-2.5 7-5 9l-4 2-4-2c-2.5-2-5-5-5-9a9 9 0 0 1 9-9z"/>
-        <path d="M12 7v5l3 3"/>
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22V12M12 12C12 7 8 4 4 4c0 4 3 8 8 8zM12 12c0-5 4-8 8-8 0 4-3 8-8 8"/>
       </svg>
     ),
-    accent: 'var(--sector-inputs)',
-    bg:     'var(--sector-inputs-bg)',
   },
 ]
 
 const HOW = [
   {
     step: '01',
-    title: 'Register & Verify',
-    body:  'Sign up in minutes. A certified field agent verifies your farm via GPS — boosting your AgroScore and unlocking escrow trading.',
+    title: 'Register & Get Verified',
+    body: 'Sign up in minutes. A certified field agent verifies your farm via GPS — boosting your AgroScore and unlocking escrow trading.',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    ),
   },
   {
     step: '02',
     title: 'List or Browse',
-    body:  'Farmers list produce and pledge contracts. Buyers browse verified listings filtered by region, sector, and price. Dealers manage inventory.',
+    body: 'Farmers list produce and pledge contracts. Buyers browse verified listings by region, sector, and price. Dealers manage inventory and bulk orders.',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+    ),
   },
   {
     step: '03',
     title: 'Trade with Confidence',
-    body:  'Every payment is held in escrow and released only on delivery confirmation. BNPL credit lets farmers access inputs before the harvest.',
+    body: 'Every payment is held in escrow and released only on delivery confirmation. BNPL credit lets farmers access inputs before the harvest.',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    ),
   },
 ]
 
@@ -141,188 +154,269 @@ export default async function LandingPage() {
   return (
     <main className="overflow-x-hidden">
 
-      {/* ═══════════════════════════════════════════════════════════════
-          HERO
-      ═══════════════════════════════════════════════════════════════ */}
+      {/* ── HERO ──────────────────────────────────────────────────── */}
       <section
-        className="relative min-h-[92vh] grid lg:grid-cols-[58%_42%]"
-        style={{ backgroundColor: 'var(--forest)' }}
+        className="relative min-h-[92vh] grid lg:grid-cols-[54%_46%] pt-16"
+        style={{ backgroundColor: 'var(--cream)' }}
       >
         {/* Left — copy */}
-        <div className="flex items-center px-8 sm:px-12 lg:px-16 py-24 lg:py-0">
-          <div className="w-full max-w-xl">
+        <div className="flex items-center px-8 sm:px-12 lg:px-16 py-20 lg:py-0">
+          <div className="w-full max-w-2xl">
 
             <FadeIn>
-              <span
-                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest
-                           mb-10 px-3 py-1.5 rounded-full"
-                style={{ backgroundColor: 'rgba(255,255,255,0.10)', color: 'var(--lime)' }}
-              >
-                <svg viewBox="0 0 16 16" width="10" height="10" fill="currentColor">
-                  <circle cx="8" cy="8" r="4"/>
-                </svg>
-                From Seed to Sale · All 16 Regions
-              </span>
+              <div className="inline-flex items-center gap-2 mb-10">
+                <span
+                  className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest
+                             px-3 py-1.5 rounded-full"
+                  style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}
+                >
+                  <svg viewBox="0 0 10 10" width="7" height="7" fill="currentColor">
+                    <circle cx="5" cy="5" r="5"/>
+                  </svg>
+                  Live · All 16 Regions
+                </span>
+              </div>
             </FadeIn>
 
-            <FadeUp delay={0.08}>
+            <FadeUp delay={0.06}>
               <h1
-                className="font-display font-extrabold text-white leading-[1.05] tracking-tight mb-6"
-                style={{ fontSize: 'clamp(2.4rem, 5vw, 3.4rem)' }}
+                className="font-bold leading-[1.04] mb-6"
+                style={{
+                  fontSize: 'clamp(2.8rem, 6vw, 5rem)',
+                  letterSpacing: '-0.055em',
+                  color: 'var(--forest)',
+                }}
               >
                 Ghana&apos;s{' '}
-                <em className="not-italic" style={{ color: 'var(--lime)' }}>
-                  Agricultural<br />
-                  Operating System.
+                <em
+                  className="not-italic"
+                  style={{
+                    color: 'var(--lime)',
+                    WebkitTextStroke: '1.5px var(--forest)',
+                  }}
+                >
+                  Agricultural
                 </em>
+                <br />
+                Operating System.
               </h1>
             </FadeUp>
 
-            <FadeUp delay={0.18}>
-              <p className="text-lg leading-relaxed mb-10 max-w-lg" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            <FadeUp delay={0.14}>
+              <p
+                className="text-lg leading-relaxed mb-10 max-w-lg"
+                style={{ color: 'rgba(25,60,30,0.62)' }}
+              >
                 The three-sided marketplace connecting farmers, dealers, and buyers with
                 escrow-backed payments, harvest pledges, BNPL credit, and real-time
                 market intelligence.
               </p>
             </FadeUp>
 
-            <FadeUp delay={0.26}>
-              <div className="flex flex-col sm:flex-row gap-3 mb-14">
-                <Link href="/login"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-4 font-bold text-sm
-                             rounded-xl transition-all duration-150 active:scale-[0.98]"
-                  style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
+            <FadeUp delay={0.22}>
+              <div className="flex flex-wrap gap-3 mb-14">
+                <Link
+                  href="/login"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-sm rounded-full
+                             transition-all hover:opacity-90 active:scale-[0.97]"
+                  style={{ backgroundColor: 'var(--forest)', color: 'white' }}
+                >
                   Get Started Free
-                  <svg viewBox="0 0 16 16" width="14" height="14" fill="none"
+                  <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 8h10M9 4l4 4-4 4"/>
                   </svg>
                 </Link>
-                <Link href="/marketplace"
-                  className="inline-flex items-center justify-center px-7 py-4 font-bold text-sm
-                             rounded-xl transition-all duration-150"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.10)', color: 'white' }}>
+                <Link
+                  href="/marketplace"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 font-bold text-sm rounded-full
+                             transition-all hover:opacity-80"
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: 'var(--forest)',
+                    border: '1.5px solid var(--forest)',
+                  }}
+                >
                   Browse Marketplace
                 </Link>
               </div>
             </FadeUp>
 
-            {/* Metrics */}
-            <FadeIn delay={0.38}>
-              <div className="border-t pt-8" style={{ borderColor: 'rgba(255,255,255,0.12)' }}>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-0 gap-y-0">
-                  {METRICS.map((m, i) => (
-                    <div
-                      key={m.label}
-                      className={[
-                        'pr-4 pb-6 lg:pb-0',
-                        i % 2 === 1 ? 'pl-4 border-l' : '',
-                        i >= 2 ? 'pt-6 border-t lg:border-t-0 lg:pt-0' : '',
-                        i > 0 ? 'lg:pl-4 lg:border-l' : '',
-                      ].filter(Boolean).join(' ')}
-                      style={{ borderColor: 'rgba(255,255,255,0.10)' }}
-                    >
-                      <p className="font-mono font-extrabold text-2xl leading-none"
-                         style={{ color: 'var(--lime)' }}>
-                        {m.value}
-                      </p>
-                      <p className="text-[11px] font-semibold uppercase tracking-widest mt-2 leading-snug"
-                         style={{ color: 'rgba(255,255,255,0.55)' }}>
-                        {m.label}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+            {/* Horizontal stat row */}
+            <FadeIn delay={0.34}>
+              <div
+                className="grid grid-cols-2 sm:grid-cols-4 gap-0 rounded-2xl overflow-hidden"
+                style={{ border: '1.5px solid rgba(25,60,30,0.12)', backgroundColor: 'white' }}
+              >
+                {STATS.map((s, i) => (
+                  <div
+                    key={s.label}
+                    className="px-5 py-4"
+                    style={{ borderRight: i < 3 ? '1.5px solid rgba(25,60,30,0.10)' : 'none' }}
+                  >
+                    <p className="font-mono font-extrabold text-xl leading-none"
+                       style={{ color: 'var(--forest)' }}>
+                      {s.value}
+                    </p>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest mt-1.5 leading-snug"
+                       style={{ color: 'rgba(25,60,30,0.45)' }}>
+                      {s.label}
+                    </p>
+                  </div>
+                ))}
               </div>
             </FadeIn>
           </div>
         </div>
 
         {/* Right — hero image */}
-        <div className="relative hidden lg:flex items-center justify-center px-8 py-16">
-          <FloatUp className="relative w-full h-full max-h-[76vh]">
-            <div className="relative w-full h-full rounded-3xl overflow-hidden"
-                 style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.45)' }}>
-              <Image
-                src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=900&q=85&fit=crop"
-                alt="Premium West African agricultural produce"
-                fill priority sizes="42vw"
-                className="object-cover object-center"
-                draggable={false}
-              />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,34,16,0.4) 0%, transparent 60%)' }} />
-              {/* Floating stat card */}
+        <div className="relative hidden lg:flex items-stretch">
+          <div className="relative w-full h-full">
+            <Image
+              src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=1000&q=90&fit=crop"
+              alt="Premium West African agricultural produce"
+              fill priority sizes="46vw"
+              className="object-cover object-center"
+              draggable={false}
+            />
+            <div
+              className="absolute inset-0"
+              style={{ background: 'linear-gradient(to right, var(--cream) 0%, transparent 18%)' }}
+            />
+
+            {/* Floating card — top left of image */}
+            <FloatUp className="absolute top-16 left-8 z-10">
               <div
-                className="absolute bottom-6 left-6 right-6 rounded-2xl p-4"
-                style={{ backgroundColor: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.18)' }}
+                className="rounded-2xl px-5 py-4 min-w-[180px]"
+                style={{
+                  backgroundColor: 'white',
+                  boxShadow: '0 8px 32px rgba(10,34,16,0.18)',
+                  border: '1px solid rgba(10,34,16,0.08)',
+                }}
               >
-                <p className="text-white font-bold text-sm">Today&apos;s Listings</p>
-                <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                  18,500+ verified produce listings updated daily
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center"
+                       style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
+                    <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor"
+                         strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 8h10M9 4l4 4-4 4"/>
+                    </svg>
+                  </div>
+                  <p className="text-[11px] font-bold uppercase tracking-widest"
+                     style={{ color: 'rgba(10,34,16,0.45)' }}>
+                    Live Listings
+                  </p>
+                </div>
+                <p className="font-mono font-extrabold text-2xl leading-none"
+                   style={{ color: 'var(--forest)' }}>
+                  18,500+
+                </p>
+                <p className="text-[11px] mt-1" style={{ color: 'rgba(10,34,16,0.50)' }}>
+                  verified produce today
+                </p>
+              </div>
+            </FloatUp>
+
+            {/* Floating card — bottom right of image */}
+            <div className="absolute bottom-16 right-8 z-10">
+              <div
+                className="rounded-2xl px-5 py-4 min-w-[200px]"
+                style={{
+                  backgroundColor: 'var(--forest)',
+                  boxShadow: '0 8px 32px rgba(10,34,16,0.35)',
+                }}
+              >
+                <p className="text-[11px] font-bold uppercase tracking-widest mb-2"
+                   style={{ color: 'rgba(255,255,255,0.45)' }}>
+                  In Escrow
+                </p>
+                <p className="font-mono font-extrabold text-2xl leading-none"
+                   style={{ color: 'var(--lime)' }}>
+                  GHS 4.2M
+                </p>
+                <p className="text-[11px] mt-1" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  secured this season
                 </p>
               </div>
             </div>
-          </FloatUp>
+          </div>
         </div>
 
         {/* Mobile hero image */}
-        <div className="lg:hidden relative h-64 sm:h-80 w-full">
+        <div className="lg:hidden relative h-72 w-full">
           <Image
             src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=900&q=85&fit=crop"
             alt="West African agricultural production"
             fill priority sizes="100vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,34,16,0.45) 0%, transparent 60%)' }} />
+          <div className="absolute inset-0"
+               style={{ background: 'linear-gradient(to top, var(--cream) 0%, transparent 50%)' }} />
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          4 PLATFORM PILLARS
-      ═══════════════════════════════════════════════════════════════ */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: 'var(--cream)' }}>
+      {/* ── PLATFORM FEATURES ─────────────────────────────────────── */}
+      <section className="py-24 lg:py-32" style={{ backgroundColor: 'white' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <FadeUp className="mb-12">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--forest)' }}>
+
+          <FadeUp className="max-w-xl mb-16">
+            <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
+               style={{ color: 'var(--lime-dark, hsl(86,55%,40%))' }}>
               The Platform
             </p>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold max-w-xl leading-snug"
-                style={{ color: 'var(--forest)' }}>
-              Four systems, one platform.
+            <h2
+              className="font-bold leading-[1.08]"
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                letterSpacing: '-0.04em',
+                color: 'var(--forest)',
+              }}
+            >
+              Four systems.<br />One platform.
             </h2>
           </FadeUp>
 
-          <StaggerGrid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5" stagger={0.09}>
-            {PILLARS.map(p => (
-              <StaggerItem key={p.href}>
+          <StaggerGrid className="grid md:grid-cols-2 gap-4" stagger={0.08}>
+            {FEATURES.map((f, i) => (
+              <StaggerItem key={f.href}>
                 <Card3D className="h-full">
-                  <Link href={p.href}
-                    className="group flex flex-col h-full rounded-2xl p-6 card-lift"
-                    style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)' }}
+                  <Link
+                    href={f.href}
+                    className="group flex items-start gap-5 p-7 rounded-2xl h-full transition-shadow"
+                    style={{
+                      backgroundColor: i % 2 === 0 ? 'var(--cream)' : 'white',
+                      border: '1.5px solid rgba(25,60,30,0.10)',
+                    }}
                   >
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 flex-shrink-0
-                                    transition-transform duration-200 group-hover:scale-110"
-                         style={{ backgroundColor: p.bg, color: p.accent }}>
-                      {p.icon}
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0
+                                 mt-0.5 transition-transform duration-200 group-hover:scale-110"
+                      style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}
+                    >
+                      {f.icon}
                     </div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1.5"
-                       style={{ color: p.accent }}>
-                      {p.tag}
-                    </p>
-                    <h3 className="font-bold text-base mb-2 leading-snug"
-                        style={{ color: 'var(--forest)' }}>
-                      {p.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed flex-1" style={{ color: 'var(--muted-foreground)' }}>
-                      {p.body}
-                    </p>
-                    <div className="flex items-center gap-1 mt-4 text-xs font-bold"
-                         style={{ color: 'var(--forest)' }}>
-                      Learn more
-                      <svg viewBox="0 0 16 16" width="12" height="12" fill="none"
-                           stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 8h10M9 4l4 4-4 4"/>
-                      </svg>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-widest mb-1.5"
+                         style={{ color: 'rgba(25,60,30,0.40)' }}>
+                        {f.label}
+                      </p>
+                      <h3
+                        className="font-bold text-base leading-snug mb-2"
+                        style={{ color: 'var(--forest)', letterSpacing: '-0.02em' }}
+                      >
+                        {f.title}
+                      </h3>
+                      <p className="text-sm leading-relaxed" style={{ color: 'rgba(25,60,30,0.60)' }}>
+                        {f.body}
+                      </p>
+                      <div className="flex items-center gap-1 mt-4 text-xs font-bold"
+                           style={{ color: 'var(--forest)' }}>
+                        Explore
+                        <svg viewBox="0 0 16 16" width="11" height="11" fill="none"
+                             stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 8h10M9 4l4 4-4 4"/>
+                        </svg>
+                      </div>
                     </div>
                   </Link>
                 </Card3D>
@@ -332,29 +426,37 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          LIVE LISTINGS PREVIEW
-      ═══════════════════════════════════════════════════════════════ */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: 'white' }}>
+      {/* ── LIVE LISTINGS ─────────────────────────────────────────── */}
+      <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--forest)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid lg:grid-cols-[400px_1fr] gap-12 items-center">
+          <div className="grid lg:grid-cols-[380px_1fr] gap-14 items-start">
+
             <SlideLeft>
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest mb-4"
-                   style={{ color: 'var(--forest)' }}>
+                <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
+                   style={{ color: 'var(--lime)' }}>
                   Live on the platform
                 </p>
-                <h2 className="font-display text-3xl sm:text-4xl font-extrabold leading-snug mb-5"
-                    style={{ color: 'var(--forest)' }}>
+                <h2
+                  className="font-bold text-white leading-[1.08] mb-5"
+                  style={{
+                    fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+                    letterSpacing: '-0.04em',
+                  }}
+                >
                   Verified produce, priced at the farm gate.
                 </h2>
-                <p className="text-base leading-relaxed mb-8" style={{ color: 'var(--muted-foreground)' }}>
-                  Every listing is field-verified. Prices are set by farmers — no middlemen,
-                  no hidden markups. Escrow holds payment until you confirm delivery.
+                <p className="text-sm leading-relaxed mb-8"
+                   style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  Every listing is field-verified. Prices set by farmers —
+                  no middlemen, no markups. Escrow holds payment until you confirm delivery.
                 </p>
-                <Link href="/marketplace"
-                  className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-xl transition-colors"
-                  style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
+                <Link
+                  href="/marketplace"
+                  className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full
+                             transition-all hover:opacity-90"
+                  style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}
+                >
                   Browse All Listings
                   <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -373,9 +475,9 @@ export default async function LandingPage() {
                       <StaggerItem key={listing.id}>
                         <Card3D>
                           <Link href={`/produce/${listing.slug}`}
-                            className="group block rounded-2xl overflow-hidden card-lift"
-                            style={{ border: '1px solid var(--border)', backgroundColor: 'white' }}>
-                            <div className="relative h-36 overflow-hidden">
+                            className="group block rounded-2xl overflow-hidden"
+                            style={{ backgroundColor: 'white' }}>
+                            <div className="relative h-40 overflow-hidden">
                               <Image src={photo} alt={listing.title} fill
                                 sizes="200px"
                                 className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
@@ -384,26 +486,25 @@ export default async function LandingPage() {
                                 <span
                                   className="text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
                                   style={{
-                                    backgroundColor: 'rgba(255,255,255,0.90)',
-                                    backdropFilter: 'blur(4px)',
-                                    color: 'var(--forest)',
+                                    backgroundColor: 'var(--forest)',
+                                    color: 'var(--lime)',
                                   }}
                                 >
                                   {listing.category.name}
                                 </span>
                               </div>
                             </div>
-                            <div className="p-3.5">
+                            <div className="p-4">
                               <p className="font-bold text-sm leading-snug line-clamp-2 mb-1"
                                  style={{ color: 'var(--forest)' }}>
                                 {listing.title}
                               </p>
-                              <p className="text-[11px] mb-2" style={{ color: 'var(--muted-foreground)' }}>
+                              <p className="text-[11px] mb-2.5" style={{ color: 'rgba(25,60,30,0.50)' }}>
                                 {listing.region?.name ?? 'Ghana'}
                               </p>
                               <p className="font-mono font-extrabold text-base" style={{ color: 'var(--forest)' }}>
                                 GHS {listing.pricePerUnit.toFixed(2)}
-                                <span className="text-xs font-normal ml-1" style={{ color: 'var(--muted-foreground)' }}>
+                                <span className="text-xs font-normal ml-1" style={{ color: 'rgba(25,60,30,0.45)' }}>
                                   / {listing.unit.symbol}
                                 </span>
                               </p>
@@ -416,10 +517,8 @@ export default async function LandingPage() {
                 </StaggerGrid>
               ) : (
                 <FadeUp>
-                  <div
-                    className="rounded-3xl p-10 text-center"
-                    style={{ backgroundColor: 'var(--cream)', border: '1px solid var(--border)' }}
-                  >
+                  <div className="rounded-3xl p-10 text-center"
+                       style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}>
                     <div className="w-14 h-14 rounded-2xl mx-auto mb-5 flex items-center justify-center"
                          style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
                       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
@@ -427,15 +526,17 @@ export default async function LandingPage() {
                         <path d="M12 5v14M5 12h14"/>
                       </svg>
                     </div>
-                    <h3 className="font-display text-xl font-extrabold mb-2" style={{ color: 'var(--forest)' }}>
+                    <h3 className="font-bold text-xl text-white mb-2"
+                        style={{ letterSpacing: '-0.03em' }}>
                       Be the first to list.
                     </h3>
-                    <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--muted-foreground)' }}>
+                    <p className="text-sm leading-relaxed mb-6"
+                       style={{ color: 'rgba(255,255,255,0.55)' }}>
                       The marketplace is open. List your produce, inputs, or harvest pledge today.
                     </p>
                     <Link href="/login"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors"
-                      style={{ backgroundColor: 'var(--forest)', color: 'white' }}>
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold"
+                      style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
                       Create a Listing
                     </Link>
                   </div>
@@ -446,79 +547,104 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          HOW IT WORKS (dark)
-      ═══════════════════════════════════════════════════════════════ */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: 'var(--forest)' }}>
+      {/* ── HOW IT WORKS ──────────────────────────────────────────── */}
+      <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <FadeUp className="text-center mb-14 max-w-2xl mx-auto">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--lime)' }}>
+
+          <FadeUp className="text-center mb-16 max-w-xl mx-auto">
+            <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
+               style={{ color: 'rgba(25,60,30,0.40)' }}>
               How it works
             </p>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white leading-snug">
+            <h2
+              className="font-bold leading-[1.08]"
+              style={{
+                fontSize: 'clamp(1.9rem, 3.5vw, 2.8rem)',
+                letterSpacing: '-0.04em',
+                color: 'var(--forest)',
+              }}
+            >
               Three steps from sign-up to trade.
             </h2>
           </FadeUp>
 
-          <StaggerGrid className="grid md:grid-cols-3 gap-6" stagger={0.12}>
+          <div className="grid md:grid-cols-3 gap-5">
             {HOW.map((h, i) => (
-              <StaggerItem key={h.step}>
-                <Card3D className="h-full">
-                  <div
-                    className="rounded-3xl p-8 h-full flex flex-col transition-colors duration-200"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)' }}
-                  >
-                    <p className="font-mono text-xs font-bold mb-5" style={{ color: 'rgba(136,200,50,0.55)' }}>
+              <FadeUp key={h.step} delay={i * 0.10}>
+                <div
+                  className="relative rounded-2xl p-7 h-full"
+                  style={{ backgroundColor: 'white', border: '1.5px solid rgba(25,60,30,0.10)' }}
+                >
+                  <div className="flex items-start gap-4 mb-5">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: 'var(--forest)', color: 'var(--lime)' }}
+                    >
+                      {h.icon}
+                    </div>
+                    <p
+                      className="font-mono font-extrabold text-4xl leading-none"
+                      style={{ color: 'rgba(25,60,30,0.08)' }}
+                    >
                       {h.step}
                     </p>
-                    {/* Step connector line */}
-                    {i < HOW.length - 1 && (
-                      <div className="hidden md:block absolute right-0 top-1/2 w-6 h-px"
-                           style={{ backgroundColor: 'rgba(255,255,255,0.12)' }} />
-                    )}
-                    <h3 className="text-white font-bold text-lg mb-3">{h.title}</h3>
-                    <p className="text-sm leading-relaxed flex-1"
-                       style={{ color: 'rgba(255,255,255,0.55)' }}>
-                      {h.body}
-                    </p>
                   </div>
-                </Card3D>
-              </StaggerItem>
+                  <h3
+                    className="font-bold text-base mb-2"
+                    style={{ color: 'var(--forest)', letterSpacing: '-0.02em' }}
+                  >
+                    {h.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(25,60,30,0.60)' }}>
+                    {h.body}
+                  </p>
+                </div>
+              </FadeUp>
             ))}
-          </StaggerGrid>
+          </div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          BOTTOM CTA
-      ═══════════════════════════════════════════════════════════════ */}
-      <section className="relative py-24 overflow-hidden" style={{ backgroundColor: 'var(--forest)' }}>
+      {/* ── FINAL CTA ─────────────────────────────────────────────── */}
+      <section className="relative py-32 overflow-hidden" style={{ backgroundColor: 'var(--forest)' }}>
         <Image
           src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80&fit=crop"
           alt="" fill aria-hidden="true"
-          className="object-cover"
+          className="object-cover opacity-20"
           sizes="100vw"
         />
-        <div className="absolute inset-0" style={{ backgroundColor: 'rgba(10,34,16,0.82)' }} />
 
         <FadeUp className="relative z-10 max-w-2xl mx-auto text-center px-4">
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-5">
-            Ready to trade with confidence?
+          <h2
+            className="font-bold text-white leading-[1.06] mb-5"
+            style={{
+              fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+              letterSpacing: '-0.05em',
+            }}
+          >
+            Ready to trade with{' '}
+            <em className="not-italic" style={{ color: 'var(--lime)' }}>
+              confidence?
+            </em>
           </h2>
-          <p className="text-lg mb-10 leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
+          <p className="text-lg mb-10 leading-relaxed" style={{ color: 'rgba(255,255,255,0.60)' }}>
             Join 24,000+ farmers, dealers, and buyers across Ghana.
-            Escrow-protected payments. Field-verified listings. BNPL credit every season.
+            Escrow-protected. Field-verified. BNPL credit every season.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/login"
-              className="px-8 py-4 font-bold text-sm rounded-2xl transition-colors"
+              className="px-8 py-4 font-bold text-sm rounded-full transition-all hover:opacity-90"
               style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}>
               Create Your Account
             </Link>
             <Link href="/about"
-              className="px-8 py-4 font-bold text-sm rounded-2xl transition-colors"
-              style={{ backgroundColor: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.18)' }}>
-              Learn More About Us
+              className="px-8 py-4 font-bold text-sm rounded-full transition-all hover:opacity-80"
+              style={{
+                backgroundColor: 'transparent',
+                color: 'white',
+                border: '1.5px solid rgba(255,255,255,0.30)',
+              }}>
+              Learn More
             </Link>
           </div>
         </FadeUp>
