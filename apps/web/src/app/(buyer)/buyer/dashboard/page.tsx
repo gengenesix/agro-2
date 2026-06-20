@@ -48,42 +48,10 @@ export default function BuyerDashboardPage() {
   )
 
   const ACTIONS = [
-    {
-      href:  '/buyer/marketplace',
-      Icon:  MarketIcon,
-      label: 'Browse Produce',
-      sub:   'Find fresh listings',
-      iconBg:    'var(--sector-crops-bg)',
-      iconColor: 'var(--sector-crops)',
-      accent:    'var(--sector-crops)',
-    },
-    {
-      href:  '/buyer/pledges',
-      Icon:  PledgeIcon,
-      label: 'Harvest Pledges',
-      sub:   'Reserve future harvests',
-      iconBg:    'var(--harvest-gold-bg)',
-      iconColor: 'var(--harvest-gold)',
-      accent:    'var(--harvest-gold)',
-    },
-    {
-      href:  '/buyer/orders',
-      Icon:  OrdersIcon,
-      label: 'My Orders',
-      sub:   `${stats?.activeOrders ?? 0} active`,
-      iconBg:    'var(--sector-fisheries-bg)',
-      iconColor: 'var(--sector-fisheries)',
-      accent:    'var(--sector-fisheries)',
-    },
-    {
-      href:  '/buyer/alerts',
-      Icon:  BellIcon,
-      label: 'Price Alerts',
-      sub:   'Get notified on drops',
-      iconBg:    'var(--sector-inputs-bg)',
-      iconColor: 'var(--sector-inputs)',
-      accent:    'var(--sector-inputs)',
-    },
+    { href: '/buyer/marketplace', Icon: MarketIcon, label: 'Browse Produce',  sub: 'Find fresh listings',        primary: true  },
+    { href: '/buyer/pledges',     Icon: PledgeIcon, label: 'Harvest Pledges', sub: 'Reserve future harvests',    primary: false },
+    { href: '/buyer/orders',      Icon: OrdersIcon, label: 'My Orders',       sub: `${stats?.activeOrders ?? 0} active`, primary: false },
+    { href: '/buyer/alerts',      Icon: BellIcon,   label: 'Price Alerts',    sub: 'Get notified on drops',      primary: false },
   ]
 
   return (
@@ -105,11 +73,7 @@ export default function BuyerDashboardPage() {
               </h1>
               <p className="text-muted-foreground text-xs mt-0.5">{today}</p>
             </div>
-            <div
-              className="w-11 h-11 flex-shrink-0 items-center justify-center bg-forest
-                         text-white font-display font-bold text-sm hidden sm:flex"
-              style={{ clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))' }}
-            >
+            <div className="hidden h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-forest font-bold text-sm text-white sm:flex">
               {initials}
             </div>
           </div>
@@ -122,41 +86,17 @@ export default function BuyerDashboardPage() {
         {stats && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              {
-                label:  'Total Orders',
-                value:  stats.totalOrders ?? 0,
-                mono:   false,
-                top:    'var(--sector-fisheries)',
-              },
-              {
-                label:  'Active Pledges',
-                value:  stats.activePledges ?? 0,
-                mono:   false,
-                top:    'var(--harvest-gold)',
-              },
-              {
-                label:  'Total Spent',
-                value:  formatGHS(stats.totalSpent ?? 0),
-                mono:   true,
-                top:    'var(--sector-crops)',
-              },
-              {
-                label:  'Saved Searches',
-                value:  stats.savedSearches ?? 0,
-                mono:   false,
-                top:    'var(--sector-inputs)',
-              },
+              { label: 'Total Orders',   value: stats.totalOrders ?? 0,            mono: false },
+              { label: 'Active Pledges', value: stats.activePledges ?? 0,          mono: false },
+              { label: 'Total Spent',    value: formatGHS(stats.totalSpent ?? 0),  mono: true  },
+              { label: 'Saved Searches', value: stats.savedSearches ?? 0,          mono: false },
             ].map(s => (
-              <div key={s.label}
-                className="bg-white rounded-2xl border border-border overflow-hidden">
-                <div className="h-[3px]" style={{ backgroundColor: s.top }} />
-                <div className="p-4">
-                  <p className="text-[11px] font-medium text-muted-foreground">{s.label}</p>
-                  <p className={`font-extrabold text-forest mt-1.5 leading-none
-                                 ${s.mono ? 'font-mono text-base' : 'text-2xl'}`}>
-                    {s.value}
-                  </p>
-                </div>
+              <div key={s.label} className="card-surface p-4">
+                <p className="label-eyebrow text-muted-foreground">{s.label}</p>
+                <p className={`font-extrabold text-forest mt-2 leading-none
+                               ${s.mono ? 'font-mono text-xl' : 'text-2xl font-mono'}`}>
+                  {s.value}
+                </p>
               </div>
             ))}
           </div>
@@ -171,25 +111,17 @@ export default function BuyerDashboardPage() {
             Quick Actions
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {ACTIONS.map(({ href, Icon, label, sub, iconBg, iconColor, accent }) => (
+            {ACTIONS.map(({ href, Icon, label, sub, primary }) => (
               <Link
                 key={href}
                 href={href}
-                className="bg-white rounded-2xl border border-border p-4 overflow-hidden relative
-                           hover:shadow-sm transition-shadow group"
+                className="card-surface card-lift group p-4"
               >
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-[3px]"
-                  style={{ backgroundColor: accent }}
-                />
                 <span
-                  className="mb-3 w-10 h-10 flex items-center justify-center"
-                  style={{
-                    backgroundColor: iconBg,
-                    clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
-                  }}
+                  className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl transition-colors
+                    ${primary ? 'bg-lime text-forest' : 'bg-cream-dark text-forest group-hover:bg-lime'}`}
                 >
-                  <Icon size={19} style={{ color: iconColor }} />
+                  <Icon size={19} />
                 </span>
                 <p className="font-bold text-forest text-sm leading-tight">{label}</p>
                 <p className="text-[11px] text-muted-foreground mt-0.5">{sub}</p>
@@ -293,7 +225,7 @@ export default function BuyerDashboardPage() {
                     </p>
                     <span
                       className="text-[10px] font-semibold capitalize mt-0.5 inline-block
-                                 px-1.5 py-0.5 rounded-full bg-sector-crops-bg text-sector-crops"
+                                 px-2 py-0.5 rounded-full bg-cream-dark text-forest"
                     >
                       {(order as any).trackingStatus}
                     </span>
@@ -306,32 +238,17 @@ export default function BuyerDashboardPage() {
 
         {/* ── Empty state ──────────────────────────────────────── */}
         {pledges.length === 0 && orders.length === 0 && (
-          <div className="bg-white rounded-2xl border border-border p-8 text-center">
-            <div
-              className="w-14 h-14 mx-auto mb-4 flex items-center justify-center"
-              style={{
-                backgroundColor: 'var(--sector-crops-bg)',
-                clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
-              }}
-            >
-              <MarketIcon size={24} style={{ color: 'var(--sector-crops)' }} />
+          <div className="card-surface p-8 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-cream-dark text-forest">
+              <MarketIcon size={24} />
             </div>
-            <p className="font-display font-bold text-forest text-base mb-1"
-               style={{ letterSpacing: '-0.02em' }}>
+            <p className="font-display font-bold text-forest text-base mb-1 tracking-tight">
               Start sourcing produce
             </p>
             <p className="text-muted-foreground text-sm mb-4">
               Browse verified farm listings or reserve a future harvest.
             </p>
-            <Link
-              href="/buyer/marketplace"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-white text-sm font-bold
-                         transition-all active:scale-[0.98] hover:opacity-90"
-              style={{
-                backgroundColor: 'var(--forest)',
-                clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
-              }}
-            >
+            <Link href="/buyer/marketplace" className="btn btn-forest btn-sm">
               Browse Marketplace
             </Link>
           </div>

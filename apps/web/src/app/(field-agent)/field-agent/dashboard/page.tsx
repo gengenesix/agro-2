@@ -77,15 +77,7 @@ export default function FieldAgentDashboard() {
           </h1>
           <p className="text-muted-foreground text-xs mt-0.5">{today}</p>
         </div>
-        <Link
-          href="/field-agent/register-farmer"
-          className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 text-white text-xs font-bold
-                     transition-all hover:opacity-90 active:scale-[0.97]"
-          style={{
-            backgroundColor: 'var(--forest)',
-            clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))',
-          }}
-        >
+        <Link href="/field-agent/register-farmer" className="btn btn-forest btn-sm flex-shrink-0">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5"
                strokeLinecap="round" strokeLinejoin="round" width="12" height="12">
             <path d="M8 2v12M2 8h12" />
@@ -98,53 +90,23 @@ export default function FieldAgentDashboard() {
       {stats && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            {
-              label:   'Total Verified',
-              value:   stats.totalVerified,
-              mono:    false,
-              top:     'var(--sector-crops)',
-              dark:    true,
-            },
-            {
-              label:   'This Month',
-              value:   stats.verifiedThisMonth,
-              mono:    false,
-              top:     'var(--lime)',
-              dark:    false,
-            },
-            {
-              label:   'Pending in Region',
-              value:   stats.pendingInRegion,
-              mono:    false,
-              top:     'var(--harvest-gold)',
-              dark:    false,
-            },
-            {
-              label:   'Wallet Balance',
-              value:   formatGHS(stats.walletBalance),
-              mono:    true,
-              top:     'var(--sector-fisheries)',
-              dark:    false,
-            },
+            { label: 'Total Verified',    value: stats.totalVerified,            mono: false, dark: true  },
+            { label: 'This Month',        value: stats.verifiedThisMonth,        mono: false, dark: false },
+            { label: 'Pending in Region', value: stats.pendingInRegion,          mono: false, dark: false },
+            { label: 'Wallet Balance',    value: formatGHS(stats.walletBalance),  mono: true,  dark: false },
           ].map(k => (
             <div
               key={k.label}
-              className="rounded-2xl border border-border overflow-hidden"
-              style={{ backgroundColor: k.dark ? 'var(--forest)' : 'white' }}
+              className={`rounded-2xl border p-4 ${k.dark ? 'border-transparent bg-forest' : 'card-surface'}`}
             >
-              <div className="h-[3px]" style={{ backgroundColor: k.top }} />
-              <div className="p-4">
-                <p className={`text-[11px] font-medium ${k.dark ? 'text-white/50' : 'text-muted-foreground'}`}>
-                  {k.label}
-                </p>
-                <p
-                  className={`font-extrabold leading-none mt-1.5
-                              ${k.mono ? 'font-mono text-base' : 'text-2xl'}
-                              ${k.dark ? 'text-white' : 'text-forest'}`}
-                >
-                  {k.value}
-                </p>
-              </div>
+              <p className={`label-eyebrow ${k.dark ? 'text-lime' : 'text-muted-foreground'}`}>
+                {k.label}
+              </p>
+              <p className={`font-extrabold font-mono leading-none mt-2
+                            ${k.mono ? 'text-xl' : 'text-2xl'}
+                            ${k.dark ? 'text-white' : 'text-forest'}`}>
+                {k.value}
+              </p>
             </div>
           ))}
         </div>
@@ -152,14 +114,7 @@ export default function FieldAgentDashboard() {
 
       {/* ── Earnings banner ────────────────────────────────────── */}
       {stats && stats.earningsThisMonth > 0 && (
-        <div
-          className="p-4 flex items-center justify-between gap-4 border-l-[3px]"
-          style={{
-            backgroundColor: 'var(--sector-crops-bg)',
-            borderLeftColor: 'var(--sector-crops)',
-            borderRadius: '1rem',
-          }}
-        >
+        <div className="flex items-center justify-between gap-4 rounded-2xl border-l-[3px] border-lime bg-cream-dark p-4">
           <div>
             <p className="text-xs font-bold text-forest">Earnings this month</p>
             <p className="text-[11px] text-muted-foreground mt-0.5">
@@ -181,13 +136,7 @@ export default function FieldAgentDashboard() {
           >
             Awaiting Verification
             {pending.length > 0 && (
-              <span
-                className="text-[10px] font-bold text-white px-2 py-0.5"
-                style={{
-                  backgroundColor: 'var(--harvest-gold)',
-                  clipPath: 'polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))',
-                }}
-              >
+              <span className="rounded-full bg-forest px-2 py-0.5 text-[10px] font-bold text-white">
                 {pending.length}
               </span>
             )}
@@ -204,17 +153,10 @@ export default function FieldAgentDashboard() {
         </div>
 
         {pending.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-border p-8 text-center">
-            <div
-              className="w-12 h-12 mx-auto mb-3 flex items-center justify-center"
-              style={{
-                backgroundColor: 'var(--sector-crops-bg)',
-                clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))',
-              }}
-            >
+          <div className="card-surface p-8 text-center">
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-cream-dark text-forest">
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.75"
-                   strokeLinecap="round" strokeLinejoin="round" width="20" height="20"
-                   style={{ color: 'var(--sector-crops)' }}>
+                   strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
                 <path d="M10 3.5C7 3.5 5 6 5 8.5c0 4 5 8 5 8s5-4 5-8c0-2.5-2-5-5-5Z" />
                 <circle cx="10" cy="8.5" r="1.5" />
               </svg>
@@ -239,11 +181,7 @@ export default function FieldAgentDashboard() {
                              transition-shadow overflow-hidden"
                 >
                   <div className="flex items-start gap-3">
-                    <div
-                      className="w-10 h-10 flex items-center justify-center flex-shrink-0
-                                 bg-forest text-white font-display font-bold text-sm"
-                      style={{ clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))' }}
-                    >
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-forest font-bold text-sm text-white">
                       {farmer.user.fullName.charAt(0).toUpperCase()}
                     </div>
 
@@ -256,7 +194,7 @@ export default function FieldAgentDashboard() {
                                        text-forest flex-shrink-0"
                             style={{
                               backgroundColor: 'var(--lime)',
-                              clipPath: 'polygon(0 0, calc(100% - 3px) 0, 100% 3px, 100% 100%, 3px 100%, 0 calc(100% - 3px))',
+                              borderRadius: '0.85rem',
                             }}
                           >
                             GPS
@@ -280,12 +218,7 @@ export default function FieldAgentDashboard() {
                   <div className="mt-3 flex gap-2">
                     <Link
                       href={`/field-agent/map?farmerId=${farmer.id}`}
-                      className="flex-1 py-2 text-white text-xs font-bold transition-colors
-                                 flex items-center justify-center gap-1.5"
-                      style={{
-                        backgroundColor: 'var(--forest)',
-                        clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
-                      }}
+                      className="btn btn-forest btn-sm flex-1"
                     >
                       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"
                            strokeLinecap="round" strokeLinejoin="round" width="13" height="13">
@@ -296,8 +229,7 @@ export default function FieldAgentDashboard() {
                     </Link>
                     <Link
                       href={`/field-agent/verify-farm/${farmer.userId}`}
-                      className="px-4 py-2 border border-border text-forest text-xs font-bold
-                                 rounded-xl hover:bg-cream transition-colors"
+                      className="btn btn-outline btn-sm"
                     >
                       Verify
                     </Link>

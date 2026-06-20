@@ -110,7 +110,7 @@ export default function AnimatedLanding({ featuredSection }: Props) {
         {/* Lime accent edge */}
         <div className="absolute top-0 right-0 bottom-0 w-1.5" style={{ backgroundColor: 'var(--lime)', opacity: 0.5 }} />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 py-20 lg:py-28">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 py-20 lg:py-16">
           <motion.div
             className="max-w-3xl"
             initial="hidden"
@@ -164,7 +164,7 @@ export default function AnimatedLanding({ featuredSection }: Props) {
                   style={{
                     backgroundColor: 'var(--lime)',
                     color: 'var(--forest)',
-                    clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+                    borderRadius: '0.85rem',
                   }}
                 >
                   Go to Dashboard
@@ -386,7 +386,7 @@ export default function AnimatedLanding({ featuredSection }: Props) {
                 style={{
                   backgroundColor: 'var(--lime)',
                   color: 'var(--forest)',
-                  clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+                  borderRadius: '0.85rem',
                 }}
               >
                 Go to Dashboard
@@ -399,7 +399,7 @@ export default function AnimatedLanding({ featuredSection }: Props) {
                 style={{
                   backgroundColor: 'var(--lime)',
                   color: 'var(--forest)',
-                  clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+                  borderRadius: '0.85rem',
                 }}
               >
                 Get Started Free

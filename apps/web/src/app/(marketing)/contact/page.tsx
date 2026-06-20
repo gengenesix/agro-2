@@ -85,7 +85,7 @@ export default function ContactPage() {
       </section>
 
       {/* ── Form + Offices ────────────────────────────────────────────────── */}
-      <section className="py-20 lg:py-28 bg-cream">
+      <section className="py-20 lg:py-16 bg-cream">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-5 gap-12">
 
@@ -184,7 +184,7 @@ export default function ContactPage() {
                                  disabled:opacity-50 flex items-center justify-center gap-2"
                       style={{
                         backgroundColor: 'var(--forest)',
-                        clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                        borderRadius: '0.85rem',
                       }}>
                       {status === 'sending' ? (
                         <>

@@ -20,7 +20,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                   className="w-9 h-9 flex items-center justify-center flex-shrink-0"
                   style={{
                     backgroundColor: 'var(--lime)',
-                    clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                    borderRadius: '0.85rem',
                   }}
                 >
                   <svg viewBox="0 0 24 24" width="15" height="15" fill="none">

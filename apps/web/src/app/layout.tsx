@@ -1,20 +1,13 @@
 import type { Metadata, Viewport } from 'next'
-import { Bricolage_Grotesque, DM_Sans, Geist_Mono } from 'next/font/google'
+import { Plus_Jakarta_Sans, Geist_Mono } from 'next/font/google'
 import { Toaster }     from 'sonner'
 import { AuthProvider } from '@/context/auth-context'
 import './globals.css'
 
-const bricolage = Bricolage_Grotesque({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets:  ['latin'],
-  variable: '--font-bricolage',
+  variable: '--font-plus-jakarta',
   weight:   ['400', '500', '600', '700', '800'],
-  display:  'swap',
-})
-
-const dmSans = DM_Sans({
-  subsets:  ['latin'],
-  variable: '--font-dm-sans',
-  weight:   ['400', '500', '600', '700'],
   display:  'swap',
 })
 
@@ -56,17 +49,18 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${dmSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${plusJakarta.variable} ${geistMono.variable}`}>
       <body className="font-sans antialiased bg-background text-foreground">
         <AuthProvider>
           {children}
         </AuthProvider>
         <Toaster
           position="top-right"
+          richColors
           toastOptions={{
             style: {
-              fontFamily:   'var(--font-dm-sans)',
-              borderRadius: '0.75rem',
+              fontFamily:   'var(--font-plus-jakarta)',
+              borderRadius: '1rem',
             },
           }}
         />

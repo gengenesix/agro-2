@@ -84,7 +84,7 @@ export default function AboutPage() {
     <main>
 
       {/* ── Mission hero ────────────────────────────────────────────────── */}
-      <section className="relative bg-forest py-24 lg:py-36 overflow-hidden">
+      <section className="relative bg-forest py-24 lg:py-24 overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1600&q=80&fit=crop"
           alt="Farmland at dusk"
@@ -126,7 +126,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Story ───────────────────────────────────────────────────────── */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -218,7 +218,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Pillars ─────────────────────────────────────────────────────── */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: 'var(--cream)' }}>
+      <section className="py-20 lg:py-16" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] mb-4"
@@ -252,7 +252,7 @@ export default function AboutPage() {
                   style={{
                     backgroundColor: 'rgba(25,60,30,0.06)',
                     color: 'var(--forest)',
-                    clipPath: 'polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))',
+                    borderRadius: '0.85rem',
                   }}
                 >
                   {p.icon}
@@ -272,7 +272,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Why Ghana First ─────────────────────────────────────────────── */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] mb-4"
@@ -356,7 +356,7 @@ export default function AboutPage() {
             style={{
               backgroundColor: 'var(--lime)',
               color: 'var(--forest)',
-              clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+              borderRadius: '0.85rem',
             }}
           >
             Get Started Free

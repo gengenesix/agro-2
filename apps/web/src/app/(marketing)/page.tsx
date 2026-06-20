@@ -87,7 +87,7 @@ export default function LandingPage() {
       </div>
 
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <section className="relative min-h-[94vh] flex items-center" style={{ backgroundColor: 'var(--forest)' }}>
+      <section className="relative min-h-[78vh] flex items-center" style={{ backgroundColor: 'var(--forest)' }}>
 
         {/* Photo overlay */}
         <div className="absolute inset-0">
@@ -103,22 +103,21 @@ export default function LandingPage() {
         <div className="absolute left-0 top-0 bottom-0 w-[3px] hidden lg:block"
              style={{ backgroundColor: 'var(--lime)', opacity: 0.55 }} />
 
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-8 sm:px-12 py-28">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-8 sm:px-12 py-16">
           <div className="grid lg:grid-cols-[1fr_420px] gap-16 items-center">
 
             {/* Left — headline + CTA */}
             <div>
               <FadeIn>
-                <div className="inline-flex items-center gap-3 mb-12">
+                <div className="inline-flex items-center gap-3 mb-8">
                   <span
-                    className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.18em] px-3 py-1.5"
+                    className="flex items-center gap-1.5 rounded-full label-eyebrow px-3 py-1.5"
                     style={{ backgroundColor: 'var(--lime)', color: 'var(--forest)' }}
                   >
                     <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--forest)' }} />
                     Live · Africa First
                   </span>
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.14em]"
-                        style={{ color: 'rgba(255,255,255,0.28)' }}>
+                  <span className="label-eyebrow" style={{ color: 'rgba(255,255,255,0.30)' }}>
                     Global Infrastructure
                   </span>
                 </div>
@@ -126,18 +125,17 @@ export default function LandingPage() {
 
               <FadeUp delay={0.04}>
                 <h1
-                  className="font-display font-bold text-white leading-[0.90] mb-8"
-                  style={{ fontSize: 'clamp(3.4rem, 8.5vw, 7rem)', letterSpacing: '-0.045em' }}
+                  className="font-display font-extrabold text-white leading-[0.92] mb-6"
+                  style={{ fontSize: 'clamp(2.9rem, 6.5vw, 5.25rem)', letterSpacing: '-0.04em' }}
                 >
                   Agricultural<br />
-                  <span style={{ color: 'var(--lime)' }}>Trade</span><br />
-                  Infrastructure.
+                  <span style={{ color: 'var(--lime)' }}>Trade</span> Infrastructure.
                 </h1>
               </FadeUp>
 
               <FadeUp delay={0.10}>
-                <p className="text-lg leading-relaxed mb-12 max-w-[38ch]"
-                   style={{ color: 'rgba(255,255,255,0.50)', fontWeight: 400 }}>
+                <p className="text-[17px] leading-relaxed mb-8 max-w-[42ch]"
+                   style={{ color: 'rgba(255,255,255,0.55)', fontWeight: 400 }}>
                   Escrow-backed payments. Harvest forward contracts.
                   Farmer credit without banks or collateral.
                 </p>
@@ -145,16 +143,7 @@ export default function LandingPage() {
 
               <FadeUp delay={0.16}>
                 <div className="flex flex-wrap gap-3">
-                  <Link
-                    href="/login"
-                    className="inline-flex items-center gap-3 px-8 py-4 font-bold text-sm
-                               transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                    style={{
-                      backgroundColor: 'var(--lime)',
-                      color: 'var(--forest)',
-                      clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))',
-                    }}
-                  >
+                  <Link href="/login" className="btn btn-lime btn-lg hover:scale-[1.02]">
                     Start Trading Free
                     <svg viewBox="0 0 16 16" width="13" height="13" fill="none"
                          stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -163,8 +152,7 @@ export default function LandingPage() {
                   </Link>
                   <Link
                     href="/marketplace"
-                    className="inline-flex items-center gap-3 px-8 py-4 font-bold text-sm text-white
-                               transition-all duration-200 hover:bg-white/[0.07]"
+                    className="btn btn-lg text-white hover:bg-white/[0.07]"
                     style={{ border: '1.5px solid rgba(255,255,255,0.18)' }}
                   >
                     Browse Marketplace
@@ -306,7 +294,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── PLATFORM SYSTEMS ─────────────────────────────────── */}
-      <section className="py-28 lg:py-36" style={{ backgroundColor: 'var(--cream)' }}>
+      <section className="py-16 lg:py-24" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="max-w-6xl mx-auto px-6 sm:px-8">
 
           <FadeUp className="mb-16">
@@ -328,10 +316,10 @@ export default function LandingPage() {
             <Card3D>
               <Link
                 href="/marketplace"
-                className="group relative flex flex-col justify-between p-10 sm:p-14 overflow-hidden h-full min-h-[420px]"
+                className="group relative flex flex-col justify-between p-6 sm:p-9 overflow-hidden h-full min-h-[300px]"
                 style={{
                   backgroundColor: 'var(--forest)',
-                  clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))',
+                  borderRadius: '1.25rem',
                 }}
               >
                 <div className="absolute inset-0 opacity-[0.07]">
@@ -345,7 +333,7 @@ export default function LandingPage() {
                       className="w-16 h-16 flex items-center justify-center flex-shrink-0"
                       style={{
                         backgroundColor: 'var(--lime)',
-                        clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+                        borderRadius: '0.85rem',
                       }}
                     >
                       {/* Hub-and-spoke network — marketplace connectivity */}
@@ -527,7 +515,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── WHO IT'S FOR ──────────────────────────────────────── */}
-      <section className="py-28 lg:py-36" style={{ backgroundColor: 'white' }}>
+      <section className="py-16 lg:py-24" style={{ backgroundColor: 'white' }}>
         <div className="max-w-6xl mx-auto px-6 sm:px-8">
 
           <FadeUp className="mb-16">
@@ -674,7 +662,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── TRUST INFRASTRUCTURE ─────────────────────────────── */}
-      <section className="py-28 lg:py-36" style={{ backgroundColor: 'var(--forest)' }}>
+      <section className="py-16 lg:py-24" style={{ backgroundColor: 'var(--forest)' }}>
         <div className="max-w-6xl mx-auto px-6 sm:px-8">
           <div className="grid lg:grid-cols-[1fr_1fr] gap-16 items-start">
 
@@ -701,7 +689,7 @@ export default function LandingPage() {
                 style={{
                   backgroundColor: 'var(--lime)',
                   color: 'var(--forest)',
-                  clipPath: 'polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px))',
+                  borderRadius: '1.25rem',
                 }}
               >
                 See All Features
@@ -766,7 +754,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── SAMPLE LISTINGS ───────────────────────────────────── */}
-      <section className="py-28 lg:py-36" style={{ backgroundColor: 'var(--cream)' }}>
+      <section className="py-16 lg:py-24" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="max-w-6xl mx-auto px-6 sm:px-8">
           <FadeUp className="flex items-end justify-between mb-14">
             <div>
@@ -860,7 +848,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── HOW IT WORKS ──────────────────────────────────────── */}
-      <section className="py-28 lg:py-36" style={{ backgroundColor: 'white' }}>
+      <section className="py-16 lg:py-24" style={{ backgroundColor: 'white' }}>
         <div className="max-w-6xl mx-auto px-6 sm:px-8">
           <FadeUp className="max-w-xl mb-16">
             <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-5"
@@ -945,7 +933,7 @@ export default function LandingPage() {
                       style={{
                         backgroundColor: 'var(--forest)',
                         color: 'var(--lime)',
-                        clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                        borderRadius: '0.85rem',
                       }}
                     >
                       {h.icon}
@@ -972,7 +960,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── FINAL CTA ──────────────────────────────────────────── */}
-      <section className="relative py-40 overflow-hidden" style={{ backgroundColor: '#060f08' }}>
+      <section className="relative py-24 overflow-hidden" style={{ backgroundColor: '#060f08' }}>
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1600&q=80&fit=crop"
@@ -1015,7 +1003,7 @@ export default function LandingPage() {
               style={{
                 backgroundColor: 'var(--lime)',
                 color: 'var(--forest)',
-                clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))',
+                borderRadius: '9999px',
               }}>
               Create Your Account
             </Link>

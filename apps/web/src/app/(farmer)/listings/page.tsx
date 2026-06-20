@@ -48,7 +48,7 @@ export default function MyListingsPage() {
                        transition-all hover:opacity-90 active:scale-[0.97]"
             style={{
               backgroundColor: 'var(--forest)',
-              clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))',
+              borderRadius: '0.85rem',
             }}
           >
             <PlusIcon size={14} />
@@ -72,7 +72,7 @@ export default function MyListingsPage() {
                            text-sm font-bold transition-all hover:opacity-90 active:scale-[0.97]"
                 style={{
                   backgroundColor: 'var(--forest)',
-                  clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                  borderRadius: '0.85rem',
                 }}
               >
                 <PlusIcon size={15} />

@@ -101,11 +101,7 @@ export default function FarmerDashboard() {
           </h1>
           <p className="text-muted-foreground text-xs mt-0.5">{today}</p>
         </div>
-        <div
-          className="w-11 h-11 flex-shrink-0 flex items-center justify-center bg-forest
-                     text-white font-display font-bold text-sm"
-          style={{ clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))' }}
-        >
+        <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-forest font-bold text-sm text-white">
           {initials}
         </div>
       </div>
@@ -132,7 +128,7 @@ export default function FarmerDashboard() {
                   className="text-[9px] font-bold uppercase tracking-[0.13em] px-2 py-0.5 text-white"
                   style={{
                     backgroundColor: getScoreColor(score),
-                    clipPath: 'polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))',
+                    borderRadius: '0.85rem',
                   }}
                 >
                   {getScoreTier(score)}
@@ -166,15 +162,7 @@ export default function FarmerDashboard() {
                   {bnpl.rate}% flat fee · Pay at harvest
                 </p>
               </div>
-              <Link
-                href="/bnpl"
-                className="px-3.5 py-1.5 text-white text-xs font-bold transition-all active:scale-[0.97]
-                           flex-shrink-0 hover:opacity-90"
-                style={{
-                  backgroundColor: 'var(--forest)',
-                  clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
-                }}
-              >
+              <Link href="/bnpl" className="btn btn-forest btn-sm flex-shrink-0">
                 Apply
               </Link>
             </div>
@@ -198,14 +186,14 @@ export default function FarmerDashboard() {
         className="flex items-center gap-4 p-5 hover:opacity-90 transition-opacity group"
         style={{
           backgroundColor: 'var(--forest)',
-          clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px))',
+          borderRadius: '0.85rem',
         }}
       >
         <span
           className="w-12 h-12 flex items-center justify-center flex-shrink-0"
           style={{
             backgroundColor: 'rgba(255,255,255,0.12)',
-            clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+            borderRadius: '0.85rem',
           }}
         >
           <BuyInputsIcon size={22} className="text-white" />
@@ -236,48 +224,22 @@ export default function FarmerDashboard() {
       {/* ── Stats ──────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 gap-3">
         {[
-          {
-            href:       '/listings',
-            label:      'My Listings',
-            value:      data?.listingCount ?? 0,
-            Icon:       ListProduceIcon,
-            iconBg:     'var(--sector-crops-bg)',
-            iconColor:  'var(--sector-crops)',
-            topColor:   'var(--sector-crops)',
-          },
-          {
-            href:       '/farmer/orders',
-            label:      'My Orders',
-            value:      data?.orderCount ?? 0,
-            Icon:       HarvestPledgeIcon,
-            iconBg:     'var(--harvest-gold-bg)',
-            iconColor:  'var(--harvest-gold)',
-            topColor:   'var(--harvest-gold)',
-          },
-        ].map(({ href, label, value, Icon, iconBg, iconColor, topColor }) => (
+          { href: '/listings',     label: 'My Listings', value: data?.listingCount ?? 0, Icon: ListProduceIcon },
+          { href: '/farmer/orders', label: 'My Orders',   value: data?.orderCount ?? 0,   Icon: HarvestPledgeIcon },
+        ].map(({ href, label, value, Icon }) => (
           <Link
             key={href}
             href={href}
-            className="bg-white rounded-2xl border border-border overflow-hidden
-                       hover:shadow-sm transition-shadow"
+            className="card-surface card-lift p-4 flex items-center gap-3"
           >
-            <div className="h-[3px]" style={{ backgroundColor: topColor }} />
-            <div className="p-4 flex items-center gap-3">
-              <span
-                className="p-2.5 flex items-center justify-center flex-shrink-0"
-                style={{
-                  backgroundColor: iconBg,
-                  clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
-                }}
-              >
-                <Icon size={18} style={{ color: iconColor }} />
-              </span>
-              <div>
-                <p className="text-[11px] text-muted-foreground font-medium">{label}</p>
-                <p className="text-2xl font-extrabold font-mono text-forest leading-none mt-0.5">
-                  {value}
-                </p>
-              </div>
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-cream-dark">
+              <Icon size={18} className="text-forest" />
+            </span>
+            <div>
+              <p className="text-[11px] text-muted-foreground font-medium">{label}</p>
+              <p className="text-2xl font-extrabold font-mono text-forest leading-none mt-0.5">
+                {value}
+              </p>
             </div>
           </Link>
         ))}
@@ -293,59 +255,23 @@ export default function FarmerDashboard() {
         </h2>
         <div className="grid grid-cols-2 gap-3">
           {[
-            {
-              href:        '/listings/new',
-              label:       'List Produce',
-              Icon:        ListProduceIcon,
-              iconBg:      'var(--sector-crops-bg)',
-              iconColor:   'var(--sector-crops)',
-              accentColor: 'var(--sector-crops)',
-            },
-            {
-              href:        '/inputs',
-              label:       'Buy Inputs',
-              Icon:        BuyInputsIcon,
-              iconBg:      'var(--sector-inputs-bg)',
-              iconColor:   'var(--sector-inputs)',
-              accentColor: 'var(--sector-inputs)',
-            },
-            {
-              href:        '/pledges',
-              label:       'Browse Pledges',
-              Icon:        HarvestPledgeIcon,
-              iconBg:      'var(--harvest-gold-bg)',
-              iconColor:   'var(--harvest-gold)',
-              accentColor: 'var(--harvest-gold)',
-            },
-            {
-              href:        '/intelligence',
-              label:       'Intelligence',
-              Icon:        WeatherIcon,
-              iconBg:      'var(--sector-fisheries-bg)',
-              iconColor:   'var(--sector-fisheries)',
-              accentColor: 'var(--sector-fisheries)',
-            },
-          ].map(({ href, label, Icon, iconBg, iconColor, accentColor }) => (
+            { href: '/listings/new', label: 'List Produce',   Icon: ListProduceIcon,   primary: true  },
+            { href: '/inputs',       label: 'Buy Inputs',     Icon: BuyInputsIcon,     primary: false },
+            { href: '/pledges',      label: 'Browse Pledges', Icon: HarvestPledgeIcon, primary: false },
+            { href: '/intelligence', label: 'Intelligence',   Icon: WeatherIcon,       primary: false },
+          ].map(({ href, label, Icon, primary }) => (
             <Link
               key={href}
               href={href}
-              className="bg-white rounded-2xl border border-border p-4 overflow-hidden relative
-                         hover:shadow-sm transition-shadow"
+              className="card-surface card-lift group p-4"
             >
-              <div
-                className="absolute bottom-0 left-0 right-0 h-[3px]"
-                style={{ backgroundColor: accentColor }}
-              />
               <span
-                className="mb-3 w-10 h-10 flex items-center justify-center"
-                style={{
-                  backgroundColor: iconBg,
-                  clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
-                }}
+                className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl transition-colors
+                  ${primary ? 'bg-lime text-forest' : 'bg-cream-dark text-forest group-hover:bg-lime'}`}
               >
-                <Icon size={19} style={{ color: iconColor }} />
+                <Icon size={19} />
               </span>
-              <span className="text-sm font-bold text-forest block leading-tight">{label}</span>
+              <span className="block text-sm font-bold leading-tight text-forest">{label}</span>
             </Link>
           ))}
         </div>
@@ -371,36 +297,26 @@ export default function FarmerDashboard() {
         <div className="space-y-2.5">
           {[
             {
-              href:      '/intelligence',
-              Icon:      WeatherIcon,
-              title:     'Weather Forecast',
-              sub:       'Regional conditions & planting advice',
-              iconBg:    'var(--sector-fisheries-bg)',
-              iconColor: 'var(--sector-fisheries)',
+              href:  '/intelligence',
+              Icon:  WeatherIcon,
+              title: 'Weather Forecast',
+              sub:   'Regional conditions & planting advice',
             },
             {
-              href:      '/intelligence',
-              Icon:      PricesIcon,
-              title:     'Market Prices',
-              sub:       'Live prices by region & commodity',
-              iconBg:    'var(--sector-crops-bg)',
-              iconColor: 'var(--sector-crops)',
+              href:  '/intelligence',
+              Icon:  PricesIcon,
+              title: 'Market Prices',
+              sub:   'Live prices by region & commodity',
             },
-          ].map(({ href, Icon, title, sub, iconBg, iconColor }) => (
+          ].map(({ href, Icon, title, sub }) => (
             <Link
               key={title}
               href={href}
-              className="flex items-center gap-3 p-3.5 bg-cream rounded-xl
+              className="group flex items-center gap-3 p-3.5 bg-cream rounded-xl
                          hover:bg-cream-dark transition-colors"
             >
-              <span
-                className="p-2 flex items-center justify-center flex-shrink-0"
-                style={{
-                  backgroundColor: iconBg,
-                  clipPath: 'polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))',
-                }}
-              >
-                <Icon size={16} style={{ color: iconColor }} />
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-white text-forest border border-border group-hover:border-lime transition-colors">
+                <Icon size={16} />
               </span>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold text-forest">{title}</p>

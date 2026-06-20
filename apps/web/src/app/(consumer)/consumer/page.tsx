@@ -82,7 +82,7 @@ export default function ConsumerHomePage() {
                         }`}
             style={category === c.value ? {
               backgroundColor: 'var(--forest)',
-              clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+              borderRadius: '0.85rem',
             } : {}}
           >
             {c.label}
@@ -201,7 +201,7 @@ export default function ConsumerHomePage() {
                      transition-all hover:opacity-90 active:scale-[0.98]"
           style={{
             backgroundColor: 'var(--forest)',
-            clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+            borderRadius: '0.85rem',
           }}
         >
           View all listings

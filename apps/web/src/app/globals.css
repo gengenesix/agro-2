@@ -20,11 +20,11 @@
   --destructive-foreground: oklch(0.985 0 0);
   --border:                oklch(0.90 0.02 100);
   --input:                 oklch(0.90 0.02 100);
-  --ring:                  oklch(0.28 0.07 145);  /* forest green focus ring */
+  --ring:                  oklch(0.88 0.22 120);  /* electric lime focus ring */
   --radius:                1rem;
 
-  --lime:                  oklch(0.76 0.17 75);   /* warm amber gold */
-  --lime-dark:             oklch(0.63 0.16 72);   /* deep amber */
+  --lime:                  oklch(0.88 0.22 120);  /* electric lime — the singular spark */
+  --lime-dark:             oklch(0.78 0.20 120);  /* lime hover */
   --forest:                oklch(0.28 0.07 145);
   --forest-dark:           oklch(0.20 0.06 145);
   --cream:                 oklch(0.97 0.015 100);
@@ -52,9 +52,9 @@
 }
 
 @theme inline {
-  --font-sans:    var(--font-dm-sans);
-  --font-display: var(--font-bricolage);
-  --font-serif:   var(--font-bricolage);
+  --font-sans:    var(--font-plus-jakarta), system-ui, sans-serif;
+  --font-display: var(--font-plus-jakarta), system-ui, sans-serif;
+  --font-serif:   var(--font-plus-jakarta), system-ui, sans-serif;
   --font-mono:    var(--font-geist-mono), 'Geist Mono', 'Courier New', monospace;
 
   --color-background:         var(--background);
@@ -96,14 +96,58 @@
 
 @layer base {
   * { @apply border-border box-border; }
-  body { @apply bg-background text-foreground font-sans antialiased; }
-  h1, h2, h3 { @apply text-forest tracking-tight; }
+  body { @apply bg-background text-foreground font-sans antialiased; letter-spacing: -0.01em; }
+  h1, h2, h3, h4 { @apply text-forest; letter-spacing: -0.025em; }
+  h1 { letter-spacing: -0.035em; }
+  /* tabular, tight numbers everywhere mono is used */
+  .font-mono { font-feature-settings: 'tnum' 1, 'cv01' 1; letter-spacing: -0.02em; }
 }
 
 @layer utilities {
   .scrollbar-hide               { -ms-overflow-style: none; scrollbar-width: none; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
-  .font-display                 { font-family: var(--font-bricolage), sans-serif; }
+  .font-display                 { font-family: var(--font-plus-jakarta), system-ui, sans-serif; }
+
+  /* ── Uppercase micro-label (badges, eyebrows) ── */
+  .label-eyebrow {
+    font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.12em; line-height: 1;
+  }
+
+  /* ── Buttons — pill CTAs, one source of truth ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    border-radius: 9999px; font-weight: 700; font-size: 0.875rem; line-height: 1;
+    padding: 0.75rem 1.5rem; white-space: nowrap; cursor: pointer;
+    transition: transform .15s ease, background-color .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .btn:active            { transform: scale(0.97); }
+  .btn:disabled          { opacity: .5; pointer-events: none; }
+  .btn-forest            { background: var(--forest); color: #fff; }
+  .btn-forest:hover      { background: var(--forest-dark); }
+  .btn-lime              { background: var(--lime); color: var(--forest); }
+  .btn-lime:hover        { background: var(--lime-dark); }
+  .btn-outline           { background: transparent; color: var(--forest); border: 1.5px solid var(--border); }
+  .btn-outline:hover     { border-color: var(--forest); background: var(--cream); }
+  .btn-ghost             { background: transparent; color: var(--forest); }
+  .btn-ghost:hover       { background: var(--cream-dark); }
+  .btn-sm                { padding: 0.5rem 1rem; font-size: 0.8125rem; }
+  .btn-lg                { padding: 0.9rem 1.85rem; font-size: 0.95rem; }
+
+  /* ── Cards — white surface, soft border, subtle lift ── */
+  .card-surface {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 1rem; box-shadow: 0 1px 3px rgba(20,40,25,0.04);
+  }
+  .card-lift                    { @apply transition-all duration-200; }
+  .card-lift:hover              { box-shadow: 0 14px 40px rgba(20,40,25,0.10); transform: translateY(-3px); }
+  .card-pad                     { padding: 1.25rem; }
+
+  /* ── Forest dot texture (auth panels, banners) ── */
+  .dot-texture {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px);
+    background-size: 22px 22px; opacity: 0.05;
+  }
 
   /* ── Brand backgrounds ── */
   .bg-forest                    { background-color: var(--forest); }

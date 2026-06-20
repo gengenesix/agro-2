@@ -183,7 +183,7 @@ export default function MarketplacePage() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section
-        className="relative min-h-[86vh] grid lg:grid-cols-[52%_48%]"
+        className="relative min-h-[72vh] grid lg:grid-cols-[52%_48%]"
         style={{ backgroundColor: 'var(--cream)' }}
       >
         <div className="flex items-center px-6 sm:px-10 lg:px-16 py-20 lg:py-0">
@@ -239,7 +239,7 @@ export default function MarketplacePage() {
                   style={{
                     backgroundColor: 'var(--forest)',
                     color: 'white',
-                    clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                    borderRadius: '0.85rem',
                   }}
                 >
                   Browse All Listings
@@ -315,7 +315,7 @@ export default function MarketplacePage() {
                 style={{
                   backgroundColor: 'var(--forest)',
                   color: 'var(--lime)',
-                  clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                  borderRadius: '0.85rem',
                 }}
               >
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
@@ -349,7 +349,7 @@ export default function MarketplacePage() {
       </section>
 
       {/* ── SECTORS ───────────────────────────────────────────────── */}
-      <section className="py-24 lg:py-32" style={{ backgroundColor: 'white' }}>
+      <section className="py-24 lg:py-20" style={{ backgroundColor: 'white' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="max-w-lg mb-14">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
@@ -385,7 +385,7 @@ export default function MarketplacePage() {
                     style={{
                       backgroundColor: s.bg,
                       color: s.color,
-                      clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                      borderRadius: '0.85rem',
                     }}
                   >
                     {s.icon}
@@ -406,7 +406,7 @@ export default function MarketplacePage() {
       </section>
 
       {/* ── HOW IT WORKS ──────────────────────────────────────────── */}
-      <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--forest)' }}>
+      <section className="py-24 lg:py-20" style={{ backgroundColor: 'var(--forest)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="text-center mb-16 max-w-xl mx-auto">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-4"
@@ -440,7 +440,7 @@ export default function MarketplacePage() {
                       style={{
                         backgroundColor: 'var(--lime)',
                         color: 'var(--forest)',
-                        clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                        borderRadius: '0.85rem',
                       }}
                     >
                       {h.icon}
@@ -465,7 +465,7 @@ export default function MarketplacePage() {
       </section>
 
       {/* ── TRUST PILLARS ─────────────────────────────────────────── */}
-      <section className="py-24 lg:py-32" style={{ backgroundColor: 'var(--cream)' }}>
+      <section className="py-24 lg:py-20" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp className="max-w-lg mb-14">
             <h2
@@ -491,7 +491,7 @@ export default function MarketplacePage() {
                     style={{
                       backgroundColor: 'var(--forest)',
                       color: 'var(--lime)',
-                      clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+                      borderRadius: '0.85rem',
                     }}
                   >
                     {t.icon}
@@ -537,7 +537,7 @@ export default function MarketplacePage() {
               style={{
                 backgroundColor: 'var(--lime)',
                 color: 'var(--forest)',
-                clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+                borderRadius: '0.85rem',
               }}
             >
               Create Account

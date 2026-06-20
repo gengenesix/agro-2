@@ -35,7 +35,7 @@ export function WalletCard({ balance, pendingBalance, totalEarned, onWithdraw }:
           </div>
           <div
             className="p-2.5 bg-white/10 flex items-center justify-center"
-            style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))' }}
+            style={{ borderRadius: '0.85rem' }}
           >
             <WalletIcon size={22} className="text-lime" />
           </div>
@@ -58,7 +58,7 @@ export function WalletCard({ balance, pendingBalance, totalEarned, onWithdraw }:
                      active:scale-[0.98] hover:opacity-90 flex items-center justify-center gap-2"
           style={{
             backgroundColor: 'var(--lime)',
-            clipPath: 'polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px))',
+            borderRadius: '0.85rem',
           }}
         >
           <WithdrawIcon size={18} />

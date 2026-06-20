@@ -85,7 +85,7 @@ export default function AdminDashboardPage() {
                      uppercase tracking-[0.13em] text-forest"
           style={{
             backgroundColor: 'var(--lime)',
-            clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+            borderRadius: '0.85rem',
           }}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-forest/60 animate-pulse" />
@@ -183,11 +183,8 @@ export default function AdminDashboardPage() {
           >
             <div className="flex items-center gap-3.5">
               <span
-                className="p-2.5 flex items-center justify-center"
-                style={{
-                  backgroundColor: q.urgent ? 'rgba(var(--lime-rgb, 180,140,60),0.15)' : 'rgba(255,255,255,0.1)',
-                  clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
-                }}
+                className="flex items-center justify-center rounded-xl p-2.5"
+                style={{ backgroundColor: q.urgent ? 'color-mix(in srgb, var(--lime) 18%, transparent)' : 'rgba(255,255,255,0.1)' }}
               >
                 <q.Icon size={18} className="text-white" />
               </span>
@@ -224,27 +221,9 @@ export default function AdminDashboardPage() {
         </h2>
         <div className="grid sm:grid-cols-3 gap-4">
           {[
-            {
-              label:    'Farmers',
-              value:    s.totalFarmers,
-              href:     '/admin/users?role=farmer',
-              accent:   'var(--sector-crops)',
-              accentBg: 'rgba(53,180,100,0.1)',
-            },
-            {
-              label:    'Dealers',
-              value:    s.totalDealers,
-              href:     '/admin/users?role=dealer',
-              accent:   'var(--sector-inputs)',
-              accentBg: 'rgba(120,100,200,0.1)',
-            },
-            {
-              label:    'Buyers',
-              value:    s.totalBuyers,
-              href:     '/admin/users?role=buyer',
-              accent:   'var(--sector-fisheries)',
-              accentBg: 'rgba(60,120,220,0.1)',
-            },
+            { label: 'Farmers', value: s.totalFarmers, href: '/admin/users?role=farmer' },
+            { label: 'Dealers', value: s.totalDealers, href: '/admin/users?role=dealer' },
+            { label: 'Buyers',  value: s.totalBuyers,  href: '/admin/users?role=buyer'  },
           ].map(r => (
             <Link
               key={r.label}
@@ -253,10 +232,7 @@ export default function AdminDashboardPage() {
                          hover:border-white/20 transition-colors group overflow-hidden relative"
               style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
             >
-              <div
-                className="absolute bottom-0 left-0 right-0 h-[3px]"
-                style={{ backgroundColor: r.accent }}
-              />
+              <div className="absolute bottom-0 left-0 right-0 h-[3px]" style={{ backgroundColor: 'var(--lime)' }} />
               <p
                 className="font-mono font-extrabold text-white leading-none"
                 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.2rem)' }}
@@ -291,7 +267,7 @@ export default function AdminDashboardPage() {
             className="p-3 flex items-center justify-center flex-shrink-0"
             style={{
               backgroundColor: 'var(--lime)',
-              clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+              borderRadius: '0.85rem',
             }}
           >
             <AdminIcon size={20} style={{ color: 'var(--forest)' }} />

@@ -142,7 +142,7 @@ export default function FeaturesPage() {
 
       {/* ── Hero ────────────────────────────────────────────────────────── */}
       <section
-        className="relative py-20 lg:py-28 overflow-hidden"
+        className="relative py-20 lg:py-16 overflow-hidden"
         style={{ backgroundColor: 'var(--forest)' }}
       >
         <div className="absolute top-0 right-0 bottom-0 w-1.5" style={{ backgroundColor: 'var(--lime)', opacity: 0.5 }} />
@@ -173,7 +173,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* ── Feature list ────────────────────────────────────────────────── */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: 'var(--cream)' }}>
+      <section className="py-20 lg:py-16" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
           {FEATURES.map((f) => (
             <div
@@ -191,7 +191,7 @@ export default function FeaturesPage() {
                   style={{
                     backgroundColor: `color-mix(in oklch, ${f.accent} 12%, transparent)`,
                     color: f.accent,
-                    clipPath: 'polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))',
+                    borderRadius: '0.85rem',
                   }}
                 >
                   {f.icon}
@@ -262,7 +262,7 @@ export default function FeaturesPage() {
             style={{
               backgroundColor: 'var(--lime)',
               color: 'var(--forest)',
-              clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+              borderRadius: '0.85rem',
             }}
           >
             Create Account

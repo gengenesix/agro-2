@@ -44,7 +44,7 @@ export function LandingNav() {
             className="w-8 h-8 flex items-center justify-center"
             style={{
               backgroundColor: 'var(--lime)',
-              clipPath: 'polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px))',
+              borderRadius: '0.85rem',
             }}
           >
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
@@ -100,7 +100,7 @@ export function LandingNav() {
                 style={{
                   backgroundColor: 'var(--lime)',
                   color: 'var(--forest)',
-                  clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+                  borderRadius: '0.85rem',
                 }}
               >
                 Dashboard
@@ -125,7 +125,7 @@ export function LandingNav() {
                   style={{
                     backgroundColor: 'var(--lime)',
                     color: 'var(--forest)',
-                    clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))',
+                    borderRadius: '0.85rem',
                   }}
                 >
                   Get Started
@@ -202,7 +202,7 @@ export function LandingNav() {
                 style={{
                   backgroundColor: 'var(--lime)',
                   color: 'var(--forest)',
-                  clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                  borderRadius: '0.85rem',
                 }}
               >
                 Go to Dashboard
@@ -230,7 +230,7 @@ export function LandingNav() {
                   style={{
                     backgroundColor: 'var(--lime)',
                     color: 'var(--forest)',
-                    clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                    borderRadius: '0.85rem',
                   }}
                 >
                   Get Started Free

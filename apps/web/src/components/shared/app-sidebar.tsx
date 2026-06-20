@@ -29,7 +29,7 @@ const T = {
   light: {
     aside:          'bg-white border-r border-border',
     logo:           'bg-forest',
-    logoFill:       'oklch(0.76 0.17 75)',
+    logoFill:       'var(--lime)',
     brandLabel:     'text-forest',
     portalSub:      'text-muted-foreground',
     activeBg:       'bg-forest text-white',
@@ -93,8 +93,7 @@ export function AppSidebar({
         {!collapsed ? (
           <Link href="/" className="flex items-center gap-2.5 min-w-0">
             <div
-              className={`w-9 h-9 ${t.logo} flex-shrink-0 flex items-center justify-center`}
-              style={{ clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))' }}
+              className={`w-9 h-9 ${t.logo} rounded-xl flex-shrink-0 flex items-center justify-center`}
             >
               <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
                 <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z" fill={t.logoFill} />
@@ -111,8 +110,7 @@ export function AppSidebar({
           </Link>
         ) : (
           <Link href="/"
-            className={`w-9 h-9 ${t.logo} flex items-center justify-center flex-shrink-0`}
-            style={{ clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))' }}>
+            className={`w-9 h-9 ${t.logo} rounded-xl flex items-center justify-center flex-shrink-0`}>
             <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
               <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z" fill={t.logoFill} />
             </svg>
@@ -156,6 +154,9 @@ export function AppSidebar({
               </span>
               {!collapsed && (
                 <span className="text-sm font-semibold truncate flex-1">{label}</span>
+              )}
+              {!collapsed && active && badge === 0 && (
+                <span className="ml-auto h-1.5 w-1.5 flex-shrink-0 rounded-full bg-lime" />
               )}
               {!collapsed && badge > 0 && (
                 <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full
