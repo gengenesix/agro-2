@@ -35,15 +35,8 @@ export const metadata: Metadata = {
     title: 'AgroConnect — Global Agricultural Trade',
   },
   manifest: '/manifest.json',
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon-32.png', type: 'image/png', sizes: '32x32' },
-      { url: '/favicon-16.png', type: 'image/png', sizes: '16x16' },
-    ],
-    apple: '/apple-touch-icon.png',
-    shortcut: '/favicon.ico',
-  },
+  // Icons resolved via App Router file convention: app/icon.png + app/apple-icon.png
+  // (public/favicon.ico still served at /favicon.ico for legacy requests).
 }
 
 export const viewport: Viewport = {

@@ -24,6 +24,7 @@ export function LogoMark({ size = 36, variant = 'forest', className }: LogoMarkP
       width={size}
       height={size}
       priority
+      unoptimized
       draggable={false}
       className={cn('rounded-[22%] select-none', className)}
       style={{ width: size, height: size }}

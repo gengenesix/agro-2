@@ -19,6 +19,8 @@ const config: NextConfig = {
     ],
     localPatterns: [
       { pathname: '/uploads/**' },
+      { pathname: '/brand/**' },
+      { pathname: '/icons/**' },
     ],
   },
   experimental: {
