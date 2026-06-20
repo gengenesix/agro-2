@@ -35,11 +35,19 @@ export const metadata: Metadata = {
     title: 'AgroConnect — Global Agricultural Trade',
   },
   manifest: '/manifest.json',
-  icons:    { apple: '/icons/pwa/icon.svg' },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-16.png', type: 'image/png', sizes: '16x16' },
+    ],
+    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon.ico',
+  },
 }
 
 export const viewport: Viewport = {
-  themeColor:    '#1a3a24',
+  themeColor:    '#1D402B',
   width:         'device-width',
   initialScale:  1,
   maximumScale:  1,

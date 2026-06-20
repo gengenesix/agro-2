@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/context/auth-context'
+import { LogoMark } from '@/components/ui/logo'
 import { SettingsIcon, BellIcon } from '@/components/shared/icons'
 
 export interface NavItem {
@@ -92,28 +93,17 @@ export function AppSidebar({
       >
         {!collapsed ? (
           <Link href="/" className="flex items-center gap-2.5 min-w-0">
-            <div
-              className={`w-9 h-9 ${t.logo} rounded-xl flex-shrink-0 flex items-center justify-center`}
-            >
-              <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
-                <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z" fill={t.logoFill} />
-                <path d="M16 15v7" stroke={t.logoFill} strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
-            </div>
+            <LogoMark size={36} variant={theme === 'dark' ? 'white' : 'forest'} className="flex-shrink-0" />
             <div className="min-w-0">
-              <span className={`font-display font-bold text-sm leading-none block ${t.brandLabel}`}
-                    style={{ letterSpacing: '-0.02em' }}>
+              <span className={`font-bold text-sm leading-none block tracking-tight ${t.brandLabel}`}>
                 AgroConnect
               </span>
               <span className={`text-[10px] font-medium ${t.portalSub}`}>{portalLabel}</span>
             </div>
           </Link>
         ) : (
-          <Link href="/"
-            className={`w-9 h-9 ${t.logo} rounded-xl flex items-center justify-center flex-shrink-0`}>
-            <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
-              <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z" fill={t.logoFill} />
-            </svg>
+          <Link href="/" className="flex-shrink-0">
+            <LogoMark size={34} variant={theme === 'dark' ? 'white' : 'forest'} />
           </Link>
         )}
 

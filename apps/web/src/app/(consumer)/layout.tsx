@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { AppSidebar } from '@/components/shared/app-sidebar'
+import { LogoMark } from '@/components/ui/logo'
 import { api } from '@/lib/api'
 import {
   HomeIcon, OrdersIcon, BellIcon, ProfileIcon,
@@ -87,13 +88,8 @@ export default function ConsumerLayout({ children }: { children: React.ReactNode
         <header className="bg-forest text-white px-4 py-3 flex items-center justify-between
                            sticky top-0 z-40 lg:hidden">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-lime rounded-lg flex items-center justify-center">
-              <svg viewBox="0 0 32 32" width="16" height="16" fill="none">
-                <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z"
-                      fill="oklch(0.28 0.07 145)" />
-              </svg>
-            </div>
-            <span className="font-display font-bold text-base">AgroConnect</span>
+            <LogoMark size={28} variant="white" />
+            <span className="font-bold text-base tracking-tight">AgroConnect</span>
           </div>
           <Link href="/produce" className="text-xs font-semibold text-white/80 hover:text-white">
             Browse all

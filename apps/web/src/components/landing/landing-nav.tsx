@@ -4,6 +4,7 @@ import { useState }     from 'react'
 import Link              from 'next/link'
 import { usePathname }   from 'next/navigation'
 import { useAuth }       from '@/context/auth-context'
+import { Logo }          from '@/components/ui/logo'
 
 const ROLE_HOME: Record<string, string> = {
   farmer:      '/dashboard',
@@ -39,35 +40,7 @@ export function LandingNav() {
       <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
-          <div
-            className="w-8 h-8 flex items-center justify-center"
-            style={{
-              backgroundColor: 'var(--lime)',
-              borderRadius: '0.85rem',
-            }}
-          >
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
-              <path d="M12 21v-9" stroke="var(--forest)" strokeWidth="2.5" strokeLinecap="round"/>
-              <path d="M12 12C11 8 8 6 4 6c0 3.5 2.5 6.5 8 6Z" fill="var(--forest)"/>
-              <path d="M12 12c1-4 4-6 8-6 0 3.5-2.5 6.5-8 6Z" fill="var(--forest)" fillOpacity="0.7"/>
-            </svg>
-          </div>
-          <div>
-            <span
-              className="font-display font-extrabold block"
-              style={{ fontSize: '0.95rem', color: 'white', letterSpacing: '-0.03em', lineHeight: 1.1 }}
-            >
-              AgroConnect
-            </span>
-            <span
-              className="block font-mono"
-              style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em' }}
-            >
-              agroconnect.io
-            </span>
-          </div>
-        </Link>
+        <Logo size={34} tone="white" className="shrink-0" />
 
         {/* Desktop links */}
         <nav className="hidden md:flex items-center gap-1">

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useAuth } from '@/context/auth-context'
+import { LogoMark } from '@/components/ui/logo'
 import type { Role } from '@/lib/types'
 
 // Inline SVG icons — one per role
@@ -138,13 +139,7 @@ export default function OnboardingRolePage() {
     <div className="min-h-screen bg-cream flex items-center justify-center px-5 py-12">
       <div className="w-full max-w-[480px]">
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-11 h-11 rounded-xl bg-forest flex items-center justify-center shadow-sm">
-            <svg viewBox="0 0 32 32" width="22" height="22" fill="none">
-              <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z" fill="oklch(0.88 0.22 120)" />
-              <path d="M10 26h12" stroke="oklch(0.88 0.22 120)" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M16 15v9" stroke="oklch(0.88 0.22 120)" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </div>
+          <LogoMark size={44} />
           <div>
             <p className="font-bold text-forest text-lg leading-none tracking-tight">AgroConnect</p>
             <p className="text-[11px] text-muted-foreground mt-0.5">From seed to sale.</p>

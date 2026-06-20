@@ -3,6 +3,7 @@
 import Link     from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/context/auth-context'
+import { Logo } from '@/components/ui/logo'
 import {
   HomeIcon, MarketIcon, PledgeIcon, WalletIcon, ProfileIcon, BellIcon,
 } from './icons'
@@ -92,18 +93,7 @@ export function TopNav() {
     <header className="sticky top-0 z-40 border-b border-border bg-cream/85 backdrop-blur-md">
       <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="group flex items-center gap-2.5">
-          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-forest transition-transform group-hover:scale-105">
-            <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
-              <path d="M16 4C12 4 9 8 9 12c0 5 7 13 7 13s7-8 7-13c0-4-3-8-7-8Z" fill="var(--lime)" />
-              <path d="M16 15v7" stroke="var(--lime)" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M12 25h8" stroke="var(--lime)" strokeWidth="2.5" strokeLinecap="round" />
-            </svg>
-          </div>
-          <span className="text-[17px] font-extrabold tracking-tight text-forest">
-            AgroConnect
-          </span>
-        </Link>
+        <Logo size={36} />
 
         {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-1">

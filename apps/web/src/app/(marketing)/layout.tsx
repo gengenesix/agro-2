@@ -1,5 +1,6 @@
 import Link            from 'next/link'
 import { LandingNav } from '@/components/landing/landing-nav'
+import { LogoMark }   from '@/components/ui/logo'
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,19 +17,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2.5 mb-5">
-                <div
-                  className="w-9 h-9 flex items-center justify-center flex-shrink-0"
-                  style={{
-                    backgroundColor: 'var(--lime)',
-                    borderRadius: '0.85rem',
-                  }}
-                >
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
-                    <path d="M12 21v-9" stroke="var(--forest)" strokeWidth="2.5" strokeLinecap="round"/>
-                    <path d="M12 12C11 8 8 6 4 6c0 3.5 2.5 6.5 8 6Z" fill="var(--forest)"/>
-                    <path d="M12 12c1-4 4-6 8-6 0 3.5-2.5 6.5-8 6Z" fill="var(--forest)" fillOpacity="0.7"/>
-                  </svg>
-                </div>
+                <LogoMark size={36} variant="white" className="flex-shrink-0" />
                 <div className="leading-none">
                   <p className="font-display font-extrabold text-base tracking-tight text-white">
                     Agro<span style={{ color: 'var(--lime)' }}>Connect</span>
